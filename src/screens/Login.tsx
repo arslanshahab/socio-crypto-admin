@@ -32,7 +32,7 @@ export const Login: React.FC = () => {
     try {
       console.log('email and password', values.email, values.password);
       await firebase.auth().signInWithEmailAndPassword(values.email, values.password);
-      history.push('/dashboard');
+      history.push('/dashboard/campaigns');
     } catch (e) {
       console.log('error logging in: ', e);
     }

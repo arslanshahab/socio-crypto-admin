@@ -1,10 +1,28 @@
 .campaign-list {
-  width: 50%;
+  width: 90%;
   height: 50%;
   margin: auto;
 
   .campaign-graph {
-    height: 300px;
+    height: 440px;
     margin-bottom: 50px;
   }
+
+  .campaign-name {
+    padding-left: 30px;
+  }
+
+  .campaign-row {
+    border-bottom: black;
+  }
+
 }
+  .campaign-filter-button {
+    padding-top: 111px;
+    display: block;
+    margin: auto;
+  }
+  .campaign-filter-formControl {
+    margin: 20px;
+    min-width: 120px;
+  }

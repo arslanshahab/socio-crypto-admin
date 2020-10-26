@@ -48,7 +48,7 @@ export const Register: React.FC = () => {
     await newOrg();
     console.log('NEW ORG RESPONSE', error, data);
     if (error) throw new Error(`ERROR: error creating new org ${error}`);
-    history.push('/dashboard');
+    history.push('/dashboard/campaigns');
   };
 
   return (

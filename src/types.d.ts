@@ -12,6 +12,143 @@ export interface CampaignListVars {
   scoped?: boolean;
 }
 
+export interface GetWalletVars {
+  ethereumAddress: string;
+}
+
+export interface Wallet {
+  ethereumAddress: string;
+  message: string;
+  claimed: boolean;
+  balance: number;
+}
+
+export interface GetWalletResponse {
+  getExternalAddress: {
+    ethereumAddress: string;
+    message: string;
+    claimed: boolean;
+    balance: number;
+  };
+}
+export interface ListWalletResponse {
+  listExternalAddresses: {
+    ethereumAddress: string;
+    message: string;
+    claimed: boolean;
+    balance: number;
+  }[];
+}
+
+export interface ClaimEthereumAddress {
+  claimEthereumAddress: {
+    ethereumAddress: string;
+    message: string;
+    claimed: boolean;
+    balance: number;
+  };
+}
+
+export interface GetCampaignVars {
+  campaignId: string;
+}
+
+export interface GetTotalCampaignMetricsResults {
+  getCampaignMetrics: {
+    clickCount: number;
+    viewCount: number;
+    submissionCount: number;
+    postCount: number;
+    likeCount: number;
+    commentCount: number;
+    shareCount: number;
+  };
+}
+
+export interface GetTotalPlatformMetricsResults {
+  getTotalPlatformMetrics: {
+    clickCount: number;
+    viewCount: number;
+    submissionCount: number;
+    postCount: number;
+    likeCount: number;
+    commentCount: number;
+    shareCount: number;
+    participantCount: number;
+    discoveryCount: number;
+    conversionCount: number;
+  };
+}
+
+export interface GetCurrentTierResults {
+  getCurrentCampaignTier: {
+    currentTier: number;
+    currentTotal: number;
+  };
+}
+
+export type FilterDataType =
+  | 'postCount'
+  | 'participantCount'
+  | 'clickCount'
+  | 'viewCount'
+  | 'submissionCount'
+  | 'likeCount'
+  | 'shareCount'
+  | 'commentCount'
+  | 'totalDiscoveries'
+  | 'totalConversions';
+
+export type TimeFilter = 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year' | 'all';
+
+export interface GetHourlyCampaignMetrics {
+  getHourlyCampaignMetrics: {
+    [index: string]: string | number;
+    interval: string;
+    postCount: number;
+    participantCount: number;
+    clickCount: number;
+    viewCount: number;
+    submissionCount: number;
+    likeCount: number;
+    shareCount: number;
+    commentCount: number;
+    totalDiscoveries: number;
+    totalConversions: number;
+    averagePostCost: number;
+    averageDiscoveryCost: number;
+    averageConversionCost: number;
+  }[];
+}
+
+export interface GetHourlyCampaignMetricsVars {
+  campaignId: string;
+  filter: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface GetHourlyPlatformMetricsVars {
+  filter: string;
+}
+
+export interface GetHourlyPlatformMetrics {
+  getHourlyPlatformMetrics: {
+    [index: string]: string | number;
+    interval: string;
+    postCount: number;
+    participantCount: number;
+    clickCount: number;
+    viewCount: number;
+    submissionCount: number;
+    likeCount: number;
+    shareCount: number;
+    commentCount: number;
+    totalDiscoveries: number;
+    totalConversions: number;
+  }[];
+}
+
 export interface NewCampaignVars {
   name: string;
   coiinTotal: number;

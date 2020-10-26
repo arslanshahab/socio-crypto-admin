@@ -62,24 +62,23 @@ export const NewCampaign: React.FC = () => {
   };
 
   return (
-    <React.Fragment>
-      <React.Fragment>
-        <Paper>
-          <Stepper activeStep={activeStep} alternativeLabel>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Paper>
-      </React.Fragment>
-      <React.Fragment>
-        <Paper>
-          {renderStepContent(activeStep)}
+    <div className="new-campaign">
+      <Paper>
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      </Paper>
+      <Paper>
+        {renderStepContent(activeStep)}
+        <div>
           {activeStep === steps.length - 1 ? (
             <Button
               variant="contained"
+              className="new-campaign-button"
               color="primary"
               onClick={async () => {
                 try {
@@ -94,17 +93,17 @@ export const NewCampaign: React.FC = () => {
               Submit
             </Button>
           ) : (
-            <Button variant="contained" color="primary" onClick={handleNext}>
+            <Button className="new-campaign-button" variant="contained" color="primary" onClick={handleNext}>
               Next
             </Button>
           )}
           {activeStep !== 0 && (
-            <Button onClick={handleBack} color="primary">
+            <Button className="new-campaign-button" onClick={handleBack} color="primary">
               Back
             </Button>
           )}
-        </Paper>
-      </React.Fragment>
-    </React.Fragment>
+        </div>
+      </Paper>
+    </div>
   );
 };

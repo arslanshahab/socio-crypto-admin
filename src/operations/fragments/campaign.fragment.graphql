@@ -1,0 +1,12 @@
+fragment info on Campaign {
+    id
+    name
+    beginDate
+    endDate
+    coiinTotal
+    totalParticipationScore
+    target
+    description
+    company
+
+}

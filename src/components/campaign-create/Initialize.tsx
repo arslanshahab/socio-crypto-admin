@@ -25,11 +25,13 @@ export const Initialize: React.FC = () => {
 
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
+    console.log('DATE ISO STRING', dateIsoString);
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'beginDate', val: dateIsoString }));
   };
 
   const handleEndDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
+    console.log('DATE ISO STRING: ', dateIsoString);
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
   };
 

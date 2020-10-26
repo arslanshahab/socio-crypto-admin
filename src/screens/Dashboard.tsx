@@ -121,7 +121,7 @@ export const Dashboard: React.FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Link to={'/dashboard'} style={{ textDecoration: 'none', color: 'white' }}>
+          <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'white' }}>
             <Typography variant="h6" noWrap>
               Dashboard
             </Typography>
@@ -148,14 +148,6 @@ export const Dashboard: React.FC = () => {
         </div>
         <Divider />
         <List>
-          <Link to={'/dashboard'} style={{ textDecoration: 'none', color: 'black' }}>
-            <ListItem button key={'Home'}>
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Home'} />
-            </ListItem>
-          </Link>
           <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'black' }}>
             <ListItem button key={'Campaigns'}>
               <ListItemIcon>
@@ -170,14 +162,6 @@ export const Dashboard: React.FC = () => {
                 <PeopleIcon />
               </ListItemIcon>
               <ListItemText primary={'Market Data'} />
-            </ListItem>
-          </Link>
-          <Link to={'/dashboard/internal'} style={{ textDecoration: 'none', color: 'black' }}>
-            <ListItem button key={'Internal'}>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Internal'} />
             </ListItem>
           </Link>
           <Link to={'/dashboard/newCampaign'} style={{ textDecoration: 'none', color: 'black' }}>
