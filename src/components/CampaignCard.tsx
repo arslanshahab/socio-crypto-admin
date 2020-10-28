@@ -27,6 +27,11 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
   const handleClick = () => {
     setChecked(index);
   };
+  const getStatus = () => {
+    const endDate = new Date(campaign.endDate);
+    const now = new Date();
+    return now < endDate ? <Typography>Open</Typography> : <Typography>Closed</Typography>;
+  };
   const numberOfTiers = Object.keys(campaign.algorithm.tiers).length;
   const budget = campaign.algorithm.tiers[numberOfTiers].totalCoiins;
   return (
@@ -59,7 +64,7 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
               {loadingStatus ? (
                 <p>loading...</p>
               ) : (
-                <div>{`Tier ${statusData && statusData.getCurrentCampaignTier.currentTier}`}</div>
+                <div>{`${statusData && statusData.getCurrentCampaignTier.currentTier}`}</div>
               )}
             </Typography>
           </Grid>
@@ -105,6 +110,11 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
                 <div>{`$${statusData && statusData.getCurrentCampaignTier.currentTotal}`}</div>
               )}
             </Typography>
+          </Grid>
+        </Grid>
+        <Grid container item xs={1}>
+          <Grid item>
+            <Typography>{loadingStatus ? <p>loading...</p> : <div>{getStatus()}</div>}</Typography>
           </Grid>
         </Grid>
       </Grid>

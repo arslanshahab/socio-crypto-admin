@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const LIST_CAMPAIGNS = gql`
-  query listCampaigns($open: Boolean!, $skip: Int!, $take: Int!) {
-    listCampaigns(open: $open, skip: $skip, take: $take) {
+  query listCampaigns($skip: Int, $take: Int, $scoped: Boolean, $sort: Boolean) {
+    listCampaigns(skip: $skip, take: $take, scoped: $scoped, sort: $sort) {
       results {
         id
         name
@@ -54,7 +54,7 @@ export const GET_TOTAL_CAMPAIGN_METRICS = gql`
 `;
 
 export const GET_HOURLY_CAMPAIGN_METRICS = gql`
-  query getHourlyCampaignMetrics($campaignId: String!, $filter: String!, $startDate: String, $endDate: String) {
+  query getHourlyCampaignMetrics($campaignId: String!, $filter: String!, $startDate: String!, $endDate: String!) {
     getHourlyCampaignMetrics(campaignId: $campaignId, filter: $filter, startDate: $startDate, endDate: $endDate) {
       interval
       postCount

@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
 import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from '@material-ui/core';
 import { useQuery } from '@apollo/client';
-import { FilterDataType, GetTotalPlatformMetricsResults, TimeFilter } from '../types';
+import { FilterDataType, GetTotalPlatformMetricsResults, TimeFilterOptions } from '../types';
 import { GET_TOTAL_PLATFORM_METRICS } from '../operations/queries/platform';
 import { PlatformGraph } from './PlatformGraph';
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
+import { TimeFilter } from './TimeFilter';
+import { DataFilter } from './DataFilter';
+import { DateTimePicker } from '@material-ui/pickers';
 
 export const MarketData: React.FC = () => {
-  const [timeFilter, setTimeFilter] = useState<TimeFilter>('hour');
-  const [isOpen, setOpen] = useState(false);
-  const handleClick = () => {
-    setOpen((prevState) => !prevState);
+  const initialEndDate = new Date();
+  const initialStartDate = new Date();
+  initialStartDate.setUTCDate(initialEndDate.getUTCDate() - 7);
+  const [timeFilter, setTimeFilter] = useState<TimeFilterOptions>('hour');
+  const [dataFilter, setDataFilter] = useState<FilterDataType>('totalConversions');
+  const [startDate, setStartDate] = useState(initialStartDate.toISOString());
+  const [endDate, setEndDate] = useState(initialEndDate.toISOString());
+  const handleBeginDateChange = (date: MaterialUiPickersDate) => {
+    const dateIsoString = date?.toISOString();
+    if (dateIsoString) setStartDate(dateIsoString);
   };
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setTimeFilter(event.target.value as TimeFilter);
+  const handleEndDateChange = (date: MaterialUiPickersDate) => {
+    const dateIsoString = date?.toISOString();
+    if (dateIsoString) setEndDate(dateIsoString);
   };
   const { loading, data } = useQuery<GetTotalPlatformMetricsResults>(GET_TOTAL_PLATFORM_METRICS);
   return (
@@ -77,37 +88,30 @@ export const MarketData: React.FC = () => {
           </Grid>
         </Grid>
       </Paper>
-      <Grid container justify={'center'}>
+      <Grid container justify={'center'} direction={'row'} spacing={3}>
         <Grid item>
-          <Button
-            size={'small'}
-            variant={'contained'}
-            color={'primary'}
-            style={{ margin: '5px' }}
-            className="campaign-filter-button"
-            onClick={handleClick}
-          >
-            Select Time Filter
-          </Button>
-          <FormControl className="campaign-filter-formControl">
-            <InputLabel id="time-filter-type-label">Time Filter</InputLabel>
-            <Select
-              labelId="time-type-label"
-              id="time-type-select"
-              open={isOpen}
-              onClick={handleClick}
-              value={timeFilter}
-              onChange={handleChange}
-              style={{ margin: '15px' }}
-            >
-              <MenuItem value={'hour'}>Hour</MenuItem>
-              <MenuItem value={'day'}>Day</MenuItem>
-              <MenuItem value={'week'}>Week</MenuItem>
-              <MenuItem value={'month'}>Month</MenuItem>
-              <MenuItem value={'year'}>Year</MenuItem>
-              <MenuItem value={'all'}>All</MenuItem>
-            </Select>
-          </FormControl>
+          <TimeFilter value={timeFilter} setValue={setTimeFilter} />
+        </Grid>
+        <Grid item>
+          <DataFilter value={dataFilter} setValue={setDataFilter} />
+        </Grid>
+        <Grid item>
+          <DateTimePicker
+            value={startDate}
+            style={{ width: '250px' }}
+            onChange={handleBeginDateChange}
+            label="Start Date"
+            showTodayButton
+          />
+        </Grid>
+        <Grid item>
+          <DateTimePicker
+            value={endDate}
+            style={{ width: '250px' }}
+            onChange={handleEndDateChange}
+            label="End Date"
+            showTodayButton
+          />
         </Grid>
       </Grid>
       <Grid container spacing={3}>
@@ -115,7 +119,14 @@ export const MarketData: React.FC = () => {
           <Grid item>
             <Paper className="market-data-tile">
               <Typography variant={'h5'}>Influencer Trends</Typography>
-              {<PlatformGraph dataType={'participantCount'} timeFilter={timeFilter} />}
+              {
+                <PlatformGraph
+                  dataType={'participantCount'}
+                  timeFilter={timeFilter}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              }
             </Paper>
           </Grid>
         </Grid>
@@ -123,7 +134,12 @@ export const MarketData: React.FC = () => {
           <Grid item>
             <Paper className="market-data-tile">
               <Typography variant={'h5'}>Discovery Trends</Typography>
-              {<PlatformGraph dataType={'totalDiscoveries'} timeFilter={timeFilter} />}
+              <PlatformGraph
+                dataType={'totalDiscoveries'}
+                timeFilter={timeFilter}
+                startDate={startDate}
+                endDate={endDate}
+              />
             </Paper>
           </Grid>
         </Grid>
@@ -133,7 +149,12 @@ export const MarketData: React.FC = () => {
           <Grid item>
             <Paper className="market-data-tile">
               <Typography variant={'h5'}>Conversion Trends</Typography>
-              {<PlatformGraph dataType={'totalConversions'} timeFilter={timeFilter} />}
+              <PlatformGraph
+                dataType={'totalConversions'}
+                timeFilter={timeFilter}
+                startDate={startDate}
+                endDate={endDate}
+              />
             </Paper>
           </Grid>
         </Grid>
@@ -141,7 +162,7 @@ export const MarketData: React.FC = () => {
           <Grid item>
             <Paper className="market-data-tile">
               <Typography variant={'h5'}>Sharing Trends</Typography>
-              <PlatformGraph dataType={'shareCount'} timeFilter={timeFilter} />
+              <PlatformGraph dataType={'shareCount'} timeFilter={timeFilter} startDate={startDate} endDate={endDate} />
             </Paper>
           </Grid>
         </Grid>

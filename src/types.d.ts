@@ -10,10 +10,7 @@ export interface CampaignListVars {
   skip?: number;
   take?: number;
   scoped?: boolean;
-}
-
-export interface GetWalletVars {
-  ethereumAddress: string;
+  sort?: boolean;
 }
 
 export interface Wallet {
@@ -99,7 +96,7 @@ export type FilterDataType =
   | 'totalDiscoveries'
   | 'totalConversions';
 
-export type TimeFilter = 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year' | 'all';
+export type TimeFilterOptions = 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year' | 'all';
 
 export interface GetHourlyCampaignMetrics {
   getHourlyCampaignMetrics: {
@@ -124,12 +121,14 @@ export interface GetHourlyCampaignMetrics {
 export interface GetHourlyCampaignMetricsVars {
   campaignId: string;
   filter: string;
-  startDate?: string;
-  endDate?: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface GetHourlyPlatformMetricsVars {
   filter: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface GetHourlyPlatformMetrics {

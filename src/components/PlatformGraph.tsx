@@ -7,7 +7,7 @@ import {
   GetHourlyCampaignMetricsVars,
   GetHourlyPlatformMetrics,
   GetHourlyPlatformMetricsVars,
-  TimeFilter,
+  TimeFilterOptions,
 } from '../types';
 import { useQuery } from '@apollo/client';
 import { GET_HOURLY_CAMPAIGN_METRICS } from '../operations/queries/campaign';
@@ -17,7 +17,9 @@ import { GET_HOURLY_PLATFORM_METRICS } from '../operations/queries/platform';
 
 interface Props {
   dataType: FilterDataType;
-  timeFilter: TimeFilter;
+  timeFilter: TimeFilterOptions;
+  startDate: string;
+  endDate: string;
 }
 
 interface MetricItem {
@@ -25,14 +27,14 @@ interface MetricItem {
   y: number;
 }
 
-export const PlatformGraph: React.FC<Props> = ({ dataType, timeFilter }) => {
+export const PlatformGraph: React.FC<Props> = ({ dataType, timeFilter, startDate, endDate }) => {
   const { loading, data } = useQuery<GetHourlyPlatformMetrics, GetHourlyPlatformMetricsVars>(
     GET_HOURLY_PLATFORM_METRICS,
     {
-      variables: { filter: timeFilter },
+      variables: { filter: timeFilter, startDate, endDate },
     },
   );
-  const getFriendlyDate = (timeFilter: TimeFilter, dateString: string) => {
+  const getFriendlyDate = (timeFilter: TimeFilterOptions, dateString: string) => {
     const date = new Date(dateString);
     let friendlyDate = '';
     switch (timeFilter) {
@@ -68,7 +70,6 @@ export const PlatformGraph: React.FC<Props> = ({ dataType, timeFilter }) => {
       const metricItems: MetricItem[] = [];
       data.getHourlyPlatformMetrics.map((metric) => {
         const newMetric: MetricItem = { x: metric.interval, y: metric[dataType] };
-        console.log('METRICS LIST: ', newMetric);
         metricItems.push(newMetric);
       });
       return (

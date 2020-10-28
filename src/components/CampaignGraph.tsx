@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Campaign, FilterDataType, GetHourlyCampaignMetrics, GetHourlyCampaignMetricsVars, TimeFilter } from '../types';
+import {
+  Campaign,
+  FilterDataType,
+  GetHourlyCampaignMetrics,
+  GetHourlyCampaignMetricsVars,
+  TimeFilterOptions,
+} from '../types';
 import { useQuery } from '@apollo/client';
 import { GET_HOURLY_CAMPAIGN_METRICS } from '../operations/queries/campaign';
 import { Grid } from '@material-ui/core';
@@ -9,7 +15,7 @@ import { VictoryAxis, VictoryChart, VictoryLabel, VictoryTheme, VictoryLine } fr
 interface Props {
   campaign: Campaign;
   dataType: FilterDataType;
-  timeFilter: TimeFilter;
+  timeFilter: TimeFilterOptions;
   startDate: string;
   endDate: string;
 }
@@ -26,7 +32,7 @@ export const CampaignGraph: React.FC<Props> = ({ campaign, dataType, timeFilter,
       variables: { campaignId: campaign.id, filter: timeFilter, startDate, endDate },
     },
   );
-  const getFriendlyDate = (timeFilter: TimeFilter, dateString: string) => {
+  const getFriendlyDate = (timeFilter: TimeFilterOptions, dateString: string) => {
     const date = new Date(dateString);
     let friendlyDate = '';
     switch (timeFilter) {

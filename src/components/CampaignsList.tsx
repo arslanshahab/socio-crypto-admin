@@ -1,36 +1,24 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from '@material-ui/core';
-import { CampaignListVars, FilterDataType, PaginatedCampaignResults, TimeFilter } from '../types';
+import { Grid, Paper, Typography } from '@material-ui/core';
+import { CampaignListVars, FilterDataType, PaginatedCampaignResults, TimeFilterOptions } from '../types';
 import { CampaignCard } from './CampaignCard';
 import { LIST_CAMPAIGNS } from '../operations/queries/campaign';
 import { CampaignGraph } from './CampaignGraph';
 import { DateTimePicker } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
+import { DataFilter } from './DataFilter';
+import { TimeFilter } from './TimeFilter';
 
 export const CampaignsList: React.FC = () => {
   const initialEndDate = new Date();
   const initialStartDate = new Date();
   initialStartDate.setUTCDate(initialEndDate.getUTCDate() - 7);
   const [checkedIndex, setChecked] = useState(0);
-  const [openDataFilter, setOpenDataFilter] = useState(false);
-  const [openTimeFilter, setOpenTimeFilter] = useState(false);
   const [dataFilter, setDataFilter] = useState<FilterDataType>('totalConversions');
-  const [timeFilter, setTimeFilter] = useState<TimeFilter>('day');
+  const [timeFilter, setTimeFilter] = useState<TimeFilterOptions>('day');
   const [startDate, setStartDate] = useState(initialStartDate.toISOString());
   const [endDate, setEndDate] = useState(initialEndDate.toISOString());
-  const handleDataFilterChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setDataFilter(event.target.value as FilterDataType);
-  };
-  const handleTimeFilterChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setTimeFilter(event.target.value as TimeFilter);
-  };
-  const handleDataFilterClick = () => {
-    setOpenDataFilter((prevState) => !prevState);
-  };
-  const handleTimeFilterClick = () => {
-    setOpenTimeFilter((prevState) => !prevState);
-  };
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
     if (dateIsoString) setStartDate(dateIsoString);
@@ -40,7 +28,7 @@ export const CampaignsList: React.FC = () => {
     if (dateIsoString) setEndDate(dateIsoString);
   };
   const { loading, data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
-    variables: { scoped: true, open: true, skip: 0, take: 10 },
+    variables: { scoped: true, skip: 0, take: 10, sort: true },
   });
 
   return (
@@ -66,73 +54,10 @@ export const CampaignsList: React.FC = () => {
           </Grid>
           <Grid container item xs={5} justify={'center'} direction={'column'}>
             <Grid item style={{ marginBottom: '15px' }}>
-              <Button
-                size={'small'}
-                variant={'contained'}
-                color={'primary'}
-                style={{ margin: '10px' }}
-                className="campaign-filter-button"
-                onClick={handleDataFilterClick}
-              >
-                Select Data Filter
-              </Button>
-              <FormControl className="campaign-filter-formControl">
-                <InputLabel id="data-filter-type-label">Data Filter</InputLabel>
-                <Select
-                  labelId="data-type-label"
-                  id="data-type-select"
-                  open={openDataFilter}
-                  onClick={handleDataFilterClick}
-                  value={dataFilter}
-                  style={{ margin: '15px' }}
-                  onChange={handleDataFilterChange}
-                >
-                  <MenuItem value={'postCount'}>Post Count</MenuItem>
-                  <MenuItem value={'participantCount'}>Participant Count</MenuItem>
-                  <MenuItem value={'clickCount'}>Click Count</MenuItem>
-                  <MenuItem value={'viewCount'}>View Count</MenuItem>
-                  <MenuItem value={'submissionCount'}>Submission Count</MenuItem>
-                  <MenuItem value={'likeCount'}>Like Count</MenuItem>
-                  <MenuItem value={'shareCount'}>Share Count</MenuItem>
-                  <MenuItem value={'commentCount'}>Comment Count</MenuItem>
-                  <MenuItem value={'totalDiscoveries'}>Total Discoveries</MenuItem>
-                  <MenuItem value={'totalConversions'}>Total Conversions</MenuItem>
-                  <MenuItem value={'averagePostCost'}>Average Cost Per Post</MenuItem>
-                  <MenuItem value={'averageDiscoveryCost'}>Average Discovery Cost</MenuItem>
-                  <MenuItem value={'averageConversionCost'}>Average Conversion Cost</MenuItem>
-                </Select>
-              </FormControl>
+              <DataFilter value={dataFilter} setValue={setDataFilter} />
             </Grid>
             <Grid item>
-              <Button
-                size={'small'}
-                variant={'contained'}
-                color={'primary'}
-                style={{ margin: '15px' }}
-                className="campaign-filter-button"
-                onClick={handleTimeFilterClick}
-              >
-                Select Time Filter
-              </Button>
-              <FormControl className="campaign-filter-formControl">
-                <InputLabel id="time-filter-type-label">Time Filter</InputLabel>
-                <Select
-                  labelId="time-type-label"
-                  id="time-type-select"
-                  open={openTimeFilter}
-                  onClick={handleTimeFilterClick}
-                  value={timeFilter}
-                  onChange={handleTimeFilterChange}
-                  style={{ margin: '15px' }}
-                >
-                  <MenuItem value={'hour'}>Hour</MenuItem>
-                  <MenuItem value={'day'}>Day</MenuItem>
-                  <MenuItem value={'week'}>Week</MenuItem>
-                  <MenuItem value={'month'}>Month</MenuItem>
-                  <MenuItem value={'year'}>Year</MenuItem>
-                  <MenuItem value={'all'}>All</MenuItem>
-                </Select>
-              </FormControl>
+              <TimeFilter value={timeFilter} setValue={setTimeFilter} />
             </Grid>
             <Grid item>
               <DateTimePicker
@@ -167,7 +92,7 @@ export const CampaignsList: React.FC = () => {
             <Typography>Budget</Typography>
           </Grid>
           <Grid item container xs={1}>
-            <Typography>Status</Typography>
+            <Typography>Tier</Typography>
           </Grid>
           <Grid item container xs={1}>
             <Typography>Discovery Actions</Typography>
@@ -178,6 +103,9 @@ export const CampaignsList: React.FC = () => {
           <Grid item container xs={1}>
             <Typography>Cost</Typography>
           </Grid>
+          <Grid item container xs={1}>
+            <Typography>Status</Typography>
+          </Grid>
         </Grid>
       </Paper>
       <Paper style={{ marginTop: '40px' }}>
@@ -187,6 +115,7 @@ export const CampaignsList: React.FC = () => {
           <div>
             {data &&
               data.listCampaigns.results.map((campaign, index) => {
+                console.log('LIST CAMPAIGNS: ', data.listCampaigns);
                 return (
                   <CampaignCard
                     key={index}
