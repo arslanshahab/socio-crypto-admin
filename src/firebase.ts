@@ -11,3 +11,34 @@ const firebaseConfig = {
 };
 
 export const firebase = app.initializeApp(firebaseConfig);
+
+export const getIdToken = () => {
+  return new Promise((resolve) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        user.getIdToken().then(
+          (idToken) => {
+            resolve(idToken);
+          },
+          (error) => {
+            resolve(null);
+          },
+        );
+      } else {
+        resolve(null);
+      }
+    });
+  });
+};
+
+export const getCurrentUser = () => {
+  return new Promise((resolve) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        resolve(user);
+      } else {
+        resolve(null);
+      }
+    });
+  });
+};

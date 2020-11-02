@@ -22,11 +22,11 @@ import { NewCampaign } from '../components/campaign-create/NewCampaign';
 import { Link } from 'react-router-dom';
 import { MarketData } from '../components/MarketData';
 import { DashboardHome } from '../components/DashboardHome';
-import HomeIcon from '@material-ui/icons/Home';
 import StoreIcon from '@material-ui/icons/Store';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { PaymentsAccount } from '../components/PaymentsAccount';
+import { firebase } from '../firebase';
 
 const drawerWidth = 240;
 

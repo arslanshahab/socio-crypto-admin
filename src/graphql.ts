@@ -1,6 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { firebase } from './firebase';
+import { getIdToken } from './firebase';
 
 const uri = () => {
   switch (process.env.NODE_ENV) {
@@ -17,20 +17,8 @@ export const httpLink = createHttpLink({
   uri: 'http://localhost:4000/v1/admin/graphql',
 });
 
-export const getToken = () => {
-  return new Promise((resolve) => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        user.getIdToken().then((idToken) => {
-          resolve(idToken);
-        });
-      }
-    });
-  });
-};
-
 const authLink = setContext(async (_, { headers }) => {
-  const token = await getToken();
+  const token = await getIdToken();
   return {
     headers: {
       ...headers,

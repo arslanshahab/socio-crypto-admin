@@ -83,7 +83,6 @@ export const NewCampaign: React.FC = () => {
               onClick={async () => {
                 try {
                   const response = await saveCampaign();
-                  console.log('REQUEST RESPONSE: ', response.data, response.errors);
                   history.push('/dashboard');
                 } catch (e) {
                   console.log(e);

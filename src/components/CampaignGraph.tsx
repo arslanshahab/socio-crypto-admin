@@ -26,6 +26,7 @@ interface MetricItem {
 }
 
 export const CampaignGraph: React.FC<Props> = ({ campaign, dataType, timeFilter, startDate, endDate }) => {
+  const isParticipationCount = dataType === 'participantCount';
   const { loading, data } = useQuery<GetHourlyCampaignMetrics, GetHourlyCampaignMetricsVars>(
     GET_HOURLY_CAMPAIGN_METRICS,
     {
@@ -62,56 +63,57 @@ export const CampaignGraph: React.FC<Props> = ({ campaign, dataType, timeFilter,
     return friendlyDate;
   };
   const renderGraph = () => {
+    const metricItems: MetricItem[] = [];
     if (data && data.getHourlyCampaignMetrics) {
-      const metricItems: MetricItem[] = [];
       data.getHourlyCampaignMetrics.map((metric) => {
         const newMetric: MetricItem = { x: metric.interval, y: metric[dataType] };
         metricItems.push(newMetric);
       });
-      return (
-        <Grid container>
-          <Grid item>
-            <VictoryChart
-              width={800}
-              theme={VictoryTheme.material}
-              padding={{ bottom: 70, top: 20, right: 20, left: 60 }}
-            >
-              <VictoryAxis
-                scale="time"
-                standalone={false}
-                theme={VictoryTheme.material}
-                tickFormat={(date) => getFriendlyDate(timeFilter, date)}
-                tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" />}
-              />
-              <VictoryAxis
-                dependentAxis
-                theme={VictoryTheme.material}
-                tickFormat={(num) => {
-                  if (!Number.isInteger(num)) {
-                    return num.toFixed(2);
-                  }
-                  return num;
-                }}
-              />
-
-              <VictoryLine
-                scale={{ x: 'time', y: 'log' }}
-                interpolation={'bundle'}
-                animate={{
-                  duration: 2000,
-                  onLoad: { duration: 1000 },
-                }}
-                style={{
-                  data: { stroke: '#c43a31' },
-                  parent: { border: '1px solid #ccc' },
-                }}
-                data={metricItems}
-              />
-            </VictoryChart>
-          </Grid>
-        </Grid>
-      );
     }
+
+    return (
+      <Grid container>
+        <Grid item>
+          <VictoryChart
+            width={800}
+            theme={VictoryTheme.material}
+            padding={{ bottom: 70, top: 20, right: 20, left: 60 }}
+          >
+            <VictoryAxis
+              scale="time"
+              standalone={false}
+              theme={VictoryTheme.material}
+              tickFormat={(date) => getFriendlyDate(timeFilter, date)}
+              tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" />}
+            />
+            <VictoryAxis
+              dependentAxis
+              theme={VictoryTheme.material}
+              tickFormat={(num) => {
+                if (!Number.isInteger(num)) {
+                  return num.toFixed(2);
+                }
+                return num;
+              }}
+            />
+
+            <VictoryLine
+              scale={{ x: 'time', y: 'log' }}
+              interpolation={'bundle'}
+              animate={{
+                duration: 2000,
+                onLoad: { duration: 1000 },
+              }}
+              style={{
+                data: { stroke: '#c43a31' },
+                parent: { border: '1px solid #ccc' },
+              }}
+              data={metricItems}
+            />
+          </VictoryChart>
+        </Grid>
+      </Grid>
+    );
   };
   return <div>{loading ? <p>loading...</p> : <div>{renderGraph()}</div>}</div>;
 };

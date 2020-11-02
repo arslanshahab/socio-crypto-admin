@@ -5,6 +5,14 @@ export interface PaginatedCampaignResults {
   };
 }
 
+export interface VerifySessionResults {
+  verifySession: {
+    id: string;
+    role: string;
+    company: string;
+  };
+}
+
 export interface CampaignListVars {
   open?: boolean;
   skip?: number;

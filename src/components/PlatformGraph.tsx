@@ -65,7 +65,6 @@ export const PlatformGraph: React.FC<Props> = ({ dataType, timeFilter, startDate
     return friendlyDate;
   };
   const renderGraph = () => {
-    console.log('Platform ITEMS: ', dataType, timeFilter, data);
     if (data && data.getHourlyPlatformMetrics) {
       const metricItems: MetricItem[] = [];
       data.getHourlyPlatformMetrics.map((metric) => {

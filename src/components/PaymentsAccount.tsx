@@ -21,9 +21,7 @@ export const PaymentsAccount: React.FC = () => {
   };
   const handleAttachWallet = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('ADDRESS', address);
     const response = await attachWallet({ variables: { ethereumAddress: address } });
-    console.log(response);
   };
 
   return (
@@ -72,7 +70,6 @@ export const PaymentsAccount: React.FC = () => {
             <p>loading...</p>
           ) : (
             <div>
-              {data && console.log('DATA: ', data)}
               {data &&
                 data.listExternalAddresses.map((wallet, index) => {
                   return <WalletCard key={index} wallet={wallet} />;

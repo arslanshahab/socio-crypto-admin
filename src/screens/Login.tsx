@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { firebase } from '../firebase';
+import { firebase, getIdToken } from '../firebase';
 import { Button, Grid, Paper, TextField } from '@material-ui/core';
+import * as fire from 'firebase';
 
 interface UserData {
   email: string;
@@ -30,7 +31,6 @@ export const Login: React.FC = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
-      console.log('email and password', values.email, values.password);
       await firebase.auth().signInWithEmailAndPassword(values.email, values.password);
       history.push('/dashboard/campaigns');
     } catch (e) {

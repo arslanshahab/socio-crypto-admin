@@ -115,7 +115,6 @@ export const CampaignsList: React.FC = () => {
           <div>
             {data &&
               data.listCampaigns.results.map((campaign, index) => {
-                console.log('LIST CAMPAIGNS: ', data.listCampaigns);
                 return (
                   <CampaignCard
                     key={index}
