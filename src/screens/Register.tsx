@@ -42,11 +42,15 @@ export const Register: React.FC = () => {
 
   const handleSubmit = async (event: any) => {
     event?.preventDefault();
-    await firebase.auth().setPersistence(fire.auth.Auth.Persistence.LOCAL);
-    await firebase.auth().createUserWithEmailAndPassword(values.email, values.password);
-    await newOrg();
-    if (error) throw new Error(`ERROR: error creating new org ${error}`);
-    history.push('/dashboard/campaigns');
+    try {
+      await firebase.auth().setPersistence(fire.auth.Auth.Persistence.LOCAL);
+      await firebase.auth().createUserWithEmailAndPassword(values.email, values.password);
+      await newOrg();
+      if (error) throw new Error(`ERROR: error creating new org ${error}`);
+      history.push('/dashboard/campaigns');
+    } catch (e) {
+      console.log('Registration error', e);
+    }
   };
 
   return (

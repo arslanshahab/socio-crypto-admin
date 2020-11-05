@@ -27,10 +27,11 @@ interface MetricItem {
 
 export const CampaignGraph: React.FC<Props> = ({ campaign, dataType, timeFilter, startDate, endDate }) => {
   const isParticipationCount = dataType === 'participantCount';
+  const campaignId = campaign ? campaign.id : '';
   const { loading, data } = useQuery<GetHourlyCampaignMetrics, GetHourlyCampaignMetricsVars>(
     GET_HOURLY_CAMPAIGN_METRICS,
     {
-      variables: { campaignId: campaign.id, filter: timeFilter, startDate, endDate },
+      variables: { campaignId, filter: timeFilter, startDate, endDate },
     },
   );
   const getFriendlyDate = (timeFilter: TimeFilterOptions, dateString: string) => {

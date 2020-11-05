@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { firebase, getIdToken } from '../firebase';
 import { Button, Grid, Paper, TextField } from '@material-ui/core';
-import * as fire from 'firebase';
 
 interface UserData {
   email: string;
