@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Paper, TextField } from '@material-ui/core';
 import { gql, useMutation } from '@apollo/client';
-import { firebase } from '../firebase';
-import * as fire from 'firebase';
+import { fireClient } from '../clients/firebase';
 
 interface FormItems {
   email: string;
@@ -43,8 +42,8 @@ export const Register: React.FC = () => {
   const handleSubmit = async (event: any) => {
     event?.preventDefault();
     try {
-      await firebase.auth().setPersistence(fire.auth.Auth.Persistence.LOCAL);
-      await firebase.auth().createUserWithEmailAndPassword(values.email, values.password);
+      await fireClient.auth().setPersistence('LOCAL');
+      await fireClient.auth().createUserWithEmailAndPassword(values.email, values.password);
       await newOrg();
       if (error) throw new Error(`ERROR: error creating new org ${error}`);
       history.push('/dashboard/campaigns');

@@ -7,7 +7,7 @@
         "url": "http://localhost:4000/v1/admin/graphql",
         "headers": {
           "user-agent": "JS GraphQL",
-          "Authorization": "Bearer raiinmaker"
+          "token": "Bearer raiinmaker"
         },
         "introspect": true
       }

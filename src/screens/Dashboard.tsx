@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -16,17 +16,20 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PeopleIcon from '@material-ui/icons/People';
-import { Route, Switch } from 'react-router';
+import { Switch } from 'react-router';
 import { CampaignsList } from '../components/CampaignsList';
 import { NewCampaign } from '../components/campaign-create/NewCampaign';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { MarketData } from '../components/MarketData';
 import { DashboardHome } from '../components/DashboardHome';
 import StoreIcon from '@material-ui/icons/Store';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { PaymentsAccount } from '../components/PaymentsAccount';
-import { firebase } from '../firebase';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { ProtectedRoute, UserContext } from '../components/ProtectedRoute';
+import { Button, Grid } from '@material-ui/core';
+import { sessionLogout } from '../clients/raiinmaker';
 
 const drawerWidth = 240;
 
@@ -93,6 +96,8 @@ export const Dashboard: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const history = useHistory();
+  const role = useContext(UserContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -100,6 +105,15 @@ export const Dashboard: React.FC = () => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleLogout = async () => {
+    const res = await sessionLogout();
+    if (res.status === 200) {
+      history.push('/');
+    } else {
+      console.log('ERROR: ', res.body);
+    }
   };
 
   return (
@@ -126,10 +140,20 @@ export const Dashboard: React.FC = () => {
               Dashboard
             </Typography>
           </Link>
-          <div style={{ flexGrow: 1 }} />
-          <Link to={'/dashboard/paymentsAccount'} style={{ color: 'white' }}>
-            <SettingsIcon />
-          </Link>
+          <Grid container direction={'row'} justify={'flex-end'}>
+            <Grid item justify={'center'}>
+              <Button style={{ backgroundColor: 'transparent' }}>
+                <Link to={'/dashboard/paymentsAccount'} style={{ color: 'white' }}>
+                  <SettingsIcon />
+                </Link>
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button onClick={handleLogout} style={{ backgroundColor: 'transparent', color: 'white' }}>
+                <ExitToAppIcon />
+              </Button>
+            </Grid>
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -181,21 +205,21 @@ export const Dashboard: React.FC = () => {
       >
         <div className={classes.drawerHeader} />
         <Switch>
-          <Route exact path={'/dashboard'}>
+          <ProtectedRoute exact path={'/dashboard'}>
             <DashboardHome />
-          </Route>
-          <Route exact path={'/dashboard/campaigns'}>
+          </ProtectedRoute>
+          <ProtectedRoute exact path={'/dashboard/campaigns'}>
             <CampaignsList />
-          </Route>
-          <Route exact path={'/dashboard/newCampaign'}>
+          </ProtectedRoute>
+          <ProtectedRoute exact path={'/dashboard/newCampaign'}>
             <NewCampaign />
-          </Route>
-          <Route exact path={'/dashboard/marketData'}>
+          </ProtectedRoute>
+          <ProtectedRoute exact path={'/dashboard/marketData'}>
             <MarketData />
-          </Route>
-          <Route exact path={'/dashboard/paymentsAccount'}>
+          </ProtectedRoute>
+          <ProtectedRoute exact path={'/dashboard/paymentsAccount'}>
             <PaymentsAccount />
-          </Route>
+          </ProtectedRoute>
         </Switch>
       </main>
     </div>

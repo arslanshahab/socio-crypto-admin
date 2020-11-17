@@ -26,7 +26,6 @@ interface MetricItem {
 }
 
 export const CampaignGraph: React.FC<Props> = ({ campaign, dataType, timeFilter, startDate, endDate }) => {
-  const isParticipationCount = dataType === 'participantCount';
   const campaignId = campaign ? campaign.id : '';
   const { loading, data } = useQuery<GetHourlyCampaignMetrics, GetHourlyCampaignMetricsVars>(
     GET_HOURLY_CAMPAIGN_METRICS,
@@ -48,7 +47,7 @@ export const CampaignGraph: React.FC<Props> = ({ campaign, dataType, timeFilter,
         const endDate = new Date(dateString);
         endDate.setUTCDate(date.getUTCDate() + 7);
         const beginningOfWeek = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-        const endOfWeek = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+        const endOfWeek = endDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
         friendlyDate = `${beginningOfWeek}-${endOfWeek}`;
         break;
       case 'month':

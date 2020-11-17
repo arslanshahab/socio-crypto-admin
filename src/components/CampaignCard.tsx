@@ -28,7 +28,7 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
     setChecked(index);
   };
   const getStatus = () => {
-    const endDate = new Date(campaign.endDate);
+    const endDate = new Date(Number(campaign.endDate));
     const now = new Date();
     return now < endDate ? <Typography>Open</Typography> : <Typography>Closed</Typography>;
   };

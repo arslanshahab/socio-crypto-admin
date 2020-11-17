@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { firebase, getIdToken } from '../firebase';
+import { fireClient, getAuthPersistence } from '../clients/firebase';
 import { Button, Grid, Paper, TextField } from '@material-ui/core';
+import { sessionLogin } from '../clients/raiinmaker';
 
 interface UserData {
   email: string;
@@ -30,10 +31,16 @@ export const Login: React.FC = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     try {
-      await firebase.auth().signInWithEmailAndPassword(values.email, values.password);
-      history.push('/dashboard/campaigns');
+      await fireClient.auth().setPersistence(getAuthPersistence);
+      await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
+      const res = await sessionLogin();
+      if (res.status === 200) {
+        history.push('/dashboard/campaigns');
+      } else {
+        throw Error('invalid login');
+      }
     } catch (e) {
-      console.log('error logging in: ', e);
+      console.log('error: ', e);
     }
   };
 
