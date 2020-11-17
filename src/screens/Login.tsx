@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { fireClient, getAuthPersistence } from '../clients/firebase';
 import { Button, Grid, Paper, TextField } from '@material-ui/core';
-import { sessionLogin } from '../clients/raiinmaker';
+import { sessionLogin } from '../clients/raiinmaker-api';
 
 interface UserData {
   email: string;

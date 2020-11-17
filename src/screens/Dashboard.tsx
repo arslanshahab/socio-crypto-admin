@@ -29,7 +29,7 @@ import { PaymentsAccount } from '../components/PaymentsAccount';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ProtectedRoute, UserContext } from '../components/ProtectedRoute';
 import { Button, Grid } from '@material-ui/core';
-import { sessionLogout } from '../clients/raiinmaker';
+import { sessionLogout } from '../clients/raiinmaker-api';
 
 const drawerWidth = 240;
 

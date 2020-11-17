@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from '@apollo/client';
-import { client } from './clients/raiinmaker';
+import { client } from './clients/raiinmaker-api';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import './assets/styles/main.scss';
