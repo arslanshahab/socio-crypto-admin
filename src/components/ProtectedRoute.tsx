@@ -18,7 +18,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = (props) => {
     );
   };
   const renderRoute = () => {
-    if (loading) return <div></div>;
+    if (loading) return <div />;
     if (data) {
       return (
         <UserContext.Provider value={data.verifySession}>

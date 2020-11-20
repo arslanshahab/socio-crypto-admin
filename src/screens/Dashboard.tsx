@@ -141,7 +141,7 @@ export const Dashboard: React.FC = () => {
             </Typography>
           </Link>
           <Grid container direction={'row'} justify={'flex-end'}>
-            <Grid item justify={'center'}>
+            <Grid item>
               <Button style={{ backgroundColor: 'transparent' }}>
                 <Link to={'/dashboard/paymentsAccount'} style={{ color: 'white' }}>
                   <SettingsIcon />
@@ -221,6 +221,18 @@ export const Dashboard: React.FC = () => {
             <PaymentsAccount />
           </ProtectedRoute>
         </Switch>
+        <Grid container justify={'center'} direction={'row'} spacing={6} className="dashboard-bottom-bar">
+          <Grid item>
+            <Button size={'small'} href={'https://www.raiinmaker.com/resources/'} className="dashboard-bottom-bar-item">
+              <Typography>FAQ</Typography>
+            </Button>
+          </Grid>
+          <Grid item className="dashboard-bottom-bar-item">
+            <Button size={'small'} style={{ textTransform: 'none' }} href={'mailto:support@raiinmaker.com'}>
+              <Typography>Contact Support</Typography>
+            </Button>
+          </Grid>
+        </Grid>
       </main>
     </div>
   );

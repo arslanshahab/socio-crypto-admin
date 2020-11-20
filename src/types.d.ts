@@ -45,6 +45,20 @@ export interface ListWalletResponse {
   }[];
 }
 
+export interface GetFundingWalletResponse {
+  getFundingWallet: {
+    balance: number;
+    transfers: Transfer[];
+  };
+}
+
+export interface Transfer {
+  amount: number;
+  action: string;
+  ethAddress: string;
+  createdAt: string;
+}
+
 export interface ClaimEthereumAddress {
   claimEthereumAddress: {
     ethereumAddress: string;
