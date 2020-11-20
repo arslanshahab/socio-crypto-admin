@@ -34,121 +34,177 @@ export const Initialize: React.FC = () => {
   };
 
   return (
-    <Grid container className="form-container" direction={'column'}>
-      <Grid item style={{ marginLeft: '5vh', marginRight: '5vh' }}>
-        <TextField
-          label={'Name of Campaign'}
-          name={'name'}
-          placeholder={'name'}
-          fullWidth
-          margin={'normal'}
-          onChange={handleCampaignChange}
-        />
+    <div className="init-campaign-container">
+      <Grid container className="form-container" direction={'column'}>
+        {/* <Grid item style={{ marginLeft: '5vh', marginRight: '5vh' }}> */}
+        {/* </Grid> */}
+        {/* <Grid container className="form-container" direction={'row'} spacing={8} justify={'center'}> */}
+        <div className="margin-bottom">
+          <Grid container item xs={12} spacing={3}>
+            <Grid container item xs={6}>
+              <TextField
+                label={'Name of Campaign'}
+                name={'name'}
+                placeholder={'name'}
+                fullWidth
+                variant="outlined"
+                margin={'normal'}
+                onChange={handleCampaignChange}
+              />
+            </Grid>
+            <Grid container item xs={6}>
+              <TextField
+                fullWidth
+                label={'Company Name'}
+                variant="outlined"
+                name={'company'}
+                placeholder={'Company Name'}
+                margin={'normal'}
+                onChange={handleCampaignChange}
+                className="text-field"
+              />
+            </Grid>
+          </Grid>
+        </div>
+        <div className="margin-bottom">
+          <Grid container item xs={12} spacing={3}>
+            <Grid container item xs={6}>
+              <TextField
+                fullWidth
+                label={'Landing Page URL'}
+                name={'target'}
+                placeholder={'Landing Page URL'}
+                margin={'normal'}
+                variant="outlined"
+                onChange={handleCampaignChange}
+                className="text-field"
+              />
+            </Grid>
+            <Grid container item xs={6}>
+              <TextField
+                label={'Landing Page Video URL'}
+                name={'targetVideo'}
+                placeholder={'Landing Page Video URL'}
+                margin={'normal'}
+                onChange={handleCampaignChange}
+                fullWidth
+                variant="outlined"
+                className="text-field"
+              />
+            </Grid>
+          </Grid>
+        </div>
+        {/* </Grid> */}
+        {/* <Grid container className="form-container" direction={'row'} spacing={8} justify={'center'}> */}
+        {/* <Grid item className="form-item"> */}
+        <div className="margin-bottom">
+          <Grid container item xs={12} spacing={3}>
+            <Grid container item xs={6} spacing={0}>
+              <TextField
+                label={'How many tiers (1-10)'}
+                fullWidth
+                variant="outlined"
+                name={'numOfTiers'}
+                placeholder={'How many tiers'}
+                margin={'normal'}
+                onChange={handleConfigChange}
+                className="text-field"
+              />
+            </Grid>
+            {/* <Grid item className="form-item"> */}
+            <Grid container item xs={6} spacing={0}>
+              <TextField
+                label={'# of post templates'}
+                name={'numOfSuggestedPosts'}
+                placeholder={'How many suggested posts?'}
+                margin={'normal'}
+                onChange={handleConfigChange}
+                className="text-field"
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+            {/* <Grid item className="form-item"> */}
+          </Grid>
+        </div>
+        {/* </Grid> */}
+        {/* <Grid container className="form-container" justify={'center'}> */}
+        {/* <Grid item className="form-item"> */}
+        <div className="margin-bottom">
+          <Grid container item xs={12} spacing={3}>
+            <Grid container item xs={6}>
+              <TextField
+                label={'Initial Reward Offering'}
+                name={'initialTotal'}
+                placeholder={'Initial Reward Offering'}
+                margin={'normal'}
+                onChange={handleConfigChange}
+                fullWidth
+                variant="outlined"
+                className="text-field"
+              />
+            </Grid>
+            <Grid container item xs={6}>
+              <TextField
+                label={'Campaign Tagline'}
+                name={'tagline'}
+                placeholder={'Campaign Tagline'}
+                margin={'normal'}
+                onChange={handleCampaignChange}
+                className="text-field"
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+        </div>
+
+        <div className="margin-bottom">
+          <Grid container item xs={12} spacing={3}>
+            <Grid container item xs={6}>
+              <TextField
+                // style={{ width: '300px', paddingTop: '2em' }}
+                // id="filled-multiline-static"
+                label="Description"
+                name="Description"
+                onChange={handleCampaignChange}
+                multiline
+                rows={5}
+                fullWidth
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+        </div>
+        <div className="margin-bottom">
+          <Grid container item xs={12} spacing={3}>
+            <Grid container item xs={6}>
+              <DateTimePicker
+                value={beginDate || null}
+                // disablePast
+                variant="dialog"
+                fullWidth
+                onChange={handleBeginDateChange}
+                label="Beginning Date of Campaign"
+                showTodayButton
+              />
+            </Grid>
+
+            <Grid container item xs={6}>
+              <DateTimePicker
+                fullWidth
+                // fullWidth
+                value={endDate || null}
+                disablePast
+                onChange={handleEndDateChange}
+                label="Ending Date of Campaign"
+                showTodayButton
+              />
+            </Grid>
+          </Grid>
+        </div>
+        {/* </Grid> */}
       </Grid>
-      <Grid container className="form-container" direction={'row'} spacing={8} justify={'center'}>
-        <Grid item className="form-item">
-          <TextField
-            label={'Company Tagline'}
-            name={'tagline'}
-            placeholder={'Company Tagline'}
-            margin={'normal'}
-            onChange={handleCampaignChange}
-            className="text-field"
-          />
-        </Grid>
-        <Grid item className="form-item">
-          <TextField
-            label={'Landing Page URL'}
-            name={'target'}
-            placeholder={'Landing Page URL'}
-            margin={'normal'}
-            onChange={handleCampaignChange}
-            className="text-field"
-          />
-        </Grid>
-        <Grid item className="form-item">
-          <TextField
-            style={{ width: '250px' }}
-            label={'Landing Page Video URL'}
-            name={'targetVideo'}
-            placeholder={'Landing Page Video URL'}
-            margin={'normal'}
-            onChange={handleCampaignChange}
-            className="text-field"
-          />
-        </Grid>
-      </Grid>
-      <Grid container className="form-container" direction={'row'} spacing={8} justify={'center'}>
-        <Grid item className="form-item">
-          <DateTimePicker
-            value={beginDate || new Date()}
-            style={{ width: '300px' }}
-            disablePast
-            onChange={handleBeginDateChange}
-            label="Beginning Date of Campaign"
-            showTodayButton
-          />
-        </Grid>
-        <Grid item className="form-item">
-          <DateTimePicker
-            value={endDate || new Date()}
-            style={{ width: '300px' }}
-            disablePast
-            onChange={handleEndDateChange}
-            label="Ending Date of Campaign"
-            showTodayButton
-          />
-        </Grid>
-      </Grid>
-      <Grid container className="form-container" direction={'row'} spacing={8} justify={'center'}>
-        <Grid item className="form-item">
-          <TextField
-            label={'How many tiers (1-10)'}
-            name={'numOfTiers'}
-            placeholder={'How many tiers'}
-            margin={'normal'}
-            onChange={handleConfigChange}
-            className="text-field"
-          />
-        </Grid>
-        <Grid item className="form-item">
-          <TextField
-            style={{ width: '250px' }}
-            label={'How many suggested posts?'}
-            name={'numOfSuggestedPosts'}
-            placeholder={'How many suggested posts?'}
-            margin={'normal'}
-            onChange={handleConfigChange}
-            className="text-field"
-          />
-        </Grid>
-        <Grid item className="form-item">
-          <TextField
-            style={{ width: '250px' }}
-            label={'Initial Reward Offering'}
-            name={'initialTotal'}
-            placeholder={'Initial Reward Offering'}
-            margin={'normal'}
-            onChange={handleConfigChange}
-            className="text-field"
-          />
-        </Grid>
-      </Grid>
-      <Grid container className="form-container" justify={'center'}>
-        <Grid item className="form-item">
-          <TextField
-            style={{ width: '300px', paddingTop: '2em' }}
-            id="filled-multiline-static"
-            label="description"
-            name="description"
-            onChange={handleCampaignChange}
-            multiline
-            rows={5}
-            defaultValue="Description"
-            variant="filled"
-          />
-        </Grid>
-      </Grid>
-    </Grid>
+    </div>
   );
 };

@@ -1,5 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AlgorithmSpecs, CampaignState } from '../../types';
+import {
+  AgeRangeRequirementSpecs,
+  AlgorithmSpecs,
+  CampaignRequirementSpecs,
+  CampaignState,
+  SocialFollowingSpecs,
+  TwitterSocialFollowingSpecs,
+} from '../../types';
 
 const initialAlgorithmState: AlgorithmSpecs = {
   pointValues: {
@@ -10,6 +17,31 @@ const initialAlgorithmState: AlgorithmSpecs = {
     shares: '',
   },
   tiers: {},
+};
+
+const initialAgeRangeState: AgeRangeRequirementSpecs = {
+  '0-17': false,
+  '18-25': false,
+  '26-40': false,
+  '41-55': false,
+  '55+': false,
+};
+const initialTwitterSocialFollowing: TwitterSocialFollowingSpecs = {
+  minFollower: 0,
+};
+const initialSocialFollowingState: SocialFollowingSpecs = {
+  twitter: initialTwitterSocialFollowing,
+};
+
+const initialRequirementsState: CampaignRequirementSpecs = {
+  version: '1.0.0',
+  // city: '',
+  // state: '',
+  // country: '',
+  // socialFollowing: initialSocialFollowingState,
+  // ageRange: initialAgeRangeState,
+  // values: [],
+  // interests: [],
 };
 
 const initialState: CampaignState = {
@@ -26,6 +58,7 @@ const initialState: CampaignState = {
   tagline: '',
   suggestedPosts: [],
   suggestedTags: [],
+  requirements: initialRequirementsState,
   config: {
     numOfSuggestedPosts: 1,
     numOfTiers: 1,
@@ -36,7 +69,7 @@ const initialState: CampaignState = {
 interface CampaignUpdate {
   cat: string;
   key: string;
-  val: string;
+  val: any;
   tier?: string;
   index?: number;
 }
@@ -64,6 +97,23 @@ const campaignSlice = createSlice({
             break;
           }
           state[key] = value;
+          break;
+        case 'requirements':
+          console.log('in reqs case');
+          console.log(key);
+          console.log(value);
+          if (!state.requirements) state.requirements = { version: '1.0.0' };
+          if (
+            key == 'state' ||
+            key == 'country' ||
+            key == 'city' ||
+            key == 'values' ||
+            key == 'interests' ||
+            key == 'ageRange' ||
+            key == 'socialFollowing'
+          ) {
+            state['requirements'][key] = value;
+          }
           break;
         case 'config':
           state['config'][key] = value;

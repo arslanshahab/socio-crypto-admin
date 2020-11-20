@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { fireClient, getAuthPersistence } from '../clients/firebase';
 import { Button, Grid, Paper, TextField } from '@material-ui/core';
 import { sessionLogin } from '../clients/raiinmaker-api';
+import { ReactSVG } from 'react-svg';
 
 interface UserData {
   email: string;
@@ -47,7 +48,10 @@ export const Login: React.FC = () => {
   return (
     <Grid container className="login-layout" justify={'center'}>
       <Grid item>
-        <Paper>
+        <ReactSVG className="logo" src="/src/assets/svg/logo_banner.svg" />
+      </Grid>
+      <Grid item>
+        <div>
           <form className="login-form">
             <h1>Login</h1>
             <div>
@@ -69,7 +73,7 @@ export const Login: React.FC = () => {
               <Button onClick={handleClick}>Register</Button>
             </div>
           </form>
-        </Paper>
+        </div>
       </Grid>
     </Grid>
   );

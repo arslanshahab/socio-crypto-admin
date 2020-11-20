@@ -1,0 +1,128 @@
+.requirement-modal-overlay{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba($color: #000000, $alpha: 0.8);
+    z-index: 9001;
+}
+.requirement-modal{
+    width: 40%;
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    outline: none;
+    padding: 15px;
+  .modal-content{
+    max-height: 75vh;
+    overflow-y: auto;
+  }
+  .modal-title{
+    padding: 10px 0 10px 0;
+    text-align: center;
+    font-size: 24px;
+  }
+  .modal-select{
+    padding: 10px 0 10px 0;
+    display: block;
+  }
+  .modal-text-field{
+    // margin: 15px;
+  }
+}
+.multi-select-item{
+  color: black;
+  display: inline-block;
+  text-align: center;
+    width: 50%;
+    padding: 12px 0 12px 0px;
+}
+.button-container{
+  margin: 15px;
+  
+}
+.requirement-button{
+  margin:15px !important; // TODO REMOVE
+}
+    .modal-button{
+      margin: 15px;
+      outline: none;
+      padding: 8px 12px;
+      background-color: $primary;
+    }
+    .modal-submit{
+
+    }
+.MuiPopover-root{
+  z-index: 9002 !important;
+    }
+
+.selected{
+  background-color: beige;
+}
+
+
+
+.requirement-column{
+  margin: 15px;
+}
+
+.requirement-row{
+  display: flex;
+  flex-direction: row;
+  .row-title-container{
+    flex: auto;
+    padding: 10px 0;
+    .row-title{
+      font-size: 18px;
+        display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  height:100%
+    }
+  }
+  .row-button-container{
+    padding: 10px 0;
+  .row-button{
+    background-color: $primary;
+    color: white;
+  }
+
+  }
+}
+
+.requirement-display{
+  .display-item{
+    list-style: none;
+    border-bottom: 1px solid #eee;
+    padding: 10px 8px;
+  }
+}
+
+.init-campaign-container{
+  margin: 15px;
+  .row{
+    display: flex;
+    flex-direction: row;
+    div{
+      // width: auto;
+    }
+  }
+  .two-per-row{
+    div{
+
+      width: 50%;
+    }
+  }
+}
+
+.margin-bottom{
+  margin-bottom: 15px;
+}
+.padding-top{
+  padding-top:20px;
+}

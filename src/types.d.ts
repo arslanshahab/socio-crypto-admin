@@ -181,6 +181,7 @@ export interface NewCampaignVars {
   company: string;
   algorithm: string;
   image: string;
+  requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
@@ -207,13 +208,14 @@ export interface Campaign {
   audited: boolean;
   targetVideo: string;
   imagePath: string;
+  requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
 }
 
 export interface CampaignState {
-  [key: string]: string | string[] | AlgorithmSpecs | CampaignConfig;
+  [key: string]: string | string[] | AlgorithmSpecs | CampaignConfig | CampaignRequirementSpecs;
   name: string;
   beginDate: string;
   endDate: string;
@@ -225,6 +227,7 @@ export interface CampaignState {
   targetVideo: string;
   image: string;
   tagline: string;
+  requirements?: CampaignRequirementSpecs;
   suggestedPosts: string[];
   suggestedTags: string[];
   config: CampaignConfig;
@@ -237,6 +240,32 @@ export interface Participant {
   campaign: Campaign;
   link: string;
   participationScore: number;
+}
+
+export interface CampaignRequirementSpecs {
+  version: string;
+  city?: string,
+  state?: string,
+  country?: string,
+  values?: string[],
+  interests?: string[],
+  ageRange?: AgeRangeRequirementSpecs,
+  socialFollowing?: SocialFollowingSpecs,
+}
+
+export interface SocialFollowingSpecs {
+  twitter: TwitterSocialFollowingSpecs,
+}
+export interface TwitterSocialFollowingSpecs {
+  minFollower: number,
+}
+
+export interface AgeRangeRequirementSpecs {
+  "0-17": Boolean
+  "18-25": Boolean
+  "26-40": Boolean,
+  "41-55": Boolean,
+  "55+": Boolean,
 }
 
 export interface ParticipantMetrics {
