@@ -1,6 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { getIdToken } from './firebase';
+import { getIdToken } from './clients/firebase';
 
 const uri = () => {
   switch (process.env.NODE_ENV) {
@@ -14,8 +14,7 @@ const uri = () => {
 };
 
 export const httpLink = createHttpLink({
-  uri: 'https://server-staging.api.raiinmaker.com/v1/admin/graphql',
-  // uri: 'https://raiinmaker-staging.api.dragonchain.com/v1/public/graphql',
+  uri: `${uri()}/v1/admin/graphql`,
 });
 
 const authLink = setContext(async (_, { headers }) => {
