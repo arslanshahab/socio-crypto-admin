@@ -95,6 +95,10 @@
   padding-bottom: 30px;
 }
 
+.payments-account-history-item {
+  border-bottom: 1px solid grey;
+}
+
 .payments-account-history-header {
   border-bottom: 2px solid black;
 }

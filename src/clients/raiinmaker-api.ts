@@ -4,20 +4,22 @@ import { getIdToken } from './firebase';
 const uri = () => {
   switch (process.env.NODE_ENV) {
     case 'production':
-      return 'https://raiinmaker.api.dragonchain.com';
+      return 'https://server.api.raiinmaker.com';
     case 'development':
-      return 'http://localhost:4000';
+      return 'https://server-staging.api.raiinmaker.com';
     case 'test':
       return 'http://localhost:4000';
   }
 };
 
+const apiURI = process.env.REACT_APP_LOCAL_URL || uri();
+
 export const httpLink = createHttpLink({
-  uri: `${uri()}/v1/admin/graphql`,
+  uri: `${apiURI}/v1/admin/graphql`,
   credentials: 'include',
 });
 
-export const client = new ApolloClient({
+export const graphqlClient = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
 });
@@ -25,7 +27,7 @@ export const client = new ApolloClient({
 export const sessionLogin = async () => {
   const idToken = await getIdToken();
   if (!idToken) throw Error('login failed');
-  const url = `${uri()}/v1/login`;
+  const url = `${apiURI}/v1/login`;
   return fetch(url, {
     method: 'POST',
     credentials: 'include',
@@ -35,7 +37,7 @@ export const sessionLogin = async () => {
 };
 
 export const sessionLogout = async () => {
-  const url = `${uri()}/v1/logout`;
+  const url = `${apiURI}/v1/logout`;
   return fetch(url, {
     method: 'POST',
     credentials: 'include',

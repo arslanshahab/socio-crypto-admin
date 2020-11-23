@@ -29,7 +29,7 @@ import { PaymentsAccount } from '../components/PaymentsAccount';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ProtectedRoute, UserContext } from '../components/ProtectedRoute';
 import { Button, Grid } from '@material-ui/core';
-import { sessionLogout } from '../clients/raiinmaker-api';
+import { graphqlClient, sessionLogout } from '../clients/raiinmaker-api';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import { Link as MuiLink } from '@material-ui/core';
@@ -100,7 +100,6 @@ export const Dashboard: React.FC = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const history = useHistory();
-  const role = useContext(UserContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -113,6 +112,7 @@ export const Dashboard: React.FC = () => {
   const handleLogout = async () => {
     const res = await sessionLogout();
     if (res.status === 200) {
+      await graphqlClient.clearStore();
       history.push('/');
     } else {
       console.log('ERROR: ', res.body);

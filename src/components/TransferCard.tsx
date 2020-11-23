@@ -15,7 +15,7 @@ export const TransferCard: React.FC<Props> = ({ transfer }) => {
     timeZoneName: 'short',
   })}`;
   return (
-    <Grid container style={{ marginBottom: '5px' }}>
+    <Grid container style={{ marginBottom: '5px' }} className="payments-account-history-item">
       <Grid item xs={1}>
         <Typography>{actionCap}</Typography>
       </Grid>
