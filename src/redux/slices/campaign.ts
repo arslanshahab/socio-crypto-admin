@@ -99,9 +99,6 @@ const campaignSlice = createSlice({
           state[key] = value;
           break;
         case 'requirements':
-          console.log('in reqs case');
-          console.log(key);
-          console.log(value);
           if (!state.requirements) state.requirements = { version: '1.0.0' };
           if (
             key == 'state' ||
