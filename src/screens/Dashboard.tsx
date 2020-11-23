@@ -30,6 +30,9 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ProtectedRoute, UserContext } from '../components/ProtectedRoute';
 import { Button, Grid } from '@material-ui/core';
 import { sessionLogout } from '../clients/raiinmaker-api';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import { Link as MuiLink } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -196,6 +199,22 @@ export const Dashboard: React.FC = () => {
               <ListItemText primary={'New Campaign'} />
             </ListItem>
           </Link>
+          <MuiLink href={'https://www.raiinmaker.com/resources/'} style={{ textDecoration: 'none', color: 'black' }}>
+            <ListItem button key={'FAQ'}>
+              <ListItemIcon>
+                <QuestionAnswerIcon />
+              </ListItemIcon>
+              <ListItemText primary={'FAQ'} />
+            </ListItem>
+          </MuiLink>
+          <MuiLink href={'mailto:support@raiinmaker.com'} style={{ textDecoration: 'none', color: 'black' }}>
+            <ListItem button key={'Contact Support'}>
+              <ListItemIcon>
+                <ContactSupportIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Contact Support'} />
+            </ListItem>
+          </MuiLink>
         </List>
       </Drawer>
       <main
@@ -221,18 +240,6 @@ export const Dashboard: React.FC = () => {
             <PaymentsAccount />
           </ProtectedRoute>
         </Switch>
-        <Grid container justify={'center'} direction={'row'} spacing={6} className="dashboard-bottom-bar">
-          <Grid item>
-            <Button size={'small'} href={'https://www.raiinmaker.com/resources/'} className="dashboard-bottom-bar-item">
-              <Typography>FAQ</Typography>
-            </Button>
-          </Grid>
-          <Grid item className="dashboard-bottom-bar-item">
-            <Button size={'small'} style={{ textTransform: 'none' }} href={'mailto:support@raiinmaker.com'}>
-              <Typography>Contact Support</Typography>
-            </Button>
-          </Grid>
-        </Grid>
       </main>
     </div>
   );

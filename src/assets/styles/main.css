@@ -1,3 +1,8 @@
+.dashboard-nav-item {
+  text-decoration: none;
+  color: black;
+}
+
 .new-campaign {
   width: 1000px;
   margin: auto;
@@ -92,13 +97,6 @@
 
 .payments-account-history-header {
   border-bottom: 2px solid black;
-}
-
-.dashboard-bottom-bar {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
 }
 
 /*# sourceMappingURL=main.css.map */
