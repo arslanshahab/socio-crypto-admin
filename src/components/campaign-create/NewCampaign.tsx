@@ -64,7 +64,6 @@ export const NewCampaign: React.FC = () => {
         return <Algorithm />;
     }
   };
-
   return (
     <div className="new-campaign">
       <Paper>
@@ -87,8 +86,7 @@ export const NewCampaign: React.FC = () => {
               onClick={async () => {
                 try {
                   const response = await saveCampaign();
-                  console.log(response);
-                  // history.push('/dashboard');
+                  history.push('/dashboard');
                 } catch (e) {
                   console.log(e);
                 }

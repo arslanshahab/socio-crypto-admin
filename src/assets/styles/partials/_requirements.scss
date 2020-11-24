@@ -126,3 +126,17 @@
 .padding-top{
   padding-top:20px;
 }
+
+.hidden{
+  display: none;
+}
+
+.image-upload-container{
+  text-align: center;
+  svg{
+    max-width: 100px;
+  }
+  .image-preview{
+    max-width: 100px;
+  }
+}

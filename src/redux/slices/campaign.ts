@@ -1,12 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  AgeRangeRequirementSpecs,
-  AlgorithmSpecs,
-  CampaignRequirementSpecs,
-  CampaignState,
-  SocialFollowingSpecs,
-  TwitterSocialFollowingSpecs,
-} from '../../types';
+import { AlgorithmSpecs, CampaignRequirementSpecs, CampaignState } from '../../types';
 
 const initialAlgorithmState: AlgorithmSpecs = {
   pointValues: {
@@ -17,31 +10,6 @@ const initialAlgorithmState: AlgorithmSpecs = {
     shares: '',
   },
   tiers: {},
-};
-
-const initialAgeRangeState: AgeRangeRequirementSpecs = {
-  '0-17': false,
-  '18-25': false,
-  '26-40': false,
-  '41-55': false,
-  '55+': false,
-};
-const initialTwitterSocialFollowing: TwitterSocialFollowingSpecs = {
-  minFollower: 0,
-};
-const initialSocialFollowingState: SocialFollowingSpecs = {
-  twitter: initialTwitterSocialFollowing,
-};
-
-const initialRequirementsState: CampaignRequirementSpecs = {
-  version: '1.0.0',
-  // city: '',
-  // state: '',
-  // country: '',
-  // socialFollowing: initialSocialFollowingState,
-  // ageRange: initialAgeRangeState,
-  // values: [],
-  // interests: [],
 };
 
 const initialState: CampaignState = {
@@ -58,7 +26,6 @@ const initialState: CampaignState = {
   tagline: '',
   suggestedPosts: [],
   suggestedTags: [],
-  requirements: initialRequirementsState,
   config: {
     numOfSuggestedPosts: 1,
     numOfTiers: 1,
@@ -109,6 +76,10 @@ const campaignSlice = createSlice({
             key == 'ageRange' ||
             key == 'socialFollowing'
           ) {
+            if (!state['requirements']) {
+              const requirement: CampaignRequirementSpecs = { version: '1.0.0' };
+              state['requirements'] = requirement;
+            }
             state['requirements'][key] = value;
           }
           break;
@@ -117,6 +88,9 @@ const campaignSlice = createSlice({
           break;
         case 'algoValues':
           state['algorithm']['pointValues'][key] = value;
+          break;
+        case 'image':
+          state['image'] = value;
           break;
         case 'algoTiers':
           if (tier) {

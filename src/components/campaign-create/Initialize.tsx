@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateCampaignState } from '../../redux/slices/campaign';
 import { RootState } from '../../redux/reducer';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
+import { ReactSVG } from 'react-svg';
+import icon from '../../assets/svg/camera.svg';
 
 export const Initialize: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,12 +35,38 @@ export const Initialize: React.FC = () => {
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
   };
 
+  const getBase64 = (file: Blob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      if (reader.result) {
+        dispatch(updateCampaignState({ cat: 'image', key: 'image', val: reader.result }));
+      }
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  };
+
+  const handleImage = (event: React.ChangeEvent) => {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
+    if (files != null && files.length) {
+      const formData = new FormData();
+      formData.append(files[0].name, files[0]);
+      getBase64(files[0]);
+    }
+  };
+
   return (
     <div className="init-campaign-container">
       <Grid container className="form-container" direction={'column'}>
-        {/* <Grid item style={{ marginLeft: '5vh', marginRight: '5vh' }}> */}
-        {/* </Grid> */}
-        {/* <Grid container className="form-container" direction={'row'} spacing={8} justify={'center'}> */}
+        <div className="image-upload-container">
+          <label htmlFor="single">
+            <ReactSVG src={icon} color="#3B5998" />
+          </label>
+          <input className="hidden" type="file" id="single" onChange={handleImage} />
+        </div>
         <div className="margin-bottom">
           <Grid container item xs={12} spacing={3}>
             <Grid container item xs={6}>
