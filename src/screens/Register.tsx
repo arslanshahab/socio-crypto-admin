@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Paper, TextField } from '@material-ui/core';
 import { gql, useMutation } from '@apollo/client';
-import { fireClient } from '../clients/firebase';
+import { fireClient, getAuthPersistence } from '../clients/firebase';
+import { sessionLogin } from '../clients/raiinmaker-api';
 
 interface FormItems {
   email: string;
@@ -42,11 +43,17 @@ export const Register: React.FC = () => {
   const handleSubmit = async (event: any) => {
     event?.preventDefault();
     try {
-      await fireClient.auth().setPersistence('LOCAL');
+      await fireClient.auth().setPersistence(getAuthPersistence);
       await fireClient.auth().createUserWithEmailAndPassword(values.email, values.password);
-      await newOrg();
-      if (error) throw new Error(`ERROR: error creating new org ${error}`);
-      history.push('/dashboard/campaigns');
+      const res = await sessionLogin();
+      if (res.status === 200) {
+        console.log('creating org');
+        await newOrg();
+        if (error) throw new Error(`ERROR: error creating new org ${error}`);
+        history.push('/dashboard/campaigns');
+      } else {
+        throw new Error(res.statusText);
+      }
     } catch (e) {
       console.log('Registration error', e);
     }

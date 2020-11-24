@@ -2,7 +2,6 @@
   flex-grow: 1;
   height: 15vh;
   padding-left: 30px;
-  width: 850px;
 
   .payments-account-content {
     margin: auto;
@@ -10,17 +9,38 @@
 
 }
   .ethereum-address-list-header {
-    width: 850px;
-    height: 3vh;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    padding-left: 30px;
     padding-top: 5px;
+    border-bottom: 2px solid black;
   }
 
-.ethereum-address-paper {
-  width: 850px;
-  height: 30vh;
+.ethereum-address-list {
   padding-top: 10px;
   padding-left: 30px;
+  padding-bottom: 10px;
+}
+
+.ethereum-address-item {
+  padding-top: 10px;
+  border-bottom: 1px solid grey;
+}
+
+.ethereum-address-claim-button {
+  position: absolute;
+  top: 50%;
+  -ms-transform: translate(-50%);
+  transform: translateY(-50%);
+}
+
+.payments-account-history {
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-bottom: 30px;
+}
+
+.payments-account-history-item {
+  border-bottom: 1px solid grey;
+}
+
+.payments-account-history-header {
+  border-bottom: 2px solid black;
 }
