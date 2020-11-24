@@ -44,9 +44,7 @@ export const Register: React.FC = () => {
     event?.preventDefault();
     try {
       await fireClient.auth().setPersistence(getAuthPersistence);
-      console.log('creating user');
       await fireClient.auth().createUserWithEmailAndPassword(values.email, values.password);
-      console.log('logging in with session');
       const res = await sessionLogin();
       if (res.status === 200) {
         console.log('creating org');
