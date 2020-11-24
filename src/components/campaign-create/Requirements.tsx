@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Grid, MenuItem, Select, TextField } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, MenuItem, Select, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { updateCampaignState } from '../../redux/slices/campaign';
@@ -96,7 +96,6 @@ export const Requirements: React.FC = () => {
   };
 
   const renderLocationModal = () => {
-    // console.log('top of render locatiopn modal');
     return (
       <Modal
         bodyOpenClassName="body-open-modal"
@@ -242,7 +241,6 @@ export const Requirements: React.FC = () => {
               maxSelectable={1}
               updateSelected={(e: string[]) => {
                 const temp = e.map((e) => e);
-                console.log(temp);
                 setSelectedFollowerCount(temp[0]);
               }}
             ></MultiSelectList>
@@ -391,8 +389,6 @@ export const Requirements: React.FC = () => {
         setAgeRange(data);
         break;
       case 'social':
-        console.log('socail');
-        console.log(data);
         if (selectedFollowerCount != null) {
           dispatch(
             updateCampaignState({
@@ -423,11 +419,6 @@ export const Requirements: React.FC = () => {
         break;
     }
   };
-  console.log('campaign requirements');
-  console.log(requirements);
-  console.log('follower count');
-  console.log('should be string not list');
-  console.log(selectedFollowerCount);
 
   const renderAgeRangeDisplay = () => {
     const temp: string[] = [];

@@ -122,9 +122,6 @@ export const Initialize: React.FC = () => {
             </Grid>
           </Grid>
         </div>
-        {/* </Grid> */}
-        {/* <Grid container className="form-container" direction={'row'} spacing={8} justify={'center'}> */}
-        {/* <Grid item className="form-item"> */}
         <div className="margin-bottom">
           <Grid container item xs={12} spacing={3}>
             <Grid container item xs={6} spacing={0}>
@@ -139,7 +136,6 @@ export const Initialize: React.FC = () => {
                 className="text-field"
               />
             </Grid>
-            {/* <Grid item className="form-item"> */}
             <Grid container item xs={6} spacing={0}>
               <TextField
                 label={'# of post templates'}
@@ -152,12 +148,8 @@ export const Initialize: React.FC = () => {
                 variant="outlined"
               />
             </Grid>
-            {/* <Grid item className="form-item"> */}
           </Grid>
         </div>
-        {/* </Grid> */}
-        {/* <Grid container className="form-container" justify={'center'}> */}
-        {/* <Grid item className="form-item"> */}
         <div className="margin-bottom">
           <Grid container item xs={12} spacing={3}>
             <Grid container item xs={6}>
@@ -191,8 +183,6 @@ export const Initialize: React.FC = () => {
           <Grid container item xs={12} spacing={3}>
             <Grid container item xs={6}>
               <TextField
-                // style={{ width: '300px', paddingTop: '2em' }}
-                // id="filled-multiline-static"
                 label="Description"
                 name="Description"
                 onChange={handleCampaignChange}
@@ -209,7 +199,6 @@ export const Initialize: React.FC = () => {
             <Grid container item xs={6}>
               <DateTimePicker
                 value={beginDate || null}
-                // disablePast
                 variant="dialog"
                 fullWidth
                 onChange={handleBeginDateChange}
@@ -221,7 +210,6 @@ export const Initialize: React.FC = () => {
             <Grid container item xs={6}>
               <DateTimePicker
                 fullWidth
-                // fullWidth
                 value={endDate || null}
                 disablePast
                 onChange={handleEndDateChange}
@@ -231,7 +219,6 @@ export const Initialize: React.FC = () => {
             </Grid>
           </Grid>
         </div>
-        {/* </Grid> */}
       </Grid>
     </div>
   );

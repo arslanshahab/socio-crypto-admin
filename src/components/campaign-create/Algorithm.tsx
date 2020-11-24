@@ -26,7 +26,6 @@ export const Algorithm: React.FC = () => {
       tiers.push(
         <div className="margin-bottom">
           <div>
-            {/* <Gri÷d item> */}
             <Typography>{label}</Typography>
           </div>
           <Grid container xs={12} spacing={3} direction={'row'} justify={'center'}>
@@ -37,7 +36,6 @@ export const Algorithm: React.FC = () => {
                 id={id}
                 name={'threshold'}
                 placeholder={'Threshold'}
-                // margin={'normal'}
                 onChange={handleTierChange}
                 className="text-field"
                 defaultValue={i === 0 ? 0 : undefined}
@@ -49,7 +47,6 @@ export const Algorithm: React.FC = () => {
                 id={id}
                 name={'totalCoiins'}
                 placeholder={'Total Coiins'}
-                // margin={'normal'}
                 fullWidth
                 onChange={handleTierChange}
                 className="text-field"
@@ -95,7 +92,6 @@ export const Algorithm: React.FC = () => {
               label={'View Value'}
               name={'views'}
               placeholder={'View Value'}
-              // margin={'normal'}
               fullWidth
               onChange={handleValueChange}
               className="text-field"
@@ -107,7 +103,6 @@ export const Algorithm: React.FC = () => {
               fullWidth
               name={'submissions'}
               placeholder={'Submission Value'}
-              // margin={'normal'}
               onChange={handleValueChange}
               className="text-field"
             />
@@ -118,7 +113,6 @@ export const Algorithm: React.FC = () => {
               name={'shares'}
               fullWidth
               placeholder={'Share Value'}
-              // margin={'normal'}
               onChange={handleValueChange}
               className="text-field"
             />
@@ -128,7 +122,6 @@ export const Algorithm: React.FC = () => {
               label={'Like Value'}
               name={'likes'}
               placeholder={'Like Value'}
-              // margin={'normal'}
               onChange={handleValueChange}
               className="text-field"
               fullWidth
