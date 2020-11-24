@@ -21,110 +21,114 @@ export const Algorithm: React.FC = () => {
   const renderTiers = () => {
     const tiers: JSX.Element[] = [];
     for (let i = 0; i < numOfTiers; i++) {
-      const label = `Tier ${i + 1}:`;
+      const label = `Tier ${i + 1}`;
       const id = `${i + 1}`;
       tiers.push(
-        <Grid container spacing={3} direction={'row'} justify={'center'}>
-          <Grid item>
-            <Typography style={{ paddingTop: '38px' }}>{label}</Typography>
+        <div className="margin-bottom">
+          <div>
+            <Typography>{label}</Typography>
+          </div>
+          <Grid container xs={12} spacing={3} direction={'row'} justify={'center'}>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                label={'Threshold'}
+                id={id}
+                name={'threshold'}
+                placeholder={'Threshold'}
+                onChange={handleTierChange}
+                className="text-field"
+                defaultValue={i === 0 ? 0 : undefined}
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label={'Total Coiins'}
+                id={id}
+                name={'totalCoiins'}
+                placeholder={'Total Coiins'}
+                fullWidth
+                onChange={handleTierChange}
+                className="text-field"
+                defaultValue={i === 0 ? initialOffering : undefined}
+              />
+            </Grid>
           </Grid>
-          <Grid item className="form-item">
-            <TextField
-              label={'Threshold'}
-              id={id}
-              name={'threshold'}
-              placeholder={'Threshold'}
-              margin={'normal'}
-              onChange={handleTierChange}
-              className="text-field"
-              defaultValue={i === 0 ? 0 : undefined}
-            />
-          </Grid>
-          <Grid item className="form-item">
-            <TextField
-              label={'Total Coiins'}
-              id={id}
-              name={'totalCoiins'}
-              placeholder={'Total Coiins'}
-              margin={'normal'}
-              onChange={handleTierChange}
-              className="text-field"
-              defaultValue={i === 0 ? initialOffering : undefined}
-            />
-          </Grid>
-        </Grid>,
+        </div>,
       );
     }
     return tiers;
   };
   return (
-    <div>
-      <Grid container justify={'center'}>
-        <Grid item xs={6} className="form-item">
-          <Typography style={{ textAlign: 'center' }} variant={'h5'}>
-            Values
-          </Typography>
+    <div className="init-campaign-container padding-top">
+      <div className="margin-bottom">
+        <Grid container justify={'flex-start'}>
+          <Grid item xs={6} className="form-item">
+            <Typography style={{ textAlign: 'center' }} variant={'h5'}>
+              Values
+            </Typography>
+          </Grid>
+          <Grid item xs={6} className="form-item">
+            <Typography style={{ textAlign: 'center' }} variant={'h5'}>
+              Rewards
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid item xs={6} className="form-item">
-          <Typography style={{ textAlign: 'center' }} variant={'h5'}>
-            Rewards
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container direction={'row'} justify={'space-evenly'} alignItems={'center'}>
-        <Grid container item xs={6} justify={'center'} direction={'column'} alignItems={'center'}>
-          <Grid item>
+      </div>
+      <Grid container direction={'row'} justify={'space-evenly'} alignItems={'flex-start'}>
+        <Grid container item xs={6} justify={'flex-start'} direction={'column'} alignItems={'stretch'} spacing={3}>
+          <Grid item xs={11}>
             <TextField
               label={'Click Value'}
               name={'clicks'}
               placeholder={'Click Value'}
-              margin={'normal'}
               onChange={handleValueChange}
               className="text-field"
+              fullWidth
             />
           </Grid>
-          <Grid item>
+          <Grid xs={11} item>
             <TextField
               label={'View Value'}
               name={'views'}
               placeholder={'View Value'}
-              margin={'normal'}
+              fullWidth
               onChange={handleValueChange}
               className="text-field"
             />
           </Grid>
-          <Grid item>
+          <Grid xs={11} item>
             <TextField
               label={'Submission Value'}
+              fullWidth
               name={'submissions'}
               placeholder={'Submission Value'}
-              margin={'normal'}
               onChange={handleValueChange}
               className="text-field"
             />
           </Grid>
-          <Grid item>
+          <Grid xs={11} item>
             <TextField
               label={'Share Value'}
               name={'shares'}
+              fullWidth
               placeholder={'Share Value'}
-              margin={'normal'}
               onChange={handleValueChange}
               className="text-field"
             />
           </Grid>
-          <Grid item>
+          <Grid xs={11} item>
             <TextField
               label={'Like Value'}
               name={'likes'}
               placeholder={'Like Value'}
-              margin={'normal'}
               onChange={handleValueChange}
               className="text-field"
+              fullWidth
             />
           </Grid>
         </Grid>
-        <Grid container item xs={6} spacing={3} direction={'row'} justify={'center'}>
+        <Grid container item xs={6} spacing={3} direction={'column'} justify={'flex-start'}>
           {renderTiers().map((element) => element)}
         </Grid>
       </Grid>

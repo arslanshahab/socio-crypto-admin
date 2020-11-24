@@ -27,42 +27,45 @@ export const PostsAndTags: React.FC = () => {
     for (let i = 0; i < numOfPosts; i++) {
       const label = `Suggested Post #${i + 1}`;
       suggestedPosts.push(
-        <Grid container justify={'center'}>
-          <Grid item className="form-item">
-            <TextField
-              style={{ width: '300px', paddingTop: '2em' }}
-              id={`${i}`}
-              label={label}
-              name="suggestedPosts"
-              multiline
-              rows={5}
-              defaultValue="Suggested Post"
-              variant="filled"
-              onChange={handlePostsChange}
-            />
+        <div className="margin-bottom">
+          <Grid container justify={'center'} xs={12}>
+            <Grid item className="form-item" xs={12} spacing={2}>
+              <TextField
+                id={`${i}`}
+                label={label}
+                name="suggestedPosts"
+                multiline
+                fullWidth
+                rows={5}
+                defaultValue="Suggested Post"
+                variant="outlined"
+                onChange={handlePostsChange}
+              />
+            </Grid>
           </Grid>
-        </Grid>,
+        </div>,
       );
     }
     return suggestedPosts;
   };
 
   return (
-    <Grid container justify={'center'}>
+    <div className="init-campaign-container padding-top">
       {renderSuggestedPosts().map((item) => item)}
-      <Grid container justify={'center'}>
-        <Grid item className="form-item">
+      <Grid container justify={'center'} xs={12}>
+        <Grid item className="form-item" xs={12} spacing={2}>
           <TextField
-            style={{ width: '500px' }}
+            fullWidth
             label={'Suggested Tags (comma separated w/o hashtags)'}
             name={'suggestedTags'}
             placeholder={'Suggested tags'}
             margin={'normal'}
             onChange={handleTagsChange}
+            variant="outlined"
             className="text-field"
           />
         </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 };

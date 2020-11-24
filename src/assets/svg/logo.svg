@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 129.76 146.82"><defs>
+<style>.cls-1{fill:url(#radial-gradient);}.cls-2{fill:url(#radial-gradient-2);}.cls-3{fill:url(#radial-gradient-3);}.cls-4{fill:url(#radial-gradient-4);}.cls-5{fill:url(#radial-gradient-5);}.cls-6{fill:url(#radial-gradient-6);}</style>
+<radialGradient id="radial-gradient" cx="135.73" cy="118.63" r="141.08" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#ffd100"/>
+<stop offset="0.41" stop-color="#ffaf00"/>
+<stop offset="0.44" stop-color="#ffa800"/>
+<stop offset="0.48" stop-color="#ff9500"/>
+<stop offset="0.54" stop-color="#ff7500"/>
+<stop offset="0.59" stop-color="#ff4900"/>
+<stop offset="0.66" stop-color="#f10"/>
+<stop offset="0.67" stop-color="red"/>
+<stop offset="0.7" stop-color="#ff0051"/>
+<stop offset="0.73" stop-color="#ff0092"/>
+<stop offset="0.75" stop-color="#ff00c1"/>
+<stop offset="0.77" stop-color="#ff00de"/>
+<stop offset="0.78" stop-color="#ff00e9"/>
+<stop offset="0.87" stop-color="#9a39f2"/>
+<stop offset="0.96" stop-color="#3274fb"/>
+<stop offset="1" stop-color="#088bff"/></radialGradient><radialGradient id="radial-gradient-2" cx="135.73" cy="118.63" r="141.08" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#ffd100"/>
+<stop offset="0.41" stop-color="#ffaf00"/>
+<stop offset="0.48" stop-color="#ff6800"/>
+<stop offset="0.54" stop-color="#ff3000"/>
+<stop offset="0.59" stop-color="#ff0d00"/>
+<stop offset="0.61" stop-color="red"/>
+<stop offset="0.66" stop-color="#ff0051"/>
+<stop offset="0.69" stop-color="#ff0092"/>
+<stop offset="0.72" stop-color="#ff00c1"/>
+<stop offset="0.75" stop-color="#ff00de"/>
+<stop offset="0.76" stop-color="#ff00e9"/>
+<stop offset="0.78" stop-color="#f505ea"/>
+<stop offset="0.82" stop-color="#dc14ec"/>
+<stop offset="0.86" stop-color="#b12cf0"/>
+<stop offset="0.91" stop-color="#774df5"/>
+<stop offset="0.97" stop-color="#2d76fc"/>
+<stop offset="1" stop-color="#088bff"/></radialGradient><radialGradient id="radial-gradient-3" cx="154.61" cy="129.84" r="161.31" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#ffd100"/>
+<stop offset="0.41" stop-color="#ffaf00"/>
+<stop offset="0.5" stop-color="#ff6800"/>
+<stop offset="0.58" stop-color="#ff3000"/>
+<stop offset="0.64" stop-color="#ff0d00"/>
+<stop offset="0.67" stop-color="red"/>
+<stop offset="0.71" stop-color="#ff0051"/>
+<stop offset="0.74" stop-color="#ff0092"/>
+<stop offset="0.77" stop-color="#ff00c1"/>
+<stop offset="0.79" stop-color="#ff00de"/>
+<stop offset="0.8" stop-color="#ff00e9"/>
+<stop offset="0.82" stop-color="#f605ea"/>
+<stop offset="0.84" stop-color="#dc14ec"/>
+<stop offset="0.88" stop-color="#b32bf0"/>
+<stop offset="0.93" stop-color="#794bf5"/>
+<stop offset="0.97" stop-color="#3174fb"/>
+<stop offset="1" stop-color="#088bff"/></radialGradient><radialGradient id="radial-gradient-4" cx="117.35" cy="132.27" r="113.47" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#ffd100"/>
+<stop offset="0.35" stop-color="#ffaf00"/>
+<stop offset="0.46" stop-color="#ff6800"/>
+<stop offset="0.56" stop-color="#ff3000"/>
+<stop offset="0.63" stop-color="#ff0d00"/>
+<stop offset="0.67" stop-color="red"/>
+<stop offset="0.7" stop-color="#ff0051"/>
+<stop offset="0.73" stop-color="#ff0092"/>
+<stop offset="0.75" stop-color="#ff00c1"/>
+<stop offset="0.77" stop-color="#ff00de"/>
+<stop offset="0.78" stop-color="#ff00e9"/>
+<stop offset="0.87" stop-color="#9a39f2"/>
+<stop offset="0.96" stop-color="#3274fb"/>
+<stop offset="1" stop-color="#088bff"/></radialGradient><radialGradient id="radial-gradient-5" cx="52.07" cy="146.94" r="166.47" gradientTransform="translate(87)" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#ffd100"/>
+<stop offset="0.11" stop-color="#ffcf00"/>
+<stop offset="0.16" stop-color="#ffc800"/>
+<stop offset="0.19" stop-color="#fb0"/>
+<stop offset="0.21" stop-color="#ffaf00"/>
+<stop offset="0.31" stop-color="#ffad00"/>
+<stop offset="0.36" stop-color="#ffa400"/>
+<stop offset="0.4" stop-color="#ff9600"/>
+<stop offset="0.44" stop-color="#ff8300"/>
+<stop offset="0.48" stop-color="#ff6900"/>
+<stop offset="0.51" stop-color="#ff4900"/>
+<stop offset="0.54" stop-color="#ff2500"/>
+<stop offset="0.56" stop-color="red"/>
+<stop offset="0.58" stop-color="#ff0004"/>
+<stop offset="0.6" stop-color="#f01"/>
+<stop offset="0.62" stop-color="#ff0026"/>
+<stop offset="0.64" stop-color="#ff0043"/>
+<stop offset="0.65" stop-color="#ff0069"/>
+<stop offset="0.67" stop-color="#ff0098"/>
+<stop offset="0.69" stop-color="#ff00ce"/>
+<stop offset="0.7" stop-color="#ff00e9"/>
+<stop offset="0.85" stop-color="#2c3dde"/>
+<stop offset="0.88" stop-color="#2257e7"/>
+<stop offset="0.93" stop-color="#147bf4"/>
+<stop offset="0.97" stop-color="#0b92fc"/>
+<stop offset="1" stop-color="#089aff"/></radialGradient><radialGradient id="radial-gradient-6" cx="135.73" cy="118.63" r="141.08" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#ffd100"/>
+<stop offset="0.41" stop-color="#ffaf00"/>
+<stop offset="0.45" stop-color="#ffa800"/>
+<stop offset="0.5" stop-color="#ff9400"/>
+<stop offset="0.56" stop-color="#ff7400"/>
+<stop offset="0.63" stop-color="#ff4700"/>
+<stop offset="0.71" stop-color="#ff0e00"/>
+<stop offset="0.73" stop-color="red"/>
+<stop offset="0.76" stop-color="#ff0051"/>
+<stop offset="0.79" stop-color="#ff0092"/>
+<stop offset="0.81" stop-color="#ff00c1"/>
+<stop offset="0.83" stop-color="#ff00de"/>
+<stop offset="0.84" stop-color="#ff00e9"/>
+<stop offset="0.9" stop-color="#9a39f2"/>
+<stop offset="0.97" stop-color="#3274fb"/>
+<stop offset="1" stop-color="#088bff"/></radialGradient></defs><title>raiinmaker_logo-image</title><g id="Layer_2" data-name="Layer 2"><g id="_11_LOGO_SET_2_copy" data-name="11 LOGO SET 2 copy">
+<path class="cls-1" fill="url(#radial-gradient)" d="M79.17,73V98.57a8.89,8.89,0,0,1-8.87,8.87H60.15a8.89,8.89,0,0,1-8.86-8.87l0-12h0l.06-40.42A11.1,11.1,0,0,0,48,37.83a11.93,11.93,0,0,0-8.4-3.31c-.35,0-.7,0-1,0s-.49,0-.83.09C34,35.18,34.79,32.47,35,32c3.72-6.1,10.42-9.31,18.53-9.31A25.59,25.59,0,0,1,78.9,44.81H79c.1,1.24.17,2.49.17,3.77V73Z"/>
+<path class="cls-2" fill="url(#radial-gradient-2)" d="M62.71,20h-.13a7.86,7.86,0,0,1-1.37-.27h0a28.87,28.87,0,0,0-7.64-1c-16.18,0-25.69,10-25.69,28.22h0c0,.38-.05.76-.05,1.15l.08,38.51h0v12A8.87,8.87,0,0,1,19,107.44H8.89A8.89,8.89,0,0,1,0,98.57L0,73H0l0-25A38.3,38.3,0,0,1,11.73,20.23a39.37,39.37,0,0,1,52-3.45,1.75,1.75,0,0,1,.63,1.46A1.63,1.63,0,0,1,62.71,20Z"/>
+<path class="cls-3" fill="url(#radial-gradient-3)" d="M14,146.82a13.94,13.94,0,1,1,13.94-13.94A13.95,13.95,0,0,1,14,146.82"/>
+<path class="cls-4" fill="url(#radial-gradient-4)" d="M65.21,146.82a13.94,13.94,0,1,1,13.94-13.94,13.95,13.95,0,0,1-13.94,13.94"/>
+<path class="cls-5" fill="url(#radial-gradient-5)" d="M115.78,146.82a13.94,13.94,0,1,0-13.94-13.94,14,14,0,0,0,13.94,13.94"/>
+<path class="cls-6" fill="url(#radial-gradient-6)" d="M66.11,14.67h.13a7.86,7.86,0,0,0,1.37-.27h0c2.31-.74,3.8-1.9,7.55-2.77,15.92-3.7,26.72,8.52,26.72,26.72h0a10.93,10.93,0,0,1,.06,1.15l-.09,47.1h0l0,12a8.89,8.89,0,0,0,8.86,8.87h10.14a8.9,8.9,0,0,0,8.87-8.87l0-25.53h0l0-33.55c0-10.68-3-20.07-10.81-27.87C111.43,4.12,100.58.25,90.09,0c-10-.23-20.48,5.2-25,11.16a2.32,2.32,0,0,0-.64,1.46A1.92,1.92,0,0,0,66.11,14.67Z"/></g></g></svg>

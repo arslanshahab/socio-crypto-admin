@@ -8,10 +8,11 @@ import { Algorithm } from './Algorithm';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';
+import { Requirements } from './Requirements';
 
 const NEW_CAMPAIGN = gql(`
-    mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String!, $image: String, $tagline: String!,$suggestedPosts: [String], $suggestedTags: [String]) {
-    newCampaign(name: $name, beginDate: $beginDate, endDate: $endDate, target: $target, description: $description, coiinTotal: $coiinTotal, algorithm: $algorithm, company: $company, targetVideo: $targetVideo, image: $image, tagline: $tagline, suggestedPosts: $suggestedPosts, suggestedTags: $suggestedTags) {
+    mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String!, $image: String, $tagline: String!,  $requirements: JSON!, $suggestedPosts: [String], $suggestedTags: [String]) {
+    newCampaign(name: $name, beginDate: $beginDate, endDate: $endDate, target: $target, description: $description, coiinTotal: $coiinTotal, algorithm: $algorithm, company: $company, targetVideo: $targetVideo, image: $image, tagline: $tagline, requirements: $requirements, suggestedPosts: $suggestedPosts, suggestedTags: $suggestedTags) {
       name
     }
   }
@@ -19,7 +20,7 @@ const NEW_CAMPAIGN = gql(`
 
 export const NewCampaign: React.FC = () => {
   const history = useHistory();
-  const steps = ['Info', 'Suggested Posts', 'Algorithm'];
+  const steps = ['Info', 'Suggested Posts', 'Requirements', 'Algorithm'];
   const [activeStep, setActiveStep] = useState(0);
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
@@ -34,6 +35,7 @@ export const NewCampaign: React.FC = () => {
       description: campaign.description,
       company: campaign.company,
       algorithm: JSON.stringify(campaign.algorithm),
+      requirements: campaign.requirements,
       image: campaign.image,
       tagline: campaign.tagline,
       suggestedPosts: campaign.suggestedPosts,
@@ -57,10 +59,11 @@ export const NewCampaign: React.FC = () => {
       case 1:
         return <PostsAndTags />;
       case 2:
+        return <Requirements />;
+      case 3:
         return <Algorithm />;
     }
   };
-
   return (
     <div className="new-campaign">
       <Paper>

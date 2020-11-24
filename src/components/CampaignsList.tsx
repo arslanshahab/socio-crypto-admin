@@ -40,7 +40,7 @@ export const CampaignsList: React.FC = () => {
               <p>loading...</p>
             ) : (
               <div>
-                {data && (
+                {data && data.listCampaigns.results.length > 0 ? (
                   <CampaignGraph
                     campaign={data.listCampaigns.results[checkedIndex]}
                     dataType={dataFilter}
@@ -48,6 +48,8 @@ export const CampaignsList: React.FC = () => {
                     startDate={startDate}
                     endDate={endDate}
                   />
+                ) : (
+                  <div></div>
                 )}
               </div>
             )}
