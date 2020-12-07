@@ -1,10 +1,195 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
 .dashboard-nav-item {
   text-decoration: none;
   color: black;
 }
 
+.requirement-modal-overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9001;
+}
+
+.requirement-modal {
+  width: 40%;
+  top: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  outline: none;
+  padding: 15px;
+}
+.requirement-modal .modal-content {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+.requirement-modal .modal-title {
+  padding: 10px 0 10px 0;
+  text-align: center;
+  font-size: 24px;
+}
+.requirement-modal .modal-select {
+  padding: 10px 0 10px 0;
+  display: block;
+}
+.multi-select-item {
+  color: black;
+  display: inline-block;
+  text-align: center;
+  width: 50%;
+  padding: 12px 0 12px 0px;
+}
+
+.button-container {
+  margin: 15px;
+}
+
+.requirement-button {
+  margin: 15px !important;
+}
+
+.modal-button {
+  margin: 15px;
+  outline: none;
+  padding: 8px 12px;
+  background-color: #3f51b5;
+}
+
+.MuiPopover-root {
+  z-index: 9002 !important;
+}
+
+.selected {
+  background-color: beige;
+}
+
+.requirement-column {
+  margin: 15px;
+}
+
+.requirement-row {
+  display: flex;
+  flex-direction: row;
+}
+.requirement-row .row-title-container {
+  flex: auto;
+  padding: 10px 0;
+}
+.requirement-row .row-title-container .row-title {
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+.requirement-row .row-button-container {
+  padding: 10px 0;
+}
+.requirement-row .row-button-container .row-button {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.requirement-display .display-item {
+  list-style: none;
+  border-bottom: 1px solid #eee;
+  padding: 10px 8px;
+}
+
+.init-campaign-container {
+  margin: 15px;
+}
+.init-campaign-container .row {
+  display: flex;
+  flex-direction: row;
+}
+.init-campaign-container .two-per-row div {
+  width: 50%;
+}
+
+.margin-bottom {
+  margin-bottom: 15px;
+}
+
+.padding-top {
+  padding-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.image-upload-container {
+  text-align: center;
+}
+.image-upload-container svg {
+  max-width: 100px;
+}
+.image-upload-container .image-preview {
+  max-width: 100px;
+}
+
 .new-campaign {
-  width: 1000px;
+  max-width: 1000px;
   margin: auto;
 }
 .new-campaign .new-campaign-button {
@@ -13,6 +198,9 @@
 
 .login-layout {
   text-align: center;
+}
+.login-layout .logo {
+  width: 200px;
 }
 .login-layout .login-form {
   margin: 250px;
