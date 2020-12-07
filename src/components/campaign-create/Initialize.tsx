@@ -11,6 +11,7 @@ import icon from '../../assets/svg/camera.svg';
 export const Initialize: React.FC = () => {
   const dispatch = useDispatch();
   const beginDate = useSelector((state: RootState) => state.newCampaign.beginDate);
+  const campaign = useSelector((state: RootState) => state.newCampaign);
   const endDate = useSelector((state: RootState) => state.newCampaign.endDate);
   const handleCampaignChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     event.persist();
@@ -63,7 +64,15 @@ export const Initialize: React.FC = () => {
       <Grid container className="form-container" direction={'column'}>
         <div className="image-upload-container">
           <label htmlFor="single">
-            <ReactSVG src={icon} color="#3B5998" />
+            <div>
+              {campaign.image ? (
+                <div className="image-preview">
+                  <img src={campaign.image}></img>
+                </div>
+              ) : (
+                <ReactSVG src={icon} color="#3B5998" />
+              )}
+            </div>
           </label>
           <input className="hidden" type="file" id="single" onChange={handleImage} />
         </div>

@@ -1,14 +1,18 @@
 import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router';
+import { Redirect, Route, RouteProps, useHistory } from 'react-router';
 import { useQuery } from '@apollo/client';
 import { VERIFY_SESSION } from '../operations/queries/firebase';
 
-export type ProtectedRouteProps = RouteProps;
-export const UserContext = React.createContext('');
+export const UserContext = React.createContext({ role: null, company: null });
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = (props) => {
+interface Props extends RouteProps {
+  adminOnly?: boolean;
+}
+
+export const ProtectedRoute: React.FC<Props> = (props) => {
+  const history = useHistory();
   const { loading, data, error } = useQuery(VERIFY_SESSION);
-
+  const routeState = props.location && props.location.state && props.location.state ? props.location.state : null;
   const redirect = () => {
     const renderComponent = () => <Redirect to={{ pathname: '/' }} />;
     return (
@@ -18,11 +22,18 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = (props) => {
     );
   };
   const renderRoute = () => {
+    console.log(props);
     if (loading) return <div />;
     if (data) {
+      console.log(data.verifySession);
+      if (props.adminOnly) {
+        console.log('in admin only route');
+        console.log(data.verifySession.company);
+        if (data.verifySession.company.toLowerCase() !== 'raiinmaker') history.push('/dashboard');
+      }
       return (
         <UserContext.Provider value={data.verifySession}>
-          <Route {...props} />
+          <Route routeState={routeState} company={data.verifySession.company} {...props} />
         </UserContext.Provider>
       );
     } else if (error) {

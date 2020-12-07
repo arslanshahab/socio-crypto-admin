@@ -1,0 +1,101 @@
+.pending-withdraw{
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  ul{
+    display: flex;
+    li{
+      flex: auto;
+      display: inline-block;
+    }
+  }
+}
+
+.right{
+  text-align: right;
+}
+
+.padding-top{
+  padding-top: 20px;
+}
+.padding-left{
+  padding-left: 5px;
+}
+
+.padding-right{
+  padding-right: 5px;
+}
+
+.center{
+  text-align: center;
+}
+
+.card{
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px
+}
+
+.flex-display{
+  display: flex;
+}
+
+.flex-item{
+  flex: auto;
+}
+.kyc{
+  display: flex;
+
+  p{
+    color: black;
+    flex: auto;
+  }
+  .kyc-status{
+    flex: none;
+    // fle
+  }
+}
+
+.withdraw-item{
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  .checkbox{
+    flex: auto;
+  }
+  p{
+    // flex: auto;
+  }
+  .date{
+// flex: auto;
+}
+.amount{
+  margin-left: 5px;
+  }
+
+}
+
+.submit-buttons{
+  display: flex;
+  margin: 20px auto 0 auto;
+
+  .button{
+        flex: auto;
+    text-align: center;
+    margin: 0 5px;
+    p{
+      padding: 10px;
+      max-width: 300px;
+      margin: auto;
+      color: white;
+    }
+  }
+  .approve{
+    background-color: #56be57d9;
+    
+  }
+  .reject{
+    background-color: #df2727e6;
+    
+  }
+}
