@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - yarn install --frozen-lockfile --ignore-engines
+  build:
+    commands:
+      - yarn build:staging
+      - mv ./src/robots-staging.txt ./build/robots.txt
+      - aws s3 sync ./build s3://rm-raiinmaker-admin-ui-stg --delete --cache-control "max-age=31536000"
+      - aws s3 cp s3://rm-raiinmaker-admin-ui-stg/index.html s3://rm-raiinmaker-admin-ui-stg/index.html --metadata-directive REPLACE --cache-control "public, must-revalidate, proxy-revalidate, max-age=0"

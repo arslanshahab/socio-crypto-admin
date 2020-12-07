@@ -1,0 +1,379 @@
+Description: CI/CD Pipeline for raiinmaker-admin-ui Service
+
+Parameters:
+  GitHubSecret:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: GitHubReadOnlyToken
+
+Resources:
+  PullRequestCodebuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: 'raiinmaker-admin-ui-pull-request'
+      ServiceRole: !Ref CodeBuildRole
+      Artifacts:
+        Type: no_artifacts
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_LARGE
+        Image: aws/codebuild/standard:2.0
+        PrivilegedMode: true
+      VpcConfig:
+        VpcId: vpc-d6c707b0
+        Subnets: [subnet-084fb85b244466281]
+        SecurityGroupIds: [sg-fdcb0a8a]
+      Source:
+        Type: GITHUB
+        InsecureSsl: false
+        Auth:
+          Type: OAUTH
+          Resource: !Ref GitHubSecret
+        Location: https://github.com/Raiinmaker/raiinmaker-admin.git
+        BuildSpec: buildspec.pull.yml
+      Triggers:
+        Webhook: true
+      TimeoutInMinutes: 60
+
+  StagingDeployCodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: 'raiinmaker-admin-ui-codebuild-deploy-staging'
+      ServiceRole:
+        Ref: CodeBuildRole
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_LARGE
+        Image: aws/codebuild/standard:2.0
+        EnvironmentVariables:
+          - Name: STAGE
+            Type: PLAINTEXT
+            Value: staging
+        PrivilegedMode: true
+      VpcConfig:
+        VpcId: vpc-d6c707b0
+        Subnets: [subnet-084fb85b244466281]
+        SecurityGroupIds: [sg-fdcb0a8a]
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: buildspec.deploy.staging.yml
+      TimeoutInMinutes: 60
+
+  ProductionDeployCodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: 'raiinmaker-admin-ui-codebuild-deploy-production'
+      ServiceRole:
+        Ref: CodeBuildRoleProduction
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_LARGE
+        Image: aws/codebuild/standard:2.0
+        EnvironmentVariables:
+          - Name: STAGE
+            Type: PLAINTEXT
+            Value: production
+        PrivilegedMode: true
+      VpcConfig:
+        VpcId: vpc-d6c707b0
+        Subnets: [subnet-084fb85b244466281]
+        SecurityGroupIds: [sg-fdcb0a8a]
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: buildspec.deploy.production.yml
+      TimeoutInMinutes: 10
+
+  CodePipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: raiinmaker-admin-ui-CodePipelineRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: ['sts:AssumeRole']
+            Effect: Allow
+            Principal:
+              Service: [codebuild.amazonaws.com, codepipeline.amazonaws.com]
+        Version: '2012-10-17'
+      Policies:
+        - PolicyName: CodeBuildAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                  - 'logs:*'
+                  - 'ssm:GetParameters'
+                  - 'sts:AssumeRole'
+                  - 'secretsmanager:GetSecretValue'
+                  - 'codebuild:*'
+                  - 's3:*'
+                Effect: Allow
+                Resource: '*'
+              - Action:
+                  - 'secretsmanager:GetSecretValue'
+                Effect: Allow
+                Resource: 'arn:aws:secretsmanager:us-west-2:527252880472:secret:*'
+
+  CodePipelineRoleProduction:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: raiinmaker-admin-ui-CodePipelineRoleProduction
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: ['sts:AssumeRole']
+            Effect: Allow
+            Principal:
+              Service: [codebuild.amazonaws.com, codepipeline.amazonaws.com]
+        Version: '2012-10-17'
+      Policies:
+        - PolicyName: CodeBuildAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                  # This should be something like 'ec2:Describe*'
+                  # Good luck getting past this error:
+                  #   VPC_CLIENT_ERROR: Unexpected EC2 error: UnauthorizedOperation
+                  - 'ec2:*'
+                Effect: Allow
+                Resource: '*'
+              - Action:
+                - 'secretsmanager:GetSecretValue'
+                Effect: Allow
+                Resource:
+                  - 'arn:aws:secretsmanager:us-west-2:527252880472:secret:npm/dragonchain-dev/read-only-??????'
+              - Action:
+                  - 'logs:*'
+                  - 'ssm:GetParameters'
+                  - 'sts:AssumeRole'
+                  - 'secretsmanager:GetSecretValue'
+                  - 'codebuild:*'
+                  - 's3:*'
+                Effect: Allow
+                Resource: '*'
+              - Action:
+                  - 'secretsmanager:GetSecretValue'
+                Effect: Allow
+                Resource: 'arn:aws:secretsmanager:us-west-2:527252880472:secret:*'
+
+  CodeBuildRoleProduction:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: raiinmaker-admin-ui-CodeBuildRoleProduction
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: ['sts:AssumeRole']
+            Effect: Allow
+            Principal:
+              Service: [codebuild.amazonaws.com, codepipeline.amazonaws.com]
+        Version: '2012-10-17'
+      Policies:
+        - PolicyName: CodeBuildAccessProduction
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                  # This should be something like 'ec2:Describe*'
+                  # Good luck getting past this error:
+                  #   VPC_CLIENT_ERROR: Unexpected EC2 error: UnauthorizedOperation
+                  - 'ec2:*'
+                Effect: Allow
+                Resource: '*'
+              - Action:
+                - 'secretsmanager:GetSecretValue'
+                Effect: Allow
+                Resource:
+                  - 'arn:aws:secretsmanager:us-west-2:527252880472:secret:npm/dragonchain-dev/read-only-??????'
+              - Action:
+                  - 's3:*'
+                Effect: Allow
+                Resource: ['arn:aws:s3:::rm-raiinmaker-admin-ui-prod/*','arn:aws:s3:::rm-raiinmaker-admin-ui-prod']
+              - Action:
+                  - 'iam:GetRole'
+                  - 'iam:CreateRole'
+                  - 'iam:DeleteRole'
+                  - 'iam:GetRolePolicy'
+                  - 'iam:PutRolePolicy'
+                Effect: Allow
+                Resource:
+                  - '*'
+              - Action:
+                  - 'route53:GetHostedZone'
+                  - 'route53:ChangeResourceRecordSet'
+                  - 'route53:ChangeResourceRecordSets'
+                  - 'route53:GetChange'
+                Effect: Allow
+                Resource:
+                  - '*'
+              - Action:
+                  - 's3:*'
+                Effect: Allow
+                Resource:
+                  - 'arn:aws:s3:::raiinmaker-admin-ui-codebuild-artifacts/*'
+                  - 'arn:aws:s3:::rm-raiinmaker-admin-ui-prod/*'
+              - Action:
+                  - 'logs:*'
+                  - 'ssm:GetParameters'
+                Effect: Allow
+                Resource: '*'
+              - Action:
+                  - 'ecr:GetAuthorizationToken'
+                Effect: Allow
+                Resource: '*'
+
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: raiinmaker-admin-ui-CodebuildRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: ['sts:AssumeRole']
+            Effect: Allow
+            Principal:
+              Service: [codebuild.amazonaws.com, codepipeline.amazonaws.com]
+        Version: '2012-10-17'
+      Policies:
+        - PolicyName: CodeBuildAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                  # This should be something like 'ec2:Describe*'
+                  # Good luck getting past this error:
+                  #   VPC_CLIENT_ERROR: Unexpected EC2 error: UnauthorizedOperation
+                  - 'ec2:*'
+                Effect: Allow
+                Resource: '*'
+              - Action:
+                  - 's3:*'
+                Effect: Allow
+                Resource: 'arn:aws:s3:::rm-raiinmaker-admin-ui-stg'
+              - Action:
+                  - 'iam:GetRole'
+                  - 'iam:CreateRole'
+                  - 'iam:DeleteRole'
+                  - 'iam:GetRolePolicy'
+                  - 'iam:PutRolePolicy'
+                Effect: Allow
+                Resource:
+                  - '*'
+              - Action:
+                  - 'route53:GetHostedZone'
+                  - 'route53:ChangeResourceRecordSet'
+                  - 'route53:ChangeResourceRecordSets'
+                  - 'route53:GetChange'
+                Effect: Allow
+                Resource:
+                  - '*'
+              - Action:
+                  - 's3:*'
+                Effect: Allow
+                Resource:
+                  - 'arn:aws:s3:::raiinmaker-admin-ui-codebuild-artifacts/*'
+                  - 'arn:aws:s3:::rm-raiinmaker-admin-ui-stg/*'
+              - Action:
+                  - 'logs:*'
+                  - 'ssm:GetParameters'
+                Effect: Allow
+                Resource: '*'
+              - Action:
+                  - 'ecr:GetAuthorizationToken'
+                Effect: Allow
+                Resource: '*'
+
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: raiinmaker-admin-ui-codebuild-artifacts
+
+  CodePipelineStaging:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: raiinmaker-admin-uiCodePipelineStaging
+      ArtifactStore:
+        Location: !Ref ArtifactBucket
+        Type: S3 # this is literally the only possible option. https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ArtifactStore.html
+      RestartExecutionOnUpdate: true
+      RoleArn: !GetAtt CodePipelineRole.Arn
+      Stages:
+        - Name: GitHub
+          Actions:
+            - Name: master
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: 1
+              Configuration:
+                Owner: Raiinmaker
+                Repo: raiinmaker-admin
+                Branch: master
+                OAuthToken:
+                  Ref: GitHubSecret
+              OutputArtifacts:
+                - Name: raiinmaker-admin-ui-code
+              RunOrder: 1
+        - Name: Deploy
+          Actions:
+            - Name: Test-Build-Deploy
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: 1
+              Configuration:
+                ProjectName:
+                  Ref: StagingDeployCodeBuildProject
+              InputArtifacts:
+                - Name: raiinmaker-admin-ui-code
+              OutputArtifacts:
+                - Name: built-raiinmaker-admin-ui-code
+              RoleArn: !GetAtt CodePipelineRole.Arn
+              RunOrder: 1
+
+  CodePipelineProduction:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: raiinmaker-admin-uiCodePipelineProduction
+      ArtifactStore:
+        Location: !Ref ArtifactBucket
+        Type: S3
+      RestartExecutionOnUpdate: true
+      RoleArn: !GetAtt CodePipelineRoleProduction.Arn
+      Stages:
+        - Name: GitHub
+          Actions:
+            - Name: production
+              ActionTypeId:
+                Category: Source
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: 1
+              Configuration:
+                Owner: Raiinmaker
+                Repo: raiinmaker-admin
+                Branch: production
+                OAuthToken:
+                  Ref: GitHubSecret
+              OutputArtifacts:
+                - Name: raiinmaker-admin-ui-code
+              RunOrder: 1
+        - Name: Deploy
+          Actions:
+            - Name: Test-Build-Deploy
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: 1
+              Configuration:
+                ProjectName:
+                  Ref: ProductionDeployCodeBuildProject
+              InputArtifacts:
+                - Name: raiinmaker-admin-ui-code
+              OutputArtifacts:
+                - Name: built-raiinmaker-admin-ui-code
+              RoleArn: !GetAtt CodePipelineRoleProduction.Arn
+              RunOrder: 1
