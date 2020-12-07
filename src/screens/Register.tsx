@@ -47,7 +47,6 @@ export const Register: React.FC = () => {
       await fireClient.auth().createUserWithEmailAndPassword(values.email, values.password);
       const res = await sessionLogin();
       if (res.status === 200) {
-        console.log('creating org');
         await newOrg();
         if (error) throw new Error(`ERROR: error creating new org ${error}`);
         history.push('/dashboard/campaigns');

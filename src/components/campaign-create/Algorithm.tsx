@@ -80,7 +80,7 @@ export const Algorithm: React.FC = () => {
           <Grid item xs={11}>
             <TextField
               label={'Click Value'}
-              name={'clicks'}
+              name={'click'}
               placeholder={'Click Value'}
               onChange={handleValueChange}
               className="text-field"
@@ -90,7 +90,7 @@ export const Algorithm: React.FC = () => {
           <Grid xs={11} item>
             <TextField
               label={'View Value'}
-              name={'views'}
+              name={'view'}
               placeholder={'View Value'}
               fullWidth
               onChange={handleValueChange}
@@ -101,7 +101,7 @@ export const Algorithm: React.FC = () => {
             <TextField
               label={'Submission Value'}
               fullWidth
-              name={'submissions'}
+              name={'submission'}
               placeholder={'Submission Value'}
               onChange={handleValueChange}
               className="text-field"
