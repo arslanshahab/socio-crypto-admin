@@ -65,16 +65,12 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
   };
 
   const handleSelectWithdrawal = (id: string) => {
-    console.log('in');
     const index = state.selected.indexOf(id);
     let temp: string[] = [];
     temp = state.selected;
-    console.log(index);
     if (index >= 0) {
-      console.log('if');
       temp.splice(index, 1);
     } else {
-      console.log('else');
       temp.push(id);
     }
     setState({ ...state, selected: temp });
@@ -206,10 +202,6 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
       </div>
     );
   };
-  console.log(props);
-  console.log(withdrawData);
-  console.log(loading);
-  console.log(data);
   return (
     <div>
       <p>Manage Withdrawls</p>

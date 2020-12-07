@@ -125,7 +125,6 @@ export const Dashboard: React.FC = (props) => {
   return (
     <UserContext.Consumer>
       {(value) => {
-        console.log(value);
         return (
           <div className={classes.root}>
             <CssBaseline />

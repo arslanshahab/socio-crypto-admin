@@ -16,12 +16,9 @@ export const PendingWithdrawList: React.FC = () => {
   const renderManageWithdrawals = () => {
     if (loading) return <div></div>;
     if (data) {
-      console.log(data);
-      console.log(error);
       return (
         <div>
           {data.getWithdrawalsV2.map((withdraw: any) => {
-            console.log(withdraw);
             return (
               <div className="pending-withdraw" key={withdraw.user.id} onClick={() => handleClick(withdraw)}>
                 <ul>

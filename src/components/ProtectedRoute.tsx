@@ -22,13 +22,9 @@ export const ProtectedRoute: React.FC<Props> = (props) => {
     );
   };
   const renderRoute = () => {
-    console.log(props);
     if (loading) return <div />;
     if (data) {
-      console.log(data.verifySession);
       if (props.adminOnly) {
-        console.log('in admin only route');
-        console.log(data.verifySession.company);
         if (data.verifySession.company.toLowerCase() !== 'raiinmaker') history.push('/dashboard');
       }
       return (

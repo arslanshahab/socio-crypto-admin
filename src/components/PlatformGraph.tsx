@@ -43,7 +43,6 @@ export const PlatformGraph: React.FC<Props> = ({ dataType, timeFilter, startDate
         break;
       case 'day':
         friendlyDate = date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-        console.log(friendlyDate);
         break;
       case 'week':
         const endDate = new Date(dateString);

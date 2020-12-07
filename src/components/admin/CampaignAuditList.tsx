@@ -18,12 +18,9 @@ export const CampaignAuditList: React.FC = () => {
   const renderManageWithdrawals = () => {
     if (loading) return <div></div>;
     if (data) {
-      console.log(data);
-      console.log(error);
       return (
         <div>
           {data.listCampaigns.results.map((campaign: any) => {
-            console.log(campaign);
             if (campaign.audited) return <div />;
             return (
               <div className="pending-withdraw" key={campaign.id} onClick={() => handleClick(campaign)}>

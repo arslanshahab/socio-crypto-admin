@@ -36,8 +36,6 @@ export const FlaggedParticipant: React.FC<Props> = (props) => {
     if (participantPayout == 0) return 0;
     if (participantPayout < 1) return `${((participantPayout / totalPayout) * 100).toFixed(2)}%`;
     const percentage = (totalPayout / participantPayout) * 100;
-    console.log('percentage');
-    console.log(percentage);
     return `${percentage.toFixed(2)}%`;
   };
 
