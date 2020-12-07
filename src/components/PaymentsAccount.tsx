@@ -55,6 +55,16 @@ export const PaymentsAccount: React.FC = () => {
     setOpen(false);
   };
 
+  const renderWalletBalance = () => {
+    if (loadingWallet) {
+      return <div />;
+    } else if (walletData && walletData.getFundingWallet.balance) {
+      return walletData.getFundingWallet.balance;
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <Grid container direction={'column'} spacing={2}>
       <Grid item xs={7}>
@@ -66,9 +76,7 @@ export const PaymentsAccount: React.FC = () => {
               </Grid>
               <Grid item xs={6} />
               <Grid item xs={2} container>
-                <Typography>
-                  Balance: {loadingWallet ? <div /> : walletData && walletData.getFundingWallet.balance}
-                </Typography>
+                <Typography>Balance: {renderWalletBalance()}</Typography>
                 <Button variant={'contained'} size={'small'} color={'primary'} onClick={handleClickOpen}>
                   <Typography>Buy Coiin</Typography>
                 </Button>
