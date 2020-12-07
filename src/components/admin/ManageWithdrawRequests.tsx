@@ -53,15 +53,14 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
   };
 
   const handleSubmitKyc = async (status: string) => {
-    await setState({ ...state, selectedKycStatus: status });
+    setState({ ...state, selectedKycStatus: status });
     await updateKyc();
-    await getKyc();
+    getKyc();
   };
 
   const handleSubmitWithdraw = async (status: string) => {
-    await setState({ ...state, selectedWithdrawStatus: status });
+    setState({ ...state, selectedWithdrawStatus: status });
     await updateWithdraw();
-    // await getKyc();
   };
 
   const handleSelectWithdrawal = (id: string) => {
