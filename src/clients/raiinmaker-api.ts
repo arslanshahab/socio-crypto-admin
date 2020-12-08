@@ -1,18 +1,11 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { getIdToken } from './firebase';
+import { urls } from '../apiConfig.json';
 
-const uri = () => {
-  switch (process.env.NODE_ENV) {
-    case 'production':
-      return 'https://server.api.raiinmaker.com';
-    case 'development':
-      return 'https://server-staging.api.raiinmaker.com';
-    case 'test':
-      return 'http://localhost:4000';
-  }
-};
+const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
+const baseUrl = (urls as {[key: string]: string})[env] as any;
 
-const apiURI = process.env.REACT_APP_LOCAL_URL || uri();
+const apiURI = process.env.REACT_APP_LOCAL_URL || baseUrl;
 
 export const httpLink = createHttpLink({
   uri: `${apiURI}/v1/admin/graphql`,

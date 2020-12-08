@@ -1,0 +1,7 @@
+{
+  "urls": {
+    "local": "http://localhost:4000",
+    "development": "https://server-staging.api.raiinmaker.com",
+    "production": "https://server.api.raiinmaker.com"
+  }
+}
