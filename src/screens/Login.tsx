@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { fireClient, getAuthPersistence } from '../clients/firebase';
-import { Button, Grid, Paper, TextField } from '@material-ui/core';
+import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { sessionLogin } from '../clients/raiinmaker-api';
-import { ReactSVG } from 'react-svg';
 
 interface UserData {
   email: string;
@@ -46,14 +45,18 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <Grid container className="login-layout" justify={'center'}>
+    <Grid
+      container
+      className="login-layout"
+      justify={'center'}
+      direction={'column'}
+      alignItems={'center'}
+      alignContent={'center'}
+    >
       <Grid item>
-        <ReactSVG className="logo" src="/src/assets/svg/logo_banner.svg" />
-      </Grid>
-      <Grid item>
-        <div>
-          <form className="login-form">
-            <h1>Login</h1>
+        <Paper className="login-form">
+          <form>
+            <Typography>Login</Typography>
             <div>
               <TextField required type="text" name="email" label="Email" placeholder="Email" onChange={handleChange} />
             </div>
@@ -73,7 +76,7 @@ export const Login: React.FC = () => {
               <Button onClick={handleClick}>Register</Button>
             </div>
           </form>
-        </div>
+        </Paper>
       </Grid>
     </Grid>
   );

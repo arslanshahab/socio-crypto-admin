@@ -26,6 +26,7 @@ export const Admin: React.FC = () => {
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
           <Tab label="Payments / KYC" {...a11yProps(0)} />
           <Tab label="Audit Campaign" {...a11yProps(1)} />
+          <Tab label="Register Brand" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
