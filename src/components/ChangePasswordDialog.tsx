@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField,
-} from '@material-ui/core';
-import { useMutation } from '@apollo/client';
-import { UPDATE_PASSWORD } from '../operations/queries/admin';
-import { fireClient, getAuthPersistence, getUserEmail } from '../clients/firebase';
-import { changePassword, sessionLogin, sessionLogout } from '../clients/raiinmaker-api';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
+import { fireClient } from '../clients/firebase';
+import { changePassword, sessionLogin } from '../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 
 interface Props {
