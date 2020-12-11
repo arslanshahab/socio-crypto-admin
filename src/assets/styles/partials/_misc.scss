@@ -1,0 +1,16 @@
+.error-display{
+  background-color: #df2727e6;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 10px 0;
+  position: relative;
+  p{
+    color: white;
+  }
+  .close-icon{
+    position: absolute;
+    top: 5px;
+    color: white;
+    right: 5px;
+  }
+}

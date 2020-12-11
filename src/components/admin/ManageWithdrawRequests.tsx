@@ -63,7 +63,6 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
   const handleSubmitKyc = async (status: string) => {
     await setState({ ...state, selectedKycStatus: status });
     await updateKyc();
-    getKyc();
     history.push('/dashboard/admin');
   };
 
@@ -79,6 +78,7 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
     try {
       await setState({ ...state, selectedWithdrawStatus: status });
       await updateWithdraw();
+      history.push('/dashboard/admin');
     } catch (e) {
       displayError(e.message);
     }

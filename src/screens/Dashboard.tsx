@@ -283,7 +283,7 @@ export const Dashboard: React.FC = (props) => {
                 )}
                 {value['company'] === 'raiinmaker' && (
                   <ProtectedRoute exact path={'/dashboard/admin'} adminOnly={true}>
-                    <Admin />
+                    <Admin {...props} />
                   </ProtectedRoute>
                 )}
                 {value['company'] === 'raiinmaker' && (

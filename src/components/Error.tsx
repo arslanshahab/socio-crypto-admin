@@ -11,8 +11,7 @@ export const ErrorCard: React.FC<Props> = (props) => {
   return (
     <div id="error-display" className="error-display">
       <p>{data}</p>
-      <BsXSquare onClick={close}></BsXSquare>
-      <div></div>
+      <BsXSquare className="close-icon" onClick={close}></BsXSquare>
     </div>
   );
 };

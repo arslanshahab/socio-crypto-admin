@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_CAMPAIGN_REPORT, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
-import { useHistory } from 'react-router';
 import { CircularProgress } from '@material-ui/core';
 import { FlaggedParticipant } from './FlaggedParticipant';
 

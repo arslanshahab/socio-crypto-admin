@@ -1,19 +1,26 @@
-import React from 'react';
-import { useQuery, useLazyQuery } from '@apollo/client';
-import { GET_PENDING_WITHDRAWALS, GET_WITHDRAWAL_HISTORY } from '../../operations/queries/admin';
+import React, { useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import { GET_PENDING_WITHDRAWALS } from '../../operations/queries/admin';
 import { useHistory } from 'react-router';
 
 export const PendingWithdrawList: React.FC = () => {
   const history = useHistory();
-  const { loading, data, error } = useQuery(GET_PENDING_WITHDRAWALS, {});
-
-  const [loadHistory, { loading: historyLoading, data: historyData }] = useLazyQuery(GET_WITHDRAWAL_HISTORY, {});
+  const [loaded, setLoaded] = useState(false);
+  const [getPendingWithdrawals, { loading, data }] = useLazyQuery(GET_PENDING_WITHDRAWALS, {
+    fetchPolicy: 'network-only',
+  });
 
   const handleClick = (data: any) => {
     history.push('/dashboard/admin/withdraw', { data: data });
   };
 
+  const loadData = async () => {
+    await getPendingWithdrawals();
+    await setLoaded(true);
+  };
+
   const renderManageWithdrawals = () => {
+    if (!loaded) loadData();
     if (loading) return <div></div>;
     if (data) {
       return (
@@ -34,53 +41,5 @@ export const PendingWithdrawList: React.FC = () => {
     }
   };
 
-  const renderHistory = () => {
-    if (historyLoading) return <div></div>;
-    return (
-      <div>
-        <p>History</p>
-        <div className="button-small primary" onClick={() => loadHistory()}>
-          <p>Load History</p>
-        </div>
-
-        {historyData &&
-          historyData.getWithdrawalHistory.map((transfer: any) => {
-            const isCoiinTransfer = transfer.ethAddress != null;
-            return (
-              <div className="withdraw-contianer" key={transfer.id}>
-                <div className="withdraw-item flex-reverse">
-                  <p className="amount paddin-right">{`${
-                    isCoiinTransfer ? transfer.amount + ' COIIN' : transfer.amount * 0.1 + ' USD'
-                  } `}</p>
-                </div>
-                <div className="withdraw-item flex-reverse">
-                  <p className="amount paddin-right">{`${transfer.withdrawStatus}`}</p>
-                </div>
-                <div className="withdraw-item flex-reverse">
-                  <p className="amount paddin-right">{`${transfer.withdrawStatus}`}</p>
-                </div>
-                <div className="withdraw-item flex-reverse">
-                  <p className="date padding-right">{`${new Date(
-                    parseInt(transfer.createdAt),
-                  ).toLocaleDateString()}`}</p>
-                  <p className="date padding-right">{`${new Date(
-                    parseInt(transfer.createdAt),
-                  ).toLocaleTimeString()}`}</p>
-                  <p className="date padding-right right">{`UTC`}</p>
-                </div>
-                <div className="address-container">
-                  <p className="amount right">{`${isCoiinTransfer ? transfer.ethAddress : transfer.paypalAddress} `}</p>
-                </div>
-              </div>
-            );
-          })}
-      </div>
-    );
-  };
-  return (
-    <div>
-      {renderManageWithdrawals()}
-      {renderHistory()}
-    </div>
-  );
+  return <div>{renderManageWithdrawals()}</div>;
 };
