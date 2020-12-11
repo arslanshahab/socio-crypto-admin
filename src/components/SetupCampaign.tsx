@@ -5,7 +5,6 @@ import { FaTicketAlt } from 'react-icons/fa';
 import coiin_yellow from '../assets/svg/icon_coiin_yellow copy.svg';
 import coiin_black from '../assets/svg/icon_coiin_black copy.svg';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
 import { updateCampaignState } from '../redux/slices/campaign';
 import { ReactSVG } from 'react-svg';
 
@@ -103,7 +102,6 @@ export const SetupCampaign: React.FC = () => {
                         margin={'normal'}
                         type="number"
                         onChange={(event) => {
-                          // handleCoiinBudget(event.target.value as string);
                           handleCampaignChange('coiinBudget', event.target.value as string);
                         }}
                       />
@@ -118,7 +116,6 @@ export const SetupCampaign: React.FC = () => {
                       margin={'normal'}
                       type="number"
                       onChange={(event) => {
-                        // handleUsdBudget(event.target.value as string);
                         handleCampaignChange('usdBudget', event.target.value as string);
                       }}
                     />
