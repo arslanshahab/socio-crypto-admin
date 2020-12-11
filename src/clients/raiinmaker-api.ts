@@ -31,7 +31,7 @@ export const sessionLogin = async () => {
 
 export const changePassword = async (password: string) => {
   const idToken = await getIdToken();
-  if (!idToken) throw Error('login failed');
+  if (!idToken) throw new Error('login failed');
   const url = `${apiURI}/v1/password`;
   return makeRequest(url, {
     method: 'PUT',
