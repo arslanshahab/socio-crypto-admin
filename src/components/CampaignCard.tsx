@@ -30,7 +30,11 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
   const getStatus = () => {
     const endDate = new Date(Number(campaign.endDate));
     const now = new Date();
-    return now < endDate ? <Typography>Open</Typography> : <Typography>Closed</Typography>;
+    return now < endDate ? (
+      <Typography component="div">Open</Typography>
+    ) : (
+      <Typography component="div">Closed</Typography>
+    );
   };
   const numberOfTiers = Object.keys(campaign.algorithm.tiers).length;
   const budget = campaign.algorithm.tiers[numberOfTiers].totalCoiins;
@@ -50,17 +54,19 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
         </Grid>
         <Grid item container xs={3}>
           <Grid item>
-            <Typography className="campaign-name">{campaign.name}</Typography>
+            <Typography component="div" className="campaign-name">
+              {campaign.name}
+            </Typography>
           </Grid>
         </Grid>
         <Grid container item xs={1}>
           <Grid item>
-            <Typography>{`$${budget}`}</Typography>
+            <Typography component="div">{`$${budget}`}</Typography>
           </Grid>
         </Grid>
         <Grid container item xs={1}>
           <Grid item>
-            <Typography>
+            <Typography component="div">
               {loadingStatus ? (
                 <p>loading...</p>
               ) : (
@@ -71,7 +77,7 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
         </Grid>
         <Grid container item xs={1}>
           <Grid item>
-            <Typography>
+            <Typography component="div">
               {loadingMetrics ? (
                 <p>loading...</p>
               ) : (
@@ -87,7 +93,7 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
         </Grid>
         <Grid container item xs={1}>
           <Grid item>
-            <Typography>
+            <Typography component="div">
               {loadingMetrics ? (
                 <p>loading...</p>
               ) : (
@@ -103,7 +109,7 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
         </Grid>
         <Grid container item xs={1}>
           <Grid item>
-            <Typography>
+            <Typography component="div">
               {loadingStatus ? (
                 <p>loading...</p>
               ) : (
@@ -114,7 +120,7 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
         </Grid>
         <Grid container item xs={1}>
           <Grid item>
-            <Typography>{loadingStatus ? <p>loading...</p> : <div>{getStatus()}</div>}</Typography>
+            <Typography component="div">{loadingStatus ? <p>loading...</p> : <div>{getStatus()}</div>}</Typography>
           </Grid>
         </Grid>
       </Grid>

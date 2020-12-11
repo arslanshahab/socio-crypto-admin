@@ -42,7 +42,6 @@
 }
 .button-container{
   margin: 15px;
-  
 }
 .requirement-button{
   margin:15px !important; // TODO REMOVE
@@ -144,5 +143,20 @@
       img{
         width: 100%;
       }
-      // min-width: 100px;
+    }
+
+    .kyc-image-container{
+      text-align: center;
+      .align-center{
+        text-align: center;
+      }
+      .inline{
+        display: inline-block;
+      }
+      .half{
+        width: 50%;
+      }
+      .kyc-image{
+        max-width: 300px;
+      }
     }

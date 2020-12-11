@@ -5,6 +5,8 @@ import { RootState } from '../../redux/reducer';
 import { updateCampaignState } from '../../redux/slices/campaign';
 import Modal from 'react-modal';
 import { MultiSelectList } from '../multiSelectList';
+import { Fade } from 'react-awesome-reveal';
+
 import {
   defaultAges,
   defaultCountries,
@@ -442,124 +444,140 @@ export const Requirements: React.FC = () => {
 
   return (
     <div className="init-campaign-container">
-      <div>
-        {renderAgeModal()}
-        {renderValuesModal()}
-        {renderSocialModal()}
-        {renderLocationModal()}
-        {renderInterestsModal()}
-        <div className="requirement-column">
-          <div className="requirement-row">
-            <div className="row-title-container">
-              <p className="row-title">Location Requirements</p>
-            </div>
-
-            <div className="row-button-container">
-              <Button className="row-button" color="primary" variant="contained" onClick={() => setShowLocation(true)}>
-                +
-              </Button>
-            </div>
-          </div>
-          <div className="requirement-display">
-            {requirements && requirements.city ? <li className="display-item">{requirements.city}</li> : <div />}
-            {requirements && requirements.state ? <li className="display-item">{requirements.state}</li> : <div />}
-            {requirements && requirements.country ? <li className="display-item">{requirements.country}</li> : <div />}
-          </div>
-        </div>
-        <div className="requirement-column">
-          <div className="requirement-row">
-            <div className="row-title-container">
-              <p className="row-title">Age Requirements</p>
-            </div>
-
-            <div className="row-button-container">
-              <Button className="row-button" color="primary" variant="contained" onClick={() => setShowAge(true)}>
-                +
-              </Button>
-            </div>
-          </div>
-          <div className="requirement-display">
-            {<div className="age-range-display-container">{renderAgeRangeDisplay()}</div>}
-          </div>
-        </div>
-        <div className="requirement-column">
-          <div className="requirement-row">
-            <div className="row-title-container">
-              <p className="row-title">Values Requirements</p>
-            </div>
-
-            <div className="row-button-container">
-              <Button className="row-button" color="primary" variant="contained" onClick={() => setShowValues(true)}>
-                +
-              </Button>
-            </div>
-          </div>
-          <div className="requirement-display">
-            {requirements && requirements.values ? (
-              <div>
-                {requirements.values.map((value) => {
-                  return (
-                    <li key={value} className="display-item">
-                      {value}
-                    </li>
-                  );
-                })}
+      <Fade>
+        <div>
+          {renderAgeModal()}
+          {renderValuesModal()}
+          {renderSocialModal()}
+          {renderLocationModal()}
+          {renderInterestsModal()}
+          <div className="requirement-column">
+            <div className="requirement-row">
+              <div className="row-title-container">
+                <p className="row-title">Location Requirements</p>
               </div>
-            ) : (
-              <div />
-            )}
-          </div>
-        </div>
-        <div className="requirement-column">
-          <div className="requirement-row">
-            <div className="row-title-container">
-              <p className="row-title">Interests Requirements</p>
-            </div>
 
-            <div className="row-button-container">
-              <Button className="row-button" color="primary" variant="contained" onClick={() => setShowInterests(true)}>
-                +
-              </Button>
-            </div>
-          </div>
-          <div className="requirement-display">
-            {requirements && requirements.interests ? (
-              <div>
-                {' '}
-                {requirements.interests.map((interests) => {
-                  return (
-                    <li key={interests} className="display-item">
-                      {interests}
-                    </li>
-                  );
-                })}
+              <div className="row-button-container">
+                <Button
+                  className="row-button"
+                  color="primary"
+                  variant="contained"
+                  onClick={() => setShowLocation(true)}
+                >
+                  +
+                </Button>
               </div>
-            ) : (
-              <div />
-            )}
-          </div>
-        </div>
-        <div className="requirement-column">
-          <div className="requirement-row">
-            <div className="row-title-container">
-              <p className="row-title">Social Requirements</p>
             </div>
+            <div className="requirement-display">
+              {requirements && requirements.city ? <li className="display-item">{requirements.city}</li> : <div />}
+              {requirements && requirements.state ? <li className="display-item">{requirements.state}</li> : <div />}
+              {requirements && requirements.country ? (
+                <li className="display-item">{requirements.country}</li>
+              ) : (
+                <div />
+              )}
+            </div>
+          </div>
+          <div className="requirement-column">
+            <div className="requirement-row">
+              <div className="row-title-container">
+                <p className="row-title">Age Requirements</p>
+              </div>
 
-            <div className="row-button-container">
-              <Button className="row-button" color="primary" variant="contained" onClick={() => setShowSocial(true)}>
-                +
-              </Button>
+              <div className="row-button-container">
+                <Button className="row-button" color="primary" variant="contained" onClick={() => setShowAge(true)}>
+                  +
+                </Button>
+              </div>
+            </div>
+            <div className="requirement-display">
+              {<div className="age-range-display-container">{renderAgeRangeDisplay()}</div>}
             </div>
           </div>
-          <div className="requirement-display">
-            {requirements && requirements.socialFollowing && requirements.socialFollowing.twitter ? (
-              <li className="display-item">{requirements.socialFollowing.twitter.minFollower.toString()}</li>
-            ) : (
-              <div />
-            )}
+          <div className="requirement-column">
+            <div className="requirement-row">
+              <div className="row-title-container">
+                <p className="row-title">Values Requirements</p>
+              </div>
+
+              <div className="row-button-container">
+                <Button className="row-button" color="primary" variant="contained" onClick={() => setShowValues(true)}>
+                  +
+                </Button>
+              </div>
+            </div>
+            <div className="requirement-display">
+              {requirements && requirements.values ? (
+                <div>
+                  {requirements.values.map((value) => {
+                    return (
+                      <li key={value} className="display-item">
+                        {value}
+                      </li>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div />
+              )}
+            </div>
           </div>
-        </div>{' '}
-      </div>
+          <div className="requirement-column">
+            <div className="requirement-row">
+              <div className="row-title-container">
+                <p className="row-title">Interests Requirements</p>
+              </div>
+
+              <div className="row-button-container">
+                <Button
+                  className="row-button"
+                  color="primary"
+                  variant="contained"
+                  onClick={() => setShowInterests(true)}
+                >
+                  +
+                </Button>
+              </div>
+            </div>
+            <div className="requirement-display">
+              {requirements && requirements.interests ? (
+                <div>
+                  {' '}
+                  {requirements.interests.map((interests) => {
+                    return (
+                      <li key={interests} className="display-item">
+                        {interests}
+                      </li>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div />
+              )}
+            </div>
+          </div>
+          <div className="requirement-column">
+            <div className="requirement-row">
+              <div className="row-title-container">
+                <p className="row-title">Social Requirements</p>
+              </div>
+
+              <div className="row-button-container">
+                <Button className="row-button" color="primary" variant="contained" onClick={() => setShowSocial(true)}>
+                  +
+                </Button>
+              </div>
+            </div>
+            <div className="requirement-display">
+              {requirements && requirements.socialFollowing && requirements.socialFollowing.twitter ? (
+                <li className="display-item">{requirements.socialFollowing.twitter.minFollower.toString()}</li>
+              ) : (
+                <div />
+              )}
+            </div>
+          </div>{' '}
+        </div>
+      </Fade>
     </div>
   );
 };

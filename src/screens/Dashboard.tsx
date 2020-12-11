@@ -149,7 +149,7 @@ export const Dashboard: React.FC = (props) => {
                   <MenuIcon />
                 </IconButton>
                 <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'white' }}>
-                  <Typography variant="h6" noWrap>
+                  <Typography component="div" variant="h6" noWrap>
                     Dashboard
                   </Typography>
                 </Link>
@@ -268,7 +268,7 @@ export const Dashboard: React.FC = (props) => {
                   <CampaignsList />
                 </ProtectedRoute>
                 <ProtectedRoute exact path={'/dashboard/newCampaign'}>
-                  <NewCampaign />
+                  <NewCampaign userData={value} {...props} />
                 </ProtectedRoute>
                 <ProtectedRoute exact path={'/dashboard/marketData'}>
                   <MarketData />

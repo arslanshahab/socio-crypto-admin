@@ -85,28 +85,30 @@ export const CampaignsList: React.FC = () => {
       <Paper className="campaign-row">
         <Grid container spacing={5}>
           <Grid item container xs={1}>
-            <Typography>Select</Typography>
+            <Typography component="div">Select</Typography>
           </Grid>
           <Grid item container xs={3}>
-            <Typography className="campaign-name">Campaign</Typography>
+            <Typography component="div" className="campaign-name">
+              Campaign
+            </Typography>
           </Grid>
           <Grid item container xs={1}>
-            <Typography>Budget</Typography>
+            <Typography component="div">Budget</Typography>
           </Grid>
           <Grid item container xs={1}>
-            <Typography>Tier</Typography>
+            <Typography component="div">Tier</Typography>
           </Grid>
           <Grid item container xs={1}>
-            <Typography>Discovery Actions</Typography>
+            <Typography component="div">Discovery Actions</Typography>
           </Grid>
           <Grid item container xs={1}>
-            <Typography>Conversion Actions</Typography>
+            <Typography component="div">Conversion Actions</Typography>
           </Grid>
           <Grid item container xs={1}>
-            <Typography>Cost</Typography>
+            <Typography component="div">Cost</Typography>
           </Grid>
           <Grid item container xs={1}>
-            <Typography>Status</Typography>
+            <Typography component="div">Status</Typography>
           </Grid>
         </Grid>
       </Paper>

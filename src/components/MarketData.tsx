@@ -32,47 +32,47 @@ export const MarketData: React.FC = () => {
         <Grid container justify={'center'}>
           <Grid container item justify={'flex-end'} direction={'column'} xs={2}>
             <Grid item>
-              <Typography>
+              <Typography component="div">
                 {loading ? <p>loading...</p> : <div>{data && data.getTotalPlatformMetrics.participantCount}</div>}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography>INFs</Typography>
+              <Typography component="div">INFs</Typography>
             </Grid>
           </Grid>
           <Grid container item justify={'center'} direction={'column'} xs={2}>
             <Grid item>
-              <Typography>
+              <Typography component="div">
                 {loading ? <p>loading...</p> : <div>{data && data.getTotalPlatformMetrics.postCount}</div>}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography>POSTs</Typography>
+              <Typography component="div">POSTs</Typography>
             </Grid>
           </Grid>
           <Grid container item justify={'center'} direction={'column'} xs={2}>
             <Grid item>
-              <Typography>
+              <Typography component="div">
                 {loading ? <p>loading...</p> : <div>{data && data.getTotalPlatformMetrics.discoveryCount}</div>}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography>DAs</Typography>
+              <Typography component="div">DAs</Typography>
             </Grid>
           </Grid>
           <Grid container item justify={'center'} direction={'column'} xs={2}>
             <Grid item>
-              <Typography>
+              <Typography component="div">
                 {loading ? <p>loading...</p> : <div>{data && data.getTotalPlatformMetrics.conversionCount}</div>}
               </Typography>
             </Grid>
             <Grid item>
-              <Typography>CAs</Typography>
+              <Typography component="div">CAs</Typography>
             </Grid>
           </Grid>
           <Grid container item justify={'center'} direction={'column'} xs={2}>
             <Grid item>
-              <Typography>
+              <Typography component="div">
                 {loading ? (
                   <p>loading...</p>
                 ) : (
@@ -83,7 +83,7 @@ export const MarketData: React.FC = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Typography>Reach</Typography>
+              <Typography component="div">Reach</Typography>
             </Grid>
           </Grid>
         </Grid>
@@ -118,7 +118,9 @@ export const MarketData: React.FC = () => {
         <Grid container item xs={6} justify={'flex-end'}>
           <Grid item>
             <Paper className="market-data-tile">
-              <Typography variant={'h5'}>Influencer Trends</Typography>
+              <Typography component="div" variant={'h5'}>
+                Influencer Trends
+              </Typography>
               {
                 <PlatformGraph
                   dataType={'participantCount'}
@@ -133,7 +135,9 @@ export const MarketData: React.FC = () => {
         <Grid container item xs={6}>
           <Grid item>
             <Paper className="market-data-tile">
-              <Typography variant={'h5'}>Discovery Trends</Typography>
+              <Typography component="div" variant={'h5'}>
+                Discovery Trends
+              </Typography>
               <PlatformGraph
                 dataType={'totalDiscoveries'}
                 timeFilter={timeFilter}
@@ -148,7 +152,9 @@ export const MarketData: React.FC = () => {
         <Grid container item xs={6} justify={'flex-end'}>
           <Grid item>
             <Paper className="market-data-tile">
-              <Typography variant={'h5'}>Conversion Trends</Typography>
+              <Typography component="div" variant={'h5'}>
+                Conversion Trends
+              </Typography>
               <PlatformGraph
                 dataType={'totalConversions'}
                 timeFilter={timeFilter}
@@ -161,7 +167,9 @@ export const MarketData: React.FC = () => {
         <Grid container item xs={6}>
           <Grid item>
             <Paper className="market-data-tile">
-              <Typography variant={'h5'}>Sharing Trends</Typography>
+              <Typography component="div" variant={'h5'}>
+                Sharing Trends
+              </Typography>
               <PlatformGraph dataType={'shareCount'} timeFilter={timeFilter} startDate={startDate} endDate={endDate} />
             </Paper>
           </Grid>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { ADMIN_GET_KYC_BY_USER, UPDATE_KYC_STATUS, UPDATE_WITHDRAWAL_STATUS } from '../../operations/queries/admin';
+import { ErrorCard } from '../Error';
 import { TabPanel } from '../TabPanel';
 import { AppBar, CircularProgress, Tab, Tabs } from '@material-ui/core';
 import { FaRegCheckSquare, FaCheckSquare } from 'react-icons/fa';
+import { useHistory } from 'react-router';
 
 interface Props {
   location?: {
@@ -21,12 +23,15 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
     selected: string[];
     selectedKycStatus: string;
     selectedWithdrawStatus: string;
+    error: string;
   }
   const [state, setState] = useState<StateInterface>({
     selected: [],
     selectedKycStatus: '',
     selectedWithdrawStatus: '',
+    error: '',
   });
+  const history = useHistory();
   const [withdrawData, setWithdrawData] = useState(props.location != null ? props.location.state.data : null);
   const [value, setValue] = useState(0);
   const [getKyc, { loading, data }] = useLazyQuery(ADMIN_GET_KYC_BY_USER, {
@@ -36,9 +41,12 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
     variables: { userId: withdrawData.user.id, status: state.selectedKycStatus },
   });
 
-  const [updateWithdraw, { data: updateWithdrawData }] = useMutation(UPDATE_WITHDRAWAL_STATUS, {
-    variables: { transferIds: state.selected, status: state.selectedWithdrawStatus },
-  });
+  const [updateWithdraw, { data: updateWithdrawData, error: updateWithdrawError }] = useMutation(
+    UPDATE_WITHDRAWAL_STATUS,
+    {
+      variables: { transferIds: state.selected, status: state.selectedWithdrawStatus },
+    },
+  );
 
   function a11yProps(index: any) {
     return {
@@ -53,14 +61,27 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
   };
 
   const handleSubmitKyc = async (status: string) => {
-    setState({ ...state, selectedKycStatus: status });
+    await setState({ ...state, selectedKycStatus: status });
     await updateKyc();
     getKyc();
+    history.push('/dashboard/admin');
+  };
+
+  const displayError = (data: string) => {
+    setState({ ...state, error: data });
+  };
+
+  const closeError = () => {
+    setState({ ...state, error: '' });
   };
 
   const handleSubmitWithdraw = async (status: string) => {
-    setState({ ...state, selectedWithdrawStatus: status });
-    await updateWithdraw();
+    try {
+      await setState({ ...state, selectedWithdrawStatus: status });
+      await updateWithdraw();
+    } catch (e) {
+      displayError(e.message);
+    }
   };
 
   const handleSelectWithdrawal = (id: string) => {
@@ -78,7 +99,6 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
   const renderManageWithdrawals = () => {
     return (
       <div>
-        <p></p>
         <AppBar position="static">
           <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
             <Tab label="Withdraw" {...a11yProps(0)} />
@@ -106,27 +126,44 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
               </div>
               <div className="card">
                 {withdrawData.transfers.map((transfer: any) => {
+                  const isCoiinTransfer = transfer.ethAddress != null;
                   if (transfer.action == 'withdraw')
                     return (
-                      <div
-                        className="withdraw-item"
-                        key={transfer.id}
-                        onClick={() => handleSelectWithdrawal(transfer.id)}
-                      >
-                        <div className="checkbox">
-                          {state.selected.includes(transfer.id) ? (
-                            <FaCheckSquare></FaCheckSquare>
-                          ) : (
-                            <FaRegCheckSquare></FaRegCheckSquare>
-                          )}
+                      <div className="withdraw-container">
+                        <div
+                          className="withdraw-item"
+                          key={transfer.id}
+                          onClick={() => handleSelectWithdrawal(transfer.id)}
+                        >
+                          <div className="checkbox">
+                            {state.selected.includes(transfer.id) ? (
+                              <FaCheckSquare></FaCheckSquare>
+                            ) : (
+                              <FaRegCheckSquare></FaRegCheckSquare>
+                            )}
+                          </div>
+                          <p className="date padding-right">{`${new Date(
+                            parseInt(transfer.createdAt),
+                          ).toLocaleDateString()}`}</p>
+                          <p className="date padding-right">{`${new Date(
+                            parseInt(transfer.createdAt),
+                          ).toLocaleTimeString()}`}</p>
+                          <p className="date padding-right">{`UTC`}</p>
+                          <p className="amount">{`${
+                            isCoiinTransfer ? transfer.amount + 'COIIN' : transfer.amount * 0.1 + 'USD'
+                          } `}</p>
                         </div>
-                        <p className="date">{`${new Date(parseInt(transfer.createdAt))}`}</p>
-                        <p className="amount">{`${transfer.amount} COIIN`}</p>
+                        <div className="address-container">
+                          <p className="amount right">{`${
+                            isCoiinTransfer ? transfer.ethAddress : transfer.paypalAddress
+                          } `}</p>
+                        </div>
                       </div>
                     );
                 })}
               </div>
             </div>
+            {state.error.length ? <ErrorCard close={closeError} data={state.error}></ErrorCard> : <div />}
             <div className="submit-buttons">
               <div onClick={() => handleSubmitWithdraw('reject')} className="reject button">
                 <p>Reject Selected</p>
@@ -180,6 +217,20 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
               <div className="flex-display">
                 <p>Zip</p>
                 <p className="flex-item right">{data.adminGetKycByUser.address.zip}</p>
+              </div>
+              <div className="kyc-image-container">
+                <div className="half inline">
+                  <div>
+                    <p>Address Photo Proof</p>
+                  </div>
+                  <img className="kyc-image" src={'data:image/png;base64,' + data.adminGetKycByUser.addressProof}></img>
+                </div>
+                <div className="half inline">
+                  <div>
+                    <p>Address Photo Proof</p>
+                  </div>
+                  <img className="kyc-image" src={'data:image/png;base64,' + data.adminGetKycByUser.idProof}></img>
+                </div>
               </div>
             </div>
           ) : (
