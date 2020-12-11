@@ -276,33 +276,25 @@ export const Dashboard: React.FC = (props) => {
                 <ProtectedRoute exact path={'/dashboard/paymentsAccount'}>
                   <PaymentsAccount />
                 </ProtectedRoute>
-                {value['role'] === 'admin' ? (
+                {value['role'] === 'admin' && (
                   <ProtectedRoute exact path={'/dashboard/admin/userManagement'}>
                     <UserManagement {...props} />
                   </ProtectedRoute>
-                ) : (
-                  <div />
                 )}
-                {value['company'] === 'raiinmaker' ? (
+                {value['company'] === 'raiinmaker' && (
                   <ProtectedRoute exact path={'/dashboard/admin'} adminOnly={true}>
                     <Admin />
                   </ProtectedRoute>
-                ) : (
-                  <div />
                 )}
-                {value['company'] === 'raiinmaker' ? (
+                {value['company'] === 'raiinmaker' && (
                   <ProtectedRoute exact path={'/dashboard/admin/withdraw'} adminOnly={true}>
                     <ManageWithdrawRequests {...props} />
                   </ProtectedRoute>
-                ) : (
-                  <div />
                 )}
-                {value['company'] === 'raiinmaker' ? (
+                {value['company'] === 'raiinmaker' && (
                   <ProtectedRoute exact path={'/dashboard/admin/campaign-audit'} adminOnly={true}>
                     <CampaignAudit {...props} />
                   </ProtectedRoute>
-                ) : (
-                  <div />
                 )}
               </Switch>
             </main>
