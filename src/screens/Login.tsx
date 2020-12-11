@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { fireClient, getAuthPersistence } from '../clients/firebase';
-import { Button, Grid, Paper, TextField } from '@material-ui/core';
+import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { sessionLogin } from '../clients/raiinmaker-api';
-import { ReactSVG } from 'react-svg';
+import { ChangePasswordDialog } from '../components/ChangePasswordDialog';
 
 interface UserData {
   email: string;
@@ -12,14 +12,11 @@ interface UserData {
 
 export const Login: React.FC = () => {
   const history = useHistory();
+  const [changePassword, setChangePassword] = React.useState(false);
   const [values, setValues] = useState({
     email: '',
     password: '',
   } as UserData);
-
-  const handleClick = () => {
-    history.push('/register');
-  };
 
   const handleChange = (event: any) => {
     event.persist();
@@ -34,9 +31,10 @@ export const Login: React.FC = () => {
     try {
       await fireClient.auth().setPersistence(getAuthPersistence);
       await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
-      const res = await sessionLogin();
-      if (res.status === 200) {
-        history.push('/dashboard/campaigns');
+      const { status, body } = await sessionLogin();
+      if (status === 200) {
+        if (body.resetPass) setChangePassword(true);
+        else history.push('/dashboard/campaigns');
       } else {
         throw Error('invalid login');
       }
@@ -46,35 +44,46 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <Grid container className="login-layout" justify={'center'}>
-      <Grid item>
-        <ReactSVG className="logo" src="/src/assets/svg/logo_banner.svg" />
+    <div>
+      <ChangePasswordDialog open={changePassword} setOpen={setChangePassword} email={values.email} />
+      <Grid
+        container
+        className="login-layout"
+        justify={'center'}
+        direction={'column'}
+        alignItems={'center'}
+        alignContent={'center'}
+      >
+        <Grid item>
+          <Paper className="login-form">
+            <form>
+              <Typography>Login</Typography>
+              <div>
+                <TextField
+                  required
+                  type="text"
+                  name="email"
+                  label="Email"
+                  placeholder="Email"
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <TextField
+                  type="password"
+                  name="password"
+                  label="Password"
+                  placeholder="Password"
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <Button onClick={handleSubmit}>Login</Button>
+              </div>
+            </form>
+          </Paper>
+        </Grid>
       </Grid>
-      <Grid item>
-        <div>
-          <form className="login-form">
-            <h1>Login</h1>
-            <div>
-              <TextField required type="text" name="email" label="Email" placeholder="Email" onChange={handleChange} />
-            </div>
-            <div>
-              <TextField
-                type="password"
-                name="password"
-                label="Password"
-                placeholder="Password"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Button onClick={handleSubmit}>Login</Button>
-            </div>
-            <div>
-              <Button onClick={handleClick}>Register</Button>
-            </div>
-          </form>
-        </div>
-      </Grid>
-    </Grid>
+    </div>
   );
 };

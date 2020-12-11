@@ -103,3 +103,37 @@ export const ADMIN_LIST_CAMPAIGN_QUERY = gql`
     }
   }
 `;
+
+export const LIST_ORGS = gql`
+  query listOrgs($skip: Int, $take: Int) {
+    listOrgs(skip: $skip, take: $take) {
+      name
+    }
+  }
+`;
+
+export const UPDATE_PASSWORD = gql`
+  mutation updatePassword($password: String!) {
+    updatePassword(password: $password)
+  }
+`;
+
+export const LIST_EMPLOYEES = gql`
+  query listEmployees {
+    listEmployees {
+      name
+    }
+  }
+`;
+
+export const NEW_USER = gql`
+  mutation newUser($name: String!, $email: String!) {
+    newUser(name: $name, email: $email)
+  }
+`;
+
+export const NEW_ORG = gql`
+  mutation newOrg($orgName: String!, $email: String!, $name: String!) {
+    newOrg(orgName: $orgName, email: $email, name: $name)
+  }
+`;

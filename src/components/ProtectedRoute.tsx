@@ -3,7 +3,7 @@ import { Redirect, Route, RouteProps, useHistory } from 'react-router';
 import { useQuery } from '@apollo/client';
 import { VERIFY_SESSION } from '../operations/queries/firebase';
 
-export const UserContext = React.createContext({ role: null, company: null });
+export const UserContext = React.createContext({ role: null, company: null, tempPass: null });
 
 interface Props extends RouteProps {
   adminOnly?: boolean;
