@@ -72,13 +72,15 @@ export const PaymentsAccount: React.FC = () => {
           <Grid container item direction={'column'} justify={'center'} spacing={2}>
             <Grid container item>
               <Grid item xs={4}>
-                <Typography variant={'h4'}>Payments Account</Typography>
+                <Typography component="div" variant={'h4'}>
+                  Payments Account
+                </Typography>
               </Grid>
               <Grid item xs={6} />
               <Grid item xs={2} container>
-                <Typography>Balance: {renderWalletBalance()}</Typography>
+                <Typography component="div">Balance: {renderWalletBalance()}</Typography>
                 <Button variant={'contained'} size={'small'} color={'primary'} onClick={handleClickOpen}>
-                  <Typography>Buy Coiin</Typography>
+                  <Typography component="div">Buy Coiin</Typography>
                 </Button>
                 <Dialog
                   fullScreen={fullScreen}
@@ -107,13 +109,15 @@ export const PaymentsAccount: React.FC = () => {
               </Grid>
               <Grid item xs={12} sm container>
                 <Grid item xs container direction={'column'} spacing={2}>
-                  <Typography>How you pay</Typography>
-                  <Typography>Coiin</Typography>
+                  <Typography component="div">How you pay</Typography>
+                  <Typography component="div">Coiin</Typography>
                 </Grid>
               </Grid>
             </Grid>
             <Grid item>
-              <Typography>To manage other forms of payments, please contact your account manager.</Typography>
+              <Typography component="div">
+                To manage other forms of payments, please contact your account manager.
+              </Typography>
             </Grid>
           </Grid>
         </Paper>
@@ -122,10 +126,14 @@ export const PaymentsAccount: React.FC = () => {
         <Paper className="ethereum-address-list">
           <Grid item container className="ethereum-address-list-header">
             <Grid item xs={7}>
-              <Typography variant={'h6'}>Ethereum Addresses</Typography>
+              <Typography component="div" variant={'h6'}>
+                Ethereum Addresses
+              </Typography>
             </Grid>
             <Grid item xs={1}>
-              <Typography variant={'h6'}>Claimed</Typography>
+              <Typography component="div" variant={'h6'}>
+                Claimed
+              </Typography>
             </Grid>
           </Grid>
           {loading ? (
@@ -163,22 +171,30 @@ export const PaymentsAccount: React.FC = () => {
       <Grid item xs={7}>
         <Paper className="payments-account-history">
           <Grid item>
-            <Typography className="payments-account-history-header" variant={'h5'}>
+            <Typography component="div" className="payments-account-history-header" variant={'h5'}>
               Transaction History
             </Typography>
           </Grid>
           <Grid item container>
             <Grid item xs={1}>
-              <Typography variant={'h6'}>Action</Typography>
+              <Typography component="div" variant={'h6'}>
+                Action
+              </Typography>
             </Grid>
             <Grid item xs={2}>
-              <Typography variant={'h6'}>Amount</Typography>
+              <Typography component="div" variant={'h6'}>
+                Amount
+              </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant={'h6'}>ETH Address</Typography>
+              <Typography component="div" variant={'h6'}>
+                ETH Address
+              </Typography>
             </Grid>
             <Grid item xs={3}>
-              <Typography variant={'h6'}>Date</Typography>
+              <Typography component="div" variant={'h6'}>
+                Date
+              </Typography>
             </Grid>
           </Grid>
           <Grid item>

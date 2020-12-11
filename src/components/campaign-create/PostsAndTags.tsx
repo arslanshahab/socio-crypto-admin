@@ -3,8 +3,10 @@ import { Grid, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { updateCampaignState } from '../../redux/slices/campaign';
+import { Fade } from 'react-awesome-reveal';
 
 export const PostsAndTags: React.FC = () => {
+  const campaign = useSelector((state: RootState) => state.newCampaign);
   const numOfPosts = useSelector((state: RootState) => state.newCampaign.config.numOfSuggestedPosts);
   const dispatch = useDispatch();
   const handlePostsChange = (event: any) => {
@@ -37,7 +39,7 @@ export const PostsAndTags: React.FC = () => {
                 multiline
                 fullWidth
                 rows={5}
-                defaultValue="Suggested Post"
+                placeholder={`Check out ${campaign.name}...`}
                 variant="outlined"
                 onChange={handlePostsChange}
               />
@@ -51,21 +53,22 @@ export const PostsAndTags: React.FC = () => {
 
   return (
     <div className="init-campaign-container padding-top">
-      {renderSuggestedPosts().map((item) => item)}
-      <Grid container justify={'center'} xs={12}>
-        <Grid item className="form-item" xs={12} spacing={2}>
-          <TextField
-            fullWidth
-            label={'Suggested Tags (comma separated w/o hashtags)'}
-            name={'suggestedTags'}
-            placeholder={'Suggested tags'}
-            margin={'normal'}
-            onChange={handleTagsChange}
-            variant="outlined"
-            className="text-field"
-          />
+      <Fade>
+        {renderSuggestedPosts().map((item) => item)}
+        <Grid container justify={'center'} xs={12}>
+          <Grid item className="form-item" xs={12} spacing={2}>
+            <TextField
+              fullWidth
+              label={'Suggested Tags (comma separated w/o hashtags)'}
+              name={'suggestedTags'}
+              placeholder={'Suggested tags'}
+              onChange={handleTagsChange}
+              variant="outlined"
+              className="text-field"
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </Fade>
     </div>
   );
 };

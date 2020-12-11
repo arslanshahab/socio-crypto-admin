@@ -27,8 +27,8 @@ const initialState: CampaignState = {
   suggestedPosts: [],
   suggestedTags: [],
   config: {
-    numOfSuggestedPosts: 1,
-    numOfTiers: 1,
+    numOfSuggestedPosts: 2,
+    numOfTiers: 3,
     initialTotal: '',
   },
 };

@@ -64,6 +64,8 @@ export const GET_PENDING_WITHDRAWALS = gql`
         amount
         action
         createdAt
+        ethAddress
+        paypalAddress
       }
       user {
         id
@@ -72,6 +74,20 @@ export const GET_PENDING_WITHDRAWALS = gql`
       }
       totalPendingWithdrawal
       totalAnnualWithdrawn
+    }
+  }
+`;
+
+export const GET_WITHDRAWAL_HISTORY = gql`
+  query getWithdrawalHistory {
+    getWithdrawalHistory {
+      id
+      amount
+      action
+      withdrawStatus
+      createdAt
+      ethAddress
+      paypalAddress
     }
   }
 `;

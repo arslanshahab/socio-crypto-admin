@@ -17,16 +17,16 @@ export const TransferCard: React.FC<Props> = ({ transfer }) => {
   return (
     <Grid container style={{ marginBottom: '5px' }} className="payments-account-history-item">
       <Grid item xs={1}>
-        <Typography>{actionCap}</Typography>
+        <Typography component="div">{actionCap}</Typography>
       </Grid>
       <Grid item xs={2}>
-        <Typography>{amount}</Typography>
+        <Typography component="div">{amount}</Typography>
       </Grid>
       <Grid item xs={6}>
-        <Typography>{ethAddress}</Typography>
+        <Typography component="div">{ethAddress}</Typography>
       </Grid>
       <Grid item xs={3}>
-        <Typography>{friendlyTimeStamp}</Typography>
+        <Typography component="div">{friendlyTimeStamp}</Typography>
       </Grid>
     </Grid>
   );

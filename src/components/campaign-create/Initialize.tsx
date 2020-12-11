@@ -1,14 +1,39 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCampaignState } from '../../redux/slices/campaign';
 import { RootState } from '../../redux/reducer';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { ReactSVG } from 'react-svg';
+import { Fade } from 'react-awesome-reveal';
+
 import icon from '../../assets/svg/camera.svg';
 
-export const Initialize: React.FC = () => {
+interface Props {
+  userData: {
+    company: string;
+  };
+}
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      marginLeft: 5,
+      marginRight: 5,
+      paddingTop: 5,
+      paddingBottom: 5,
+    },
+  }),
+);
+
+export const Initialize: React.FC<Props> = (props) => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const beginDate = useSelector((state: RootState) => state.newCampaign.beginDate);
   const campaign = useSelector((state: RootState) => state.newCampaign);
@@ -58,177 +83,167 @@ export const Initialize: React.FC = () => {
       getBase64(files[0]);
     }
   };
-
   return (
-    <div className="init-campaign-container">
-      <Grid container className="form-container" direction={'column'}>
-        <div className="image-upload-container">
-          <label htmlFor="single">
-            <div>
-              {campaign.image ? (
-                <div className="image-preview">
-                  <img src={campaign.image}></img>
-                </div>
-              ) : (
-                <ReactSVG src={icon} color="#3B5998" />
-              )}
-            </div>
-          </label>
-          <input className="hidden" type="file" id="single" onChange={handleImage} />
-        </div>
-        <div className="margin-bottom">
-          <Grid container item xs={12} spacing={3}>
-            <Grid container item xs={6}>
-              <TextField
-                label={'Name of Campaign'}
-                name={'name'}
-                placeholder={'name'}
-                fullWidth
-                variant="outlined"
-                margin={'normal'}
-                onChange={handleCampaignChange}
-              />
+    <Fade>
+      <div className="init-campaign-container">
+        <Grid container className="form-container" direction={'column'}>
+          <div className="image-upload-container">
+            <label htmlFor="single">
+              <div>
+                {campaign.image ? (
+                  <div className="image-preview">
+                    <img src={campaign.image}></img>
+                  </div>
+                ) : (
+                  <ReactSVG src={icon} color="#3B5998" />
+                )}
+              </div>
+            </label>
+            <input className="hidden" type="file" id="single" onChange={handleImage} />
+          </div>
+          <div className="margin-bottom">
+            <Grid container item xs={12} spacing={3}>
+              <Grid container item xs={6}>
+                <TextField
+                  label={'Name of Campaign'}
+                  name={'name'}
+                  placeholder={'name'}
+                  fullWidth
+                  variant="outlined"
+                  margin={'normal'}
+                  onChange={handleCampaignChange}
+                />
+              </Grid>
+              <Grid container item xs={6}>
+                <TextField
+                  fullWidth
+                  label={'Company Name'}
+                  variant="outlined"
+                  name={'company'}
+                  placeholder={'Company Name'}
+                  margin={'normal'}
+                  defaultValue={props.userData ? props.userData.company : null}
+                  onChange={handleCampaignChange}
+                  className="text-field"
+                />
+              </Grid>
             </Grid>
-            <Grid container item xs={6}>
-              <TextField
-                fullWidth
-                label={'Company Name'}
-                variant="outlined"
-                name={'company'}
-                placeholder={'Company Name'}
-                margin={'normal'}
-                onChange={handleCampaignChange}
-                className="text-field"
-              />
+          </div>
+          <div className="margin-bottom">
+            <Grid container item xs={12} spacing={3}>
+              <Grid container item xs={6}>
+                <TextField
+                  fullWidth
+                  label={'Landing Page URL'}
+                  name={'target'}
+                  placeholder={'Landing Page URL'}
+                  margin={'normal'}
+                  variant="outlined"
+                  onChange={handleCampaignChange}
+                  className="text-field"
+                />
+              </Grid>
+              <Grid container item xs={6}>
+                <TextField
+                  label={'Landing Page Video URL'}
+                  name={'targetVideo'}
+                  placeholder={'Landing Page Video URL'}
+                  margin={'normal'}
+                  onChange={handleCampaignChange}
+                  fullWidth
+                  variant="outlined"
+                  className="text-field"
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
-        <div className="margin-bottom">
-          <Grid container item xs={12} spacing={3}>
-            <Grid container item xs={6}>
-              <TextField
-                fullWidth
-                label={'Landing Page URL'}
-                name={'target'}
-                placeholder={'Landing Page URL'}
-                margin={'normal'}
-                variant="outlined"
-                onChange={handleCampaignChange}
-                className="text-field"
-              />
+          </div>
+          <div className="margin-bottom">
+            <Grid container item xs={12} spacing={3}>
+              <Grid container item xs={6} spacing={0}>
+                <TextField
+                  label={'How many tiers (1-10)'}
+                  fullWidth
+                  variant="outlined"
+                  name={'numOfTiers'}
+                  defaultValue={3}
+                  placeholder={'How many tiers'}
+                  margin={'normal'}
+                  onChange={handleConfigChange}
+                  className="text-field"
+                />
+              </Grid>
+              <Grid container item xs={6} spacing={0}>
+                <TextField
+                  label={'# of post templates'}
+                  name={'numOfSuggestedPosts'}
+                  placeholder={'How many suggested posts?'}
+                  margin={'normal'}
+                  defaultValue={2}
+                  type="number"
+                  onChange={handleConfigChange}
+                  className="text-field"
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
             </Grid>
-            <Grid container item xs={6}>
-              <TextField
-                label={'Landing Page Video URL'}
-                name={'targetVideo'}
-                placeholder={'Landing Page Video URL'}
-                margin={'normal'}
-                onChange={handleCampaignChange}
-                fullWidth
-                variant="outlined"
-                className="text-field"
-              />
+          </div>
+          <div className="margin-bottom">
+            <Grid container item xs={12} spacing={3}>
+              <Grid container item xs={6}>
+                <TextField
+                  label={'Campaign Tagline'}
+                  name={'tagline'}
+                  placeholder={'Campaign Tagline'}
+                  margin={'normal'}
+                  onChange={handleCampaignChange}
+                  className="text-field no-top-margin"
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid container item xs={6}>
+                <TextField
+                  label="Description"
+                  name="Description"
+                  onChange={handleCampaignChange}
+                  multiline
+                  rows={5}
+                  fullWidth
+                  variant="outlined"
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
-        <div className="margin-bottom">
-          <Grid container item xs={12} spacing={3}>
-            <Grid container item xs={6} spacing={0}>
-              <TextField
-                label={'How many tiers (1-10)'}
-                fullWidth
-                variant="outlined"
-                name={'numOfTiers'}
-                placeholder={'How many tiers'}
-                margin={'normal'}
-                onChange={handleConfigChange}
-                className="text-field"
-              />
-            </Grid>
-            <Grid container item xs={6} spacing={0}>
-              <TextField
-                label={'# of post templates'}
-                name={'numOfSuggestedPosts'}
-                placeholder={'How many suggested posts?'}
-                margin={'normal'}
-                onChange={handleConfigChange}
-                className="text-field"
-                fullWidth
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </div>
-        <div className="margin-bottom">
-          <Grid container item xs={12} spacing={3}>
-            <Grid container item xs={6}>
-              <TextField
-                label={'Initial Reward Offering'}
-                name={'initialTotal'}
-                placeholder={'Initial Reward Offering'}
-                margin={'normal'}
-                onChange={handleConfigChange}
-                fullWidth
-                variant="outlined"
-                className="text-field"
-              />
-            </Grid>
-            <Grid container item xs={6}>
-              <TextField
-                label={'Campaign Tagline'}
-                name={'tagline'}
-                placeholder={'Campaign Tagline'}
-                margin={'normal'}
-                onChange={handleCampaignChange}
-                className="text-field"
-                fullWidth
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </div>
+          </div>
+          <div className="margin-bottom">
+            <Grid container item xs={12} spacing={3}>
+              <Grid container item xs={6}>
+                <DateTimePicker
+                  value={beginDate || null}
+                  variant="dialog"
+                  fullWidth
+                  className={classes.textField}
+                  onChange={handleBeginDateChange}
+                  label="Beginning Date of Campaign"
+                  showTodayButton
+                />
+              </Grid>
 
-        <div className="margin-bottom">
-          <Grid container item xs={12} spacing={3}>
-            <Grid container item xs={6}>
-              <TextField
-                label="Description"
-                name="Description"
-                onChange={handleCampaignChange}
-                multiline
-                rows={5}
-                fullWidth
-                variant="outlined"
-              />
+              <Grid container item xs={6}>
+                <DateTimePicker
+                  fullWidth
+                  value={endDate || null}
+                  disablePast
+                  className={classes.textField}
+                  onChange={handleEndDateChange}
+                  label="Ending Date of Campaign"
+                  showTodayButton
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
-        <div className="margin-bottom">
-          <Grid container item xs={12} spacing={3}>
-            <Grid container item xs={6}>
-              <DateTimePicker
-                value={beginDate || null}
-                variant="dialog"
-                fullWidth
-                onChange={handleBeginDateChange}
-                label="Beginning Date of Campaign"
-                showTodayButton
-              />
-            </Grid>
-
-            <Grid container item xs={6}>
-              <DateTimePicker
-                fullWidth
-                value={endDate || null}
-                disablePast
-                onChange={handleEndDateChange}
-                label="Ending Date of Campaign"
-                showTodayButton
-              />
-            </Grid>
-          </Grid>
-        </div>
-      </Grid>
-    </div>
+          </div>
+        </Grid>
+      </div>
+    </Fade>
   );
 };

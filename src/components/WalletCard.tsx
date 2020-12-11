@@ -20,7 +20,7 @@ export const WalletCard: React.FC<Props> = ({ wallet }) => {
   const [web3Enabled, setWeb3Enabled] = useState(!!anyWindow.web3 && !!coinbase);
   if (anyWindow.web3) anyWindow.ethereum.on('accountsChanged', (a: any) => setCoinbase(a[0]));
   const isClaimed = () => {
-    return <Typography>{wallet.claimed ? 'Yes' : 'No'}</Typography>;
+    return <Typography component="div">{wallet.claimed ? 'Yes' : 'No'}</Typography>;
   };
   const web3 = async (message: string) => {
     anyWindow.web3.personal.sign(anyWindow.web3.fromUtf8(message), coinbase, (error: any, signature: string) => {
@@ -40,12 +40,12 @@ export const WalletCard: React.FC<Props> = ({ wallet }) => {
     if (web3Enabled && coinbase && address && coinbase.toLowerCase() === address.toLowerCase()) {
       return (
         <Button size={'small'} color={'primary'} variant={'contained'} onClick={() => web3(claimAmount)}>
-          <Typography>Claim</Typography>
+          <Typography component="div">Claim</Typography>
         </Button>
       );
     }
     if (web3Enabled) {
-      return <Typography>Select this address in metamask to claim</Typography>;
+      return <Typography component="div">Select this address in metamask to claim</Typography>;
     }
 
     return (
@@ -57,10 +57,10 @@ export const WalletCard: React.FC<Props> = ({ wallet }) => {
   return (
     <Grid container direction={'row'} className="ethereum-address-item">
       <Grid item xs={7}>
-        <Typography>{wallet && wallet.ethereumAddress}</Typography>
+        <Typography component="div">{wallet && wallet.ethereumAddress}</Typography>
       </Grid>
       <Grid item xs={2}>
-        <Typography>{isClaimed()}</Typography>
+        <Typography component="div">{isClaimed()}</Typography>
       </Grid>
       {!wallet.claimed && (
         <Grid item xs={3}>

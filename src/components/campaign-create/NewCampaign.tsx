@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';
 import { Requirements } from './Requirements';
+import { SetupCampaign } from '../SetupCampaign';
 
 const NEW_CAMPAIGN = gql(`
     mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String!, $image: String, $tagline: String!,  $requirements: JSON!, $suggestedPosts: [String], $suggestedTags: [String]) {
@@ -18,9 +19,13 @@ const NEW_CAMPAIGN = gql(`
   }
 `);
 
-export const NewCampaign: React.FC = () => {
+interface Props {
+  userData: any;
+}
+
+export const NewCampaign: React.FC<Props> = (props) => {
   const history = useHistory();
-  const steps = ['Info', 'Suggested Posts', 'Requirements', 'Algorithm'];
+  const steps = ['Getting Started', 'Info', 'Suggested Posts', 'Requirements', 'Algorithm'];
   const [activeStep, setActiveStep] = useState(0);
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
@@ -55,12 +60,14 @@ export const NewCampaign: React.FC = () => {
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <Initialize />;
+        return <SetupCampaign />;
       case 1:
-        return <PostsAndTags />;
+        return <Initialize {...props} />;
       case 2:
-        return <Requirements />;
+        return <PostsAndTags />;
       case 3:
+        return <Requirements />;
+      case 4:
         return <Algorithm />;
     }
   };

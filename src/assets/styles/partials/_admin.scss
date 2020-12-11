@@ -56,19 +56,25 @@
   }
 }
 
-.withdraw-item{
-  padding: 10px;
+.withdraw-container{
+  width:auto
+}
+
+.address-container{
+  width:auto;
   border-bottom: 1px solid #eee;
+  padding: 10px;
+}
+
+.flex-reverse{
+  justify-content: flex-end;
+}
+.withdraw-item{
+  padding: 10px 0 0 0;
   display: flex;
   .checkbox{
     flex: auto;
   }
-  p{
-    // flex: auto;
-  }
-  .date{
-// flex: auto;
-}
 .amount{
   margin-left: 5px;
   }
@@ -79,23 +85,35 @@
   display: flex;
   margin: 20px auto 0 auto;
 
-  .button{
-        flex: auto;
-    text-align: center;
-    margin: 0 5px;
-    p{
-      padding: 10px;
-      max-width: 300px;
-      margin: auto;
-      color: white;
-    }
-  }
-  .approve{
-    background-color: #56be57d9;
-    
-  }
-  .reject{
-    background-color: #df2727e6;
-    
-  }
 }
+    .button-small{
+      max-width: 200px;
+      p{
+        padding: 10px;
+        text-align: center;
+        color: white;
+      }
+    }
+    .button{
+          flex: auto;
+      text-align: center;
+      margin: 0 5px;
+      p{
+        padding: 10px;
+        max-width: 300px;
+        margin: auto;
+        color: white;
+      }
+    }
+    .approve{
+      background-color: #56be57d9;
+      
+    }
+    .reject{
+      background-color: #df2727e6;
+      
+    }
+    
+    .primary{
+      background-color: #3f51b5;
+    }
