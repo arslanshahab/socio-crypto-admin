@@ -15,7 +15,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import PeopleIcon from '@material-ui/icons/People';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import { Switch } from 'react-router';
 import { CampaignsList } from '../components/CampaignsList';
 import { NewCampaign } from '../components/campaign-create/NewCampaign';
@@ -36,6 +36,9 @@ import { Link as MuiLink } from '@material-ui/core';
 import { Admin } from '../components/Admin';
 import { ManageWithdrawRequests } from '../components/admin/ManageWithdrawRequests';
 import { CampaignAudit } from '../components/admin/CampaignAudit';
+import { UserManagement } from '../components/UserManagement';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 
 const drawerWidth = 240;
 
@@ -102,6 +105,7 @@ export const Dashboard: React.FC = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+
   const history = useHistory();
 
   const handleDrawerOpen = () => {
@@ -192,11 +196,23 @@ export const Dashboard: React.FC = (props) => {
                 <Link to={'/dashboard/marketData'} style={{ textDecoration: 'none', color: 'black' }}>
                   <ListItem button key={'MarketData'}>
                     <ListItemIcon>
-                      <PeopleIcon />
+                      <TrendingUpIcon />
                     </ListItemIcon>
                     <ListItemText primary={'Market Data'} />
                   </ListItem>
                 </Link>
+                {value.role == 'admin' ? (
+                  <Link to={'/dashboard/admin/userManagement'} style={{ textDecoration: 'none', color: 'black' }}>
+                    <ListItem button key={'Manage Users'}>
+                      <ListItemIcon>
+                        <PeopleAltIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={'Manage Users'} />
+                    </ListItem>
+                  </Link>
+                ) : (
+                  <div />
+                )}
                 <Link to={'/dashboard/newCampaign'} style={{ textDecoration: 'none', color: 'black' }}>
                   <ListItem button key={'New Campaign'}>
                     <ListItemIcon>
@@ -228,7 +244,7 @@ export const Dashboard: React.FC = (props) => {
                   <Link to={'/dashboard/admin'} style={{ textDecoration: 'none', color: 'black' }}>
                     <ListItem button key={'Admin'}>
                       <ListItemIcon>
-                        <AddIcon />
+                        <AssignmentIndIcon />
                       </ListItemIcon>
                       <ListItemText primary={'Admin'} />
                     </ListItem>
@@ -260,21 +276,28 @@ export const Dashboard: React.FC = (props) => {
                 <ProtectedRoute exact path={'/dashboard/paymentsAccount'}>
                   <PaymentsAccount />
                 </ProtectedRoute>
-                {value['company'] == 'raiinmaker' ? (
+                {value['role'] === 'admin' ? (
+                  <ProtectedRoute exact path={'/dashboard/admin/userManagement'}>
+                    <UserManagement {...props} />
+                  </ProtectedRoute>
+                ) : (
+                  <div />
+                )}
+                {value['company'] === 'raiinmaker' ? (
                   <ProtectedRoute exact path={'/dashboard/admin'} adminOnly={true}>
                     <Admin />
                   </ProtectedRoute>
                 ) : (
                   <div />
                 )}
-                {value['company'] == 'raiinmaker' ? (
+                {value['company'] === 'raiinmaker' ? (
                   <ProtectedRoute exact path={'/dashboard/admin/withdraw'} adminOnly={true}>
                     <ManageWithdrawRequests {...props} />
                   </ProtectedRoute>
                 ) : (
                   <div />
                 )}
-                {value['company'] == 'raiinmaker' ? (
+                {value['company'] === 'raiinmaker' ? (
                   <ProtectedRoute exact path={'/dashboard/admin/campaign-audit'} adminOnly={true}>
                     <CampaignAudit {...props} />
                   </ProtectedRoute>

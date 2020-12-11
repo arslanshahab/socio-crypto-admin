@@ -33,6 +33,18 @@ export const getIdToken = () => {
   });
 };
 
+export const getUserEmail = () => {
+  return new Promise((resolve) => {
+    fireClient.auth().onAuthStateChanged((user) => {
+      if (user) {
+        return user.email;
+      } else {
+        resolve(null);
+      }
+    });
+  });
+};
+
 export const getCurrentUser = () => {
   return new Promise((resolve) => {
     fireClient.auth().onAuthStateChanged((user) => {

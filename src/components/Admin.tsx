@@ -1,11 +1,14 @@
 import React from 'react';
-import { AppBar, Tabs, Tab } from '@material-ui/core';
+import { AppBar, Tabs, Tab, Typography, Grid, Button } from '@material-ui/core';
 import { TabPanel } from './TabPanel';
 import { CampaignAuditList } from './admin/CampaignAuditList';
 import { PendingWithdrawList } from './admin/PendingWithdrawList';
+import { BrandList } from './BrandList';
+import { RegisterBrand } from '../screens/RegisterBrand';
 
 export const Admin: React.FC = () => {
   const [value, setValue] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
 
   function a11yProps(index: any) {
     return {
@@ -21,19 +24,33 @@ export const Admin: React.FC = () => {
 
   return (
     <div>
-      <p>Admin</p>
+      <RegisterBrand open={open} setOpen={setOpen} />
+      <Grid container>
+        <Grid item xs>
+          <Typography variant={'h4'}>Admin</Typography>
+        </Grid>
+        <Grid item xs={6} />
+        <Grid item xs>
+          <Button variant={'contained'} color={'primary'} onClick={() => setOpen(true)}>
+            Register New Brand
+          </Button>
+        </Grid>
+      </Grid>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
           <Tab label="Payments / KYC" {...a11yProps(0)} />
           <Tab label="Audit Campaign" {...a11yProps(1)} />
-          <Tab label="Register Brand" {...a11yProps(1)} />
+          <Tab label="Registered Brands" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <PendingWithdrawList></PendingWithdrawList>
+        <PendingWithdrawList />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <CampaignAuditList></CampaignAuditList>
+        <CampaignAuditList />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <BrandList />
       </TabPanel>
     </div>
   );

@@ -13,6 +13,18 @@ export interface VerifySessionResults {
   };
 }
 
+export interface ListOrgs {
+  listOrgs: {
+    name: string;
+  }[];
+}
+
+export interface ListEmployees {
+  listEmployees: {
+    name: string;
+  }[];
+}
+
 export interface CampaignListVars {
   open?: boolean;
   skip?: number;
@@ -244,28 +256,28 @@ export interface Participant {
 
 export interface CampaignRequirementSpecs {
   version: string;
-  city?: string,
-  state?: string,
-  country?: string,
-  values?: string[],
-  interests?: string[],
-  ageRange?: AgeRangeRequirementSpecs,
-  socialFollowing?: SocialFollowingSpecs,
+  city?: string;
+  state?: string;
+  country?: string;
+  values?: string[];
+  interests?: string[];
+  ageRange?: AgeRangeRequirementSpecs;
+  socialFollowing?: SocialFollowingSpecs;
 }
 
 export interface SocialFollowingSpecs {
-  twitter: TwitterSocialFollowingSpecs,
+  twitter: TwitterSocialFollowingSpecs;
 }
 export interface TwitterSocialFollowingSpecs {
-  minFollower: number,
+  minFollower: number;
 }
 
 export interface AgeRangeRequirementSpecs {
-  "0-17": Boolean
-  "18-25": Boolean
-  "26-40": Boolean,
-  "41-55": Boolean,
-  "55+": Boolean,
+  '0-17': boolean;
+  '18-25': boolean;
+  '26-40': boolean;
+  '41-55': boolean;
+  '55+': boolean;
 }
 
 export interface ParticipantMetrics {
