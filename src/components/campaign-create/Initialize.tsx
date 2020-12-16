@@ -15,6 +15,7 @@ interface Props {
   userData: {
     company: string;
   };
+  campaignType: string;
 }
 
 const useStyles = makeStyles(() =>
@@ -46,7 +47,7 @@ export const Initialize: React.FC<Props> = (props) => {
     event.persist();
     if (event.target.name === 'initialTotal') {
       dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'threshold', val: '0' }));
-      dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'totalCoiins', val: event.target.value }));
+      dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'totalCoiins', val: props.campaignType === 'raffle' ? '0' : event.target.value }));
     }
     dispatch(updateCampaignState({ cat: 'config', key: event.target.name, val: event.target.value }));
   };
@@ -165,11 +166,12 @@ export const Initialize: React.FC<Props> = (props) => {
                   fullWidth
                   variant="outlined"
                   name={'numOfTiers'}
-                  defaultValue={3}
+                  defaultValue={props.campaignType === 'raffle' ? 0 : 3}
                   placeholder={'How many tiers'}
                   margin={'normal'}
                   onChange={handleConfigChange}
                   className="text-field"
+                  disabled={props.campaignType === 'raffle'}
                 />
               </Grid>
               <Grid container item xs={6} spacing={0}>

@@ -197,6 +197,14 @@ export interface NewCampaignVars {
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+  type: string;
+  rafflePrize?: RafflePrizeStructure;
+}
+
+export interface RafflePrizeStructure {
+  displayName: string;
+  affiliateLink?: string;
+  image?: string;
 }
 
 export interface CampaignConfig {
@@ -204,6 +212,10 @@ export interface CampaignConfig {
   numOfSuggestedPosts: number;
   numOfTiers: number;
   initialTotal: string;
+  type: string;
+  rafflePrizeName?: string;
+  rafflePrizeAffiliateLink?: string;
+  raffleImage?: string;
 }
 
 export interface Campaign {
@@ -263,6 +275,7 @@ export interface CampaignRequirementSpecs {
   interests?: string[];
   ageRange?: AgeRangeRequirementSpecs;
   socialFollowing?: SocialFollowingSpecs;
+  email?: boolean;
 }
 
 export interface SocialFollowingSpecs {

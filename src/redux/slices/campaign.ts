@@ -27,6 +27,7 @@ const initialState: CampaignState = {
   suggestedPosts: [],
   suggestedTags: [],
   config: {
+    type: 'coiin',
     numOfSuggestedPosts: 2,
     numOfTiers: 3,
     initialTotal: '',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { Campaign, NewCampaignVars } from '../../types';
+import { Campaign, CampaignRequirementSpecs, NewCampaignVars, RafflePrizeStructure } from '../../types';
 import { Paper, Stepper, Step, StepLabel, Button } from '@material-ui/core';
 import { Initialize } from './Initialize';
 import { PostsAndTags } from './PostsAndTags';
@@ -12,8 +12,8 @@ import { Requirements } from './Requirements';
 import { SetupCampaign } from '../SetupCampaign';
 
 const NEW_CAMPAIGN = gql(`
-    mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String!, $image: String, $tagline: String!,  $requirements: JSON!, $suggestedPosts: [String], $suggestedTags: [String]) {
-    newCampaign(name: $name, beginDate: $beginDate, endDate: $endDate, target: $target, description: $description, coiinTotal: $coiinTotal, algorithm: $algorithm, company: $company, targetVideo: $targetVideo, image: $image, tagline: $tagline, requirements: $requirements, suggestedPosts: $suggestedPosts, suggestedTags: $suggestedTags) {
+    mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String!, $image: String, $tagline: String!,  $requirements: JSON!, $suggestedPosts: [String], $suggestedTags: [String], $type: String, $rafflePrize: JSON) {
+    newCampaign(name: $name, beginDate: $beginDate, endDate: $endDate, target: $target, description: $description, coiinTotal: $coiinTotal, algorithm: $algorithm, company: $company, targetVideo: $targetVideo, image: $image, tagline: $tagline, requirements: $requirements, suggestedPosts: $suggestedPosts, suggestedTags: $suggestedTags, type: $type, rafflePrize: $rafflePrize) {
       name
     }
   }
@@ -40,11 +40,17 @@ export const NewCampaign: React.FC<Props> = (props) => {
       description: campaign.description,
       company: campaign.company,
       algorithm: JSON.stringify(campaign.algorithm),
-      requirements: campaign.requirements,
+      requirements: ((campaign.config && campaign.config.type === 'raffle') ? {email: true, ...campaign.requirements} : {...campaign.requirements}) as CampaignRequirementSpecs,
       image: campaign.image,
       tagline: campaign.tagline,
       suggestedPosts: campaign.suggestedPosts,
       suggestedTags: campaign.suggestedTags,
+      type: campaign.config.type as string || 'coiin',
+      rafflePrize: (campaign.config && campaign.config.type === 'raffle') ? {
+        displayName: campaign.config['rafflePrizeName'] as string,
+        affiliateLink: campaign.config['rafflePrizeAffiliateLink'] as string,
+        image: campaign.config['raffleImage'] as string
+      } : undefined,
     },
   });
 
@@ -60,9 +66,9 @@ export const NewCampaign: React.FC<Props> = (props) => {
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <SetupCampaign />;
+        return <SetupCampaign raffleImage={campaign.config.raffleImage} company={props.userData.company} />;
       case 1:
-        return <Initialize {...props} />;
+        return <Initialize campaignType={campaign.config.type as string} {...props} />;
       case 2:
         return <PostsAndTags />;
       case 3:
