@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { updateCampaignState } from '../redux/slices/campaign';
 import { ReactSVG } from 'react-svg';
 import icon from '../assets/svg/camera.svg';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/reducer';
 
 interface Props {
   company: string;
@@ -17,9 +19,10 @@ interface Props {
 export const SetupCampaign: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
 
-  const [campaignType, setCampaignType] = useState('');
-  const [budgetType, setBudgetType] = useState('');
-
+  const state = useSelector((state: RootState) => state);
+  const campaign = state.newCampaign;
+  const [campaignType, setCampaignType] = useState(campaign.config.campaignType ? campaign.config.campaignType : '');
+  const [budgetType, setBudgetType] = useState(campaign.config.budgetType ? campaign.config.budgetType : '');
   const handleCampaignChange = (key: string, value: any) => {
     dispatch(updateCampaignState({ cat: 'config', key: key, val: value }));
   };
@@ -46,6 +49,16 @@ export const SetupCampaign: React.FC<Props> = (props) => {
       getBase64(files[0]);
     }
   };
+  const handleCampaignType = (type: string) => {
+    setCampaignType(type);
+    dispatch(updateCampaignState({ cat: 'config', key: 'campaignType', val: type }));
+  };
+
+  const handleBudgetType = (type: string) => {
+    setBudgetType(type);
+    handleCampaignChange('type', 'coiin');
+    dispatch(updateCampaignState({ cat: 'config', key: 'budgetType', val: type }));
+  };
 
   return (
     <div className="setup-campaign">
@@ -55,7 +68,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
             <p className="margin-bottom center-text setup-campaign-question">What will this campaign prioritize?</p>
             <div>
               <div
-                onClick={() => setCampaignType('video-views')}
+                onClick={() => handleCampaignType('video-views')}
                 className={`${
                   campaignType === 'video-views' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
@@ -63,7 +76,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                 <p>View Views</p>
               </div>
               <div
-                onClick={() => setCampaignType('brand-awareness')}
+                onClick={() => handleCampaignType('brand-awareness')}
                 className={`${
                   campaignType === 'brand-awareness' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
@@ -71,7 +84,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                 <p>Brand Awareness</p>
               </div>
               <div
-                onClick={() => setCampaignType('social-engagement')}
+                onClick={() => handleCampaignType('social-engagement')}
                 className={`${
                   campaignType === 'social-engagement' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
@@ -79,7 +92,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                 <p>Social Engagement</p>
               </div>
               <div
-                onClick={() => setCampaignType('conversion')}
+                onClick={() => handleCampaignType('conversion')}
                 className={`${
                   campaignType === 'conversion' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
@@ -97,10 +110,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
               </p>
               <div>
                 <div
-                  onClick={() => {
-                    setBudgetType('coiin');
-                    handleCampaignChange('type', 'coiin');
-                  }}
+                  onClick={() => handleBudgetType('coiin')}
                   className={`${
                     budgetType === 'coiin' ? 'selected-item' : ''
                   } inline half-width center-text campaign-funding-square`}
@@ -141,6 +151,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                         variant="outlined"
                         margin={'normal'}
                         type="number"
+                        value={campaign.config.coiinBudget}
                         onChange={(event) => {
                           handleCampaignChange('coiinBudget', event.target.value as string);
                         }}

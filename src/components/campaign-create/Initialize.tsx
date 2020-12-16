@@ -110,6 +110,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   name={'name'}
                   placeholder={'name'}
                   fullWidth
+                  value={campaign.name}
                   variant="outlined"
                   margin={'normal'}
                   onChange={handleCampaignChange}
@@ -119,6 +120,7 @@ export const Initialize: React.FC<Props> = (props) => {
                 <TextField
                   fullWidth
                   label={'Company Name'}
+                  disabled
                   variant="outlined"
                   name={'company'}
                   placeholder={'Company Name'}
@@ -139,6 +141,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   name={'target'}
                   placeholder={'Landing Page URL'}
                   margin={'normal'}
+                  value={campaign.target}
                   variant="outlined"
                   onChange={handleCampaignChange}
                   className="text-field"
@@ -150,6 +153,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   name={'targetVideo'}
                   placeholder={'Landing Page Video URL'}
                   margin={'normal'}
+                  value={campaign.targetVideo}
                   onChange={handleCampaignChange}
                   fullWidth
                   variant="outlined"
@@ -169,6 +173,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   defaultValue={props.campaignType === 'raffle' ? 0 : 3}
                   placeholder={'How many tiers'}
                   margin={'normal'}
+                  value={campaign.config.numOfTiers}
                   onChange={handleConfigChange}
                   className="text-field"
                   disabled={props.campaignType === 'raffle'}
@@ -183,6 +188,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   defaultValue={2}
                   type="number"
                   onChange={handleConfigChange}
+                  value={campaign.config.numOfSuggestedPosts}
                   className="text-field"
                   fullWidth
                   variant="outlined"
@@ -198,6 +204,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   name={'tagline'}
                   placeholder={'Campaign Tagline'}
                   margin={'normal'}
+                  value={campaign.tagline}
                   onChange={handleCampaignChange}
                   className="text-field no-top-margin"
                   fullWidth
@@ -207,9 +214,10 @@ export const Initialize: React.FC<Props> = (props) => {
               <Grid container item xs={6}>
                 <TextField
                   label="Description"
-                  name="Description"
+                  name="description"
                   onChange={handleCampaignChange}
                   multiline
+                  value={campaign.description}
                   rows={5}
                   fullWidth
                   variant="outlined"

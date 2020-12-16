@@ -6,6 +6,7 @@ import { updateCampaignState } from '../../redux/slices/campaign';
 import { Fade } from 'react-awesome-reveal';
 
 export const Algorithm: React.FC = () => {
+  const campaign = useSelector((state: RootState) => state.newCampaign);
   const numOfTiers = useSelector((state: RootState) => state.newCampaign.config.numOfTiers);
   const initialOffering = useSelector((state: RootState) => state.newCampaign.config.initialTotal);
   const dispatch = useDispatch();
@@ -37,6 +38,11 @@ export const Algorithm: React.FC = () => {
                 id={id}
                 name={'threshold'}
                 placeholder={'Threshold'}
+                value={
+                  campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
+                    ? campaign.algorithm.tiers[i + 1].threshold
+                    : ''
+                }
                 onChange={handleTierChange}
                 className="text-field"
                 defaultValue={i === 0 ? 0 : undefined}
@@ -49,6 +55,14 @@ export const Algorithm: React.FC = () => {
                 name={'totalCoiins'}
                 placeholder={'Total Coiins'}
                 fullWidth
+                disabled={i == numOfTiers - 1}
+                value={
+                  i === numOfTiers - 1
+                    ? campaign.config.coiinBudget
+                    : campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
+                    ? campaign.algorithm.tiers[i + 1].totalCoiins
+                    : ''
+                }
                 onChange={handleTierChange}
                 className="text-field"
                 defaultValue={i === 0 ? initialOffering : undefined}

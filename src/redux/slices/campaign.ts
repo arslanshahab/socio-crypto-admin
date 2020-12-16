@@ -17,10 +17,10 @@ const initialState: CampaignState = {
   beginDate: '',
   endDate: '',
   totalParticipationScore: '',
-  target: '',
   description: '',
   algorithm: initialAlgorithmState,
   company: '',
+  target: '',
   targetVideo: '',
   image: '',
   tagline: '',
@@ -31,6 +31,9 @@ const initialState: CampaignState = {
     numOfSuggestedPosts: 2,
     numOfTiers: 3,
     initialTotal: '',
+    budget: '',
+    budgetType: '',
+    campaignType: '',
   },
 };
 
