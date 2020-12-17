@@ -120,7 +120,6 @@ export const Initialize: React.FC<Props> = (props) => {
                 <TextField
                   fullWidth
                   label={'Company Name'}
-                  disabled
                   variant="outlined"
                   name={'company'}
                   placeholder={'Company Name'}
