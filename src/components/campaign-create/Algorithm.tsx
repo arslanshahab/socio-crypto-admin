@@ -42,7 +42,9 @@ export const Algorithm: React.FC = () => {
                 name={'threshold'}
                 placeholder={'Threshold'}
                 value={
-                  campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
+                  i == 0
+                    ? 0
+                    : campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
                     ? campaign.algorithm.tiers[i + 1].threshold
                     : ''
                 }
@@ -359,8 +361,10 @@ export const Algorithm: React.FC = () => {
               onChange={(e, checked) => {
                 console.log(e.target.value);
                 console.log(checked);
+                dispatch(updateCampaignState({ cat: 'config', key: 'agreementChecked', val: checked }));
                 handleAgreementChecked(checked);
               }}
+              style={{ color: '#3f51b5' }}
               name="Brand Agreement"
             />
           }
