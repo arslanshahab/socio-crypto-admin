@@ -38,6 +38,7 @@ export const PostsAndTags: React.FC = () => {
                 name="suggestedPosts"
                 multiline
                 fullWidth
+                value={campaign.suggestedPosts[i]}
                 rows={5}
                 placeholder={`Check out ${campaign.name}...`}
                 variant="outlined"
@@ -51,6 +52,17 @@ export const PostsAndTags: React.FC = () => {
     return suggestedPosts;
   };
 
+  const getTagValue = () => {
+    let tagString = '';
+    campaign.suggestedTags.forEach((item, i) => {
+      if (i == campaign.suggestedTags.length - 1) {
+        tagString += `${item}`;
+      } else {
+        tagString += `${item},`;
+      }
+    });
+    return tagString;
+  };
   return (
     <div className="init-campaign-container padding-top">
       <Fade>
@@ -61,6 +73,7 @@ export const PostsAndTags: React.FC = () => {
               fullWidth
               label={'Suggested Tags (comma separated w/o hashtags)'}
               name={'suggestedTags'}
+              value={getTagValue()}
               placeholder={'Suggested tags'}
               onChange={handleTagsChange}
               variant="outlined"
