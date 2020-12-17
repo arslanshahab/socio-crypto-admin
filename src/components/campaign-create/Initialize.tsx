@@ -47,7 +47,14 @@ export const Initialize: React.FC<Props> = (props) => {
     event.persist();
     if (event.target.name === 'initialTotal') {
       dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'threshold', val: '0' }));
-      dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'totalCoiins', val: props.campaignType === 'raffle' ? '0' : event.target.value }));
+      dispatch(
+        updateCampaignState({
+          cat: 'algoTiers',
+          tier: '1',
+          key: 'totalCoiins',
+          val: props.campaignType === 'raffle' ? '0' : event.target.value,
+        }),
+      );
     }
     dispatch(updateCampaignState({ cat: 'config', key: event.target.name, val: event.target.value }));
   };

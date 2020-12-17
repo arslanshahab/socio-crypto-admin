@@ -10,6 +10,8 @@ import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';
 import { Requirements } from './Requirements';
 import { SetupCampaign } from '../SetupCampaign';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const NEW_CAMPAIGN = gql(`
     mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String!, $image: String, $tagline: String!,  $requirements: JSON!, $suggestedPosts: [String], $suggestedTags: [String], $type: String, $rafflePrize: JSON) {
@@ -29,28 +31,34 @@ export const NewCampaign: React.FC<Props> = (props) => {
   const [activeStep, setActiveStep] = useState(0);
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
+  console.log(props);
   const [saveCampaign, { error }] = useMutation<Campaign, NewCampaignVars>(NEW_CAMPAIGN, {
     variables: {
       name: campaign.name,
-      coiinTotal: parseFloat(campaign.config.initialTotal),
+      coiinTotal: parseFloat(campaign.config.coiinBudget as string),
       target: campaign.target,
       targetVideo: campaign.targetVideo,
       beginDate: campaign.beginDate,
       endDate: campaign.endDate,
       description: campaign.description,
-      company: campaign.company,
+      company: props.userData.company,
       algorithm: JSON.stringify(campaign.algorithm),
-      requirements: ((campaign.config && campaign.config.type === 'raffle') ? {email: true, ...campaign.requirements} : {...campaign.requirements}) as CampaignRequirementSpecs,
+      requirements: (campaign.config && campaign.config.type === 'raffle'
+        ? { email: true, ...campaign.requirements }
+        : { ...campaign.requirements }) as CampaignRequirementSpecs,
       image: campaign.image,
       tagline: campaign.tagline,
       suggestedPosts: campaign.suggestedPosts,
       suggestedTags: campaign.suggestedTags,
-      type: campaign.config.type as string || 'coiin',
-      rafflePrize: (campaign.config && campaign.config.type === 'raffle') ? {
-        displayName: campaign.config['rafflePrizeName'] as string,
-        affiliateLink: campaign.config['rafflePrizeAffiliateLink'] as string,
-        image: campaign.config['raffleImage'] as string
-      } : undefined,
+      type: (campaign.config.type as string) || 'coiin',
+      rafflePrize:
+        campaign.config && campaign.config.type === 'raffle'
+          ? {
+              displayName: campaign.config['rafflePrizeName'] as string,
+              affiliateLink: campaign.config['rafflePrizeAffiliateLink'] as string,
+              image: campaign.config['raffleImage'] as string,
+            }
+          : undefined,
     },
   });
 
@@ -77,6 +85,27 @@ export const NewCampaign: React.FC<Props> = (props) => {
         return <Algorithm />;
     }
   };
+
+  const payloadReady = () => {
+    let validated = false;
+    if (
+      campaign.name &&
+      (campaign.config.coiinBudget || campaign.config.usdBudget) &&
+      campaign.target &&
+      campaign.targetVideo &&
+      campaign.beginDate &&
+      campaign.endDate &&
+      campaign.description &&
+      campaign.tagline &&
+      campaign.suggestedPosts &&
+      campaign.suggestedTags &&
+      campaign.config.agreementChecked
+    ) {
+      validated = true;
+    }
+    return validated;
+  };
+
   return (
     <div className="new-campaign">
       <Paper>
@@ -98,7 +127,19 @@ export const NewCampaign: React.FC<Props> = (props) => {
               color="primary"
               onClick={async () => {
                 try {
-                  const response = await saveCampaign();
+                  if (!payloadReady()) {
+                    toast.error('Form Incomplete', {
+                      position: 'bottom-center',
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });
+                    throw new Error('bad payload');
+                  }
+                  await saveCampaign();
                   history.push('/dashboard');
                 } catch (e) {
                   console.log(e);
@@ -117,6 +158,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
               Back
             </Button>
           )}
+          <ToastContainer />
         </div>
       </Paper>
     </div>
