@@ -34,6 +34,7 @@ const initialState: CampaignState = {
     budget: '',
     budgetType: '',
     campaignType: '',
+    agreementChecked: false,
   },
 };
 

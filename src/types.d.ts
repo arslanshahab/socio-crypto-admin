@@ -208,7 +208,7 @@ export interface RafflePrizeStructure {
 }
 
 export interface CampaignConfig {
-  [key: string]: string | number;
+  [key: string]: string | number | boolean;
   numOfSuggestedPosts: number;
   numOfTiers: number;
   initialTotal: string;
