@@ -49,7 +49,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       tagline: campaign.tagline,
       suggestedPosts: campaign.suggestedPosts,
       suggestedTags: campaign.suggestedTags,
-      type: (campaign.config.buddgetType as string) || 'coiin',
+      type: (campaign.config.budgetType as string) || 'coiin',
       rafflePrize:
         campaign.config && campaign.config.budgetType === 'raffle'
           ? {
