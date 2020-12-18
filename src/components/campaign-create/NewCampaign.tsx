@@ -34,7 +34,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
   const [saveCampaign, { error, loading }] = useMutation<Campaign, NewCampaignVars>(NEW_CAMPAIGN, {
     variables: {
       name: campaign.name,
-      coiinTotal: parseFloat(campaign.config.type === 'raffle' ? '0' : (campaign.config.coiinBudget as string)),
+      coiinTotal: parseFloat(campaign.config.budgetType === 'raffle' ? '0' : (campaign.config.coiinBudget as string)),
       target: campaign.target,
       targetVideo: campaign.targetVideo,
       beginDate: campaign.beginDate,
