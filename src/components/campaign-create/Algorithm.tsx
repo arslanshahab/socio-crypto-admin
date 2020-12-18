@@ -60,11 +60,8 @@ export const Algorithm: React.FC = () => {
                 name={'totalCoiins'}
                 placeholder={'Total Coiins'}
                 fullWidth
-                disabled={i == numOfTiers - 1}
                 value={
-                  i === numOfTiers - 1
-                    ? campaign.config.coiinBudget
-                    : campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
+                  campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
                     ? campaign.algorithm.tiers[i + 1].totalCoiins
                     : ''
                 }
@@ -413,7 +410,7 @@ export const Algorithm: React.FC = () => {
             <Grid item xs={11}>
               <TextField
                 label={'Click Value'}
-                name={'click'}
+                name={'clicks'}
                 defaultValue={1}
                 placeholder={'Click Value'}
                 onChange={handleValueChange}
@@ -424,7 +421,7 @@ export const Algorithm: React.FC = () => {
             <Grid xs={11} item>
               <TextField
                 label={'View Value'}
-                name={'view'}
+                name={'views'}
                 placeholder={'View Value'}
                 defaultValue={2}
                 fullWidth
@@ -437,7 +434,7 @@ export const Algorithm: React.FC = () => {
                 label={'Submission Value'}
                 fullWidth
                 defaultValue={6}
-                name={'submission'}
+                name={'submissions'}
                 placeholder={'Submission Value'}
                 onChange={handleValueChange}
                 className="text-field"
