@@ -13,7 +13,7 @@ interface ClaimWalletVars {
   signature: string;
 }
 
-export const WalletCard: React.FC<Props> = ({ wallet }) => {
+export const AddressCard: React.FC<Props> = ({ wallet }) => {
   const anyWindow = window as any;
   const [claimWallet, { error }] = useMutation<ClaimEthereumAddress, ClaimWalletVars>(CLAIM_WALLET);
   const [coinbase, setCoinbase] = useState(!!anyWindow.web3 && anyWindow.web3.eth.coinbase);
@@ -55,7 +55,7 @@ export const WalletCard: React.FC<Props> = ({ wallet }) => {
     );
   };
   return (
-    <Grid container direction={'row'} className="ethereum-address-item">
+    <Grid container direction={'row'} justify={'center'} className="wallet-item">
       <Grid item xs={7}>
         <Typography component="div">{wallet && wallet.ethereumAddress}</Typography>
       </Grid>
