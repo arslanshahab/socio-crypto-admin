@@ -42,7 +42,7 @@ export const Admin: React.FC = (props) => {
           <Tab label="Payments / KYC" {...a11yProps(0)} />
           <Tab label="Registered Brands" {...a11yProps(1)} />
           <Tab label="Withdraw History" {...a11yProps(2)} />
-          <Tab label="Pending Campaigns" {...a11yProps(4)} />
+          <Tab label="Pending Campaigns" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -54,7 +54,7 @@ export const Admin: React.FC = (props) => {
       <TabPanel value={value} index={2}>
         <WithdrawHistory />
       </TabPanel>
-      <TabPanel index={4} value={value}>
+      <TabPanel value={value} index={3}>
         <PendingCampaigns />
       </TabPanel>
     </div>
