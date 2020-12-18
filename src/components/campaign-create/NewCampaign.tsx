@@ -210,19 +210,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
                     });
                     throw new Error('bad payload');
                   }
-                  // TODO: Fix to allow for fixed final tier reward
-                  // if (campaign.config.budgetType === 'coiin') {
-                  //   if (!campaign.algorithm['tiers'][campaign.config.numOfTiers].totalCoiins) {
-                  //     await dispatch(
-                  //       await updateCampaignState({
-                  //         cat: 'algoTiers',
-                  //         tier: campaign.config.numOfTiers.toString(),
-                  //         key: 'totalCoiins',
-                  //         val: campaign.config.coiinTotal,
-                  //       }),
-                  //     );
-                  //   }
-                  // }
                   await saveCampaign();
                   toast('Campaign Created', {
                     position: 'bottom-center',
