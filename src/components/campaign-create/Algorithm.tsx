@@ -60,11 +60,8 @@ export const Algorithm: React.FC = () => {
                 name={'totalCoiins'}
                 placeholder={'Total Coiins'}
                 fullWidth
-                disabled={i == numOfTiers - 1}
                 value={
-                  i === numOfTiers - 1
-                    ? campaign.config.coiinBudget
-                    : campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
+                  campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
                     ? campaign.algorithm.tiers[i + 1].totalCoiins
                     : ''
                 }

@@ -129,6 +129,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   label={'Company Name'}
                   variant="outlined"
                   name={'company'}
+                  disabled
                   placeholder={'Company Name'}
                   margin={'normal'}
                   defaultValue={props.userData ? props.userData.company : null}

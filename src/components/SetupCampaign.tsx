@@ -56,8 +56,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
 
   const handleBudgetType = (type: string) => {
     setBudgetType(type);
-    handleCampaignChange('type', 'coiin');
-    dispatch(updateCampaignState({ cat: 'config', key: 'budgetType', val: type }));
+    handleCampaignChange('budgetType', type);
   };
 
   return (
@@ -110,7 +109,10 @@ export const SetupCampaign: React.FC<Props> = (props) => {
               </p>
               <div>
                 <div
-                  onClick={() => handleBudgetType('coiin')}
+                  onClick={() => {
+                    handleBudgetType('coiin');
+                    handleCampaignChange('numOfTiers', 3);
+                  }}
                   className={`${
                     budgetType === 'coiin' ? 'selected-item' : ''
                   } inline half-width center-text campaign-funding-square`}
@@ -125,8 +127,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                 <div
                   onClick={() => {
                     if (props.company.toLowerCase() === 'raiinmaker') {
-                      setBudgetType('raffle');
-                      handleCampaignChange('type', 'raffle');
+                      handleBudgetType('raffle');
                       handleCampaignChange('numOfTiers', 0);
                       handleCampaignChange('initialTotal', 0);
                     }

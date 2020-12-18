@@ -35,6 +35,9 @@ const initialState: CampaignState = {
     budgetType: '',
     campaignType: '',
     agreementChecked: false,
+    raffleImage: '',
+    rafflePrizeName: '',
+    rafflePrizeAffiliateLink: '',
   },
 };
 
