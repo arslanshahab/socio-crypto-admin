@@ -19,9 +19,6 @@ export const AddressCard: React.FC<Props> = ({ wallet }) => {
   const [coinbase, setCoinbase] = useState(!!anyWindow.web3 && anyWindow.web3.eth.coinbase);
   const [web3Enabled, setWeb3Enabled] = useState(!!anyWindow.web3 && !!coinbase);
   if (anyWindow.web3) anyWindow.ethereum.on('accountsChanged', (a: any) => setCoinbase(a[0]));
-  const isClaimed = () => {
-    return <Typography component="div">{wallet.claimed ? 'Yes' : 'No'}</Typography>;
-  };
   const web3 = async (message: string) => {
     anyWindow.web3.personal.sign(anyWindow.web3.fromUtf8(message), coinbase, (error: any, signature: string) => {
       if (error) return;
@@ -56,11 +53,8 @@ export const AddressCard: React.FC<Props> = ({ wallet }) => {
   };
   return (
     <Grid container item direction={'row'} justify={'center'} className="wallet-item">
-      <Grid item xs={7}>
+      <Grid item xs={9}>
         <Typography component="div">{wallet && wallet.ethereumAddress}</Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <Typography component="div">{isClaimed()}</Typography>
       </Grid>
       {!wallet.claimed && (
         <Grid item xs={3}>
