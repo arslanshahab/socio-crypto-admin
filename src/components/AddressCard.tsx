@@ -55,7 +55,7 @@ export const AddressCard: React.FC<Props> = ({ wallet }) => {
     );
   };
   return (
-    <Grid container direction={'row'} justify={'center'} className="wallet-item">
+    <Grid container item direction={'row'} justify={'center'} className="wallet-item">
       <Grid item xs={7}>
         <Typography component="div">{wallet && wallet.ethereumAddress}</Typography>
       </Grid>
