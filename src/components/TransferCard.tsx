@@ -7,8 +7,7 @@ interface Props {
 }
 
 export const TransferCard: React.FC<Props> = ({ transfer }) => {
-  console.log(transfer);
-  const { amount, action, ethAddress, createdAt, currency } = transfer;
+  const { amount, action, createdAt, currency } = transfer;
   const actionCap = action.charAt(0).toUpperCase() + action.slice(1);
   const date = new Date(Number(createdAt));
   const time = new Date(Number(createdAt));

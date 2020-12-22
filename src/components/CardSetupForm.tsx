@@ -22,7 +22,6 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen }) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { data, errors } = await addPaymentMethod();
-    console.log('result', data);
     // Make sure to disable form submission until Stripe.js has loaded.
     if (!stripe || !elements) return;
     const cardElement = elements.getElement(CardElement);
