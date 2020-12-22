@@ -8,6 +8,7 @@ export const GET_FUNDING_WALLET = gql`
         amount
         action
         ethAddress
+        currency
         withdrawStatus
         createdAt
       }

@@ -60,7 +60,7 @@ export const CampaignAudit: React.FC<Props> = (props) => {
   const renderAudit = () => {
     if (!state.loaded) {
       loadData();
-      return <CircularProgress></CircularProgress>;
+      return <CircularProgress />;
     }
     if (data) {
       return (
@@ -93,7 +93,7 @@ export const CampaignAudit: React.FC<Props> = (props) => {
                   flagged={flagged}
                   total={data.generateCampaignAuditReport.totalRewardPayout}
                   toggleRejected={toggleRejected}
-                ></FlaggedParticipant>
+                />
               );
             })}
           </div>

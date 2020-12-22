@@ -3,5 +3,10 @@
     "local": "http://localhost:4000",
     "development": "https://server-staging.api.raiinmaker.com",
     "production": "https://server.api.raiinmaker.com"
+  },
+  "stripePubKey": {
+    "local": "pk_test_51HtIMXDSunkBoBlWkQxaWGoOnU38uo5pI8rE4sWjA72oBDn1HFKOUoya0CvZCO80ylVMqfxfOlXFdzfnzS9XmF6e00STABHGkz",
+    "development": "pk_test_51HtIMXDSunkBoBlWkQxaWGoOnU38uo5pI8rE4sWjA72oBDn1HFKOUoya0CvZCO80ylVMqfxfOlXFdzfnzS9XmF6e00STABHGkz",
+    "production": "pk_live_51HtIMXDSunkBoBlWCGUjGWjTXuYJpkM16DvyhcH3IjFxImDHZTaBYGdVNq8YtqJvr8DEnb3sIcWQimiSBwGIbYh800BlJSPDMw"
   }
 }

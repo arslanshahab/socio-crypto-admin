@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const TransferCard: React.FC<Props> = ({ transfer }) => {
-  const { amount, action, ethAddress, createdAt } = transfer;
+  const { amount, action, createdAt, currency } = transfer;
   const actionCap = action.charAt(0).toUpperCase() + action.slice(1);
   const date = new Date(Number(createdAt));
   const time = new Date(Number(createdAt));
@@ -15,7 +15,7 @@ export const TransferCard: React.FC<Props> = ({ transfer }) => {
     timeZoneName: 'short',
   })}`;
   return (
-    <Grid container style={{ marginBottom: '5px' }} className="payments-account-history-item">
+    <Grid container item direction={'row'} style={{ marginBottom: '5px' }} className="payments-account-history-item">
       <Grid item xs={1}>
         <Typography component="div">{actionCap}</Typography>
       </Grid>
@@ -23,7 +23,7 @@ export const TransferCard: React.FC<Props> = ({ transfer }) => {
         <Typography component="div">{amount}</Typography>
       </Grid>
       <Grid item xs={6}>
-        <Typography component="div">{ethAddress}</Typography>
+        <Typography component="div">{currency}</Typography>
       </Grid>
       <Grid item xs={3}>
         <Typography component="div">{friendlyTimeStamp}</Typography>
