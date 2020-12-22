@@ -48,11 +48,13 @@ export const PaymentsAccount: React.FC = () => {
             <Grid container item direction={'column'} justify={'center'} spacing={2}>
               <Grid container item>
                 <Grid item xs={4}>
-                  <Typography variant={'h4'}>Payments Account</Typography>
+                  <Typography component={'div'} variant={'h4'}>
+                    Payments Account
+                  </Typography>
                 </Grid>
                 <Grid item xs={6} />
                 <Grid item xs={2} container>
-                  <Typography>Balance: {renderWalletBalance()}</Typography>
+                  <Typography component={'div'}>Balance: {renderWalletBalance()}</Typography>
                   <Button
                     variant={'contained'}
                     size={'small'}
@@ -60,7 +62,7 @@ export const PaymentsAccount: React.FC = () => {
                     style={{ textTransform: 'none' }}
                     onClick={handleClickOpen}
                   >
-                    <Typography>Buy Coiin</Typography>
+                    <Typography component={'div'}>Buy Coiin</Typography>
                   </Button>
                 </Grid>
               </Grid>
@@ -70,13 +72,15 @@ export const PaymentsAccount: React.FC = () => {
                 </Grid>
                 <Grid item sm container>
                   <Grid item xs container direction={'column'} spacing={2}>
-                    <Typography>How you pay</Typography>
-                    <Typography>Coiin</Typography>
+                    <Typography component={'div'}>How you pay</Typography>
+                    <Typography component={'div'}>Coiin</Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item>
-                <Typography>To manage other forms of payments, please contact your account manager.</Typography>
+                <Typography component={'div'}>
+                  To manage other forms of payments, please contact your account manager.
+                </Typography>
               </Grid>
             </Grid>
           </Paper>
@@ -85,9 +89,11 @@ export const PaymentsAccount: React.FC = () => {
           <Paper className="ethereum-address-list">
             <Grid container direction={'row'}>
               <Grid item xs>
-                <Typography variant={'h5'}>Payment Methods</Typography>
+                <Typography component={'div'} variant={'h5'}>
+                  Payment Methods
+                </Typography>
               </Grid>
-              <Grid xs={6} />
+              <Grid item xs={6} />
               <Grid item xs>
                 <Button
                   variant={'contained'}
@@ -106,13 +112,19 @@ export const PaymentsAccount: React.FC = () => {
           <Paper className="ethereum-address-list">
             <Grid container className="campaign-header" direction={'row'}>
               <Grid item xs={7}>
-                <Typography variant={'h5'}>Campaigns</Typography>
+                <Typography component={'div'} variant={'h5'}>
+                  Campaigns
+                </Typography>
               </Grid>
               <Grid item xs={3}>
-                <Typography variant={'h6'}>Status</Typography>
+                <Typography component={'div'} variant={'h6'}>
+                  Status
+                </Typography>
               </Grid>
               <Grid item xs={2}>
-                <Typography variant={'h6'}>Cost</Typography>
+                <Typography component={'div'} variant={'h6'}>
+                  Cost
+                </Typography>
               </Grid>
             </Grid>
             <CampaignInfoList />

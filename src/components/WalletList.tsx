@@ -12,22 +12,26 @@ export const WalletList: React.FC = () => {
   const { data: cardList, loading: loadingCards } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS);
 
   const renderWalletList = () => {
-    const walletList: JSX.Element[] = [];
+    const addressArray: JSX.Element[] = [];
+    const cardArray: JSX.Element[] = [];
     if (loadingCards || loadingAddresses) {
       return <div />;
     } else {
+      let key = 0;
       if (addressList && addressList.listExternalAddresses) {
-        addressList.listExternalAddresses.map((wallet, index) => {
-          walletList.push(<AddressCard key={index} wallet={wallet} />);
-        });
+        for (const address of addressList.listExternalAddresses) {
+          addressArray.push(<AddressCard key={key} wallet={address} />);
+          key++;
+        }
       }
       if (cardList && cardList.listPaymentMethods) {
-        cardList.listPaymentMethods.map((wallet, index) => {
-          walletList.push(<StripeCardItem key={index} stripeWallet={wallet} />);
-        });
+        for (const card of cardList.listPaymentMethods) {
+          cardArray.push(<StripeCardItem key={key} stripeWallet={card} />);
+          key++;
+        }
       }
     }
-    return walletList;
+    return addressArray.concat(cardArray);
   };
   return (
     <Grid container direction={'column'}>
