@@ -36,7 +36,7 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen }) => {
         console.log('card error: ', result.error.message);
         // Display result.error.message in your UI.
       } else {
-        console.log('success: ', result.setupIntent?.payment_method);
+        console.log('successfully added payment method');
         // The setup has succeeded. Display a success message and send
         // result.setupIntent.payment_method to your server to save the
         // card to a Customer
