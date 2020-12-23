@@ -36,7 +36,13 @@ export const AddressCard: React.FC<Props> = ({ wallet }) => {
   const renderWeb3 = (address: string, claimAmount: string) => {
     if (web3Enabled && coinbase && address && coinbase.toLowerCase() === address.toLowerCase()) {
       return (
-        <Button size={'small'} color={'primary'} variant={'contained'} onClick={() => web3(claimAmount)}>
+        <Button
+          size={'small'}
+          color={'primary'}
+          variant={'contained'}
+          className="claim-button"
+          onClick={() => web3(claimAmount)}
+        >
           <Typography component="div">Claim</Typography>
         </Button>
       );
@@ -52,12 +58,12 @@ export const AddressCard: React.FC<Props> = ({ wallet }) => {
     );
   };
   return (
-    <Grid container item direction={'row'} justify={'center'} className="wallet-item">
-      <Grid item xs={9}>
+    <Grid container item direction={'row'} justify={'center'} className="list-row">
+      <Grid item xs={9} className="list-item">
         <Typography component="div">{wallet && wallet.ethereumAddress}</Typography>
       </Grid>
       {!wallet.claimed && (
-        <Grid item xs={3}>
+        <Grid item xs={3} className="claim-button-container">
           {renderWeb3(wallet.ethereumAddress, wallet.message)}
         </Grid>
       )}

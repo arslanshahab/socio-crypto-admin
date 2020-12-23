@@ -10,11 +10,11 @@ interface Props {
 
 export const TransactionHistory: React.FC<Props> = ({ data, isLoading }) => {
   return (
-    <Grid container>
+    <Grid container className="section">
       <Grid item>
         <Typography variant={'h5'}>Transaction History</Typography>
       </Grid>
-      <Grid container item className="payments-account-history-header">
+      <Grid container item className="list-header">
         <Grid item container>
           <Grid item xs={1}>
             <Typography>Action</Typography>

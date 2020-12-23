@@ -5,7 +5,6 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  Grid,
   Tab,
   Tabs,
   useMediaQuery,
@@ -14,16 +13,16 @@ import {
 import card from '../assets/svg/credit-card.svg';
 import eth from '../assets/svg/eth-icon.svg';
 import { TabPanel } from './TabPanel';
-import { StripeCardItem } from './StripeCardItem';
 import { StripePurchaseForm } from './StripePurchaseForm';
+import { coldWallet } from './PaymentsAccount';
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  coldWallet: string;
+  amount?: number;
 }
 
-export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, coldWallet }) => {
+export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount }) => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -43,28 +42,43 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, coldWallet }) =
   return (
     <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
       <DialogContent>
-        <Tabs
-          value={value}
-          variant={'fullWidth'}
-          indicatorColor={'primary'}
-          textColor={'primary'}
-          onChange={handleChange}
-        >
-          <Tab label={'ETH'} icon={<img src={eth} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} />
-          <Tab label={'Card'} icon={<img src={card} height={60} width={60} alt={'USD'} />} {...a11yProps(1)} />
-        </Tabs>
-        <TabPanel value={value} index={0}>
-          <DialogContentText>Please send funds from one of your claimed addresses to this address:</DialogContentText>
-          <DialogContentText>{coldWallet}</DialogContentText>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary" variant={'contained'} style={{ textTransform: 'none' }}>
-              Okay
-            </Button>
-          </DialogActions>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <StripePurchaseForm setOpen={setOpen} />
-        </TabPanel>
+        {amount && amount <= 0 ? (
+          <div>
+            <DialogContentText>All your campaigns are funded, or you must select a campaign to fund.</DialogContentText>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary" variant={'contained'}>
+                Okay
+              </Button>
+            </DialogActions>
+          </div>
+        ) : (
+          <div>
+            <Tabs
+              value={value}
+              variant={'fullWidth'}
+              indicatorColor={'primary'}
+              textColor={'primary'}
+              onChange={handleChange}
+            >
+              <Tab label={'ETH'} icon={<img src={eth} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} />
+              <Tab label={'Card'} icon={<img src={card} height={60} width={60} alt={'USD'} />} {...a11yProps(1)} />
+            </Tabs>
+            <TabPanel value={value} index={0}>
+              <DialogContentText>
+                Please send funds from one of your claimed addresses to this address:
+              </DialogContentText>
+              <DialogContentText>{coldWallet}</DialogContentText>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary" variant={'contained'}>
+                  Okay
+                </Button>
+              </DialogActions>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <StripePurchaseForm setOpen={setOpen} givenAmount={amount} />
+            </TabPanel>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

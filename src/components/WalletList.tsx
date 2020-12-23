@@ -35,7 +35,7 @@ export const WalletList: React.FC = () => {
   };
   return (
     <Grid container direction={'column'}>
-      <Grid item container className="ethereum-address-list-header">
+      <Grid item container className="list-header">
         <Grid item xs={7}>
           <Typography>METHOD</Typography>
         </Grid>

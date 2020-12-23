@@ -11,7 +11,7 @@ interface Props {
   index: number;
 }
 
-export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setChecked, index }) => {
+export const CampaignMetricsCard: React.FC<Props> = ({ campaign, checkedIndex, setChecked, index }) => {
   const { loading: loadingStatus, data: statusData } = useQuery<GetCurrentTierResults, GetCampaignVars>(
     GET_CURRENT_TIER,
     {
@@ -36,9 +36,11 @@ export const CampaignCard: React.FC<Props> = ({ campaign, checkedIndex, setCheck
       <Typography component="div">Closed</Typography>
     );
   };
-  const numberOfTiers = Object.keys(campaign.algorithm.tiers).filter((key) => campaign.algorithm.tiers[key]['threshold'] !== '' && campaign.algorithm.tiers[key]['totalCoiins'] !== '').length;
+  const numberOfTiers = Object.keys(campaign.algorithm.tiers).filter(
+    (key) => campaign.algorithm.tiers[key]['threshold'] !== '' && campaign.algorithm.tiers[key]['totalCoiins'] !== '',
+  ).length;
   const hasTier = campaign.algorithm.tiers[numberOfTiers];
-  const budget = (hasTier) ? campaign.algorithm.tiers[numberOfTiers].totalCoiins : '0';
+  const budget = hasTier ? campaign.algorithm.tiers[numberOfTiers].totalCoiins : '0';
   return (
     <div>
       <Grid container spacing={5}>

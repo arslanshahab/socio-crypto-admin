@@ -37,7 +37,6 @@ export const PendingCampaigns: React.FC = () => {
                       onClick={() => updateStatus({ variables: { status: 'APPROVED', campaignId: campaign.id } })}
                       variant={'contained'}
                       color={'primary'}
-                      style={{ textTransform: 'none' }}
                     >
                       Approve
                     </Button>
@@ -45,7 +44,7 @@ export const PendingCampaigns: React.FC = () => {
                       onClick={() => updateStatus({ variables: { status: 'DENIED', campaignId: campaign.id } })}
                       variant={'contained'}
                       color={'primary'}
-                      style={{ textTransform: 'none', marginLeft: '2px' }}
+                      style={{ marginLeft: '2px' }}
                     >
                       Deny
                     </Button>
