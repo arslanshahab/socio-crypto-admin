@@ -8,9 +8,9 @@ import { GetFundingWalletResponse } from '../types';
 import { GET_FUNDING_WALLET } from '../operations/queries/fundingWallet';
 import { AddPaymentMethod } from './AddPaymentMethod';
 import { PurchaseDialog } from './PurchaseDialog';
-import { CampaignInfoList } from './CampaignInfoList';
+import { CampaignStatusList } from './CampaignStatusList';
 
-const coldWallet =
+export const coldWallet =
   process.env.NODE_ENV === 'production'
     ? '0x9f6fE7cF8CCC66477c9f7049F22FbbE35234274D'
     : '0x275EE6238D103fDBE49d4cF6358575aA914F8654';
@@ -38,101 +38,91 @@ export const PaymentsAccount: React.FC = () => {
     }
   };
 
+  const getBalance = () => {
+    if (data && data.getFundingWallet.balance) {
+      return data.getFundingWallet.balance;
+    }
+    return 0;
+  };
+
   return (
     <div>
       <AddPaymentMethod open={paymentMethod} setOpen={setOpenPM} />
-      <PurchaseDialog open={open} setOpen={setOpen} coldWallet={coldWallet} />
-      <Grid container direction={'column'} spacing={2}>
+      <PurchaseDialog open={open} setOpen={setOpen} />
+      <Grid container>
         <Grid item xs={7}>
-          <Paper className="payments-account">
-            <Grid container item direction={'column'} justify={'center'} spacing={2}>
-              <Grid container item>
-                <Grid item xs={4}>
-                  <Typography component={'div'} variant={'h4'}>
-                    Payments Account
-                  </Typography>
-                </Grid>
-                <Grid item xs={6} />
-                <Grid item xs={2} container>
-                  <Typography component={'div'}>Balance: {renderWalletBalance()}</Typography>
-                  <Button
-                    variant={'contained'}
-                    size={'small'}
-                    color={'primary'}
-                    style={{ textTransform: 'none' }}
-                    onClick={handleClickOpen}
-                  >
-                    <Typography component={'div'}>Buy Coiin</Typography>
-                  </Button>
-                </Grid>
-              </Grid>
-              <Grid container item spacing={2}>
-                <Grid item>
-                  <PaymentIcon />
-                </Grid>
-                <Grid item sm container>
-                  <Grid item xs container direction={'column'} spacing={2}>
-                    <Typography component={'div'}>How you pay</Typography>
-                    <Typography component={'div'}>Coiin</Typography>
+          <Paper className="paper">
+            <Grid container direction={'column'} spacing={4}>
+              <Grid item>
+                <Grid container item direction={'column'} justify={'center'} spacing={2}>
+                  <Grid container item>
+                    <Grid item xs={4}>
+                      <Typography component={'div'} variant={'h4'}>
+                        Payments Account
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6} />
+                    <Grid item xs={2} container className="buy-button-container">
+                      <Typography component={'div'}>Balance: {renderWalletBalance()}</Typography>
+                      <Button
+                        variant={'contained'}
+                        size={'small'}
+                        color={'primary'}
+                        className="button"
+                        onClick={handleClickOpen}
+                      >
+                        <Typography component={'div'}>Buy Coiin</Typography>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                  <Grid container item spacing={2}>
+                    <Grid item>
+                      <PaymentIcon />
+                    </Grid>
+                    <Grid item sm container>
+                      <Grid item xs container direction={'column'} spacing={2}>
+                        <Typography component={'div'}>How you pay</Typography>
+                        <Typography component={'div'}>Coiin</Typography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item>
+                    <Typography component={'div'}>
+                      To manage other forms of payments, please contact your account manager.
+                    </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item>
-                <Typography component={'div'}>
-                  To manage other forms of payments, please contact your account manager.
-                </Typography>
+                <Grid container direction={'row'}>
+                  <Grid item xs>
+                    <Typography component={'div'} variant={'h5'}>
+                      Payment Methods
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={6} />
+                  <Grid item xs>
+                    <Button
+                      variant={'contained'}
+                      color={'primary'}
+                      className="button"
+                      onClick={handleOpenNewPaymentMethod}
+                    >
+                      Add Method
+                    </Button>
+                  </Grid>
+                </Grid>
+                <WalletList />
+              </Grid>
+              <Grid item>
+                <CampaignStatusList balance={getBalance()} />
+              </Grid>
+              <Grid item>
+                <div>
+                  <TransactionHistory data={data} isLoading={loading} />
+                </div>
               </Grid>
             </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={7}>
-          <Paper className="ethereum-address-list">
-            <Grid container direction={'row'}>
-              <Grid item xs>
-                <Typography component={'div'} variant={'h5'}>
-                  Payment Methods
-                </Typography>
-              </Grid>
-              <Grid item xs={6} />
-              <Grid item xs>
-                <Button
-                  variant={'contained'}
-                  color={'primary'}
-                  style={{ textTransform: 'none' }}
-                  onClick={handleOpenNewPaymentMethod}
-                >
-                  Add Method
-                </Button>
-              </Grid>
-            </Grid>
-            <WalletList />
-          </Paper>
-        </Grid>
-        <Grid item xs={7}>
-          <Paper className="ethereum-address-list">
-            <Grid container className="campaign-header" direction={'row'}>
-              <Grid item xs={7}>
-                <Typography component={'div'} variant={'h5'}>
-                  Campaigns
-                </Typography>
-              </Grid>
-              <Grid item xs={3}>
-                <Typography component={'div'} variant={'h6'}>
-                  Status
-                </Typography>
-              </Grid>
-              <Grid item xs={2}>
-                <Typography component={'div'} variant={'h6'}>
-                  Cost
-                </Typography>
-              </Grid>
-            </Grid>
-            <CampaignInfoList />
-          </Paper>
-        </Grid>
-        <Grid item xs={7}>
-          <Paper className="payments-account-history">
-            <TransactionHistory data={data} isLoading={loading} />
           </Paper>
         </Grid>
       </Grid>

@@ -9,8 +9,8 @@ export const ADD_PAYMENT_METHOD = gql`
 `;
 
 export const CHARGE_PAYMENT_METHOD = gql`
-  mutation chargePaymentMethod($amount: Float!, $paymentMethodId: String!) {
-    chargePaymentMethod(amount: $amount, paymentMethodId: $paymentMethodId) {
+  mutation purchaseCoiin($amount: Float!, $paymentMethodId: String!) {
+    purchaseCoiin(amount: $amount, paymentMethodId: $paymentMethodId) {
       clientSecret
     }
   }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import { CampaignListVars, FilterDataType, PaginatedCampaignResults, TimeFilterOptions } from '../types';
-import { CampaignCard } from './CampaignCard';
+import { CampaignMetricsCard } from './CampaignMetricsCard';
 import { LIST_CAMPAIGNS } from '../operations/queries/campaign';
 import { CampaignGraph } from './CampaignGraph';
 import { DateTimePicker } from '@material-ui/pickers';
@@ -49,7 +49,7 @@ export const CampaignsList: React.FC = () => {
                     endDate={endDate}
                   />
                 ) : (
-                  <div></div>
+                  <div />
                 )}
               </div>
             )}
@@ -120,7 +120,7 @@ export const CampaignsList: React.FC = () => {
             {data &&
               data.listCampaigns.results.map((campaign, index) => {
                 return (
-                  <CampaignCard
+                  <CampaignMetricsCard
                     key={index}
                     campaign={campaign}
                     setChecked={setChecked}

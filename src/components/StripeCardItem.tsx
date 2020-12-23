@@ -9,11 +9,11 @@ interface Props {
 
 export const StripeCardItem: React.FC<Props> = ({ stripeWallet }) => {
   return (
-    <Grid container item direction={'row'} className="wallet-item">
-      <Grid item>
+    <Grid container item direction={'row'} className="list-row">
+      <Grid item className="list-item">
         <Typography>{capitalize(stripeWallet.brand)}</Typography>
       </Grid>
-      <Grid item style={{ marginLeft: '5px' }}>
+      <Grid item className="list-item" style={{ marginLeft: '5px' }}>
         <Typography>(...{stripeWallet.last4})</Typography>
       </Grid>
     </Grid>

@@ -1,52 +1,32 @@
-.payments-account {
-  flex-grow: 1;
-  padding-left: 30px;
 
-  .payments-account-content {
-    margin: auto;
-  }
-}
-  .ethereum-address-list-header {
-    padding-top: 5px;
-    border-bottom: 2px solid black;
-  }
-
-.ethereum-address-list {
+.list-item {
   padding-top: 10px;
-  padding-left: 30px;
   padding-bottom: 10px;
 }
 
-.wallet-item {
+.list-header {
   padding-top: 5px;
-  border-bottom: 1px solid grey;
-}
-
-.ethereum-address-claim-button {
-  position: absolute;
-  top: 50%;
-  -ms-transform: translate(-50%);
-  transform: translateY(-50%);
-}
-
-.header-text {
-  font-size: 50px;
-}
-
-.button-text {
-  text-transform: none;
-}
-
-.payments-account-history {
-  padding-top: 10px;
-  padding-left: 30px;
-  padding-bottom: 30px;
-}
-
-.payments-account-history-item {
-  border-bottom: 1px solid grey;
-}
-
-.payments-account-history-header {
   border-bottom: 2px solid black;
+}
+
+.list-row {
+  border-bottom: 1px solid grey;
+}
+
+.paper {
+  padding-left: 20px;
+  padding-bottom: 15px;
+  padding-top: 10px;
+}
+
+.section {
+  overflow-x: auto;
+}
+
+.claim-button-container {
+  padding-top: 5px;
+}
+
+.buy-button-container {
+  padding-right: 10px;
 }
