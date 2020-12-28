@@ -143,8 +143,8 @@ export const LIST_EMPLOYEES = gql`
 `;
 
 export const NEW_USER = gql`
-  mutation newUser($name: String!, $email: String!) {
-    newUser(name: $name, email: $email)
+  mutation newUser($name: String!, $email: String!, $role: String!) {
+    newUser(name: $name, email: $email, role: $role)
   }
 `;
 
