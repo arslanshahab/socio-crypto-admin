@@ -71,7 +71,7 @@ export const PaymentsAccount: React.FC = () => {
                         className="button"
                         onClick={handleClickOpen}
                       >
-                        <Typography component={'div'}>Buy Coiin</Typography>
+                        <Typography component={'div'}>Buy Coiin Points</Typography>
                       </Button>
                     </Grid>
                   </Grid>
