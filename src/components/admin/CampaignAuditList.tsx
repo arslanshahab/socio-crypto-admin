@@ -2,12 +2,14 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
 import { useHistory } from 'react-router';
+import { CircularProgress } from '@material-ui/core';
 
 export const CampaignAuditList: React.FC = () => {
   const history = useHistory();
   const { loading, data, error } = useQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
       open: false,
+      scoped: true,
     },
   });
 
@@ -16,8 +18,19 @@ export const CampaignAuditList: React.FC = () => {
   };
 
   const renderManageWithdrawals = () => {
-    if (loading) return <div></div>;
+    if (loading)
+      return (
+        <div>
+          <CircularProgress></CircularProgress>
+        </div>
+      );
     if (data) {
+      if (data.listCampaigns.results.length == 0)
+        return (
+          <div>
+            <p>No Auditable Campaigns Found</p>
+          </div>
+        );
       return (
         <div>
           {data.listCampaigns.results.map((campaign: any) => {

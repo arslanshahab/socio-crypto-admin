@@ -13,15 +13,12 @@ interface ClaimWalletVars {
   signature: string;
 }
 
-export const WalletCard: React.FC<Props> = ({ wallet }) => {
+export const AddressCard: React.FC<Props> = ({ wallet }) => {
   const anyWindow = window as any;
   const [claimWallet, { error }] = useMutation<ClaimEthereumAddress, ClaimWalletVars>(CLAIM_WALLET);
   const [coinbase, setCoinbase] = useState(!!anyWindow.web3 && anyWindow.web3.eth.coinbase);
   const [web3Enabled, setWeb3Enabled] = useState(!!anyWindow.web3 && !!coinbase);
   if (anyWindow.web3) anyWindow.ethereum.on('accountsChanged', (a: any) => setCoinbase(a[0]));
-  const isClaimed = () => {
-    return <Typography component="div">{wallet.claimed ? 'Yes' : 'No'}</Typography>;
-  };
   const web3 = async (message: string) => {
     anyWindow.web3.personal.sign(anyWindow.web3.fromUtf8(message), coinbase, (error: any, signature: string) => {
       if (error) return;
@@ -39,7 +36,13 @@ export const WalletCard: React.FC<Props> = ({ wallet }) => {
   const renderWeb3 = (address: string, claimAmount: string) => {
     if (web3Enabled && coinbase && address && coinbase.toLowerCase() === address.toLowerCase()) {
       return (
-        <Button size={'small'} color={'primary'} variant={'contained'} onClick={() => web3(claimAmount)}>
+        <Button
+          size={'small'}
+          color={'primary'}
+          variant={'contained'}
+          className="claim-button"
+          onClick={() => web3(claimAmount)}
+        >
           <Typography component="div">Claim</Typography>
         </Button>
       );
@@ -55,15 +58,12 @@ export const WalletCard: React.FC<Props> = ({ wallet }) => {
     );
   };
   return (
-    <Grid container direction={'row'} className="ethereum-address-item">
-      <Grid item xs={7}>
+    <Grid container item direction={'row'} justify={'center'} className="list-row">
+      <Grid item xs={9} className="list-item">
         <Typography component="div">{wallet && wallet.ethereumAddress}</Typography>
       </Grid>
-      <Grid item xs={2}>
-        <Typography component="div">{isClaimed()}</Typography>
-      </Grid>
       {!wallet.claimed && (
-        <Grid item xs={3}>
+        <Grid item xs={3} className="claim-button-container">
           {renderWeb3(wallet.ethereumAddress, wallet.message)}
         </Grid>
       )}

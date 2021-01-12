@@ -9,16 +9,29 @@ import store from './redux/store';
 import './assets/styles/main.scss';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DayJsUtils from '@date-io/dayjs';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiButton: {
+      root: {
+        textTransform: 'none',
+      },
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <MuiPickersUtilsProvider utils={DayJsUtils}>
-      <Provider store={store}>
-        <ApolloProvider client={graphqlClient}>
-          <App />
-        </ApolloProvider>
-      </Provider>
-    </MuiPickersUtilsProvider>
+    <MuiThemeProvider theme={theme}>
+      <MuiPickersUtilsProvider utils={DayJsUtils}>
+        <Provider store={store}>
+          <ApolloProvider client={graphqlClient}>
+            <App />
+          </ApolloProvider>
+        </Provider>
+      </MuiPickersUtilsProvider>
+    </MuiThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

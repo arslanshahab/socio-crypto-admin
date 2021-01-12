@@ -3,13 +3,13 @@ import { AlgorithmSpecs, CampaignRequirementSpecs, CampaignState } from '../../t
 
 const initialAlgorithmState: AlgorithmSpecs = {
   pointValues: {
-    clicks: '',
-    views: '',
-    submissions: '',
-    likes: '',
-    shares: '',
+    clicks: '1',
+    views: '2',
+    submissions: '6',
+    likes: '3',
+    shares: '9',
   },
-  tiers: {},
+  tiers: { '1': { threshold: '0', totalCoiins: '' } },
 };
 
 const initialState: CampaignState = {
@@ -17,19 +17,27 @@ const initialState: CampaignState = {
   beginDate: '',
   endDate: '',
   totalParticipationScore: '',
-  target: '',
   description: '',
   algorithm: initialAlgorithmState,
   company: '',
+  target: '',
   targetVideo: '',
   image: '',
   tagline: '',
   suggestedPosts: [],
   suggestedTags: [],
   config: {
+    type: 'coiin',
     numOfSuggestedPosts: 2,
     numOfTiers: 3,
     initialTotal: '',
+    budget: '',
+    budgetType: '',
+    campaignType: '',
+    agreementChecked: false,
+    raffleImage: '',
+    rafflePrizeName: '',
+    rafflePrizeAffiliateLink: '',
   },
 };
 

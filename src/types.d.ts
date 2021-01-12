@@ -5,12 +5,29 @@ export interface PaginatedCampaignResults {
   };
 }
 
-export interface VerifySessionResults {
-  verifySession: {
-    id: string;
-    role: string;
-    company: string;
+export interface AddPaymentMethod {
+  addPaymentMethod: {
+    clientSecret: string;
   };
+}
+
+export interface ChargePaymentMethodResults {
+  chargePaymentMethod: {
+    clientSecret: string;
+  };
+}
+
+export interface ChargePaymentMethodVars {
+  amount: number;
+  paymentMethodId: string;
+}
+
+export interface ListPaymentMethodsResults {
+  listPaymentMethods: {
+    id: string;
+    last4: string;
+    brand: string;
+  }[];
 }
 
 export interface ListOrgs {
@@ -40,6 +57,11 @@ export interface Wallet {
   balance: number;
 }
 
+export interface StripeWallet {
+  last4: string;
+  brand: string;
+}
+
 export interface GetWalletResponse {
   getExternalAddress: {
     ethereumAddress: string;
@@ -67,6 +89,7 @@ export interface GetFundingWalletResponse {
 export interface Transfer {
   amount: number;
   action: string;
+  currency: string;
   ethAddress: string;
   createdAt: string;
 }
@@ -197,13 +220,25 @@ export interface NewCampaignVars {
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+  type: string;
+  rafflePrize?: RafflePrizeStructure;
+}
+
+export interface RafflePrizeStructure {
+  displayName: string;
+  affiliateLink?: string;
+  image?: string;
 }
 
 export interface CampaignConfig {
-  [key: string]: string | number;
+  [key: string]: string | number | boolean;
   numOfSuggestedPosts: number;
   numOfTiers: number;
   initialTotal: string;
+  type: string;
+  rafflePrizeName?: string;
+  rafflePrizeAffiliateLink?: string;
+  raffleImage?: string;
 }
 
 export interface Campaign {
@@ -213,6 +248,7 @@ export interface Campaign {
   endDate: string;
   coiinTotal: string;
   totalParticipationScore: string;
+  status: string;
   target: string;
   description: string;
   algorithm: AlgorithmSpecs;
@@ -224,6 +260,32 @@ export interface Campaign {
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+}
+
+export interface ListPendingCampaignsAdminResults {
+  listPendingCampaigns: {
+    results: {
+      id: string;
+      name: string;
+      beginDate: string;
+      endDate: string;
+      coiinTotal: string;
+      totalParticipationScore: string;
+      target: string;
+      description: string;
+      algorithm: AlgorithmSpecs;
+      company: string;
+      audited: boolean;
+      targetVideo: string;
+      imagePath: string;
+      requirements?: CampaignRequirementSpecs;
+      tagline: string;
+      suggestedPosts: string[];
+      suggestedTags: string[];
+      org: { name: string };
+    }[];
+    total: number;
+  };
 }
 
 export interface CampaignState {
@@ -263,6 +325,7 @@ export interface CampaignRequirementSpecs {
   interests?: string[];
   ageRange?: AgeRangeRequirementSpecs;
   socialFollowing?: SocialFollowingSpecs;
+  email?: boolean;
 }
 
 export interface SocialFollowingSpecs {

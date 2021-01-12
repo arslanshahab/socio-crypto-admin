@@ -15,6 +15,7 @@ interface Props {
   userData: {
     company: string;
   };
+  campaignType: string;
 }
 
 const useStyles = makeStyles(() =>
@@ -46,7 +47,14 @@ export const Initialize: React.FC<Props> = (props) => {
     event.persist();
     if (event.target.name === 'initialTotal') {
       dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'threshold', val: '0' }));
-      dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'totalCoiins', val: event.target.value }));
+      dispatch(
+        updateCampaignState({
+          cat: 'algoTiers',
+          tier: '1',
+          key: 'totalCoiins',
+          val: props.campaignType === 'raffle' ? '0' : event.target.value,
+        }),
+      );
     }
     dispatch(updateCampaignState({ cat: 'config', key: event.target.name, val: event.target.value }));
   };
@@ -109,6 +117,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   name={'name'}
                   placeholder={'name'}
                   fullWidth
+                  value={campaign.name}
                   variant="outlined"
                   margin={'normal'}
                   onChange={handleCampaignChange}
@@ -120,6 +129,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   label={'Company Name'}
                   variant="outlined"
                   name={'company'}
+                  disabled
                   placeholder={'Company Name'}
                   margin={'normal'}
                   defaultValue={props.userData ? props.userData.company : null}
@@ -136,8 +146,9 @@ export const Initialize: React.FC<Props> = (props) => {
                   fullWidth
                   label={'Landing Page URL'}
                   name={'target'}
-                  placeholder={'Landing Page URL'}
+                  placeholder={'Landing Page URL: must start with http or https'}
                   margin={'normal'}
+                  value={campaign.target}
                   variant="outlined"
                   onChange={handleCampaignChange}
                   className="text-field"
@@ -149,6 +160,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   name={'targetVideo'}
                   placeholder={'Landing Page Video URL'}
                   margin={'normal'}
+                  value={campaign.targetVideo}
                   onChange={handleCampaignChange}
                   fullWidth
                   variant="outlined"
@@ -165,11 +177,13 @@ export const Initialize: React.FC<Props> = (props) => {
                   fullWidth
                   variant="outlined"
                   name={'numOfTiers'}
-                  defaultValue={3}
+                  defaultValue={props.campaignType === 'raffle' ? 0 : 3}
                   placeholder={'How many tiers'}
                   margin={'normal'}
+                  value={campaign.config.numOfTiers}
                   onChange={handleConfigChange}
                   className="text-field"
+                  disabled={props.campaignType === 'raffle'}
                 />
               </Grid>
               <Grid container item xs={6} spacing={0}>
@@ -181,6 +195,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   defaultValue={2}
                   type="number"
                   onChange={handleConfigChange}
+                  value={campaign.config.numOfSuggestedPosts}
                   className="text-field"
                   fullWidth
                   variant="outlined"
@@ -196,6 +211,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   name={'tagline'}
                   placeholder={'Campaign Tagline'}
                   margin={'normal'}
+                  value={campaign.tagline}
                   onChange={handleCampaignChange}
                   className="text-field no-top-margin"
                   fullWidth
@@ -205,9 +221,10 @@ export const Initialize: React.FC<Props> = (props) => {
               <Grid container item xs={6}>
                 <TextField
                   label="Description"
-                  name="Description"
+                  name="description"
                   onChange={handleCampaignChange}
                   multiline
+                  value={campaign.description}
                   rows={5}
                   fullWidth
                   variant="outlined"

@@ -11,6 +11,7 @@ export const LIST_CAMPAIGNS = gql`
         totalParticipationScore
         beginDate
         description
+        status
         endDate
         company
         imagePath
@@ -23,6 +24,31 @@ export const LIST_CAMPAIGNS = gql`
           user {
             id
           }
+        }
+      }
+      total
+    }
+  }
+`;
+
+export const ADMIN_LIST_CAMPAIGNS = gql`
+  query listPendingCampaigns($skip: Int, $take: Int) {
+    listPendingCampaigns(skip: $skip, take: $take) {
+      results {
+        id
+        name
+        coiinTotal
+        algorithm
+        status
+        totalParticipationScore
+        beginDate
+        description
+        endDate
+        company
+        imagePath
+        tagline
+        org {
+          name
         }
       }
       total

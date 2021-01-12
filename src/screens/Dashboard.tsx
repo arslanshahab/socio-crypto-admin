@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -39,6 +39,7 @@ import { CampaignAudit } from '../components/admin/CampaignAudit';
 import { UserManagement } from '../components/UserManagement';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import { CampaignAuditList } from '../components/admin/CampaignAuditList';
 
 const drawerWidth = 240;
 
@@ -252,6 +253,18 @@ export const Dashboard: React.FC = (props) => {
                 ) : (
                   <div />
                 )}
+                {value.role == 'admin' ? (
+                  <Link to={'/dashboard/admin/audit-campaigns'} style={{ textDecoration: 'none', color: 'black' }}>
+                    <ListItem button key={'Audit'}>
+                      <ListItemIcon>
+                        <AssignmentIndIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={'Audit Campaigns'} />
+                    </ListItem>
+                  </Link>
+                ) : (
+                  <div />
+                )}
               </List>
             </Drawer>
             <main
@@ -291,9 +304,14 @@ export const Dashboard: React.FC = (props) => {
                     <ManageWithdrawRequests {...props} />
                   </ProtectedRoute>
                 )}
-                {value['company'] === 'raiinmaker' && (
-                  <ProtectedRoute exact path={'/dashboard/admin/campaign-audit'} adminOnly={true}>
+                {value['role'] === 'admin' && (
+                  <ProtectedRoute exact path={'/dashboard/admin/campaign-audit'}>
                     <CampaignAudit {...props} />
+                  </ProtectedRoute>
+                )}
+                {value['role'] === 'admin' && (
+                  <ProtectedRoute exact path={'/dashboard/admin/audit-campaigns'}>
+                    <CampaignAuditList {...props} />
                   </ProtectedRoute>
                 )}
               </Switch>

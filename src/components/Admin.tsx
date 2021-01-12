@@ -1,11 +1,11 @@
 import React from 'react';
 import { AppBar, Tabs, Tab, Typography, Grid, Button } from '@material-ui/core';
 import { TabPanel } from './TabPanel';
-import { CampaignAuditList } from './admin/CampaignAuditList';
 import { WithdrawHistory } from './admin/WithdrawHistory';
 import { PendingWithdrawList } from './admin/PendingWithdrawList';
 import { BrandList } from './BrandList';
 import { RegisterBrand } from '../screens/RegisterBrand';
+import { PendingCampaigns } from './PendingCampaigns';
 
 export const Admin: React.FC = (props) => {
   const [value, setValue] = React.useState(0);
@@ -40,22 +40,22 @@ export const Admin: React.FC = (props) => {
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
           <Tab label="Payments / KYC" {...a11yProps(0)} />
-          <Tab label="Audit Campaign" {...a11yProps(1)} />
-          <Tab label="Registered Brands" {...a11yProps(2)} />
-          <Tab label="Withdraw History" {...a11yProps(3)} />
+          <Tab label="Registered Brands" {...a11yProps(1)} />
+          <Tab label="Withdraw History" {...a11yProps(2)} />
+          <Tab label="Pending Campaigns" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
         <PendingWithdrawList />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <CampaignAuditList />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
         <BrandList />
       </TabPanel>
+      <TabPanel value={value} index={2}>
+        <WithdrawHistory />
+      </TabPanel>
       <TabPanel value={value} index={3}>
-        <WithdrawHistory></WithdrawHistory>
+        <PendingCampaigns />
       </TabPanel>
     </div>
   );

@@ -7,15 +7,56 @@ import coiin_black from '../assets/svg/icon_coiin_black copy.svg';
 import { useDispatch } from 'react-redux';
 import { updateCampaignState } from '../redux/slices/campaign';
 import { ReactSVG } from 'react-svg';
+import icon from '../assets/svg/camera.svg';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/reducer';
 
-export const SetupCampaign: React.FC = () => {
+interface Props {
+  company: string;
+  raffleImage?: string;
+}
+
+export const SetupCampaign: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
 
-  const [campaignType, setCampaignType] = useState('');
-  const [budgetType, setBudgetType] = useState('');
-
+  const state = useSelector((state: RootState) => state);
+  const campaign = state.newCampaign;
+  const [campaignType, setCampaignType] = useState(campaign.config.campaignType ? campaign.config.campaignType : '');
+  const [budgetType, setBudgetType] = useState(campaign.config.budgetType ? campaign.config.budgetType : '');
   const handleCampaignChange = (key: string, value: any) => {
     dispatch(updateCampaignState({ cat: 'config', key: key, val: value }));
+  };
+
+  const getBase64 = (file: Blob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      if (reader.result) {
+        dispatch(updateCampaignState({ cat: 'config', key: 'raffleImage', val: reader.result }));
+      }
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  };
+
+  const handleImage = (event: React.ChangeEvent) => {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
+    if (files != null && files.length) {
+      const formData = new FormData();
+      formData.append(files[0].name, files[0]);
+      getBase64(files[0]);
+    }
+  };
+  const handleCampaignType = (type: string) => {
+    setCampaignType(type);
+    dispatch(updateCampaignState({ cat: 'config', key: 'campaignType', val: type }));
+  };
+
+  const handleBudgetType = (type: string) => {
+    setBudgetType(type);
+    handleCampaignChange('budgetType', type);
   };
 
   return (
@@ -26,7 +67,7 @@ export const SetupCampaign: React.FC = () => {
             <p className="margin-bottom center-text setup-campaign-question">What will this campaign prioritize?</p>
             <div>
               <div
-                onClick={() => setCampaignType('video-views')}
+                onClick={() => handleCampaignType('video-views')}
                 className={`${
                   campaignType === 'video-views' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
@@ -34,7 +75,7 @@ export const SetupCampaign: React.FC = () => {
                 <p>View Views</p>
               </div>
               <div
-                onClick={() => setCampaignType('brand-awareness')}
+                onClick={() => handleCampaignType('brand-awareness')}
                 className={`${
                   campaignType === 'brand-awareness' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
@@ -42,7 +83,7 @@ export const SetupCampaign: React.FC = () => {
                 <p>Brand Awareness</p>
               </div>
               <div
-                onClick={() => setCampaignType('social-engagement')}
+                onClick={() => handleCampaignType('social-engagement')}
                 className={`${
                   campaignType === 'social-engagement' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
@@ -50,7 +91,7 @@ export const SetupCampaign: React.FC = () => {
                 <p>Social Engagement</p>
               </div>
               <div
-                onClick={() => setCampaignType('conversion')}
+                onClick={() => handleCampaignType('conversion')}
                 className={`${
                   campaignType === 'conversion' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
@@ -68,7 +109,10 @@ export const SetupCampaign: React.FC = () => {
               </p>
               <div>
                 <div
-                  onClick={() => setBudgetType('coiin')}
+                  onClick={() => {
+                    handleBudgetType('coiin');
+                    handleCampaignChange('numOfTiers', 3);
+                  }}
                   className={`${
                     budgetType === 'coiin' ? 'selected-item' : ''
                   } inline half-width center-text campaign-funding-square`}
@@ -81,6 +125,13 @@ export const SetupCampaign: React.FC = () => {
                   <p>Coiin</p>
                 </div>
                 <div
+                  onClick={() => {
+                    if (props.company.toLowerCase() === 'raiinmaker') {
+                      handleBudgetType('raffle');
+                      handleCampaignChange('numOfTiers', 0);
+                      handleCampaignChange('initialTotal', 0);
+                    }
+                  }}
                   className={`${
                     budgetType === 'raffle' ? 'selected-item' : ''
                   } inline half-width center-text campaign-funding-square`}
@@ -101,11 +152,53 @@ export const SetupCampaign: React.FC = () => {
                         variant="outlined"
                         margin={'normal'}
                         type="number"
+                        value={campaign.config.coiinBudget}
                         onChange={(event) => {
                           handleCampaignChange('coiinBudget', event.target.value as string);
                         }}
                       />
                     </Fade>
+                  ) : budgetType == 'raffle' ? (
+                    <div>
+                      <div className="image-upload-container">
+                        <label htmlFor="single">
+                          <div>
+                            {props.raffleImage ? (
+                              <div className="image-preview">
+                                <img src={props.raffleImage}></img>
+                              </div>
+                            ) : (
+                              <ReactSVG src={icon} color="#3B5998" />
+                            )}
+                          </div>
+                        </label>
+                        <input className="hidden" type="file" id="single" onChange={handleImage} />
+                      </div>
+                      <TextField
+                        label={'Raffle Prize Name'}
+                        name={''}
+                        placeholder={'Raffle Campaign Prize'}
+                        fullWidth
+                        variant="outlined"
+                        margin={'normal'}
+                        type="text"
+                        onChange={(event) => {
+                          handleCampaignChange('rafflePrizeName', event.target.value as string);
+                        }}
+                      />
+                      <TextField
+                        label={'Raffle Affiliate Link (optional)'}
+                        name={''}
+                        placeholder={'Raffle Affiliate Link'}
+                        fullWidth
+                        variant="outlined"
+                        margin={'normal'}
+                        type="text"
+                        onChange={(event) => {
+                          handleCampaignChange('rafflePrizeAffiliateLink', event.target.value as string);
+                        }}
+                      />
+                    </div>
                   ) : (
                     <TextField
                       label={'Campaign Budget (USD)'}
