@@ -121,7 +121,8 @@ export const NewCampaign: React.FC<Props> = (props) => {
           campaign.suggestedPosts &&
           campaign.suggestedTags &&
           campaign.config.numOfSuggestedPosts &&
-          campaign.config.numOfTiers
+          campaign.config.numOfTiers &&
+          campaign.target.startsWith('http')
         )
           validated = true;
       } else if (campaign.config.budgetType == 'raffle') {

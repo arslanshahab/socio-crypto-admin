@@ -146,7 +146,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   fullWidth
                   label={'Landing Page URL'}
                   name={'target'}
-                  placeholder={'Landing Page URL'}
+                  placeholder={'Landing Page URL: must start with http or https'}
                   margin={'normal'}
                   value={campaign.target}
                   variant="outlined"
