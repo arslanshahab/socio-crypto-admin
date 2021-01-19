@@ -27,7 +27,7 @@ interface Props {
 
 export const NewCampaign: React.FC<Props> = (props) => {
   const history = useHistory();
-  const steps = ['Getting Started', 'Info', 'Suggested Posts', 'Requirements', 'Algorithm'];
+  const steps = ['Purpose and Budget', 'Campaign Information', 'Suggested Posts', 'Campaign Requirements', 'Algorithm'];
   const [activeStep, setActiveStep] = useState(0);
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
@@ -122,7 +122,8 @@ export const NewCampaign: React.FC<Props> = (props) => {
           campaign.suggestedTags &&
           campaign.config.numOfSuggestedPosts &&
           campaign.config.numOfTiers &&
-          campaign.target.startsWith('http')
+          campaign.target.startsWith('http') &&
+          new Date(campaign.beginDate).getTime() < new Date(campaign.endDate).getTime()
         )
           validated = true;
       } else if (campaign.config.budgetType == 'raffle') {

@@ -72,7 +72,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                   campaignType === 'video-views' ? 'selected-item' : ''
                 } inline half-width center-text campaign-type-square`}
               >
-                <p>View Views</p>
+                <p>Video Views</p>
               </div>
               <div
                 onClick={() => handleCampaignType('brand-awareness')}

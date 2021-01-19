@@ -8,6 +8,7 @@ import { RootState } from '../../redux/reducer';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { ReactSVG } from 'react-svg';
 import { Fade } from 'react-awesome-reveal';
+import { ToastContainer, toast } from 'react-toastify';
 
 import icon from '../../assets/svg/camera.svg';
 
@@ -59,13 +60,30 @@ export const Initialize: React.FC<Props> = (props) => {
     dispatch(updateCampaignState({ cat: 'config', key: event.target.name, val: event.target.value }));
   };
 
+  const displayDateError = () => {
+    toast.error('Beginning date must be before end date', {
+      position: 'bottom-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      progress: undefined
+    });
+  }
+
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
+    if (endDate && dateIsoString && new Date(endDate).getTime() < new Date(dateIsoString).getTime()) {
+      return displayDateError();
+    }
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'beginDate', val: dateIsoString }));
   };
 
   const handleEndDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
+    if (beginDate && dateIsoString && new Date(beginDate).getTime() >= new Date(dateIsoString).getTime()) {
+      return displayDateError();
+    }
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
   };
 
@@ -241,7 +259,7 @@ export const Initialize: React.FC<Props> = (props) => {
                   fullWidth
                   className={classes.textField}
                   onChange={handleBeginDateChange}
-                  label="Beginning Date of Campaign"
+                  label="Campaign Start Date"
                   showTodayButton
                 />
               </Grid>
@@ -253,13 +271,14 @@ export const Initialize: React.FC<Props> = (props) => {
                   disablePast
                   className={classes.textField}
                   onChange={handleEndDateChange}
-                  label="Ending Date of Campaign"
+                  label="Campaign End Date"
                   showTodayButton
                 />
               </Grid>
             </Grid>
           </div>
         </Grid>
+        <ToastContainer />
       </div>
     </Fade>
   );
