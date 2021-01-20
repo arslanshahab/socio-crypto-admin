@@ -90,11 +90,22 @@ export const NewCampaign: React.FC<Props> = (props) => {
     if (campaign.config.numOfTiers > Object.entries(campaign.algorithm.tiers).length) return validated;
     for (let i = 0; i < campaign.config.numOfTiers; i++) {
       const tier = campaign.algorithm.tiers[i + 1];
-      console.log(tier);
       if (!tier.threshold || !tier.totalCoiins) return validated;
     }
     validated = true;
     return validated;
+  };
+
+  const showFormError = () => {
+    return toast.error('Form Incomplete', {
+      position: 'bottom-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const payloadReady = (step: number) => {
@@ -183,9 +194,17 @@ export const NewCampaign: React.FC<Props> = (props) => {
     <div className="new-campaign">
       <Paper>
         <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label) => (
+          {steps.map((label, i) => (
             <Step key={label}>
-              <StepLabel>{label}</StepLabel>
+              <StepLabel
+                onClick={() => {
+                  if (payloadReady(activeStep) || payloadReady(i)) {
+                    setActiveStep(i);
+                  } else showFormError();
+                }}
+              >
+                {label}
+              </StepLabel>
             </Step>
           ))}
         </Stepper>
@@ -201,15 +220,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
               onClick={async () => {
                 try {
                   if (!payloadReady(activeStep)) {
-                    toast.error('Form Incomplete', {
-                      position: 'bottom-center',
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                    });
+                    showFormError();
                     throw new Error('bad payload');
                   }
                   await saveCampaign();
@@ -239,15 +250,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
                 if (payloadReady(activeStep)) {
                   handleNext(e);
                 } else {
-                  toast.error('Form Incomplete', {
-                    position: 'bottom-center',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                  });
+                  showFormError();
                 }
               }}
             >
