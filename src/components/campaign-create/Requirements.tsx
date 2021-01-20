@@ -235,7 +235,7 @@ export const Requirements: React.FC = () => {
         overlayClassName="requirement-modal-overlay"
       >
         <div className="modal-content">
-          <p className="modal-title">Social Requirements</p>
+          <p className="modal-title">Social Media Follower Requirements</p>
           <div>
             <MultiSelectList
               items={defaultSocialFollowers}
@@ -559,7 +559,7 @@ export const Requirements: React.FC = () => {
           <div className="requirement-column">
             <div className="requirement-row">
               <div className="row-title-container">
-                <p className="row-title">Social Requirements</p>
+                <p className="row-title">Social Media Follower Requirements</p>
               </div>
 
               <div className="row-button-container">
