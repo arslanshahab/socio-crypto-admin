@@ -195,7 +195,7 @@ export const Initialize: React.FC<Props> = (props) => {
                 <TextField
                   label={'Landing Page Video URL'}
                   name={'targetVideo'}
-                  placeholder={'Landing Page Video URL'}
+                  placeholder={'Video URL (Optional)'}
                   margin={'normal'}
                   value={campaign.targetVideo}
                   onChange={handleCampaignChange}
