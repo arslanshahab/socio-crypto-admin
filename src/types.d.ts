@@ -318,9 +318,6 @@ export interface Participant {
 
 export interface CampaignRequirementSpecs {
   version: string;
-  // city?: string;
-  // state?: string;
-  // country?: string;
   location?: LocationRequirementSpecs[];
   values?: string[];
   interests?: string[];

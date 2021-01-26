@@ -41,17 +41,12 @@
     font-size: 24px;
   }
   .modal-select{
-    // padding: 10px 0 10px 0;
     display: block;
     .MuiSelect-select.MuiSelect-select{
       width: calc(100% - 28px);
-      // margin-top:20px;
       padding-left: 14px;
       padding-right: 14px;
     }
-  }
-  .modal-text-field{
-    // margin: 15px;
   }
 }
 .multi-select-item{
@@ -128,9 +123,6 @@
   .row{
     display: flex;
     flex-direction: row;
-    div{
-      // width: auto;
-    }
   }
   .two-per-row{
     div{

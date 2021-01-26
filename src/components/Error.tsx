@@ -7,7 +7,7 @@ interface Props {
 
 export const ErrorCard: React.FC<Props> = (props) => {
   const { data, close } = props;
-  console.log('rendered');
+
   return (
     <div id="error-display" className="error-display">
       <div className="error-icon-container">
