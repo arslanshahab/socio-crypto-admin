@@ -46,6 +46,22 @@ export const Initialize: React.FC<Props> = (props) => {
   };
   const handleConfigChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     event.persist();
+    if (event.target.name === 'numOfTiers') {
+      if (parseInt(event.target.value) > 10) {
+        event.target.value = '10';
+      }
+      if (parseInt(event.target.value) < 1) {
+        event.target.value = '1';
+      }
+    }
+    if (event.target.name === 'numOfSuggestedPosts') {
+      if (parseInt(event.target.value) > 5) {
+        event.target.value = '5';
+      }
+      if (parseInt(event.target.value) < 1) {
+        event.target.value = '1';
+      }
+    }
     if (event.target.name === 'initialTotal') {
       dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'threshold', val: '0' }));
       dispatch(
@@ -67,9 +83,9 @@ export const Initialize: React.FC<Props> = (props) => {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
-      progress: undefined
+      progress: undefined,
     });
-  }
+  };
 
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
@@ -126,6 +142,9 @@ export const Initialize: React.FC<Props> = (props) => {
               </div>
             </label>
             <input className="hidden" type="file" id="single" onChange={handleImage} />
+            <p className="margin-bottom center-text setup-campaign-question">
+              {campaign.image ? 'Upadate Campaign Image' : 'Add Campaign Image'}
+            </p>
           </div>
           <div className="margin-bottom">
             <Grid container item xs={12} spacing={3}>
@@ -191,27 +210,58 @@ export const Initialize: React.FC<Props> = (props) => {
             <Grid container item xs={12} spacing={3}>
               <Grid container item xs={6} spacing={0}>
                 <TextField
-                  label={'How many tiers (1-10)'}
+                  label={'How many Reward Tiers would you like to provide? (1-10)'}
                   fullWidth
+                  type="number"
+                  InputProps={{
+                    inputProps: {
+                      max: 10,
+                      min: 1,
+                    },
+                  }}
                   variant="outlined"
                   name={'numOfTiers'}
                   defaultValue={props.campaignType === 'raffle' ? 0 : 3}
-                  placeholder={'How many tiers'}
+                  placeholder={props.campaignType === 'raffle' ? '0' : '3'}
                   margin={'normal'}
                   value={campaign.config.numOfTiers}
-                  onChange={handleConfigChange}
+                  onChange={(e) => {
+                    handleConfigChange(e);
+                    dispatch(
+                      updateCampaignState({
+                        cat: 'algoTiers',
+                        tier: campaign.config.numOfTiers.toString(),
+                        key: 'totalCoiins',
+                        val: '',
+                      }),
+                    );
+                    dispatch(
+                      updateCampaignState({
+                        cat: 'algoTiers',
+                        tier: e.target.value,
+                        key: 'totalCoiins',
+                        val: campaign.config.coiinBudget,
+                      }),
+                    );
+                  }}
                   className="text-field"
                   disabled={props.campaignType === 'raffle'}
                 />
               </Grid>
               <Grid container item xs={6} spacing={0}>
                 <TextField
-                  label={'# of post templates'}
+                  label={'How many Templates would you like to provide? (1-5)'}
                   name={'numOfSuggestedPosts'}
-                  placeholder={'How many suggested posts?'}
+                  placeholder={'2'}
                   margin={'normal'}
                   defaultValue={2}
                   type="number"
+                  InputProps={{
+                    inputProps: {
+                      max: 5,
+                      min: 1,
+                    },
+                  }}
                   onChange={handleConfigChange}
                   value={campaign.config.numOfSuggestedPosts}
                   className="text-field"

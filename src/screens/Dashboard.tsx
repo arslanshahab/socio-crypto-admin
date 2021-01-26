@@ -6,7 +6,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -22,6 +21,7 @@ import { NewCampaign } from '../components/campaign-create/NewCampaign';
 import { Link, useHistory } from 'react-router-dom';
 import { MarketData } from '../components/MarketData';
 import { DashboardHome } from '../components/DashboardHome';
+import { ReactComponent as RaiinmakerLogo } from '../assets/svg/logo.svg';
 import StoreIcon from '@material-ui/icons/Store';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -149,10 +149,8 @@ export const Dashboard: React.FC = (props) => {
                 >
                   <MenuIcon />
                 </IconButton>
-                <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'white' }}>
-                  <Typography component="div" variant="h6" noWrap>
-                    Dashboard
-                  </Typography>
+                <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'white', width: '40px' }}>
+                  <RaiinmakerLogo></RaiinmakerLogo>
                 </Link>
                 <Grid container direction={'row'} justify={'flex-end'}>
                   <Grid item>

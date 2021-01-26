@@ -16,9 +16,24 @@
     background-color: white;
     outline: none;
     padding: 15px;
+    border-radius: 5px;
   .modal-content{
     max-height: 75vh;
     overflow-y: auto;
+    padding: 0 10px;
+    .title{
+      font-size: 20px;
+      padding: 0 0 10px 0px;
+    }
+    .big-title{
+      padding: 0 0 20px 0px;
+      text-align: center;
+      font-size: 24px;
+    }
+    .copy{
+      padding: 0 0 10px 0px;
+
+    }
   }
   .modal-title{
     padding: 10px 0 10px 0;
@@ -26,8 +41,14 @@
     font-size: 24px;
   }
   .modal-select{
-    padding: 10px 0 10px 0;
+    // padding: 10px 0 10px 0;
     display: block;
+    .MuiSelect-select.MuiSelect-select{
+      width: calc(100% - 28px);
+      // margin-top:20px;
+      padding-left: 14px;
+      padding-right: 14px;
+    }
   }
   .modal-text-field{
     // margin: 15px;
@@ -136,6 +157,7 @@
 .image-upload-container{
   text-align: center;
   min-width: 100px;
+  padding: 20px 0 0 0 ;
   svg{
     max-width: 100px;
   }
@@ -161,5 +183,18 @@
       }
       .kyc-image{
         max-width: 300px;
+      }
+    }
+   
+    .location-preview-container{
+      padding: 10px 20px;
+      border-bottom: 1px solid #9e9e9e;
+      background-color: #eee;
+      display: flex;
+      flex-direction: row;
+      vertical-align: middle;
+      justify-content: space-between;
+      align-items: center;
+      p{
       }
     }

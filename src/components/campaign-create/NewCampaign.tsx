@@ -5,12 +5,16 @@ import { Paper, Stepper, Step, StepLabel, Button, CircularProgress } from '@mate
 import { Initialize } from './Initialize';
 import { PostsAndTags } from './PostsAndTags';
 import { Algorithm } from './Algorithm';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateCampaignState } from '../../redux/slices/campaign';
+import { Fade } from 'react-awesome-reveal';
+
 import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';
 import { Requirements } from './Requirements';
 import { SetupCampaign } from '../SetupCampaign';
 import { ToastContainer, toast } from 'react-toastify';
+import { LoaderDots } from '@thumbtack/thumbprint-react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NEW_CAMPAIGN = gql(`
@@ -27,6 +31,8 @@ interface Props {
 
 export const NewCampaign: React.FC<Props> = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const steps = ['Purpose and Budget', 'Campaign Information', 'Suggested Posts', 'Campaign Requirements', 'Algorithm'];
   const [activeStep, setActiveStep] = useState(0);
   const state = useSelector((state: RootState) => state);
@@ -192,79 +198,89 @@ export const NewCampaign: React.FC<Props> = (props) => {
 
   return (
     <div className="new-campaign">
-      <Paper>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, i) => (
-            <Step key={label}>
-              <StepLabel
-                onClick={() => {
-                  if (payloadReady(activeStep) || payloadReady(i)) {
-                    setActiveStep(i);
-                  } else showFormError();
-                }}
-              >
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-      </Paper>
-      <Paper>
-        {renderStepContent(activeStep)}
-        <div>
-          {activeStep === steps.length - 1 ? (
-            <Button
-              variant="contained"
-              className="new-campaign-button"
-              color="primary"
-              onClick={async () => {
-                try {
-                  if (!payloadReady(activeStep)) {
-                    showFormError();
-                    throw new Error('bad payload');
-                  }
-                  await saveCampaign();
-                  toast('Campaign Created', {
-                    position: 'bottom-center',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                  });
-                  history.push('/dashboard');
-                } catch (e) {
-                  console.log(e);
-                }
-              }}
-            >
-              {loading ? <CircularProgress></CircularProgress> : 'Submit'}
-            </Button>
-          ) : (
-            <Button
-              className="new-campaign-button"
-              variant="contained"
-              color="primary"
-              onClick={(e) => {
-                if (payloadReady(activeStep)) {
-                  handleNext(e);
-                } else {
-                  showFormError();
-                }
-              }}
-            >
-              Next
-            </Button>
-          )}
-          {activeStep !== 0 && (
-            <Button className="new-campaign-button" onClick={handleBack} color="primary">
-              Back
-            </Button>
-          )}
-          <ToastContainer />
-        </div>
-      </Paper>
+      {campaign.config.success ? (
+        <Fade>
+          <div className="campaign-created-container">
+            <div className="center-text campaign-created-text"></div>
+            <div className="center-text campaign-created-text">Your Campaign is now being submitted for review</div>
+            <div className="created-loading-icon">
+              <LoaderDots theme="muted" size="medium" />
+            </div>
+          </div>
+        </Fade>
+      ) : (
+        <React.Fragment>
+          <Paper>
+            <Stepper activeStep={activeStep} alternativeLabel>
+              {steps.map((label, i) => (
+                <Step key={label}>
+                  <StepLabel
+                    onClick={() => {
+                      if ((payloadReady(activeStep) || i < activeStep) && i <= activeStep + 1) {
+                        setActiveStep(i);
+                      } else {
+                      }
+                    }}
+                  >
+                    {label}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Paper>
+          <Paper>
+            {renderStepContent(activeStep)}
+            <div>
+              {activeStep === steps.length - 1 ? (
+                <Button
+                  variant="contained"
+                  className="new-campaign-button"
+                  color="primary"
+                  onClick={async () => {
+                    try {
+                      if (!payloadReady(activeStep)) {
+                        showFormError();
+                        throw new Error('bad payload');
+                      }
+                      await saveCampaign();
+                      dispatch(updateCampaignState({ cat: 'config', key: 'success', val: true }));
+                      setTimeout(() => {
+                        dispatch(updateCampaignState({ cat: 'reset', key: 'reset', val: 'reset' }));
+                        history.push('/dashboard/campaigns');
+                      }, 3000);
+                    } catch (e) {
+                      console.log(e);
+                    }
+                  }}
+                >
+                  {loading ? <CircularProgress></CircularProgress> : 'Submit'}
+                </Button>
+              ) : (
+                <Button
+                  className="new-campaign-button"
+                  variant="contained"
+                  color="primary"
+                  onClick={(e) => {
+                    if (payloadReady(activeStep)) {
+                      handleNext(e);
+                    } else {
+                      showFormError();
+                    }
+                  }}
+                >
+                  Next
+                </Button>
+              )}
+              {activeStep !== 0 && (
+                <Button className="new-campaign-button" onClick={handleBack} color="primary">
+                  Back
+                </Button>
+              )}
+              <ToastContainer />
+            </div>
+          </Paper>
+        </React.Fragment>
+      )}
     </div>
   );
 };

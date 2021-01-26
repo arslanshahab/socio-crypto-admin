@@ -38,6 +38,7 @@ const initialState: CampaignState = {
     raffleImage: '',
     rafflePrizeName: '',
     rafflePrizeAffiliateLink: '',
+    success: false,
   },
 };
 
@@ -47,6 +48,9 @@ interface CampaignUpdate {
   val: any;
   tier?: string;
   index?: number;
+}
+interface CampaignReset {
+  cat: string;
 }
 
 const campaignSlice = createSlice({
@@ -76,9 +80,7 @@ const campaignSlice = createSlice({
         case 'requirements':
           if (!state.requirements) state.requirements = { version: '1.0.0' };
           if (
-            key == 'state' ||
-            key == 'country' ||
-            key == 'city' ||
+            key == 'location' ||
             key == 'values' ||
             key == 'interests' ||
             key == 'ageRange' ||
@@ -109,6 +111,8 @@ const campaignSlice = createSlice({
             };
           }
           break;
+        case 'reset':
+          return initialState;
       }
     },
   },
