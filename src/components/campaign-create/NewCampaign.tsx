@@ -18,7 +18,7 @@ import { LoaderDots } from '@thumbtack/thumbprint-react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NEW_CAMPAIGN = gql(`
-    mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String!, $image: String, $tagline: String!,  $requirements: JSON!, $suggestedPosts: [String], $suggestedTags: [String], $type: String, $rafflePrize: JSON) {
+    mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String, $image: String, $tagline: String!,  $requirements: JSON!, $suggestedPosts: [String], $suggestedTags: [String], $type: String, $rafflePrize: JSON) {
     newCampaign(name: $name, beginDate: $beginDate, endDate: $endDate, target: $target, description: $description, coiinTotal: $coiinTotal, algorithm: $algorithm, company: $company, targetVideo: $targetVideo, image: $image, tagline: $tagline, requirements: $requirements, suggestedPosts: $suggestedPosts, suggestedTags: $suggestedTags, type: $type, rafflePrize: $rafflePrize) {
       name
     }
@@ -42,7 +42,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       name: campaign.name,
       coiinTotal: parseFloat(campaign.config.budgetType === 'raffle' ? '0' : (campaign.config.coiinBudget as string)),
       target: campaign.target,
-      targetVideo: campaign.targetVideo,
+      targetVideo: campaign.targetVideo || '',
       beginDate: campaign.beginDate,
       endDate: campaign.endDate,
       description: campaign.description,
@@ -130,7 +130,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
         if (
           campaign.name &&
           campaign.target &&
-          campaign.targetVideo &&
           campaign.endDate &&
           campaign.beginDate &&
           campaign.description &&
@@ -147,7 +146,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
         if (
           campaign.name &&
           campaign.target &&
-          campaign.targetVideo &&
           campaign.endDate &&
           campaign.beginDate &&
           campaign.description &&
