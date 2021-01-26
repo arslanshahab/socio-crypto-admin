@@ -155,6 +155,14 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                         value={campaign.config.coiinBudget}
                         onChange={(event) => {
                           handleCampaignChange('coiinBudget', event.target.value as string);
+                          dispatch(
+                            updateCampaignState({
+                              cat: 'algoTiers',
+                              tier: '3',
+                              key: 'totalCoiins',
+                              val: event.target.value,
+                            }),
+                          );
                         }}
                       />
                     </Fade>

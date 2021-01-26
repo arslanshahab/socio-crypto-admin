@@ -319,14 +319,17 @@ export interface Participant {
 
 export interface CampaignRequirementSpecs {
   version: string;
-  city?: string;
-  state?: string;
-  country?: string;
+  location?: LocationRequirementSpecs[];
   values?: string[];
   interests?: string[];
   ageRange?: AgeRangeRequirementSpecs;
   socialFollowing?: SocialFollowingSpecs;
   email?: boolean;
+}
+export interface LocationRequirementSpecs {
+  city?: string;
+  state?: string;
+  country?: string;
 }
 
 export interface SocialFollowingSpecs {

@@ -65,6 +65,7 @@ export const Algorithm: React.FC = () => {
                     ? campaign.algorithm.tiers[i + 1].totalCoiins
                     : ''
                 }
+                disabled={i == numOfTiers - 1}
                 onChange={handleTierChange}
                 className="text-field"
                 defaultValue={i === 0 ? initialOffering : undefined}
@@ -86,7 +87,7 @@ export const Algorithm: React.FC = () => {
         overlayClassName="requirement-modal-overlay"
       >
         <div className="modal-content">
-          <p className="title">Beta Terms of Service and Brand Agreement</p>
+          <p className="big-title">Beta Terms of Service and Brand Agreement</p>
           <p className="copy">
             THIS IS A BETA TEST. THIS BETA TEST MAY CONTAIN ONE OR MORE BETA SERVICES (THE &quot;SERVICES&quot;)
             PROVIDED BY COIIN, LLC. (&quot;COIIN,&quot; &quot;RAIINMAKER,&quot; &quot;WE,&quot; OR &quot;US&quot;).
@@ -149,7 +150,7 @@ export const Algorithm: React.FC = () => {
             amount is based upon a user influence score in relation to the influence score of all participating users,
             against the total amount of Coiin reward points staked to the enrolled marketing campaign. Raiinmaker
             members terms and conditions and user agreement can be found
-            <a href="https://www.raiinmaker.com/terms/">here</a>.
+            <a href="https://www.raiinmaker.com/terms/"> here</a>.
           </p>
           <p className="copy">
             The user influence score earns a point for every digital value interaction tracked for the life span of an
@@ -373,7 +374,7 @@ export const Algorithm: React.FC = () => {
             toggleModal(true);
           }}
         >
-          Brand Agreement
+          I have read and accepted the <strong>Brand Agreement</strong>
         </p>
       </div>
     );
@@ -398,8 +399,8 @@ export const Algorithm: React.FC = () => {
               </Typography>
               <div className="text-card">
                 <p>
-                  Use multiple reward tiers to insentivise participation on your campaign. When the global influence
-                  reaches the defined tresholds the campaign reward payout will updated.
+                  Use multiple reward tiers to incentivize participation on your campaign. When the global influence
+                  reaches the defined thresholds the campaign reward payout will updated.
                 </p>
               </div>
             </Grid>

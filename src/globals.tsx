@@ -95,6 +95,16 @@ export const defaultSocialFollowers = [
   '5000',
   '7500',
   '10000',
+  '100000',
+  '250000',
+  '500000',
+  '1000000',
+  '2000000',
+  '5000000',
+  '10000000',
+  '20000000',
+  '50000000',
+  '100000000',
 ];
 
 export const defaultCountries = [
@@ -389,3 +399,8 @@ export const defaultStates = [
   'Wisconsin',
   'Wyoming',
 ];
+
+export const loginErrorCodes: Record<string, string> = {
+  'auth/invalid-email': 'Email not found',
+  'auth/wrong-password': 'Invalid password',
+};
