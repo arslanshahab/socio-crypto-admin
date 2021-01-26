@@ -58,6 +58,7 @@ export interface Wallet {
 }
 
 export interface StripeWallet {
+  id: string;
   last4: string;
   brand: string;
 }
