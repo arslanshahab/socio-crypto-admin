@@ -7,13 +7,14 @@ import { REMOVE_PAYMENT_METHOD } from '../operations/mutations/stripe';
 
 interface Props {
   stripeWallet: StripeWallet;
+  callback: () => void;
 }
 
 interface RemoveStripeWalletVars {
   paymentMethodId: string;
 }
 
-export const StripeCardItem: React.FC<Props> = ({ stripeWallet }) => {
+export const StripeCardItem: React.FC<Props> = ({ stripeWallet, callback }) => {
   const [removePaymentMethod, { error }] = useMutation<boolean, RemoveStripeWalletVars>(REMOVE_PAYMENT_METHOD);
   return (
     <Grid container item direction={'row'} className="list-row">
@@ -27,7 +28,10 @@ export const StripeCardItem: React.FC<Props> = ({ stripeWallet }) => {
         <Button
           size={'small'}
           color={'primary'}
-          onClick={() => removePaymentMethod({ variables: { paymentMethodId: stripeWallet.id } })}
+          onClick={async () => {
+            await removePaymentMethod({ variables: { paymentMethodId: stripeWallet.id } });
+            await callback();
+          }}
         >
           <Typography component="div">X</Typography>
         </Button>

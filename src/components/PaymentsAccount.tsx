@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Grid, Paper, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
 import PaymentIcon from '@material-ui/icons/Payment';
 import { WalletList } from './WalletList';
 import { TransactionHistory } from './TransactionHistory';
-import { useQuery } from '@apollo/client';
-import { GetFundingWalletResponse } from '../types';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { GetFundingWalletResponse, ListPaymentMethodsResults, ListWalletResponse } from '../types';
+import { LIST_EXTERNAL_ADDRESSES } from '../operations/queries/ethereum';
+import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
 import { GET_FUNDING_WALLET } from '../operations/queries/fundingWallet';
 import { AddPaymentMethod } from './AddPaymentMethod';
 import { PurchaseDialog } from './PurchaseDialog';
@@ -17,8 +19,30 @@ export const coldWallet =
 
 export const PaymentsAccount: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [walletsLoaded, setWalletsLoaded] = useState(false);
   const [paymentMethod, setOpenPM] = useState(false);
   const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
+  const [listWallets, { loading: listWalletsLoading, data: wallets }] = useLazyQuery<ListWalletResponse>(
+    LIST_EXTERNAL_ADDRESSES,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
+  const [listPaymentMethods, { loading: listPaymentMethodsLoading, data: paymentMethods }] = useLazyQuery<
+    ListPaymentMethodsResults
+  >(LIST_PAYMENT_METHODS, {
+    fetchPolicy: 'network-only',
+  });
+
+  const loadWalletData = async () => {
+    console.log(0);
+    await listWallets();
+    console.log(1);
+    await listPaymentMethods();
+    console.log(2);
+    await setWalletsLoaded(true);
+    console.log(3);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,9 +69,17 @@ export const PaymentsAccount: React.FC = () => {
     return 0;
   };
 
+  const renderWalletList = () => {
+    if (!walletsLoaded) {
+      loadWalletData();
+      return <CircularProgress />;
+    }
+    return <WalletList wallets={wallets} paymentMethods={paymentMethods} callback={loadWalletData} />;
+  };
+
   return (
     <div>
-      <AddPaymentMethod open={paymentMethod} setOpen={setOpenPM} />
+      <AddPaymentMethod open={paymentMethod} setOpen={setOpenPM} callback={loadWalletData} />
       <PurchaseDialog open={open} setOpen={setOpen} />
       <Grid container>
         <Grid item xs={7}>
@@ -112,7 +144,7 @@ export const PaymentsAccount: React.FC = () => {
                     </Button>
                   </Grid>
                 </Grid>
-                <WalletList />
+                {renderWalletList()}
               </Grid>
               <Grid item>
                 <CampaignStatusList balance={getBalance()} />

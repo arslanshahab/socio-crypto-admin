@@ -7,10 +7,11 @@ import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
 import { Button, Grid } from '@material-ui/core';
 
 interface Props {
+  callback: () => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const CardSetupForm: React.FC<Props> = ({ setOpen }) => {
+export const CardSetupForm: React.FC<Props> = ({ setOpen, callback }) => {
   const [addPaymentMethod] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD);
   const stripe = useStripe();
   const elements = useElements();
@@ -40,6 +41,7 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen }) => {
         // The setup has succeeded. Display a success message and send
         // result.setupIntent.payment_method to your server to save the
         // card to a Customer
+        await callback();
       }
     } else {
       console.log('error: ', errors);
