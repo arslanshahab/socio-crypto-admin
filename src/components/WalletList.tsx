@@ -18,7 +18,6 @@ export const WalletList: React.FC<WalletListProps> = (props) => {
     if (!props.wallets && !props.paymentMethods) return <div />;
     let key = 0;
     if (props.wallets && props.wallets.listExternalAddresses.length > 0) {
-      console.log(props.wallets);
       for (const address of props.wallets.listExternalAddresses) {
         addressArray.push(<AddressCard key={key} wallet={address} />);
         key++;
