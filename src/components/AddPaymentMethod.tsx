@@ -11,6 +11,7 @@ import eth from '../assets/svg/eth-icon.svg';
 
 interface Props {
   open: boolean;
+  callback: () => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -18,7 +19,7 @@ const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.RE
 const stripeKey = (stripePubKey as { [key: string]: string })[env] as any;
 const stripePromise = loadStripe(stripeKey);
 
-export const AddPaymentMethod: React.FC<Props> = ({ open, setOpen }) => {
+export const AddPaymentMethod: React.FC<Props> = ({ open, setOpen, callback }) => {
   const [value, setValue] = useState(0);
   const handleChange = (event: React.ChangeEvent<Record<string, unknown>>, newValue: number) => {
     setValue(newValue);
@@ -46,7 +47,7 @@ export const AddPaymentMethod: React.FC<Props> = ({ open, setOpen }) => {
         </Tabs>
         <TabPanel value={value} index={0}>
           <Elements stripe={stripePromise}>
-            <CardSetupForm setOpen={setOpen} />
+            <CardSetupForm setOpen={setOpen} callback={callback} />
           </Elements>
         </TabPanel>
         <TabPanel value={value} index={1}>

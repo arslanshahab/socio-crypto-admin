@@ -1,34 +1,32 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { AddressCard } from './AddressCard';
-import { useQuery } from '@apollo/client';
 import { ListPaymentMethodsResults, ListWalletResponse } from '../types';
-import { LIST_EXTERNAL_ADDRESSES } from '../operations/queries/ethereum';
-import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
 import { StripeCardItem } from './StripeCardItem';
 
-export const WalletList: React.FC = () => {
-  const { loading: loadingAddresses, data: addressList } = useQuery<ListWalletResponse>(LIST_EXTERNAL_ADDRESSES);
-  const { data: cardList, loading: loadingCards } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS);
+interface WalletListProps {
+  paymentMethods: ListPaymentMethodsResults | undefined;
+  wallets: ListWalletResponse | undefined;
+  callback: () => void;
+}
 
+export const WalletList: React.FC<WalletListProps> = (props) => {
   const renderWalletList = () => {
     const addressArray: JSX.Element[] = [];
     const cardArray: JSX.Element[] = [];
-    if (loadingCards || loadingAddresses) {
-      return <div />;
-    } else {
-      let key = 0;
-      if (addressList && addressList.listExternalAddresses) {
-        for (const address of addressList.listExternalAddresses) {
-          addressArray.push(<AddressCard key={key} wallet={address} />);
-          key++;
-        }
+
+    if (!props.wallets && !props.paymentMethods) return <div />;
+    let key = 0;
+    if (props.wallets && props.wallets.listExternalAddresses.length > 0) {
+      for (const address of props.wallets.listExternalAddresses) {
+        addressArray.push(<AddressCard key={key} wallet={address} />);
+        key++;
       }
-      if (cardList && cardList.listPaymentMethods) {
-        for (const card of cardList.listPaymentMethods) {
-          cardArray.push(<StripeCardItem key={key} stripeWallet={card} />);
-          key++;
-        }
+    }
+    if (props.paymentMethods && props.paymentMethods.listPaymentMethods.length > 0) {
+      for (const card of props.paymentMethods.listPaymentMethods) {
+        cardArray.push(<StripeCardItem key={key} stripeWallet={card} callback={props.callback} />);
+        key++;
       }
     }
     return addressArray.concat(cardArray);
