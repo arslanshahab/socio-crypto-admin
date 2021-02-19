@@ -24,7 +24,7 @@ export const CreditCardList: React.FC = () => {
       return <div />;
     } else if (data && data.listPaymentMethods) {
       creditCardList = data.listPaymentMethods.map((card, index) => {
-        return <StripeCardItem key={index} stripeWallet={card} />;
+        return <StripeCardItem callback={() => setAddCard(false)} key={index} stripeWallet={card} />;
       });
     }
     if (creditCardList.length === 0) {
@@ -40,7 +40,7 @@ export const CreditCardList: React.FC = () => {
   return (
     <div>
       <Elements stripe={stripePromise}>
-        <CardSetupForm setOpen={setAddCard} open={addCard} />
+        <CardSetupForm callback={() => setAddCard(false)} setOpen={setAddCard} open={addCard} />
       </Elements>
       <Grid container>
         <Grid item container className="list-header" direction={'column'}>
