@@ -66,6 +66,7 @@ export const GET_PENDING_WITHDRAWALS = gql`
         createdAt
         ethAddress
         paypalAddress
+        currency
       }
       user {
         id

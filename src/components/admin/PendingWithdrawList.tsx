@@ -31,7 +31,7 @@ export const PendingWithdrawList: React.FC = () => {
               <div className="pending-withdraw" key={withdraw.user.id} onClick={() => handleClick(withdraw)}>
                 <ul>
                   <li>{withdraw.user.username}</li>
-                  <li className="right">{`Total Pending Withdraw: ${withdraw.totalPendingWithdrawal} Coiin`}</li>
+                  <li className="right">{`Total Pending Withdraw: ${withdraw.totalPendingWithdrawal.length} token types`}</li>
                 </ul>
               </div>
             );

@@ -11,6 +11,7 @@ import { Fade } from 'react-awesome-reveal';
 import { ToastContainer, toast } from 'react-toastify';
 
 import icon from '../../assets/svg/camera.svg';
+import { handleImage } from '../../helpers/utils';
 
 interface Props {
   userData: {
@@ -103,28 +104,6 @@ export const Initialize: React.FC<Props> = (props) => {
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
   };
 
-  const getBase64 = (file: Blob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      if (reader.result) {
-        dispatch(updateCampaignState({ cat: 'image', key: 'image', val: reader.result }));
-      }
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-  };
-
-  const handleImage = (event: React.ChangeEvent) => {
-    const target = event.target as HTMLInputElement;
-    const files = target.files;
-    if (files != null && files.length) {
-      const formData = new FormData();
-      formData.append(files[0].name, files[0]);
-      getBase64(files[0]);
-    }
-  };
   return (
     <Fade>
       <div className="init-campaign-container">
@@ -134,7 +113,7 @@ export const Initialize: React.FC<Props> = (props) => {
               <div>
                 {campaign.image ? (
                   <div className="image-preview">
-                    <img src={campaign.image}></img>
+                    <img src={campaign.image} alt="image" />
                   </div>
                 ) : (
                   <ReactSVG src={icon} color="#3B5998" />
@@ -147,31 +126,17 @@ export const Initialize: React.FC<Props> = (props) => {
             </p>
           </div>
           <div className="margin-bottom">
-            <Grid container item xs={12} spacing={3}>
-              <Grid container item xs={6}>
+            <Grid container justify={'center'}>
+              <Grid item>
                 <TextField
+                  style={{ width: '500px' }}
                   label={'Name of Campaign'}
                   name={'name'}
                   placeholder={'name'}
-                  fullWidth
                   value={campaign.name}
                   variant="outlined"
                   margin={'normal'}
                   onChange={handleCampaignChange}
-                />
-              </Grid>
-              <Grid container item xs={6}>
-                <TextField
-                  fullWidth
-                  label={'Company Name'}
-                  variant="outlined"
-                  name={'company'}
-                  disabled
-                  placeholder={'Company Name'}
-                  margin={'normal'}
-                  defaultValue={props.userData ? props.userData.company : null}
-                  onChange={handleCampaignChange}
-                  className="text-field"
                 />
               </Grid>
             </Grid>

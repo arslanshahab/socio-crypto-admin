@@ -20,9 +20,10 @@ interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   amount?: number;
+  balance?: number;
 }
 
-export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount }) => {
+export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance }) => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -42,43 +43,42 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount }) => {
   return (
     <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
       <DialogContent>
-        {amount && amount <= 0 ? (
-          <div>
-            <DialogContentText>All your campaigns are funded, or you must select a campaign to fund.</DialogContentText>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary" variant={'contained'}>
-                Okay
-              </Button>
-            </DialogActions>
-          </div>
-        ) : (
-          <div>
-            <Tabs
-              value={value}
-              variant={'fullWidth'}
-              indicatorColor={'primary'}
-              textColor={'primary'}
-              onChange={handleChange}
-            >
-              <Tab label={'ETH'} icon={<img src={eth} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} />
-              <Tab label={'Card'} icon={<img src={card} height={60} width={60} alt={'USD'} />} {...a11yProps(1)} />
-            </Tabs>
-            <TabPanel value={value} index={0}>
+        <Tabs
+          value={value}
+          variant={'fullWidth'}
+          indicatorColor={'primary'}
+          textColor={'primary'}
+          onChange={handleChange}
+        >
+          <Tab label={'ETH'} icon={<img src={eth} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} />
+          <Tab label={'Card'} icon={<img src={card} height={60} width={60} alt={'USD'} />} {...a11yProps(1)} />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          {amount && balance ? (
+            <div>
               <DialogContentText>
-                Please send funds from one of your claimed addresses to this address:
+                Please send {amount && balance ? amount - balance : amount} Coiin from one of your claimed addresses to
+                this address:
               </DialogContentText>
               <DialogContentText>{coldWallet}</DialogContentText>
-              <DialogActions>
-                <Button onClick={handleClose} color="primary" variant={'contained'}>
-                  Okay
-                </Button>
-              </DialogActions>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <StripePurchaseForm setOpen={setOpen} givenAmount={amount} />
-            </TabPanel>
-          </div>
-        )}
+            </div>
+          ) : (
+            <div>
+              <DialogContentText>
+                Please send Coiin from one of your claimed addresses to this address:
+              </DialogContentText>
+              <DialogContentText>{coldWallet}</DialogContentText>
+            </div>
+          )}
+          <DialogActions>
+            <Button onClick={handleClose} color="primary" variant={'contained'}>
+              Okay
+            </Button>
+          </DialogActions>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <StripePurchaseForm setOpen={setOpen} givenAmount={amount && balance ? amount - balance : amount} />
+        </TabPanel>
       </DialogContent>
     </Dialog>
   );

@@ -82,9 +82,22 @@ export interface ListWalletResponse {
 
 export interface GetFundingWalletResponse {
   getFundingWallet: {
-    balance: number;
+    currency: WalletCurrency[];
     transfers: Transfer[];
   };
+}
+
+export interface WalletCurrency {
+  id: string;
+  type: string;
+  balance: number;
+}
+
+export interface ListSupportedCryptoResults {
+  listSupportedCrypto: {
+    type: string;
+    contractAddress: string;
+  }[];
 }
 
 export interface Transfer {
@@ -214,6 +227,7 @@ export interface NewCampaignVars {
   beginDate: string;
   endDate: string;
   description: string;
+  cryptoId: string;
   company: string;
   algorithm: string;
   image: string;
@@ -248,6 +262,7 @@ export interface Campaign {
   beginDate: string;
   endDate: string;
   coiinTotal: string;
+  crypto: CryptoCurrency;
   totalParticipationScore: string;
   status: string;
   target: string;
@@ -261,6 +276,11 @@ export interface Campaign {
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+}
+
+export interface CryptoCurrency {
+  type: string;
+  contractAddress: string;
 }
 
 export interface ListPendingCampaignsAdminResults {
@@ -300,6 +320,7 @@ export interface CampaignState {
   algorithm: AlgorithmSpecs;
   company: string;
   targetVideo: string;
+  cryptoId: string;
   image: string;
   tagline: string;
   requirements?: CampaignRequirementSpecs;
@@ -378,3 +399,5 @@ export interface ActionValues {
   likes: string;
   shares: string;
 }
+
+export type APIError = GraphQLError;

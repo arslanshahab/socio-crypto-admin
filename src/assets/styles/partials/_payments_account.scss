@@ -5,7 +5,7 @@
 }
 
 .list-header {
-  padding-top: 5px;
+  padding-top: 25px;
   border-bottom: 2px solid black;
 }
 
@@ -14,19 +14,25 @@
 }
 
 .paper {
-  padding-left: 20px;
-  padding-bottom: 15px;
-  padding-top: 10px;
+  padding: 5px 20px 15px;
 }
 
 .section {
   overflow-x: auto;
 }
 
-.claim-button-container {
+.list-button-container {
   padding-top: 5px;
 }
 
 .buy-button-container {
   padding-right: 10px;
+}
+
+.add-card-section {
+  width: 450px;
+}
+
+.text-input {
+  width: 450px;
 }

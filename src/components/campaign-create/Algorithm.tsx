@@ -357,8 +357,6 @@ export const Algorithm: React.FC = () => {
             <Checkbox
               checked={agreementChecked as boolean}
               onChange={(e, checked) => {
-                console.log(e.target.value);
-                console.log(checked);
                 dispatch(updateCampaignState({ cat: 'config', key: 'agreementChecked', val: checked }));
                 handleAgreementChecked(checked);
               }}
