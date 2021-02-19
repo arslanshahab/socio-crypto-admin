@@ -7,7 +7,7 @@ const baseUrl = (urls as { [key: string]: string })[env] as any;
 
 const apiURI = process.env.REACT_APP_LOCAL_URL || baseUrl;
 
-export const httpLink = createHttpLink({
+const httpLink = createHttpLink({
   uri: `${apiURI}/v1/admin/graphql`,
   credentials: 'include',
 });

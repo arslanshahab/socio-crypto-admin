@@ -16,6 +16,10 @@ export const LIST_CAMPAIGNS = gql`
         company
         imagePath
         tagline
+        crypto {
+          type
+          contractAddress
+        }
         participants {
           id
           metrics {

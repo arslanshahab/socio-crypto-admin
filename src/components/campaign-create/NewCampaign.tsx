@@ -16,14 +16,7 @@ import { SetupCampaign } from '../SetupCampaign';
 import { ToastContainer, toast } from 'react-toastify';
 import { LoaderDots } from '@thumbtack/thumbprint-react';
 import 'react-toastify/dist/ReactToastify.css';
-
-const NEW_CAMPAIGN = gql(`
-    mutation newCampaign($name: String!, $beginDate: String!, $endDate: String!, $target: String!, $description: String!, $coiinTotal: Float!, $algorithm: String!, $company: String, $targetVideo: String, $image: String, $tagline: String!,  $requirements: JSON!, $suggestedPosts: [String], $suggestedTags: [String], $type: String, $rafflePrize: JSON) {
-    newCampaign(name: $name, beginDate: $beginDate, endDate: $endDate, target: $target, description: $description, coiinTotal: $coiinTotal, algorithm: $algorithm, company: $company, targetVideo: $targetVideo, image: $image, tagline: $tagline, requirements: $requirements, suggestedPosts: $suggestedPosts, suggestedTags: $suggestedTags, type: $type, rafflePrize: $rafflePrize) {
-      name
-    }
-  }
-`);
+import { NEW_CAMPAIGN } from '../../operations/mutations/campaign';
 
 interface Props {
   userData: any;
@@ -45,6 +38,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       targetVideo: campaign.targetVideo || '',
       beginDate: campaign.beginDate,
       endDate: campaign.endDate,
+      cryptoId: campaign.cryptoId,
       description: campaign.description,
       company: props.userData.company,
       algorithm: JSON.stringify(campaign.algorithm),
@@ -118,15 +112,15 @@ export const NewCampaign: React.FC<Props> = (props) => {
     let validated = false;
     if (step == 0) {
       if (campaign.config.budgetType) {
-        if (campaign.config.budgetType == 'coiin') {
-          if (campaign.config.coiinBudget && campaign.config.campaignType) validated = true;
+        if (campaign.config.budgetType == 'crypto') {
+          if (campaign.config.coiinBudget && campaign.config.campaignType && campaign.cryptoId) validated = true;
         } else if (campaign.config.budgetType === 'raffle') {
           if (campaign.config.rafflePrizeName && campaign.config.raffleImage) validated = true;
         }
       }
     }
     if (step == 1) {
-      if (campaign.config.budgetType == 'coiin') {
+      if (campaign.config.budgetType == 'crypto') {
         if (
           campaign.name &&
           campaign.target &&
@@ -167,7 +161,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
     }
     if (step == 3) return true;
     if (step == 4) {
-      if (campaign.config.budgetType == 'coiin') {
+      if (campaign.config.budgetType == 'crypto') {
         if (
           campaign.algorithm.pointValues.clicks &&
           campaign.algorithm.pointValues.views &&

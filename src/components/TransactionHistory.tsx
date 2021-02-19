@@ -9,6 +9,24 @@ interface Props {
 }
 
 export const TransactionHistory: React.FC<Props> = ({ data, isLoading }) => {
+  const renderTransactionHistory = () => {
+    let transactionList: JSX.Element[] = [];
+    if (isLoading) {
+      return <div />;
+    } else if (data && data.getFundingWallet) {
+      transactionList = data.getFundingWallet.transfers.map((transfer, index) => {
+        return <TransferCard key={index} transfer={transfer} />;
+      });
+    }
+    if (transactionList.length === 0) {
+      return (
+        <Grid item className="list-item">
+          <Typography component="div">You have no transaction history</Typography>
+        </Grid>
+      );
+    }
+    return transactionList;
+  };
   return (
     <Grid container className="section">
       <Grid item>
@@ -31,14 +49,7 @@ export const TransactionHistory: React.FC<Props> = ({ data, isLoading }) => {
         </Grid>
       </Grid>
       <Grid container item direction={'column'}>
-        {isLoading ? (
-          <p>loading...</p>
-        ) : (
-          data &&
-          data.getFundingWallet.transfers.map((transfer, index) => {
-            return <TransferCard key={index} transfer={transfer} />;
-          })
-        )}
+        {renderTransactionHistory()}
       </Grid>
     </Grid>
   );
