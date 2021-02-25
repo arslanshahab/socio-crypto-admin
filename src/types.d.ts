@@ -47,6 +47,7 @@ export interface CampaignListVars {
   skip?: number;
   take?: number;
   scoped?: boolean;
+  approved: boolean;
   sort?: boolean;
 }
 

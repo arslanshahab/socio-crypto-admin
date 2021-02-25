@@ -18,6 +18,7 @@ import { ADD_CRYPTO_TO_WALLET, REGISTER_CRYPTO } from '../operations/mutations/c
 import { capitalize } from '../helpers';
 import { reloadWindow } from '../helpers/utils';
 import { RefetchWallet } from './PaymentsAccount';
+import { ToastContainer, toast } from 'react-toastify';
 
 interface Props {
   isTokenRegistration: boolean;
@@ -25,7 +26,7 @@ interface Props {
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
   data?: ListSupportedCryptoResults;
   isLoading?: boolean;
-  refectWallet: RefetchWallet;
+  refetchWallet: RefetchWallet;
 }
 
 export const CryptoDialog: React.FC<Props> = ({
@@ -34,7 +35,7 @@ export const CryptoDialog: React.FC<Props> = ({
   setOpenDialog,
   data,
   isLoading,
-  refectWallet,
+  refetchWallet,
 }) => {
   const [addToken] = useMutation(ADD_CRYPTO_TO_WALLET);
   const [registerToken] = useMutation(REGISTER_CRYPTO);
@@ -43,17 +44,35 @@ export const CryptoDialog: React.FC<Props> = ({
   const [openTokens, setOpenTokens] = useState(false);
   const handleRegisterToken = async (e: any) => {
     e.preventDefault();
-    await registerToken({
-      variables: { name: tokenName, contractAddress: contractAddress },
-    });
-    await refectWallet();
+    try {
+      await registerToken({
+        variables: { name: tokenName, contractAddress: contractAddress },
+      });
+      await refetchWallet();
+    } catch (e) {
+      console.log(e);
+      toast.error('Token already registered', {
+        position: 'bottom-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
     setOpenDialog(false);
   };
   const handleAddToken = async () => {
-    await addToken({
-      variables: { contractAddress: contractAddress },
-    });
-    await refectWallet();
+    try {
+      await addToken({
+        variables: { contractAddress: contractAddress },
+      });
+      await refetchWallet();
+    } catch (e) {
+      console.log('e');
+      console.log(e);
+    }
     setOpenDialog(false);
   };
   const handleTokenChange = (e: any) => {
@@ -134,6 +153,7 @@ export const CryptoDialog: React.FC<Props> = ({
           </DialogActions>
         </Dialog>
       )}
+      <ToastContainer></ToastContainer>
     </div>
   );
 };

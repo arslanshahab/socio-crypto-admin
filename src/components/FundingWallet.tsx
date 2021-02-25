@@ -26,7 +26,7 @@ export const FundingWallet: React.FC<Props> = ({ data, isLoading, refetchWallet 
         isTokenRegistration={true}
         open={openDialog}
         setOpenDialog={setOpenDialog}
-        refectWallet={refetchWallet}
+        refetchWallet={refetchWallet}
       />
       <Grid item container spacing={1} justify={'flex-end'}>
         <Grid item>

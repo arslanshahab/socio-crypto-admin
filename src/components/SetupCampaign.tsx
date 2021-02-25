@@ -15,6 +15,7 @@ import { GetFundingWalletResponse } from '../types';
 import { GET_FUNDING_WALLET } from '../operations/queries/fundingWallet';
 import { capitalize } from '../helpers';
 import { handleImage } from '../helpers/utils';
+import { useHistory } from 'react-router';
 
 interface Props {
   company: string;
@@ -24,7 +25,7 @@ interface Props {
 export const SetupCampaign: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
-
+  const history = useHistory();
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType ? campaign.config.campaignType : '');
@@ -134,8 +135,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                         <Select value={campaign.crypto}>
                           {loading ? (
                             <div />
-                          ) : (
-                            data &&
+                          ) : data ? (
                             data.getFundingWallet.currency.map((crypto, index) => {
                               return (
                                 <MenuItem
@@ -149,6 +149,10 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                                 </MenuItem>
                               );
                             })
+                          ) : (
+                            <MenuItem value="Register Token" onClick={() => history.push('/dashboard/paymentsAccount')}>
+                              No Crypto Currency Found - Register Crypto
+                            </MenuItem>
                           )}
                         </Select>
                       </FormControl>
@@ -188,7 +192,12 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                             )}
                           </div>
                         </label>
-                        <input className="hidden" type="file" id="single" onChange={() => handleImage(dispatch)} />
+                        <input
+                          className="hidden"
+                          type="file"
+                          id="single"
+                          onChange={(e) => handleImage(e, dispatch, 'raffle')}
+                        />
                       </div>
                       <TextField
                         label={'Raffle Prize Name'}
