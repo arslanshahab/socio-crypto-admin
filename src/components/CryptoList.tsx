@@ -53,7 +53,7 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
         setOpenDialog={setOpenRegistration}
         data={currencyData}
         isLoading={loading}
-        refectWallet={refetchWallet}
+        refetchWallet={refetchWallet}
       />
       <Dialog open={openCrypto}>
         <DialogContent>

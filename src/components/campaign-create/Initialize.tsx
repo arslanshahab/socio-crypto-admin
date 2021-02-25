@@ -120,7 +120,12 @@ export const Initialize: React.FC<Props> = (props) => {
                 )}
               </div>
             </label>
-            <input className="hidden" type="file" id="single" onChange={handleImage} />
+            <input
+              className="hidden"
+              type="file"
+              id="single"
+              onChange={(e) => handleImage(e, dispatch, 'campaign-image')}
+            />
             <p className="margin-bottom center-text setup-campaign-question">
               {campaign.image ? 'Upadate Campaign Image' : 'Add Campaign Image'}
             </p>

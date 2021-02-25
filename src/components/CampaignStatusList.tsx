@@ -12,7 +12,13 @@ interface Props {
 
 export const CampaignStatusList: React.FC<Props> = ({ fundingWallet }) => {
   const { loading, data: campaigns } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
-    variables: { scoped: true, skip: 0, take: 10, sort: true },
+    variables: {
+      scoped: true,
+      skip: 0,
+      take: 10,
+      sort: true,
+      approved: true,
+    },
   });
   const [open, setOpen] = useState(false);
 

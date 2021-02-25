@@ -10,6 +10,7 @@ export const CampaignAuditList: React.FC = () => {
     variables: {
       open: false,
       scoped: true,
+      approved: true,
     },
   });
 
