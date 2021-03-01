@@ -49,6 +49,11 @@ export const ADMIN_LIST_CAMPAIGNS = gql`
         description
         endDate
         company
+        type
+        crypto {
+          type
+          contractAddress
+        }
         imagePath
         tagline
         org {

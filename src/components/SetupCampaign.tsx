@@ -135,12 +135,13 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                         <Select value={campaign.crypto}>
                           {loading ? (
                             <div />
-                          ) : data ? (
+                          ) : data && data.getFundingWallet.currency.length ? (
                             data.getFundingWallet.currency.map((crypto, index) => {
                               return (
                                 <MenuItem
                                   value={crypto.type.toUpperCase()}
                                   onClick={() => {
+                                    handleCampaignChange('cryptoSymbol', crypto.type);
                                     handleCampaignChange('cryptoId', crypto.id);
                                   }}
                                   key={index}
@@ -150,7 +151,13 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                               );
                             })
                           ) : (
-                            <MenuItem value="Register Token" onClick={() => history.push('/dashboard/paymentsAccount')}>
+                            <MenuItem
+                              value="Register Token"
+                              onClick={() => {
+                                dispatch(updateCampaignState({ cat: 'reset', key: 'reset', val: 'reset' }));
+                                history.push('/dashboard/paymentsAccount');
+                              }}
+                            >
                               No Crypto Currency Found - Register Crypto
                             </MenuItem>
                           )}
@@ -166,6 +173,19 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                         type="number"
                         value={campaign.config.coiinBudget}
                         onChange={(event) => {
+                          if (data && data.getFundingWallet) {
+                            for (let i = 0; i < data?.getFundingWallet.currency.length; i++) {
+                              let token;
+                              if (data?.getFundingWallet.currency[i].type == campaign.config.cryptoSymbol) {
+                                token = data?.getFundingWallet.currency[i];
+                              }
+                              if (token) {
+                                if (parseInt(event.target.value) > token.balance) {
+                                  event.target.value = token.balance.toString();
+                                }
+                              }
+                            }
+                          }
                           handleCampaignChange('coiinBudget', event.target.value as string);
                           dispatch(
                             updateCampaignState({

@@ -264,6 +264,7 @@ export interface Campaign {
   endDate: string;
   coiinTotal: string;
   crypto: CryptoCurrency;
+  type: string;
   totalParticipationScore: string;
   status: string;
   target: string;
@@ -298,6 +299,8 @@ export interface ListPendingCampaignsAdminResults {
       algorithm: AlgorithmSpecs;
       company: string;
       audited: boolean;
+      type: string;
+      crypto: CryptoCurrency;
       targetVideo: string;
       imagePath: string;
       requirements?: CampaignRequirementSpecs;
