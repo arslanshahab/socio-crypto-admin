@@ -35,7 +35,16 @@ export const PendingCampaigns: React.FC = () => {
                   className="campaign-history-item"
                 >
                   <Grid item xs={9} style={{ marginTop: '13px' }}>
-                    <Typography>{campaign.name}</Typography>
+                    <Typography>{`Name: ${campaign.name}`}</Typography>
+                    <Typography>{`Company: ${campaign.company}`}</Typography>
+                    <Typography>{`Type: ${campaign.type}`}</Typography>
+                    <Typography>
+                      {campaign.type == 'crypto'
+                        ? `Budget: ${campaign.coiinTotal} ${campaign.crypto.type.toUpperCase()}`
+                        : ''}
+                    </Typography>
+                    <Typography>{`Begins: ${new Date(parseInt(campaign.beginDate)).toLocaleDateString()}`}</Typography>
+                    <Typography>{`Ends: ${new Date(parseInt(campaign.endDate)).toLocaleDateString()}`}</Typography>
                   </Grid>
                   <Grid item xs={3} style={{ marginBottom: '3px', marginTop: '6px' }}>
                     <Button
@@ -48,8 +57,7 @@ export const PendingCampaigns: React.FC = () => {
                     <Button
                       onClick={() => handleStatusChange('DENIED', campaign.id)}
                       variant={'contained'}
-                      color={'primary'}
-                      style={{ marginLeft: '2px' }}
+                      style={{ marginLeft: '2px', backgroundColor: '#ca2c2c', color: 'white' }}
                     >
                       Deny
                     </Button>
