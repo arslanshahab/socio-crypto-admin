@@ -127,7 +127,7 @@ export const Initialize: React.FC<Props> = (props) => {
               onChange={(e) => handleImage(e, dispatch, 'campaign-image')}
             />
             <p className="margin-bottom center-text setup-campaign-question">
-              {campaign.image ? 'Upadate Campaign Image' : 'Add Campaign Image'}
+              {campaign.image ? 'Update Campaign Image' : 'Add Campaign Image'}
             </p>
           </div>
           <div className="margin-bottom">

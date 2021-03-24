@@ -32,6 +32,27 @@
   text-align: center;
 }
 
+.full-screen-height{
+  min-height: 100vh;
+}
+.fill-height{
+  height: max-content;
+}
+.fill-width{
+  width: max-content;
+}
+.relative {
+  position: relative;
+  
+}
+.center-all {
+  text-align: center;
+  position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .card{
   background-color: white;
   padding: 10px;
