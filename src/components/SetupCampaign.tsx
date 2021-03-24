@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
-import { FaTicketAlt } from 'react-icons/fa';
+import { FaTicketAlt, FaFile } from 'react-icons/fa';
 import coiin_yellow from '../assets/svg/icon_coiin_yellow copy.svg';
 import coiin_black from '../assets/svg/icon_coiin_black copy.svg';
 import { useDispatch } from 'react-redux';
@@ -22,6 +22,12 @@ interface Props {
   raffleImage?: string;
 }
 
+interface Crypto {
+  type: string;
+  id: string;
+  balance: number;
+}
+
 export const SetupCampaign: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
@@ -33,6 +39,10 @@ export const SetupCampaign: React.FC<Props> = (props) => {
   const handleCampaignChange = (key: string, value: any) => {
     const cat = key === 'cryptoId' ? 'info' : 'config';
     dispatch(updateCampaignState({ cat, key: key, val: value }));
+  };
+
+  const hasValue = (token: Crypto) => {
+    return token.balance > 0;
   };
 
   const handleCampaignType = (type: string) => {
@@ -125,6 +135,15 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                   <FaTicketAlt />
                   <p>Raffle (Coming Soon)</p>
                 </div>
+                <div
+                  onClick={() => null}
+                  className={`${
+                    budgetType === 'raffle' ? 'selected-item' : ''
+                  } inline half-width center-text campaign-funding-square`}
+                >
+                  <FaFile />
+                  <p>NFT (Coming Soon)</p>
+                </div>
               </div>
               {budgetType !== '' ? (
                 <div className="budget-input-container">
@@ -135,8 +154,8 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                         <Select value={campaign.crypto}>
                           {loading ? (
                             <div />
-                          ) : data && data.getFundingWallet.currency.length ? (
-                            data.getFundingWallet.currency.map((crypto, index) => {
+                          ) : data && data.getFundingWallet.currency.filter(hasValue).length ? (
+                            data.getFundingWallet.currency.filter(hasValue).map((crypto, index) => {
                               return (
                                 <MenuItem
                                   value={crypto.type.toUpperCase()}
