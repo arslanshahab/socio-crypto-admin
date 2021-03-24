@@ -42,8 +42,6 @@ export const SetupCampaign: React.FC<Props> = (props) => {
   };
 
   const hasValue = (token: Crypto) => {
-    console.log(token);
-    console.log(typeof token);
     return token.balance > 0;
   };
 
