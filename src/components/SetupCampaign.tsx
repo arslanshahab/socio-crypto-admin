@@ -138,7 +138,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                 <div
                   onClick={() => null}
                   className={`${
-                    budgetType === 'raffle' ? 'selected-item' : ''
+                    budgetType === 'nft' ? 'selected-item' : ''
                   } inline half-width center-text campaign-funding-square`}
                 >
                   <FaFile />

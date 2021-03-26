@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const LIST_CAMPAIGNS = gql`
-  query listCampaigns($skip: Int, $take: Int, $scoped: Boolean, $sort: Boolean, $approved: Boolean) {
-    listCampaigns(skip: $skip, take: $take, scoped: $scoped, sort: $sort, approved: $approved) {
+  query listCampaigns($skip: Int, $take: Int, $scoped: Boolean, $sort: Boolean, $approved: Boolean, $open: Boolean) {
+    listCampaigns(skip: $skip, take: $take, scoped: $scoped, sort: $sort, approved: $approved, open: $open) {
       results {
         id
         name
