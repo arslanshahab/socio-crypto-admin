@@ -31,7 +31,7 @@ export const CampaignsList: React.FC = () => {
     if (dateIsoString) setEndDate(dateIsoString);
   };
   const { loading, data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
-    variables: { scoped: true, skip: 0, take: 10, sort: true, approved: true },
+    variables: { scoped: true, skip: 0, take: 10, sort: true, approved: true, open: true },
   });
 
   return loading ? (
@@ -41,7 +41,7 @@ export const CampaignsList: React.FC = () => {
         <LoaderDots theme="muted" size="medium" />
       </div>
     </div>
-  ) : data?.listCampaigns.results.length != null ? (
+  ) : data?.listCampaigns.results.length == null || data?.listCampaigns.results.length < 1 ? (
     <div className="fill-height">
       <div className="center-all">
         <p style={{ fontSize: '20px' }}>No Campaigns Found</p>
@@ -59,7 +59,7 @@ export const CampaignsList: React.FC = () => {
               history.push('/dashboard/newCampaign');
             }}
           >
-            Crete your first campaign
+            Create your first campaign
           </Button>
         </div>
         {/* <div>
@@ -78,7 +78,7 @@ export const CampaignsList: React.FC = () => {
             Fund your Account
           </Button>
         </div> */}
-        {/* <p>Crete your first campaign</p> */}
+        {/* <p>Create your first campaign</p> */}
         {/* <p>Fund your Account</p> */}
       </div>
     </div>
@@ -134,7 +134,7 @@ export const CampaignsList: React.FC = () => {
         </Grid>
       </Paper> */}
       <Paper className="campaign-row">
-        <Grid container spacing={5}>
+        <Grid container spacing={2}>
           <Grid item container xs={1}>
             <Typography component="div">Select</Typography>
           </Grid>
