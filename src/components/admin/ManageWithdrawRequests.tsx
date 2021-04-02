@@ -33,6 +33,7 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
   });
   const history = useHistory();
   const [withdrawData, setWithdrawData] = useState(props.location != null ? props.location.state.data : null);
+
   const [value, setValue] = useState(0);
   const [getKyc, { loading, data }] = useLazyQuery(ADMIN_GET_KYC_BY_USER, {
     variables: { userId: withdrawData.user.id },
@@ -115,13 +116,25 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
               <div className="card flex-display">
                 <div className="flex-item padding-right">
                   <p>Pending Withdrawal Amount</p>
-                  <p className="right">{`${withdrawData.totalPendingWithdrawal} COIIN`}</p>
-                  <p className="right">{`$${(withdrawData.totalPendingWithdrawal / 10).toFixed(2)} USD`}</p>
+                  {withdrawData.totalPendingWithdrawal.map((withdraw: any, i: any) => {
+                    return (
+                      <div key={i}>
+                        {withdraw.currency == 'usd' ? (
+                          <p className="right">{`$${parseFloat(withdraw.usdbalance).toFixed(
+                            2,
+                          )} ${withdraw.currency.toUpperCase()}`}</p>
+                        ) : (
+                          <p className="right">{`${parseFloat(withdraw.balance).toFixed(
+                            2,
+                          )} ${withdraw.currency.toUpperCase()}`}</p>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className="flex-item padding-left">
                   <p>Total Annual Withdrawn</p>
-                  <p className="right">{`${withdrawData.totalAnnualWithdrawn} COIIN`}</p>
-                  <p className="right">{`$${withdrawData.totalAnnualWithdrawn / 10} USD`}</p>
+                  <p className="right">{`$${withdrawData.totalAnnualWithdrawn} USD`}</p>
                 </div>
               </div>
               <div className="card">
@@ -150,7 +163,9 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
                           ).toLocaleTimeString()}`}</p>
                           <p className="date padding-right">{`UTC`}</p>
                           <p className="amount">{`${
-                            isCoiinTransfer ? transfer.amount + 'COIIN' : transfer.amount * 0.1 + 'USD'
+                            isCoiinTransfer
+                              ? `${transfer.amount} ${transfer.currency.toUpperCase()}`
+                              : transfer.amount * 0.1 + 'USD'
                           } `}</p>
                         </div>
                         <div className="address-container">
@@ -254,7 +269,7 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
   };
   return (
     <div>
-      <p>Manage Withdrawls</p>
+      <p>Manage Withdrawals</p>
       {renderManageWithdrawals()}
     </div>
   );

@@ -1,131 +1,57 @@
-import React, { useState } from 'react';
-import { Button, Grid, Paper, Typography } from '@material-ui/core';
-import PaymentIcon from '@material-ui/icons/Payment';
-import { WalletList } from './WalletList';
+import React, { createContext } from 'react';
+import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
+import { FundingWallet } from './FundingWallet';
 import { TransactionHistory } from './TransactionHistory';
-import { useQuery } from '@apollo/client';
+import { ApolloQueryResult, useQuery } from '@apollo/client';
 import { GetFundingWalletResponse } from '../types';
 import { GET_FUNDING_WALLET } from '../operations/queries/fundingWallet';
-import { AddPaymentMethod } from './AddPaymentMethod';
-import { PurchaseDialog } from './PurchaseDialog';
 import { CampaignStatusList } from './CampaignStatusList';
+import { TabPanel } from './TabPanel';
 
 export const coldWallet =
   process.env.NODE_ENV === 'production'
     ? '0x9f6fE7cF8CCC66477c9f7049F22FbbE35234274D'
     : '0x275EE6238D103fDBE49d4cF6358575aA914F8654';
 
+export type RefetchWallet = (
+  variables?: Partial<Record<string, any>> | undefined,
+) => Promise<ApolloQueryResult<GetFundingWalletResponse>>;
+
 export const PaymentsAccount: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const [paymentMethod, setOpenPM] = useState(false);
-  const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
+  const [value, setValue] = React.useState(0);
+  const { loading, data: fundingWallet, refetch } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleChange = (event: any, newValue: number) => {
+    setValue(newValue);
   };
 
-  const handleOpenNewPaymentMethod = () => {
-    setOpenPM(true);
-  };
-
-  const renderWalletBalance = () => {
-    if (loading) {
-      return <div />;
-    } else if (data && data.getFundingWallet.balance) {
-      return data.getFundingWallet.balance;
-    } else {
-      return 0;
-    }
-  };
-
-  const getBalance = () => {
-    if (data && data.getFundingWallet.balance) {
-      return data.getFundingWallet.balance;
-    }
-    return 0;
-  };
+  function a11yProps(index: any) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
 
   return (
     <div>
-      <AddPaymentMethod open={paymentMethod} setOpen={setOpenPM} />
-      <PurchaseDialog open={open} setOpen={setOpen} />
-      <Grid container>
-        <Grid item xs={7}>
-          <Paper className="paper">
-            <Grid container direction={'column'} spacing={4}>
-              <Grid item>
-                <Grid container item direction={'column'} justify={'center'} spacing={2}>
-                  <Grid container item>
-                    <Grid item xs={4}>
-                      <Typography component={'div'} variant={'h4'}>
-                        Payments Account
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6} />
-                    <Grid item xs={2} container className="buy-button-container">
-                      <Typography component={'div'}>Balance: {renderWalletBalance()}</Typography>
-                      <Button
-                        variant={'contained'}
-                        size={'small'}
-                        color={'primary'}
-                        className="button"
-                        onClick={handleClickOpen}
-                      >
-                        <Typography component={'div'}>Buy Coiin Points</Typography>
-                      </Button>
-                    </Grid>
-                  </Grid>
-                  <Grid container item spacing={2}>
-                    <Grid item>
-                      <PaymentIcon />
-                    </Grid>
-                    <Grid item sm container>
-                      <Grid item xs container direction={'column'} spacing={2}>
-                        <Typography component={'div'}>How you pay</Typography>
-                        <Typography component={'div'}>Coiin</Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Typography component={'div'}>
-                      To manage other forms of payments, please contact your account manager.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item>
-                <Grid container direction={'row'}>
-                  <Grid item xs>
-                    <Typography component={'div'} variant={'h5'}>
-                      Payment Methods
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6} />
-                  <Grid item xs>
-                    <Button
-                      variant={'contained'}
-                      color={'primary'}
-                      className="button"
-                      onClick={handleOpenNewPaymentMethod}
-                    >
-                      Add Method
-                    </Button>
-                  </Grid>
-                </Grid>
-                <WalletList />
-              </Grid>
-              <Grid item>
-                <CampaignStatusList balance={getBalance()} />
-              </Grid>
-              <Grid item>
-                <div>
-                  <TransactionHistory data={data} isLoading={loading} />
-                </div>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-      </Grid>
+      <AppBar position="static">
+        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+          <Tab label="Funding Wallet" {...a11yProps(0)} />
+          <Tab label="Campaigns" {...a11yProps(1)} />
+          <Tab label="Transaction History" {...a11yProps(2)} />
+        </Tabs>
+      </AppBar>
+      <Paper className="paper">
+        <TabPanel value={value} index={0}>
+          <FundingWallet data={fundingWallet} isLoading={loading} refetchWallet={refetch} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <CampaignStatusList fundingWallet={fundingWallet} />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <TransactionHistory data={fundingWallet} isLoading={loading} />
+        </TabPanel>
+      </Paper>
     </div>
   );
 };

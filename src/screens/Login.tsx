@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { fireClient, getAuthPersistence } from '../clients/firebase';
-import { Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, Grid, Paper, TextField } from '@material-ui/core';
 import { sessionLogin } from '../clients/raiinmaker-api';
 import { ChangePasswordDialog } from '../components/ChangePasswordDialog';
-
+import { ReactComponent as RaiinmakerLogo } from '../assets/svg/raiinmaker_logo2x1.svg';
+import { ErrorCard } from '../components/Error';
 interface UserData {
   email: string;
   password: string;
@@ -13,6 +14,9 @@ interface UserData {
 export const Login: React.FC = () => {
   const history = useHistory();
   const [changePassword, setChangePassword] = React.useState(false);
+  const [error, setError] = useState({
+    code: '',
+  });
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -28,6 +32,7 @@ export const Login: React.FC = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    setError({ code: '' });
     try {
       await fireClient.auth().setPersistence(getAuthPersistence);
       await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
@@ -40,6 +45,7 @@ export const Login: React.FC = () => {
       }
     } catch (e) {
       console.log('error: ', e);
+      setError(e);
     }
   };
 
@@ -54,11 +60,13 @@ export const Login: React.FC = () => {
         alignItems={'center'}
         alignContent={'center'}
       >
-        <Grid item>
+        <Grid className="form-container">
           <Paper className="login-form">
+            <div className="padding-bottom">
+              <RaiinmakerLogo className="login-logo"></RaiinmakerLogo>
+            </div>
             <form>
-              <Typography>Login</Typography>
-              <div>
+              <Grid container item xs={12} spacing={0} className="padding-bottom">
                 <TextField
                   required
                   type="text"
@@ -66,19 +74,33 @@ export const Login: React.FC = () => {
                   label="Email"
                   placeholder="Email"
                   onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
                 />
-              </div>
-              <div>
+              </Grid>
+              <Grid container item xs={12} spacing={0} className="padding-bottom">
                 <TextField
                   type="password"
                   name="password"
                   label="Password"
                   placeholder="Password"
+                  variant="outlined"
                   onChange={handleChange}
+                  fullWidth
                 />
-              </div>
+              </Grid>
               <div>
-                <Button onClick={handleSubmit}>Login</Button>
+                {error.code !== '' ? (
+                  <ErrorCard
+                    data={'The email and password you entered does not match the information we have on file.'}
+                    close={() => setError({ code: '' })}
+                  ></ErrorCard>
+                ) : (
+                  <div />
+                )}
+                <Button className="button" onClick={handleSubmit}>
+                  Login
+                </Button>
               </div>
             </form>
           </Paper>

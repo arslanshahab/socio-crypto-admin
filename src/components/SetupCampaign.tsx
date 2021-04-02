@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { TextField } from '@material-ui/core';
+import { FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
-import { FaTicketAlt } from 'react-icons/fa';
+import { FaTicketAlt, FaFile } from 'react-icons/fa';
 import coiin_yellow from '../assets/svg/icon_coiin_yellow copy.svg';
 import coiin_black from '../assets/svg/icon_coiin_black copy.svg';
 import { useDispatch } from 'react-redux';
@@ -10,45 +10,41 @@ import { ReactSVG } from 'react-svg';
 import icon from '../assets/svg/camera.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/reducer';
+import { useQuery } from '@apollo/client';
+import { GetFundingWalletResponse } from '../types';
+import { GET_FUNDING_WALLET } from '../operations/queries/fundingWallet';
+import { capitalize } from '../helpers';
+import { handleImage } from '../helpers/utils';
+import { useHistory } from 'react-router';
 
 interface Props {
   company: string;
   raffleImage?: string;
 }
 
+interface Crypto {
+  type: string;
+  id: string;
+  balance: number;
+}
+
 export const SetupCampaign: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
-
+  const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
+  const history = useHistory();
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType ? campaign.config.campaignType : '');
   const [budgetType, setBudgetType] = useState(campaign.config.budgetType ? campaign.config.budgetType : '');
   const handleCampaignChange = (key: string, value: any) => {
-    dispatch(updateCampaignState({ cat: 'config', key: key, val: value }));
+    const cat = key === 'cryptoId' ? 'info' : 'config';
+    dispatch(updateCampaignState({ cat, key: key, val: value }));
   };
 
-  const getBase64 = (file: Blob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      if (reader.result) {
-        dispatch(updateCampaignState({ cat: 'config', key: 'raffleImage', val: reader.result }));
-      }
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
+  const hasValue = (token: Crypto) => {
+    return token.balance > 0;
   };
 
-  const handleImage = (event: React.ChangeEvent) => {
-    const target = event.target as HTMLInputElement;
-    const files = target.files;
-    if (files != null && files.length) {
-      const formData = new FormData();
-      formData.append(files[0].name, files[0]);
-      getBase64(files[0]);
-    }
-  };
   const handleCampaignType = (type: string) => {
     setCampaignType(type);
     dispatch(updateCampaignState({ cat: 'config', key: 'campaignType', val: type }));
@@ -110,19 +106,19 @@ export const SetupCampaign: React.FC<Props> = (props) => {
               <div>
                 <div
                   onClick={() => {
-                    handleBudgetType('coiin');
+                    handleBudgetType('crypto');
                     handleCampaignChange('numOfTiers', 3);
                   }}
                   className={`${
-                    budgetType === 'coiin' ? 'selected-item' : ''
+                    budgetType === 'crypto' ? 'selected-item' : ''
                   } inline half-width center-text campaign-funding-square`}
                 >
-                  {budgetType === 'coiin' ? (
-                    <ReactSVG className="coiin-svg" src={coiin_yellow}></ReactSVG>
+                  {budgetType === 'crypto' ? (
+                    <ReactSVG className="coiin-svg" src={coiin_yellow} />
                   ) : (
-                    <ReactSVG className="coiin-svg" src={coiin_black}></ReactSVG>
+                    <ReactSVG className="coiin-svg" src={coiin_black} />
                   )}
-                  <p>Coiin</p>
+                  <p>Crypto</p>
                 </div>
                 <div
                   onClick={() => {
@@ -136,16 +132,58 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                     budgetType === 'raffle' ? 'selected-item' : ''
                   } inline half-width center-text campaign-funding-square`}
                 >
-                  <FaTicketAlt></FaTicketAlt>
+                  <FaTicketAlt />
                   <p>Raffle (Coming Soon)</p>
+                </div>
+                <div
+                  onClick={() => null}
+                  className={`${
+                    budgetType === 'nft' ? 'selected-item' : ''
+                  } inline half-width center-text campaign-funding-square`}
+                >
+                  <FaFile />
+                  <p>NFT (Coming Soon)</p>
                 </div>
               </div>
               {budgetType !== '' ? (
                 <div className="budget-input-container">
-                  {budgetType == 'coiin' ? (
+                  {budgetType == 'crypto' ? (
                     <Fade triggerOnce>
+                      <FormControl variant={'outlined'} fullWidth>
+                        <InputLabel>Select Token</InputLabel>
+                        <Select value={campaign.crypto}>
+                          {loading ? (
+                            <div />
+                          ) : data && data.getFundingWallet.currency.filter(hasValue).length ? (
+                            data.getFundingWallet.currency.filter(hasValue).map((crypto, index) => {
+                              return (
+                                <MenuItem
+                                  value={crypto.type.toUpperCase()}
+                                  onClick={() => {
+                                    handleCampaignChange('cryptoSymbol', crypto.type);
+                                    handleCampaignChange('cryptoId', crypto.id);
+                                  }}
+                                  key={index}
+                                >
+                                  {capitalize(crypto.type.toUpperCase())}
+                                </MenuItem>
+                              );
+                            })
+                          ) : (
+                            <MenuItem
+                              value="Register Token"
+                              onClick={() => {
+                                dispatch(updateCampaignState({ cat: 'reset', key: 'reset', val: 'reset' }));
+                                history.push('/dashboard/paymentsAccount');
+                              }}
+                            >
+                              No Crypto Currency Found - Register Crypto
+                            </MenuItem>
+                          )}
+                        </Select>
+                      </FormControl>
                       <TextField
-                        label={'Campaign Budget (Coiin)'}
+                        label={'Campaign Budget'}
                         name={'budget'}
                         placeholder={'100'}
                         fullWidth
@@ -154,7 +192,28 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                         type="number"
                         value={campaign.config.coiinBudget}
                         onChange={(event) => {
+                          if (data && data.getFundingWallet) {
+                            for (let i = 0; i < data?.getFundingWallet.currency.length; i++) {
+                              let token;
+                              if (data?.getFundingWallet.currency[i].type == campaign.config.cryptoSymbol) {
+                                token = data?.getFundingWallet.currency[i];
+                              }
+                              if (token) {
+                                if (parseInt(event.target.value) > token.balance) {
+                                  event.target.value = token.balance.toString();
+                                }
+                              }
+                            }
+                          }
                           handleCampaignChange('coiinBudget', event.target.value as string);
+                          dispatch(
+                            updateCampaignState({
+                              cat: 'algoTiers',
+                              tier: '3',
+                              key: 'totalCoiins',
+                              val: event.target.value,
+                            }),
+                          );
                         }}
                       />
                     </Fade>
@@ -165,14 +224,19 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                           <div>
                             {props.raffleImage ? (
                               <div className="image-preview">
-                                <img src={props.raffleImage}></img>
+                                <img src={props.raffleImage} alt="Raffle" />
                               </div>
                             ) : (
                               <ReactSVG src={icon} color="#3B5998" />
                             )}
                           </div>
                         </label>
-                        <input className="hidden" type="file" id="single" onChange={handleImage} />
+                        <input
+                          className="hidden"
+                          type="file"
+                          id="single"
+                          onChange={(e) => handleImage(e, dispatch, 'raffle')}
+                        />
                       </div>
                       <TextField
                         label={'Raffle Prize Name'}

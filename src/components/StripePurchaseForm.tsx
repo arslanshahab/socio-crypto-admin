@@ -5,6 +5,7 @@ import { ChargePaymentMethodResults, ChargePaymentMethodVars, ListPaymentMethods
 import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
 import { capitalize } from '../helpers';
 import { CHARGE_PAYMENT_METHOD } from '../operations/mutations/stripe';
+import { RefetchWallet } from './PaymentsAccount';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -57,7 +58,7 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
           />
         </Grid>
         <Grid item>
-          <Typography style={{ paddingTop: '15px' }}>(${amount !== 0 ? amount * 0.1 : 0})</Typography>
+          <Typography style={{ paddingTop: '15px' }}>(${(amount !== 0 ? amount * 0.1 : 0).toFixed(2)})</Typography>
         </Grid>
       </Grid>
       <Grid item>

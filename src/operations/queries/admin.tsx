@@ -66,6 +66,7 @@ export const GET_PENDING_WITHDRAWALS = gql`
         createdAt
         ethAddress
         paypalAddress
+        currency
       }
       user {
         id
@@ -93,8 +94,8 @@ export const GET_WITHDRAWAL_HISTORY = gql`
 `;
 
 export const ADMIN_LIST_CAMPAIGN_QUERY = gql`
-  query ListCampaignsQuery($open: Boolean, $skip: Int, $take: Int, $scoped: Boolean) {
-    listCampaigns(open: $open, skip: $skip, take: $take, scoped: $scoped) {
+  query ListCampaignsQuery($open: Boolean, $skip: Int, $take: Int, $scoped: Boolean, $approved: Boolean) {
+    listCampaigns(open: $open, skip: $skip, take: $take, scoped: $scoped, approved: $approved) {
       results {
         id
         name

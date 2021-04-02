@@ -6,7 +6,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -22,6 +21,7 @@ import { NewCampaign } from '../components/campaign-create/NewCampaign';
 import { Link, useHistory } from 'react-router-dom';
 import { MarketData } from '../components/MarketData';
 import { DashboardHome } from '../components/DashboardHome';
+import { ReactComponent as RaiinmakerLogo } from '../assets/svg/logo.svg';
 import StoreIcon from '@material-ui/icons/Store';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -149,10 +149,8 @@ export const Dashboard: React.FC = (props) => {
                 >
                   <MenuIcon />
                 </IconButton>
-                <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'white' }}>
-                  <Typography component="div" variant="h6" noWrap>
-                    Dashboard
-                  </Typography>
+                <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'white', width: '40px' }}>
+                  <RaiinmakerLogo></RaiinmakerLogo>
                 </Link>
                 <Grid container direction={'row'} justify={'flex-end'}>
                   <Grid item>
@@ -194,26 +192,14 @@ export const Dashboard: React.FC = (props) => {
                     <ListItemText primary={'Campaigns'} />
                   </ListItem>
                 </Link>
-                <Link to={'/dashboard/marketData'} style={{ textDecoration: 'none', color: 'black' }}>
+                {/* <Link to={'/dashboard/marketData'} style={{ textDecoration: 'none', color: 'black' }}>
                   <ListItem button key={'MarketData'}>
                     <ListItemIcon>
                       <TrendingUpIcon />
                     </ListItemIcon>
                     <ListItemText primary={'Market Data'} />
                   </ListItem>
-                </Link>
-                {value.role == 'admin' ? (
-                  <Link to={'/dashboard/admin/userManagement'} style={{ textDecoration: 'none', color: 'black' }}>
-                    <ListItem button key={'Manage Users'}>
-                      <ListItemIcon>
-                        <PeopleAltIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={'Manage Users'} />
-                    </ListItem>
-                  </Link>
-                ) : (
-                  <div />
-                )}
+                </Link> */}
                 <Link to={'/dashboard/newCampaign'} style={{ textDecoration: 'none', color: 'black' }}>
                   <ListItem button key={'New Campaign'}>
                     <ListItemIcon>
@@ -226,6 +212,42 @@ export const Dashboard: React.FC = (props) => {
                   href={'https://www.raiinmaker.com/resources/'}
                   style={{ textDecoration: 'none', color: 'black' }}
                 >
+                  {value.company == 'raiinmaker' ? (
+                    <Link to={'/dashboard/admin'} style={{ textDecoration: 'none', color: 'black' }}>
+                      <ListItem button key={'Admin'}>
+                        <ListItemIcon>
+                          <AssignmentIndIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Admin'} />
+                      </ListItem>
+                    </Link>
+                  ) : (
+                    <div />
+                  )}
+                  {value.role == 'admin' ? (
+                    <Link to={'/dashboard/admin/audit-campaigns'} style={{ textDecoration: 'none', color: 'black' }}>
+                      <ListItem button key={'Audit'}>
+                        <ListItemIcon>
+                          <AssignmentIndIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Audit Campaigns'} />
+                      </ListItem>
+                    </Link>
+                  ) : (
+                    <div />
+                  )}
+                  {value.role == 'admin' ? (
+                    <Link to={'/dashboard/admin/userManagement'} style={{ textDecoration: 'none', color: 'black' }}>
+                      <ListItem button key={'Manage Users'}>
+                        <ListItemIcon>
+                          <PeopleAltIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Manage Users'} />
+                      </ListItem>
+                    </Link>
+                  ) : (
+                    <div />
+                  )}
                   <ListItem button key={'FAQ'}>
                     <ListItemIcon>
                       <QuestionAnswerIcon />
@@ -241,36 +263,13 @@ export const Dashboard: React.FC = (props) => {
                     <ListItemText primary={'Contact Support'} />
                   </ListItem>
                 </MuiLink>
-                {value.company == 'raiinmaker' ? (
-                  <Link to={'/dashboard/admin'} style={{ textDecoration: 'none', color: 'black' }}>
-                    <ListItem button key={'Admin'}>
-                      <ListItemIcon>
-                        <AssignmentIndIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={'Admin'} />
-                    </ListItem>
-                  </Link>
-                ) : (
-                  <div />
-                )}
-                {value.role == 'admin' ? (
-                  <Link to={'/dashboard/admin/audit-campaigns'} style={{ textDecoration: 'none', color: 'black' }}>
-                    <ListItem button key={'Audit'}>
-                      <ListItemIcon>
-                        <AssignmentIndIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={'Audit Campaigns'} />
-                    </ListItem>
-                  </Link>
-                ) : (
-                  <div />
-                )}
               </List>
             </Drawer>
             <main
-              className={clsx(classes.content, {
+              className={`${clsx(classes.content, {
                 [classes.contentShift]: open,
-              })}
+              })} relative full-screen-height
+              `}
             >
               <div className={classes.drawerHeader} />
               <Switch>

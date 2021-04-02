@@ -11,6 +11,7 @@ import { Fade } from 'react-awesome-reveal';
 import { ToastContainer, toast } from 'react-toastify';
 
 import icon from '../../assets/svg/camera.svg';
+import { handleImage } from '../../helpers/utils';
 
 interface Props {
   userData: {
@@ -46,6 +47,22 @@ export const Initialize: React.FC<Props> = (props) => {
   };
   const handleConfigChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     event.persist();
+    if (event.target.name === 'numOfTiers') {
+      if (parseInt(event.target.value) > 10) {
+        event.target.value = '10';
+      }
+      if (parseInt(event.target.value) < 1) {
+        event.target.value = '1';
+      }
+    }
+    if (event.target.name === 'numOfSuggestedPosts') {
+      if (parseInt(event.target.value) > 5) {
+        event.target.value = '5';
+      }
+      if (parseInt(event.target.value) < 1) {
+        event.target.value = '1';
+      }
+    }
     if (event.target.name === 'initialTotal') {
       dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'threshold', val: '0' }));
       dispatch(
@@ -67,9 +84,9 @@ export const Initialize: React.FC<Props> = (props) => {
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
-      progress: undefined
+      progress: undefined,
     });
-  }
+  };
 
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
@@ -87,28 +104,6 @@ export const Initialize: React.FC<Props> = (props) => {
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
   };
 
-  const getBase64 = (file: Blob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      if (reader.result) {
-        dispatch(updateCampaignState({ cat: 'image', key: 'image', val: reader.result }));
-      }
-    };
-    reader.onerror = function (error) {
-      console.log('Error: ', error);
-    };
-  };
-
-  const handleImage = (event: React.ChangeEvent) => {
-    const target = event.target as HTMLInputElement;
-    const files = target.files;
-    if (files != null && files.length) {
-      const formData = new FormData();
-      formData.append(files[0].name, files[0]);
-      getBase64(files[0]);
-    }
-  };
   return (
     <Fade>
       <div className="init-campaign-container">
@@ -118,41 +113,35 @@ export const Initialize: React.FC<Props> = (props) => {
               <div>
                 {campaign.image ? (
                   <div className="image-preview">
-                    <img src={campaign.image}></img>
+                    <img src={campaign.image} alt="image" />
                   </div>
                 ) : (
                   <ReactSVG src={icon} color="#3B5998" />
                 )}
               </div>
             </label>
-            <input className="hidden" type="file" id="single" onChange={handleImage} />
+            <input
+              className="hidden"
+              type="file"
+              id="single"
+              onChange={(e) => handleImage(e, dispatch, 'campaign-image')}
+            />
+            <p className="margin-bottom center-text setup-campaign-question">
+              {campaign.image ? 'Update Campaign Image' : 'Add Campaign Image'}
+            </p>
           </div>
           <div className="margin-bottom">
-            <Grid container item xs={12} spacing={3}>
-              <Grid container item xs={6}>
+            <Grid container justify={'center'}>
+              <Grid item>
                 <TextField
+                  style={{ width: '500px' }}
                   label={'Name of Campaign'}
                   name={'name'}
                   placeholder={'name'}
-                  fullWidth
                   value={campaign.name}
                   variant="outlined"
                   margin={'normal'}
                   onChange={handleCampaignChange}
-                />
-              </Grid>
-              <Grid container item xs={6}>
-                <TextField
-                  fullWidth
-                  label={'Company Name'}
-                  variant="outlined"
-                  name={'company'}
-                  disabled
-                  placeholder={'Company Name'}
-                  margin={'normal'}
-                  defaultValue={props.userData ? props.userData.company : null}
-                  onChange={handleCampaignChange}
-                  className="text-field"
                 />
               </Grid>
             </Grid>
@@ -176,7 +165,7 @@ export const Initialize: React.FC<Props> = (props) => {
                 <TextField
                   label={'Landing Page Video URL'}
                   name={'targetVideo'}
-                  placeholder={'Landing Page Video URL'}
+                  placeholder={'Video URL (Optional)'}
                   margin={'normal'}
                   value={campaign.targetVideo}
                   onChange={handleCampaignChange}
@@ -191,27 +180,58 @@ export const Initialize: React.FC<Props> = (props) => {
             <Grid container item xs={12} spacing={3}>
               <Grid container item xs={6} spacing={0}>
                 <TextField
-                  label={'How many tiers (1-10)'}
+                  label={'How many Reward Tiers would you like to provide? (1-10)'}
                   fullWidth
+                  type="number"
+                  InputProps={{
+                    inputProps: {
+                      max: 10,
+                      min: 1,
+                    },
+                  }}
                   variant="outlined"
                   name={'numOfTiers'}
                   defaultValue={props.campaignType === 'raffle' ? 0 : 3}
-                  placeholder={'How many tiers'}
+                  placeholder={props.campaignType === 'raffle' ? '0' : '3'}
                   margin={'normal'}
                   value={campaign.config.numOfTiers}
-                  onChange={handleConfigChange}
+                  onChange={(e) => {
+                    handleConfigChange(e);
+                    dispatch(
+                      updateCampaignState({
+                        cat: 'algoTiers',
+                        tier: campaign.config.numOfTiers.toString(),
+                        key: 'totalCoiins',
+                        val: '',
+                      }),
+                    );
+                    dispatch(
+                      updateCampaignState({
+                        cat: 'algoTiers',
+                        tier: e.target.value,
+                        key: 'totalCoiins',
+                        val: campaign.config.coiinBudget,
+                      }),
+                    );
+                  }}
                   className="text-field"
                   disabled={props.campaignType === 'raffle'}
                 />
               </Grid>
               <Grid container item xs={6} spacing={0}>
                 <TextField
-                  label={'# of post templates'}
+                  label={'How many Templates would you like to provide? (1-5)'}
                   name={'numOfSuggestedPosts'}
-                  placeholder={'How many suggested posts?'}
+                  placeholder={'2'}
                   margin={'normal'}
                   defaultValue={2}
                   type="number"
+                  InputProps={{
+                    inputProps: {
+                      max: 5,
+                      min: 1,
+                    },
+                  }}
                   onChange={handleConfigChange}
                   value={campaign.config.numOfSuggestedPosts}
                   className="text-field"

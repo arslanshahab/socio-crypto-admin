@@ -1,7 +1,19 @@
 .login-layout {
   text-align: center;
+  height: 100vh;
   .login-form {
-    margin: 250px;
-    padding: 100px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding:75px 50px;
+    .login-logo{
+      padding: 0px 0 15px 0 ;
+    }
+    .login-title{
+      padding: 0 0 10px 0;
+      font-size: 20px;
+    }
   }
 }

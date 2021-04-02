@@ -16,14 +16,23 @@ interface ClaimWalletVars {
 export const AddressCard: React.FC<Props> = ({ wallet }) => {
   const anyWindow = window as any;
   const [claimWallet, { error }] = useMutation<ClaimEthereumAddress, ClaimWalletVars>(CLAIM_WALLET);
-  const [coinbase, setCoinbase] = useState(!!anyWindow.web3 && anyWindow.web3.eth.coinbase);
+  const [coinbase, setCoinbase] = useState('');
   const [web3Enabled, setWeb3Enabled] = useState(!!anyWindow.web3 && !!coinbase);
+  (async () => {
+    const accounts = await anyWindow.ethereum.request({ method: 'eth_accounts' });
+    setCoinbase(accounts[0]);
+  })();
   if (anyWindow.web3) anyWindow.ethereum.on('accountsChanged', (a: any) => setCoinbase(a[0]));
   const web3 = async (message: string) => {
-    anyWindow.web3.personal.sign(anyWindow.web3.fromUtf8(message), coinbase, (error: any, signature: string) => {
-      if (error) return;
+    try {
+      const signature = await anyWindow.ethereum.request({
+        method: 'personal_sign',
+        params: [Buffer.from(message, 'utf8').toString('hex'), coinbase],
+      });
       claimWallet({ variables: { ethereumAddress: wallet.ethereumAddress, signature: signature } });
-    });
+    } catch (_) {
+      return;
+    }
   };
   const enableWeb3 = async () => {
     try {
@@ -57,13 +66,14 @@ export const AddressCard: React.FC<Props> = ({ wallet }) => {
       </Button>
     );
   };
+
   return (
     <Grid container item direction={'row'} justify={'center'} className="list-row">
-      <Grid item xs={9} className="list-item">
+      <Grid item xs className="list-item">
         <Typography component="div">{wallet && wallet.ethereumAddress}</Typography>
       </Grid>
       {!wallet.claimed && (
-        <Grid item xs={3} className="claim-button-container">
+        <Grid item xs={3} className="list-button-container">
           {renderWeb3(wallet.ethereumAddress, wallet.message)}
         </Grid>
       )}

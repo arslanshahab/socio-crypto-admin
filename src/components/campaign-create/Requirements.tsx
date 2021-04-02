@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Button, MenuItem, Select, TextField } from '@material-ui/core';
+import { Button, MenuItem, Select, TextField, InputLabel, FormControl } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { updateCampaignState } from '../../redux/slices/campaign';
 import Modal from 'react-modal';
 import { MultiSelectList } from '../multiSelectList';
 import { Fade } from 'react-awesome-reveal';
+import { BsX } from 'react-icons/bs';
 
 import {
   defaultAges,
@@ -15,6 +16,8 @@ import {
   defaultStates,
   defaultValues,
 } from '../../globals';
+import { LocationRequirementSpecs } from '../../types';
+import { BootstrapInput } from '../BootstrapInput';
 
 export const Requirements: React.FC = () => {
   const requirements = useSelector((state: RootState) => state.newCampaign.requirements);
@@ -36,15 +39,9 @@ export const Requirements: React.FC = () => {
     switch (type) {
       case 'location':
         setShowLocation(false);
-        if (requirements != null) {
-          if (requirements.city) setRequiredCity(requirements.city);
-          if (requirements.state) setRequiredState(requirements.state);
-          if (requirements.country) setRequiredState(requirements.country);
-        } else {
-          setRequiredCity('');
-          setRequiredState('');
-          setRequiredCountry('');
-        }
+        setRequiredCity('');
+        setRequiredState('');
+        setRequiredCountry('');
         break;
       case 'age':
         setShowAge(false);
@@ -110,77 +107,113 @@ export const Requirements: React.FC = () => {
         <div className="modal-content">
           <p className="modal-title">Location Requirements</p>
           <div>
-            <Select
-              className="modal-select"
-              labelId="data-type-label"
-              id="data-type-select"
-              value={country}
-              style={{ margin: '15px' }}
-              onChange={(e) => {
-                if (typeof e.target.value == 'string') {
-                  setRequiredCountry(e.target.value);
-                }
+            <FormControl
+              style={{
+                width: '100%',
+                marginBottom: '10px',
               }}
             >
-              {defaultCountries.map((country) => {
-                return (
-                  <MenuItem key={country} value={country}>
-                    {country}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-            {country == 'United States' ? (
+              <InputLabel id="country-label">Country</InputLabel>
               <Select
+                variant="outlined"
                 className="modal-select"
-                labelId="data-type-label"
+                labelId="country-label"
                 id="data-type-select"
-                value={state}
-                style={{ margin: '15px' }}
+                placeholder="Country"
+                label={'Country'}
+                name={'Country'}
+                value={country}
+                input={<BootstrapInput />}
                 onChange={(e) => {
                   if (typeof e.target.value == 'string') {
-                    setRequiredState(e.target.value);
+                    setRequiredCountry(e.target.value);
                   }
                 }}
               >
-                {defaultStates.map((state) => {
+                {defaultCountries.map((country) => {
                   return (
-                    <MenuItem className="modal-select-item" key={state} value={state}>
-                      {state}
+                    <MenuItem key={country} value={country}>
+                      {country}
                     </MenuItem>
                   );
                 })}
               </Select>
+            </FormControl>
+
+            {country == 'United States' ? (
+              <FormControl
+                style={{
+                  width: '100%',
+                  marginBottom: '10px',
+                }}
+              >
+                <InputLabel id="state-label">State</InputLabel>
+
+                <Select
+                  variant="outlined"
+                  className="modal-select"
+                  labelId="state-label"
+                  id="data-type-select"
+                  value={state}
+                  placeholder="State"
+                  label={'State'}
+                  name={'State'}
+                  input={<BootstrapInput />}
+                  onChange={(e) => {
+                    if (typeof e.target.value == 'string') {
+                      setRequiredState(e.target.value);
+                    }
+                  }}
+                >
+                  {defaultStates.map((state) => {
+                    return (
+                      <MenuItem className="modal-select-item" key={state} value={state}>
+                        {state}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
             ) : (
               <></>
             )}
-            <TextField
-              fullWidth
-              variant="outlined"
-              name={'city'}
-              label={'City'}
-              margin={'normal'}
-              className="text-field modal-text-field"
-              placeholder={city ? city : 'Required City'}
-              onChange={(e) => {
-                if (typeof e.target.value == 'string') setRequiredCity(e.target.value);
-              }}
-            />
+            {country.length ? (
+              <TextField
+                fullWidth
+                variant="outlined"
+                name={'city'}
+                label={'City'}
+                margin={'normal'}
+                className="text-field modal-text-field"
+                placeholder={city ? city : 'Required City'}
+                onChange={(e) => {
+                  if (typeof e.target.value == 'string') setRequiredCity(e.target.value);
+                }}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         <div className="button-container">
           <Button
+            color="primary"
+            variant="contained"
             className="modal-submit modal-button"
             onClick={() => {
-              if (city.length) dispatch(updateCampaignState({ cat: 'requirements', key: 'city', val: city }));
-              if (state.length) dispatch(updateCampaignState({ cat: 'requirements', key: 'state', val: state }));
-              if (country.length) dispatch(updateCampaignState({ cat: 'requirements', key: 'country', val: country }));
+              const value: LocationRequirementSpecs = {};
+              if (city.length) value.city = city;
+              if (state.length) value.state = state;
+              if (country.length) value.country = country;
+              const locations: LocationRequirementSpecs[] = requirements?.location?.map((data) => data) || [];
+              locations.push(value);
+              dispatch(updateCampaignState({ cat: 'requirements', key: 'location', val: locations }));
               handleClose('location');
             }}
           >
             Submit
           </Button>
-          <Button color="primary" variant="contained" className="modal-close" onClick={() => handleClose('location')}>
+          <Button className="modal-close" onClick={() => handleClose('location')}>
             Close
           </Button>
         </div>
@@ -211,16 +244,16 @@ export const Requirements: React.FC = () => {
         </div>
         <div className="button-container">
           <Button
+            color="primary"
+            variant="contained"
             onClick={() => {
               handleSubmit('age', selectedAgeRange);
               setShowAge(false);
             }}
           >
-            submit
+            Submit
           </Button>
-          <Button color="primary" variant="contained" onClick={() => handleClose('age')}>
-            Close
-          </Button>
+          <Button onClick={() => handleClose('age')}>Close</Button>
         </div>
       </Modal>
     );
@@ -250,17 +283,17 @@ export const Requirements: React.FC = () => {
         </div>
         <div className="button-container">
           <Button
+            color="primary"
+            variant="contained"
             className="modal-button modal-submit"
             onClick={() => {
               handleSubmit('social', selectedFollowerCount);
               setShowSocial(false);
             }}
           >
-            submit
+            Submit
           </Button>
-          <Button color="primary" variant="contained" onClick={() => handleClose('social')}>
-            Close
-          </Button>
+          <Button onClick={() => handleClose('social')}>Close</Button>
         </div>
       </Modal>
     );
@@ -288,15 +321,17 @@ export const Requirements: React.FC = () => {
         </div>
         <div className="button-container">
           <Button
+            color="primary"
+            variant="contained"
             className="modal-button submit-button"
             onClick={() => {
               handleSubmit('interests', selectedInterests);
               setShowInterests(false);
             }}
           >
-            submit
+            Submit
           </Button>
-          <Button color="primary" variant="contained" className="modal-close" onClick={() => handleClose('interests')}>
+          <Button className="modal-close" onClick={() => handleClose('interests')}>
             Close
           </Button>
         </div>
@@ -327,13 +362,15 @@ export const Requirements: React.FC = () => {
         </div>
         <div className="button-container">
           <Button
+            color="primary"
+            variant="contained"
             className="modal-button"
             onClick={() => {
               handleSubmit('values', selectedValues);
               setShowValues(false);
             }}
           >
-            submit
+            Submit
           </Button>
           <Button
             className="modal-close"
@@ -469,13 +506,26 @@ export const Requirements: React.FC = () => {
               </div>
             </div>
             <div className="requirement-display">
-              {requirements && requirements.city ? <li className="display-item">{requirements.city}</li> : <div />}
-              {requirements && requirements.state ? <li className="display-item">{requirements.state}</li> : <div />}
-              {requirements && requirements.country ? (
-                <li className="display-item">{requirements.country}</li>
-              ) : (
-                <div />
-              )}
+              {requirements &&
+                requirements.location &&
+                requirements.location.map((location, i) => {
+                  let locationString = '';
+                  if (location.country) locationString += location.country;
+                  if (location.state) locationString += `, ${location.state}`;
+                  if (location.city) locationString += `, ${location.city}`;
+                  return (
+                    <div key={i} className="location-preview-container">
+                      <p>{locationString}</p>
+                      <BsX
+                        width={'200'}
+                        onClick={() => {
+                          const locations = requirements.location?.filter((item, index) => index !== i);
+                          dispatch(updateCampaignState({ cat: 'requirements', key: 'location', val: locations }));
+                        }}
+                      ></BsX>
+                    </div>
+                  );
+                })}
             </div>
           </div>
           <div className="requirement-column">

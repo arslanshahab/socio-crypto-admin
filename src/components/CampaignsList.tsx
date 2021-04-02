@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Button, Grid, Paper, Typography } from '@material-ui/core';
 import { CampaignListVars, FilterDataType, PaginatedCampaignResults, TimeFilterOptions } from '../types';
 import { CampaignMetricsCard } from './CampaignMetricsCard';
 import { LIST_CAMPAIGNS } from '../operations/queries/campaign';
@@ -9,8 +9,11 @@ import { DateTimePicker } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { DataFilter } from './DataFilter';
 import { TimeFilter } from './TimeFilter';
+import { LoaderDots } from '@thumbtack/thumbprint-react';
+import { useHistory } from 'react-router-dom';
 
 export const CampaignsList: React.FC = () => {
+  const history = useHistory();
   const initialEndDate = new Date();
   const initialStartDate = new Date();
   initialStartDate.setUTCDate(initialEndDate.getUTCDate() - 7);
@@ -28,12 +31,60 @@ export const CampaignsList: React.FC = () => {
     if (dateIsoString) setEndDate(dateIsoString);
   };
   const { loading, data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
-    variables: { scoped: true, skip: 0, take: 10, sort: true },
+    variables: { scoped: true, skip: 0, take: 10, sort: true, approved: true, open: true },
   });
 
-  return (
+  return loading ? (
+    <div className="fill-height">
+      <div className="center-all">
+        {/* <p style={{ fontSize: '20px' }}>loading ...</p> */}
+        <LoaderDots theme="muted" size="medium" />
+      </div>
+    </div>
+  ) : data?.listCampaigns.results.length == null || data?.listCampaigns.results.length < 1 ? (
+    <div className="fill-height">
+      <div className="center-all">
+        <p style={{ fontSize: '20px' }}>No Campaigns Found</p>
+        <div style={{ margin: '10px 0 0 0 ' }}>
+          <Button
+            className="new-campaign-button"
+            variant="outlined"
+            color="primary"
+            onClick={(e) => {
+              // if (payloadReady(activeStep)) {
+              //   handleNext(e);
+              // } else {
+              //   showFormError();
+              // }
+              history.push('/dashboard/newCampaign');
+            }}
+          >
+            Create your first campaign
+          </Button>
+        </div>
+        {/* <div>
+          <Button
+            className="new-campaign-button"
+            variant="outlined"
+            color="primary"
+            onClick={(e) => {
+              // if (payloadReady(activeStep)) {
+              //   handleNext(e);
+              // } else {
+              //   showFormError();
+              // }
+            }}
+          >
+            Fund your Account
+          </Button>
+        </div> */}
+        {/* <p>Create your first campaign</p> */}
+        {/* <p>Fund your Account</p> */}
+      </div>
+    </div>
+  ) : (
     <div className="campaign-list">
-      <Paper className="campaign-graph">
+      {/* <Paper className="campaign-graph">
         <Grid container justify={'center'} direction={'row'} spacing={8} style={{ height: '440px' }}>
           <Grid item xs={7}>
             {loading ? (
@@ -81,9 +132,9 @@ export const CampaignsList: React.FC = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Paper>
+      </Paper> */}
       <Paper className="campaign-row">
-        <Grid container spacing={5}>
+        <Grid container spacing={2}>
           <Grid item container xs={1}>
             <Typography component="div">Select</Typography>
           </Grid>
@@ -113,24 +164,20 @@ export const CampaignsList: React.FC = () => {
         </Grid>
       </Paper>
       <Paper style={{ marginTop: '40px' }}>
-        {loading ? (
-          <p>loading ...</p>
-        ) : (
-          <div>
-            {data &&
-              data.listCampaigns.results.map((campaign, index) => {
-                return (
-                  <CampaignMetricsCard
-                    key={index}
-                    campaign={campaign}
-                    setChecked={setChecked}
-                    index={index}
-                    checkedIndex={checkedIndex}
-                  />
-                );
-              })}
-          </div>
-        )}
+        <div>
+          {data &&
+            data.listCampaigns.results.map((campaign, index) => {
+              return (
+                <CampaignMetricsCard
+                  key={index}
+                  campaign={campaign}
+                  setChecked={setChecked}
+                  index={index}
+                  checkedIndex={checkedIndex}
+                />
+              );
+            })}
+        </div>
       </Paper>
     </div>
   );

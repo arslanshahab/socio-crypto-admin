@@ -1,5 +1,5 @@
 import React from 'react';
-import { BsXSquare } from 'react-icons/bs';
+import { BsX } from 'react-icons/bs';
 interface Props {
   data: string;
   close: () => void;
@@ -7,11 +7,16 @@ interface Props {
 
 export const ErrorCard: React.FC<Props> = (props) => {
   const { data, close } = props;
-  console.log('rendered');
+
   return (
     <div id="error-display" className="error-display">
+      <div className="error-icon-container">
+        <BsX className="error-icon" onClick={close}></BsX>
+      </div>
       <p>{data}</p>
-      <BsXSquare className="close-icon" onClick={close}></BsXSquare>
+      <div className="close-icon-container">
+        <BsX className="close-icon" onClick={close}></BsX>
+      </div>
     </div>
   );
 };

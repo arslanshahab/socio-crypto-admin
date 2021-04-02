@@ -47,6 +47,7 @@ export interface CampaignListVars {
   skip?: number;
   take?: number;
   scoped?: boolean;
+  approved: boolean;
   sort?: boolean;
 }
 
@@ -58,6 +59,7 @@ export interface Wallet {
 }
 
 export interface StripeWallet {
+  id: string;
   last4: string;
   brand: string;
 }
@@ -81,9 +83,22 @@ export interface ListWalletResponse {
 
 export interface GetFundingWalletResponse {
   getFundingWallet: {
-    balance: number;
+    currency: WalletCurrency[];
     transfers: Transfer[];
   };
+}
+
+export interface WalletCurrency {
+  id: string;
+  type: string;
+  balance: number;
+}
+
+export interface ListSupportedCryptoResults {
+  listSupportedCrypto: {
+    type: string;
+    contractAddress: string;
+  }[];
 }
 
 export interface Transfer {
@@ -213,6 +228,7 @@ export interface NewCampaignVars {
   beginDate: string;
   endDate: string;
   description: string;
+  cryptoId: string;
   company: string;
   algorithm: string;
   image: string;
@@ -247,6 +263,8 @@ export interface Campaign {
   beginDate: string;
   endDate: string;
   coiinTotal: string;
+  crypto: CryptoCurrency;
+  type: string;
   totalParticipationScore: string;
   status: string;
   target: string;
@@ -260,6 +278,11 @@ export interface Campaign {
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+}
+
+export interface CryptoCurrency {
+  type: string;
+  contractAddress: string;
 }
 
 export interface ListPendingCampaignsAdminResults {
@@ -276,6 +299,8 @@ export interface ListPendingCampaignsAdminResults {
       algorithm: AlgorithmSpecs;
       company: string;
       audited: boolean;
+      type: string;
+      crypto: CryptoCurrency;
       targetVideo: string;
       imagePath: string;
       requirements?: CampaignRequirementSpecs;
@@ -299,6 +324,7 @@ export interface CampaignState {
   algorithm: AlgorithmSpecs;
   company: string;
   targetVideo: string;
+  cryptoId: string;
   image: string;
   tagline: string;
   requirements?: CampaignRequirementSpecs;
@@ -318,14 +344,17 @@ export interface Participant {
 
 export interface CampaignRequirementSpecs {
   version: string;
-  city?: string;
-  state?: string;
-  country?: string;
+  location?: LocationRequirementSpecs[];
   values?: string[];
   interests?: string[];
   ageRange?: AgeRangeRequirementSpecs;
   socialFollowing?: SocialFollowingSpecs;
   email?: boolean;
+}
+export interface LocationRequirementSpecs {
+  city?: string;
+  state?: string;
+  country?: string;
 }
 
 export interface SocialFollowingSpecs {
@@ -374,3 +403,5 @@ export interface ActionValues {
   likes: string;
   shares: string;
 }
+
+export type APIError = GraphQLError;

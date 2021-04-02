@@ -23,7 +23,7 @@ export const TransferCard: React.FC<Props> = ({ transfer }) => {
         <Typography component="div">{amount}</Typography>
       </Grid>
       <Grid item xs={6} className="list-item">
-        <Typography component="div">{currency === 'usd' ? 'USD' : 'COIIN'}</Typography>
+        <Typography component="div">{currency === 'usd' ? 'USD' : 'CRYPTO'}</Typography>
       </Grid>
       <Grid item xs={3} className="list-item">
         <Typography component="div">{friendlyTimeStamp}</Typography>

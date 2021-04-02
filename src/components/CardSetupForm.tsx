@@ -4,13 +4,16 @@ import { CardSection } from './CardSection';
 import { useMutation } from '@apollo/client';
 import { AddPaymentMethod } from '../types';
 import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
-import { Button, Grid } from '@material-ui/core';
+import { Button, Dialog, DialogContent, DialogTitle, Grid } from '@material-ui/core';
+import { reloadWindow } from '../helpers/utils';
 
 interface Props {
+  callback: () => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean;
 }
 
-export const CardSetupForm: React.FC<Props> = ({ setOpen }) => {
+export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
   const [addPaymentMethod] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD);
   const stripe = useStripe();
   const elements = useElements();
@@ -37,9 +40,11 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen }) => {
         // Display result.error.message in your UI.
       } else {
         console.log('successfully added payment method');
+        reloadWindow();
         // The setup has succeeded. Display a success message and send
         // result.setupIntent.payment_method to your server to save the
         // card to a Customer
+        await callback();
       }
     } else {
       console.log('error: ', errors);
@@ -48,24 +53,29 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Grid container justify={'center'} direction={'column'}>
-        <Grid item>
-          <CardSection />
-        </Grid>
-      </Grid>
-      <Grid container item justify={'center'} spacing={2} style={{ marginTop: '25px' }}>
-        <Grid item>
-          <Button variant={'contained'} color={'primary'} type={'submit'}>
-            Submit
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button variant={'contained'} color={'primary'} onClick={handleClose}>
-            Cancel
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+    <Dialog open={open}>
+      <DialogTitle>Add Credit Card</DialogTitle>
+      <DialogContent>
+        <form onSubmit={handleSubmit}>
+          <Grid container justify={'center'} direction={'column'}>
+            <Grid item className="add-card-section">
+              <CardSection />
+            </Grid>
+          </Grid>
+          <Grid container item justify={'center'} spacing={2} style={{ marginTop: '25px' }}>
+            <Grid item>
+              <Button variant={'contained'} color={'primary'} type={'submit'}>
+                Submit
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant={'contained'} color={'primary'} onClick={handleClose}>
+                Cancel
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };

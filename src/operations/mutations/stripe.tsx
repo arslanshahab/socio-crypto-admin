@@ -15,3 +15,9 @@ export const CHARGE_PAYMENT_METHOD = gql`
     }
   }
 `;
+
+export const REMOVE_PAYMENT_METHOD = gql`
+  mutation removePaymentMethod($paymentMethodId: String!) {
+    removePaymentMethod(paymentMethodId: $paymentMethodId)
+  }
+`;
