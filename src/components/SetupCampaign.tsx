@@ -151,13 +151,14 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                     <Fade triggerOnce>
                       <FormControl variant={'outlined'} fullWidth>
                         <InputLabel>Select Token</InputLabel>
-                        <Select value={campaign.crypto}>
+                        <Select value={campaign.config.cryptoSymbol?.toUpperCase()}>
                           {loading ? (
                             <div />
                           ) : data && data.getFundingWallet.currency.filter(hasValue).length ? (
                             data.getFundingWallet.currency.filter(hasValue).map((crypto, index) => {
                               return (
                                 <MenuItem
+                                  alignItems="flex-start"
                                   value={crypto.type.toUpperCase()}
                                   onClick={() => {
                                     handleCampaignChange('cryptoSymbol', crypto.type);

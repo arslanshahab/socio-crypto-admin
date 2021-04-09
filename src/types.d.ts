@@ -252,6 +252,7 @@ export interface CampaignConfig {
   numOfTiers: number;
   initialTotal: string;
   type: string;
+  cryptoSymbol?: string;
   rafflePrizeName?: string;
   rafflePrizeAffiliateLink?: string;
   raffleImage?: string;
