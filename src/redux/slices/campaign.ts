@@ -30,6 +30,7 @@ const initialState: CampaignState = {
   config: {
     type: 'crypto',
     numOfSuggestedPosts: 2,
+    cryptoSymbol: '',
     numOfTiers: 3,
     initialTotal: '',
     budget: '',
@@ -110,6 +111,10 @@ const campaignSlice = createSlice({
               ...state['algorithm']['tiers'][tier],
               ...tierUpdate,
             };
+            for (let index = 0; index < Object.keys(state['algorithm']['tiers']).length; index++) {
+              const element = Object.keys(state['algorithm']['tiers'])[index];
+              if (element > tier) delete state['algorithm']['tiers'][element];
+            }
           }
           break;
         case 'reset':

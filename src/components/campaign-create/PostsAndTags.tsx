@@ -58,7 +58,7 @@ export const PostsAndTags: React.FC = () => {
       if (i == campaign.suggestedTags.length - 1) {
         tagString += `${item}`;
       } else {
-        tagString += `${item},`;
+        tagString += `${item}, `;
       }
     });
     return tagString;
@@ -71,10 +71,10 @@ export const PostsAndTags: React.FC = () => {
           <Grid item className="form-item" xs={12} spacing={2}>
             <TextField
               fullWidth
-              label={'Suggested Tags (comma separated w/o hashtags)'}
+              label={'Suggested Tags - Comma Separated With Hashtags'}
               name={'suggestedTags'}
               value={getTagValue()}
-              placeholder={'Suggested tags'}
+              placeholder={'#raiinmaker, #coiin'}
               onChange={handleTagsChange}
               variant="outlined"
               className="text-field"
