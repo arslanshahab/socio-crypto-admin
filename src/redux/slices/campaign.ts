@@ -104,7 +104,7 @@ const campaignSlice = createSlice({
         case 'image':
           state['image'] = value;
           break;
-        case 'algoTiers':
+        case 'algoTiersCount':
           if (tier) {
             const tierUpdate = { [key]: value };
             state['algorithm']['tiers'][tier] = {
@@ -113,8 +113,21 @@ const campaignSlice = createSlice({
             };
             for (let index = 0; index < Object.keys(state['algorithm']['tiers']).length; index++) {
               const element = Object.keys(state['algorithm']['tiers'])[index];
+              console.log('element');
+              console.log(element);
+              console.log('tier');
+              console.log(tier);
               if (element > tier) delete state['algorithm']['tiers'][element];
             }
+          }
+          break;
+        case 'algoTiers':
+          if (tier) {
+            const tierUpdate = { [key]: value };
+            state['algorithm']['tiers'][tier] = {
+              ...state['algorithm']['tiers'][tier],
+              ...tierUpdate,
+            };
           }
           break;
         case 'reset':

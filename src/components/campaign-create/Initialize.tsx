@@ -64,10 +64,10 @@ export const Initialize: React.FC<Props> = (props) => {
       }
     }
     if (event.target.name === 'initialTotal') {
-      dispatch(updateCampaignState({ cat: 'algoTiers', tier: '1', key: 'threshold', val: '0' }));
+      dispatch(updateCampaignState({ cat: 'algoTiersCount', tier: '1', key: 'threshold', val: '0' }));
       dispatch(
         updateCampaignState({
-          cat: 'algoTiers',
+          cat: 'algoTiersCount',
           tier: '1',
           key: 'totalCoiins',
           val: props.campaignType === 'raffle' ? '0' : event.target.value,
@@ -199,7 +199,7 @@ export const Initialize: React.FC<Props> = (props) => {
                     handleConfigChange(e);
                     dispatch(
                       updateCampaignState({
-                        cat: 'algoTiers',
+                        cat: 'algoTiersCount',
                         tier: campaign.config.numOfTiers.toString(),
                         key: 'totalCoiins',
                         val: '',
@@ -207,7 +207,7 @@ export const Initialize: React.FC<Props> = (props) => {
                     );
                     dispatch(
                       updateCampaignState({
-                        cat: 'algoTiers',
+                        cat: 'algoTiersCount',
                         tier: e.target.value,
                         key: 'totalCoiins',
                         val: campaign.config.coiinBudget,
