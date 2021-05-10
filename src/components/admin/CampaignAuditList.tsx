@@ -1,24 +1,42 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
 import { useHistory } from 'react-router';
-import { CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 
 export const CampaignAuditList: React.FC = () => {
   const history = useHistory();
-  const { loading, data, error } = useQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
+  const [loaded, setLoaded] = useState(false);
+  const [skip, setSkip] = useState(0);
+  const [campaigns, setCampaigns] = useState<any>([]);
+  const [getCampaigns, { loading, data, error }] = useLazyQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
       open: false,
       scoped: true,
       approved: true,
+      skip: skip,
+      take: 10,
+      pendingAudit: true,
     },
   });
 
+  const loadData = async (skip: number) => {
+    try {
+      await getCampaigns();
+      setCampaigns([...campaigns]);
+      await setSkip(skip);
+    } catch (e) {
+      console.log('Error: Load Data Error');
+      console.log(e);
+    }
+    await setLoaded(true);
+  };
   const handleClick = (data: any) => {
     history.push('/dashboard/admin/campaign-audit', { data: data });
   };
 
   const renderManageWithdrawals = () => {
+    if (!loaded) loadData(skip);
     if (loading)
       return (
         <div>
@@ -55,9 +73,33 @@ export const CampaignAuditList: React.FC = () => {
               </div>
             );
           })}
+          {skip != 0 ? (
+            <Button
+              onClick={async () => {
+                await loadData(skip - 10);
+              }}
+            >
+              <p>Previous</p>
+            </Button>
+          ) : (
+            <></>
+          )}
+          {skip + data.listCampaigns.results.length != data.listCampaigns.total ? (
+            <Button
+              onClick={async () => {
+                await loadData(skip + 10);
+              }}
+            >
+              <p>Next</p>
+            </Button>
+          ) : (
+            <></>
+          )}
         </div>
       );
     }
   };
+  console.log('data');
+  console.log(data);
   return <div>{renderManageWithdrawals()}</div>;
 };
