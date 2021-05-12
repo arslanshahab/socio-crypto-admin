@@ -99,7 +99,5 @@ export const CampaignAuditList: React.FC = () => {
       );
     }
   };
-  console.log('data');
-  console.log(data);
   return <div>{renderManageWithdrawals()}</div>;
 };
