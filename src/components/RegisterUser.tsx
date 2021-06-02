@@ -53,7 +53,6 @@ export const RegisterUser: React.FC<Props> = ({ open, setOpen }) => {
   };
 
   const handleSubmit = async (event: any) => {
-    event?.preventDefault();
     try {
       await newUser();
       if (error) throw new Error(`user registration error: ${error}`);

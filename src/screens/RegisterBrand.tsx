@@ -37,7 +37,6 @@ export const RegisterBrand: React.FC<Props> = ({ open, setOpen }) => {
   };
 
   const handleSubmit = async (event: any) => {
-    event?.preventDefault();
     try {
       await newOrg();
       if (error) throw new Error('Registration Error');
