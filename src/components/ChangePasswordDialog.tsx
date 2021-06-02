@@ -18,7 +18,6 @@ export const ChangePasswordDialog: React.FC<Props> = ({ open, setOpen, email }) 
     setPassword(event.target.value);
   };
   const handleSubmit = async (event: any) => {
-    event?.preventDefault();
     const { status } = await changePassword(password);
     if (status === 200) {
       await fireClient.auth().signInWithEmailAndPassword(email, password);
