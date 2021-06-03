@@ -15,8 +15,7 @@ import {
 import { useMutation } from '@apollo/client';
 import { ListSupportedCryptoResults } from '../types';
 import { ADD_CRYPTO_TO_WALLET, REGISTER_CRYPTO } from '../operations/mutations/crypto';
-import { capitalize } from '../helpers';
-import { reloadWindow } from '../helpers/utils';
+import { capitalize } from '../helpers/formatter';
 import { RefetchWallet } from './PaymentsAccount';
 import { ToastContainer, toast } from 'react-toastify';
 

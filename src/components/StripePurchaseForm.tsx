@@ -3,9 +3,8 @@ import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typ
 import { useMutation, useQuery } from '@apollo/client';
 import { ChargePaymentMethodResults, ChargePaymentMethodVars, ListPaymentMethodsResults } from '../types';
 import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
-import { capitalize } from '../helpers';
+import { capitalize } from '../helpers/formatter';
 import { CHARGE_PAYMENT_METHOD } from '../operations/mutations/stripe';
-import { RefetchWallet } from './PaymentsAccount';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;

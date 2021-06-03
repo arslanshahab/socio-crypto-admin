@@ -21,7 +21,7 @@ import { NewCampaign } from '../components/campaign-create/NewCampaign';
 import { Link, useHistory } from 'react-router-dom';
 import { MarketData } from '../components/MarketData';
 import { DashboardHome } from '../components/DashboardHome';
-import { ReactComponent as RaiinmakerLogo } from '../assets/svg/logo.svg';
+import RaiinmakerLogo from '../assets/svg/logo.svg';
 import StoreIcon from '@material-ui/icons/Store';
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -150,7 +150,7 @@ export const Dashboard: React.FC = (props) => {
                   <MenuIcon />
                 </IconButton>
                 <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'white', width: '40px' }}>
-                  <RaiinmakerLogo></RaiinmakerLogo>
+                  <img src={RaiinmakerLogo} alt="raiinmaker" />
                 </Link>
                 <Grid container direction={'row'} justify={'flex-end'}>
                   <Grid item>

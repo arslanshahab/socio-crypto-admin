@@ -87,14 +87,7 @@ export const Algorithm: React.FC = () => {
         overlayClassName="requirement-modal-overlay"
       >
         <div className="modal-content">
-          <p className="big-title">Beta Terms of Service and Brand Agreement</p>
-          <p className="copy">
-            THIS IS A BETA TEST. THIS BETA TEST MAY CONTAIN ONE OR MORE BETA SERVICES (THE &quot;SERVICES&quot;)
-            PROVIDED BY COIIN, LLC. (&quot;COIIN,&quot; &quot;RAIINMAKER,&quot; &quot;WE,&quot; OR &quot;US&quot;).
-            RAIINMAKER’S BETA TERMS OF SERVICE (&quot;TERMS&quot;) APPLY TO YOUR ACCESS TO AND USE OF THE SERVICES. BY
-            AGREEING TO PARTICIPATE IN THE BETA TEST YOU UNDERSTAND THAT IT MAY BE CANCELED AT ANY TIME FOR ANY OR NO
-            REASON, IN OUR SOLE DISCRETION, WITHOUT ADVANCE NOTICE OR LIABILITY TO COIIN.
-          </p>
+          <p className="big-title">Terms of Service and Brand Agreement</p>
 
           <p className="big-title">About the Program</p>
           <p className="title">Membership Eligibility</p>

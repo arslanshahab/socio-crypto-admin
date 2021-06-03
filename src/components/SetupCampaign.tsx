@@ -13,7 +13,7 @@ import { RootState } from '../redux/reducer';
 import { useQuery } from '@apollo/client';
 import { GetFundingWalletResponse } from '../types';
 import { GET_FUNDING_WALLET } from '../operations/queries/fundingWallet';
-import { capitalize } from '../helpers';
+import { capitalize } from '../helpers/formatter';
 import { handleImage } from '../helpers/utils';
 import { useHistory } from 'react-router';
 
