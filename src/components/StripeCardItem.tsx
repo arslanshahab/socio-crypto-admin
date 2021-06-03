@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { StripeWallet } from '../types';
-import { capitalize } from '../helpers';
+import { capitalize } from '../helpers/formatter';
 import { useMutation } from '@apollo/client';
 import { REMOVE_PAYMENT_METHOD } from '../operations/mutations/stripe';
 

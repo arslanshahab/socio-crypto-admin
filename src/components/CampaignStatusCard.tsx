@@ -11,7 +11,7 @@ import {
   DialogActions,
 } from '@material-ui/core';
 import { PurchaseDialog } from './PurchaseDialog';
-import { capitalize } from '../helpers';
+import { capitalize } from '../helpers/formatter';
 import { coldWallet } from './PaymentsAccount';
 
 interface Props {

@@ -163,7 +163,7 @@ export const Initialize: React.FC<Props> = (props) => {
               </Grid>
               <Grid container item xs={6}>
                 <TextField
-                  label={'Landing Page Video URL'}
+                  label={'Landing Page Video URL (Optional)'}
                   name={'targetVideo'}
                   placeholder={'Video URL (Optional)'}
                   margin={'normal'}
@@ -220,7 +220,7 @@ export const Initialize: React.FC<Props> = (props) => {
               </Grid>
               <Grid container item xs={6} spacing={0}>
                 <TextField
-                  label={'How many Templates would you like to provide? (1-5)'}
+                  label={'How many Posting Templates would you like to provide? (1-5)'}
                   name={'numOfSuggestedPosts'}
                   placeholder={'2'}
                   margin={'normal'}
