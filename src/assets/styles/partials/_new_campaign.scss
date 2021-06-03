@@ -1,4 +1,4 @@
-.campaign-created-container{
+.campaign-created-container {
   width: 100%;
   min-height: 80vh;
   display: flex;
@@ -6,44 +6,41 @@
   align-items: center;
   justify-content: center;
 
-  .campaign-created-text{
+  .campaign-created-text {
     font-size: 24px;
   }
-  .created-loading-icon{
+  .created-loading-icon {
     margin-top: 20px;
   }
 }
 
 .new-campaign {
-  max-width:1000px;
+  max-width: 1000px;
   margin: auto;
 
   .new-campaign-button {
     margin: 20px;
   }
-
 }
 
-
-.campaign-type-form{
-  min-width : 100% !important;
+.campaign-type-form {
+  min-width: 100% !important;
   padding: 10px;
 }
 
-
-.inline{
- display: inline-block;
+.inline {
+  display: inline-block;
 }
-.third-width{
+.third-width {
   width: 33.333%;
 }
-.half-width{
+.half-width {
   width: 50%;
 }
-.center-text{
+.center-text {
   text-align: center;
 }
-.campaign-type-square{
+.campaign-type-square {
   padding: 50px 10px;
   margin: 10px;
   width: calc(50% - 20px);
@@ -51,7 +48,7 @@
   background-color: #efefef;
 }
 
-.campaign-funding-square{
+.campaign-funding-square {
   padding: 50px 10px;
   margin: 10px;
   width: calc(50% - 20px);
@@ -59,61 +56,60 @@
   background-color: #efefef;
 }
 
-.budget-input-container{
+.budget-input-container {
   width: 100%;
   padding: 10px;
 }
 
-.budget-container{
+.budget-container {
   margin: 10px;
   text-align: center;
-  .coiin-svg{
+  .coiin-svg {
     max-height: 21px;
   }
-  svg{
+  svg {
     max-width: 20px;
     max-height: 20px;
   }
 }
-.setup-container{
+.setup-container {
   padding: 25px 0;
-  margin:  10px;
+  margin: 10px;
 }
-    .selected-item{
-      background-color:  $primary;
-      p{
-        color: white;
-      }
-    }
-.setup-campaign-question{
+.selected-item {
+  background-color: $primary;
+  p {
+    color: white;
+  }
+}
+.setup-campaign-question {
   font-size: 24px;
-
 }
 
-.white{
+.white {
   color: white;
 }
 
-.black{
+.black {
   color: black;
 }
 
-.setup-campaign{
-          font-size: 16px;
-          padding: 10px 0;
+.setup-campaign {
+  font-size: 16px;
+  padding: 10px 0;
 }
-.text-card{
+.text-card {
   background-color: #efefef;
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
   text-align: center;
-  p{
+  p {
     font-size: 14px;
   }
 }
 
-.no-top-margin{
+.no-top-margin {
   // margin-top: 0;
   margin-top: 0 !important;
 }

@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import { Box, Grid, TextField, Tooltip } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { ReactSVG } from 'react-svg';
 import { Fade } from 'react-awesome-reveal';
 import { ToastContainer, toast } from 'react-toastify';
+import InfoIcon from '@material-ui/icons/Info';
 
 import icon from '../../assets/svg/camera.svg';
 import { handleImage } from '../../helpers/utils';
@@ -126,9 +127,21 @@ export const Initialize: React.FC<Props> = (props) => {
               id="single"
               onChange={(e) => handleImage(e, dispatch, 'campaign-image')}
             />
-            <p className="margin-bottom center-text setup-campaign-question">
-              {campaign.image ? 'Update Campaign Image' : 'Add Campaign Image'}
-            </p>
+            <Box
+              className="margin-bottom"
+              minWidth="100%"
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <p className="center-text setup-campaign-question">
+                {campaign.image ? 'Update Campaign Image' : 'Add Campaign Image'}
+              </p>
+              <Tooltip placement="top" title="Please provide an image size of 1200px X 675px or aspect ratio of 16:9">
+                <InfoIcon className="tooltipIcon" />
+              </Tooltip>
+            </Box>
           </div>
           <div className="margin-bottom">
             <Grid container justify={'center'}>
