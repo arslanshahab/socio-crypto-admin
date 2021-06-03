@@ -62,7 +62,9 @@ export const Login: React.FC = () => {
       >
         <Grid className="form-container">
           <Paper className="login-form">
-            <div className="padding-bottom">{/* <RaiinmakerLogo className="login-logo"></RaiinmakerLogo> */}</div>
+            <div className="padding-bottom">
+              <RaiinmakerLogo className="login-logo"></RaiinmakerLogo>
+            </div>
             <form>
               <Grid container item xs={12} spacing={0} className="padding-bottom">
                 <TextField
