@@ -45,6 +45,7 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
     }
     return cryptoList;
   };
+
   return (
     <div>
       <CryptoDialog
