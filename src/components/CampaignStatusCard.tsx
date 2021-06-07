@@ -12,14 +12,15 @@ import {
 } from '@material-ui/core';
 import { PurchaseDialog } from './PurchaseDialog';
 import { capitalize } from '../helpers/formatter';
-import { coldWallet } from './PaymentsAccount';
+import { coldWallet, RefetchWallet } from './PaymentsAccount';
 
 interface Props {
   campaign: Campaign;
   fundingWallet: GetFundingWalletResponse | undefined;
+  refetchWallet: RefetchWallet;
 }
 
-export const CampaignStatusCard: React.FC<Props> = ({ campaign, fundingWallet }) => {
+export const CampaignStatusCard: React.FC<Props> = ({ campaign, fundingWallet, refetchWallet }) => {
   const [open, setOpen] = useState(false);
   const [balance, setBalance] = useState(0);
   const [isCoiin, setIsCoiin] = useState(false);
@@ -36,7 +37,13 @@ export const CampaignStatusCard: React.FC<Props> = ({ campaign, fundingWallet })
 
   return (
     <div>
-      <PurchaseDialog open={isCoiin} setOpen={setIsCoiin} balance={balance} amount={Number(campaign.coiinTotal)} />
+      <PurchaseDialog
+        open={isCoiin}
+        setOpen={setIsCoiin}
+        balance={balance}
+        amount={Number(campaign.coiinTotal)}
+        refetchWallet={refetchWallet}
+      />
       <Dialog open={open}>
         <DialogTitle>Refill Funding Wallet</DialogTitle>
         <DialogContent>
