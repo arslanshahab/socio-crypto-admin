@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
 import { FundingWallet } from './FundingWallet';
 import { TransactionHistory } from './TransactionHistory';
@@ -46,10 +46,10 @@ export const PaymentsAccount: React.FC = () => {
           <FundingWallet data={fundingWallet} isLoading={loading} refetchWallet={refetch} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <CampaignStatusList fundingWallet={fundingWallet} />
+          <CampaignStatusList fundingWallet={fundingWallet} refetchWallet={refetch} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <TransactionHistory data={fundingWallet} isLoading={loading} />
+          <TransactionHistory data={fundingWallet} isLoading={loading} refetchWallet={refetch} />
         </TabPanel>
       </Paper>
     </div>

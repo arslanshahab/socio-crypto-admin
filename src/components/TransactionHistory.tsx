@@ -2,10 +2,12 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { TransferCard } from './TransferCard';
 import { GetFundingWalletResponse } from '../types';
+import { RefetchWallet } from './PaymentsAccount';
 
 interface Props {
   data: GetFundingWalletResponse | undefined;
   isLoading: boolean;
+  refetchWallet: RefetchWallet;
 }
 
 export const TransactionHistory: React.FC<Props> = ({ data, isLoading }) => {

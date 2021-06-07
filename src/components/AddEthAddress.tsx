@@ -20,13 +20,18 @@ export const AddEthAddress: React.FC<Props> = ({ setOpen, open }) => {
   };
   const handleAttachWallet = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await attachWallet({ variables: { ethereumAddress: address } });
-    handleClose();
+    try {
+      await attachWallet({ variables: { ethereumAddress: address } });
+      handleClose();
+    } catch (e) {
+      console.log(e);
+    }
   };
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.persist();
     setAddress(e.target.value);
   };
+
   return (
     <Dialog open={open}>
       <DialogTitle>Add ETH Address</DialogTitle>
