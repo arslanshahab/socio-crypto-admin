@@ -5,7 +5,8 @@ import { useMutation } from '@apollo/client';
 import { DELETE_CRYPTO_FROM_WALLET } from '../operations/mutations/crypto';
 import { RefetchWallet } from './PaymentsAccount';
 import { formatFloat } from '../helpers/formatter';
-// import icons from 'base64-cryptocurrency-icons';
+// @ts-ignore
+import getImage from 'cryptoicons-cdn';
 
 interface Props {
   id: string;
@@ -22,15 +23,17 @@ export const CryptoItem: React.FC<Props> = ({ name, balance, id, refetchWallet }
     await refetchWallet();
   };
 
+  console.log(getImage('murad'));
+
   const generateIcon = (type: string): string => {
-    return icons[type]?.icon || icons['ETH']?.icon || '';
+    return getImage(type).toLowerCase().includes('unknown') ? getImage('ETH') : getImage(type);
   };
 
   return (
     <Grid container item direction={'row'} className="list-row">
       <Grid item xs={4} className="list-item">
         <Box className="coinTitle" display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
-          {/* <img src={generateIcon(name)} alt="raiinmaker" className="coinIcon" /> */}
+          <img src={generateIcon(name)} alt="raiinmaker" className="coinIcon" />
           <Typography>{name.toUpperCase()}</Typography>
         </Box>
       </Grid>
