@@ -24,6 +24,14 @@ export const SUBMIT_AUDIT_REPORT = gql`
   }
 `;
 
+export const DELETE_CAMPAIGN = gql`
+  mutation DeleteCampaign($id: String!) {
+    deleteCampaign(id: $id) {
+      id
+    }
+  }
+`;
+
 export const UPDATE_WITHDRAWAL_STATUS = gql`
   mutation UpdateWithdrawalStatuses($transferIds: [String]!, $status: String!) {
     updateWithdrawStatus(transferIds: $transferIds, status: $status) {
