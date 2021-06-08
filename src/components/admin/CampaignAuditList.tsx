@@ -3,6 +3,7 @@ import { useLazyQuery } from '@apollo/client';
 import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
 import { useHistory } from 'react-router';
 import { Button, CircularProgress } from '@material-ui/core';
+import { Campaign } from '../../types.d';
 
 interface Props {
   location?: {
@@ -16,7 +17,7 @@ export const CampaignAuditList: React.FC<Props> = ({ location }) => {
   const history = useHistory();
   const [loaded, setLoaded] = useState(false);
   const [skip, setSkip] = useState(0);
-  const [campaigns, setCampaigns] = useState<any>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [getCampaigns, { loading, data, refetch }] = useLazyQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
       open: false,
@@ -50,7 +51,7 @@ export const CampaignAuditList: React.FC<Props> = ({ location }) => {
     }
   };
 
-  useEffect(reloadList, [location]);
+  useEffect(reloadList, [location, refetch]);
 
   const renderManageWithdrawals = () => {
     if (!loaded) loadData(skip);
