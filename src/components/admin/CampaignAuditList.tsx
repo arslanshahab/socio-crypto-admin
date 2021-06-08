@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
 import { useHistory } from 'react-router';
 import { Button, CircularProgress } from '@material-ui/core';
-import { Campaign } from '../../types.d';
 
 interface Props {
   location?: {
     state: {
       reload: boolean;
+      deletedCampaignId: string;
     };
   };
 }
 
-export const CampaignAuditList: React.FC<Props> = ({ location }) => {
+export const CampaignAuditList: React.FC<Props> = () => {
   const history = useHistory();
   const [loaded, setLoaded] = useState(false);
   const [skip, setSkip] = useState(0);
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [getCampaigns, { loading, data, refetch }] = useLazyQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
+  const [getCampaigns, { loading, data }] = useLazyQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
       open: false,
       scoped: true,
@@ -27,12 +26,12 @@ export const CampaignAuditList: React.FC<Props> = ({ location }) => {
       take: 10,
       pendingAudit: true,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const loadData = async (skip: number) => {
     try {
       await getCampaigns();
-      setCampaigns([...campaigns]);
       await setSkip(skip);
     } catch (e) {
       console.log('Error: Load Data Error');
@@ -44,14 +43,6 @@ export const CampaignAuditList: React.FC<Props> = ({ location }) => {
   const handleClick = (data: any) => {
     history.push('/dashboard/admin/campaign-audit', { data: data });
   };
-
-  const reloadList = () => {
-    if (location && location.state && location.state && location.state.reload && refetch) {
-      refetch();
-    }
-  };
-
-  useEffect(reloadList, [location, refetch]);
 
   const renderManageWithdrawals = () => {
     if (!loaded) loadData(skip);
