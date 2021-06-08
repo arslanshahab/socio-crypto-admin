@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_CAMPAIGN_REPORT, DELETE_CAMPAIGN, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
 import { Box, Button, CircularProgress } from '@material-ui/core';
 import { FlaggedParticipant } from './FlaggedParticipant';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   location?: {
@@ -24,6 +25,7 @@ export const CampaignAudit: React.FC<Props> = ({ location }) => {
     loaded: false,
     rejected: [],
   });
+  const history = useHistory();
 
   const [generateReport, { data }] = useMutation(CREATE_CAMPAIGN_REPORT, {
     variables: {
@@ -38,7 +40,7 @@ export const CampaignAudit: React.FC<Props> = ({ location }) => {
     },
   });
 
-  const [deleteCampaign] = useMutation(DELETE_CAMPAIGN, {
+  const [deleteCampaign, { data: deletedCampaign }] = useMutation(DELETE_CAMPAIGN, {
     variables: {
       id: location ? location.state.data.id : '',
     },
@@ -46,14 +48,6 @@ export const CampaignAudit: React.FC<Props> = ({ location }) => {
 
   const handleSubmit = async () => {
     await submitReport();
-  };
-
-  const rejectCampaign = () => {
-    try {
-      deleteCampaign();
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   const loadData = async () => {
@@ -72,6 +66,12 @@ export const CampaignAudit: React.FC<Props> = ({ location }) => {
     }
     setState({ ...state, rejected: temp });
   };
+
+  useEffect(() => {
+    if (deletedCampaign) {
+      history.push('/dashboard/admin/audit-campaigns', { reload: true });
+    }
+  }, [deletedCampaign]);
 
   const renderAudit = () => {
     if (!state.loaded) {
@@ -125,7 +125,7 @@ export const CampaignAudit: React.FC<Props> = ({ location }) => {
             <Button className="customButton submitButton" onClick={handleSubmit}>{`${
               state.rejected.length ? `Submit Audit, Rejecting ${state.rejected.length} Participants ` : 'Submit Audit'
             } `}</Button>
-            <Button className="customButton deleteButton" onClick={rejectCampaign}>
+            <Button className="customButton deleteButton" onClick={() => deleteCampaign()}>
               Reject Campaign
             </Button>
           </Box>
