@@ -69,7 +69,7 @@ export const CampaignAudit: React.FC<Props> = ({ location }) => {
 
   useEffect(() => {
     if (deletedCampaign) {
-      history.push('/dashboard/admin/audit-campaigns', { reload: true, deletedCampaignId: location?.state?.data?.id });
+      history.push('/dashboard/admin/audit-campaigns');
     }
   }, [deletedCampaign]);
 
