@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
-import { useQuery } from '@apollo/client';
+import { useQuery, ApolloQueryResult } from '@apollo/client';
 import { ListWalletResponse } from '../types';
 import { LIST_EXTERNAL_ADDRESSES } from '../operations/queries/ethereum';
 import { AddressCard } from './AddressCard';
 import AddIcon from '@material-ui/icons/Add';
 import { AddEthAddress } from './AddEthAddress';
 
+export type RefetchExternalAddresses = (
+  variables?: Partial<Record<string, any>> | undefined,
+) => Promise<ApolloQueryResult<ListWalletResponse>>;
+
 export const AddressList: React.FC = () => {
-  const { loading, data } = useQuery<ListWalletResponse>(LIST_EXTERNAL_ADDRESSES);
+  const { loading, data, refetch } = useQuery<ListWalletResponse>(LIST_EXTERNAL_ADDRESSES);
   const [addAddress, setAddAddress] = useState(false);
 
   const renderUnclaimedAddresses = () => {
@@ -51,7 +55,7 @@ export const AddressList: React.FC = () => {
 
   return (
     <div>
-      <AddEthAddress setOpen={setAddAddress} open={addAddress} />
+      <AddEthAddress setOpen={setAddAddress} open={addAddress} refetchExternalAddresses={refetch} />
       <Grid item container className="list-header" direction={'column'}>
         <Grid item>
           <Typography component={'div'} variant={'h5'}>
