@@ -6,7 +6,6 @@ import { CryptoList } from './CryptoList';
 import { GetFundingWalletResponse } from '../types';
 import { CryptoDialog } from './CryptoDialog';
 import { PurchaseDialog } from './PurchaseDialog';
-import { ApolloQueryResult } from '@apollo/client';
 import { RefetchWallet } from './PaymentsAccount';
 
 interface Props {
@@ -21,7 +20,7 @@ export const FundingWallet: React.FC<Props> = ({ data, isLoading, refetchWallet 
 
   return (
     <Grid container direction={'column'}>
-      <PurchaseDialog open={purchaseCoiin} setOpen={setPurchaseCoiin} />
+      <PurchaseDialog open={purchaseCoiin} setOpen={setPurchaseCoiin} refetchWallet={refetchWallet} />
       <CryptoDialog
         isTokenRegistration={true}
         open={openDialog}

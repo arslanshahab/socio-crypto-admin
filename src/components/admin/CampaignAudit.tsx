@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { CREATE_CAMPAIGN_REPORT, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
-import { CircularProgress } from '@material-ui/core';
+import { CREATE_CAMPAIGN_REPORT, DELETE_CAMPAIGN, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
+import { Box, Button, CircularProgress } from '@material-ui/core';
 import { FlaggedParticipant } from './FlaggedParticipant';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   location?: {
@@ -15,7 +16,7 @@ interface Props {
   };
 }
 
-export const CampaignAudit: React.FC<Props> = (props) => {
+export const CampaignAudit: React.FC<Props> = ({ location }) => {
   interface StateInterface {
     loaded: boolean;
     rejected: string[];
@@ -24,15 +25,24 @@ export const CampaignAudit: React.FC<Props> = (props) => {
     loaded: false,
     rejected: [],
   });
+  const history = useHistory();
+
   const [generateReport, { data }] = useMutation(CREATE_CAMPAIGN_REPORT, {
     variables: {
-      campaignId: props.location ? props.location.state.data.id : '',
+      campaignId: location ? location.state.data.id : '',
     },
   });
-  const [submitReport, { data: submitReportData }] = useMutation(SUBMIT_AUDIT_REPORT, {
+
+  const [submitReport] = useMutation(SUBMIT_AUDIT_REPORT, {
     variables: {
-      campaignId: props.location ? props.location.state.data.id : '',
+      campaignId: location ? location.state.data.id : '',
       rejected: state.rejected,
+    },
+  });
+
+  const [deleteCampaign, { data: deletedCampaign }] = useMutation(DELETE_CAMPAIGN, {
+    variables: {
+      id: location ? location.state.data.id : '',
     },
   });
 
@@ -57,11 +67,18 @@ export const CampaignAudit: React.FC<Props> = (props) => {
     setState({ ...state, rejected: temp });
   };
 
+  useEffect(() => {
+    if (deletedCampaign) {
+      history.push('/dashboard/admin/audit-campaigns');
+    }
+  }, [deletedCampaign]);
+
   const renderAudit = () => {
     if (!state.loaded) {
       loadData();
       return <CircularProgress />;
     }
+
     if (data) {
       return (
         <div>
@@ -97,15 +114,21 @@ export const CampaignAudit: React.FC<Props> = (props) => {
               );
             })}
           </div>
-          <div className="submit-buttons">
-            <div className="button approve" onClick={handleSubmit}>
-              <p>{`${
-                state.rejected.length
-                  ? `Submit Audit, Rejecting ${state.rejected.length} Participants `
-                  : 'Submit Audit'
-              } `}</p>
-            </div>
-          </div>
+          <Box
+            marginTop={2}
+            minWidth="100%"
+            display="flex"
+            flexDirection="row"
+            justifyContent="flex-start"
+            alignItems="center"
+          >
+            <Button className="customButton submitButton" onClick={handleSubmit}>{`${
+              state.rejected.length ? `Submit Audit, Rejecting ${state.rejected.length} Participants ` : 'Submit Audit'
+            } `}</Button>
+            <Button className="customButton deleteButton" onClick={() => deleteCampaign()}>
+              Reject Campaign
+            </Button>
+          </Box>
         </div>
       );
     }

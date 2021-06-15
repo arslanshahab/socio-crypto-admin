@@ -5,12 +5,14 @@ import { LIST_CAMPAIGNS } from '../operations/queries/campaign';
 import { Grid, Typography } from '@material-ui/core';
 import { CampaignStatusCard } from './CampaignStatusCard';
 import { PurchaseDialog } from './PurchaseDialog';
+import { RefetchWallet } from './PaymentsAccount';
 
 interface Props {
   fundingWallet: GetFundingWalletResponse | undefined;
+  refetchWallet: RefetchWallet;
 }
 
-export const CampaignStatusList: React.FC<Props> = ({ fundingWallet }) => {
+export const CampaignStatusList: React.FC<Props> = ({ fundingWallet, refetchWallet }) => {
   const { loading, data: campaigns } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
     variables: {
       scoped: true,
@@ -28,7 +30,14 @@ export const CampaignStatusList: React.FC<Props> = ({ fundingWallet }) => {
       return <div />;
     } else if (campaigns && campaigns.listCampaigns) {
       campaignList = campaigns.listCampaigns.results.map((campaign, index) => {
-        return <CampaignStatusCard key={index} campaign={campaign} fundingWallet={fundingWallet} />;
+        return (
+          <CampaignStatusCard
+            key={index}
+            campaign={campaign}
+            fundingWallet={fundingWallet}
+            refetchWallet={refetchWallet}
+          />
+        );
       });
     }
     if (campaignList.length === 0) {
@@ -47,7 +56,7 @@ export const CampaignStatusList: React.FC<Props> = ({ fundingWallet }) => {
         <div />
       ) : (
         <Grid container direction={'column'}>
-          <PurchaseDialog open={open} setOpen={setOpen} />
+          <PurchaseDialog open={open} setOpen={setOpen} refetchWallet={refetchWallet} />
           <Grid container item className="campaign-header" direction={'row'}>
             <Grid item xs={2}>
               <Typography component={'div'} variant={'h5'}>

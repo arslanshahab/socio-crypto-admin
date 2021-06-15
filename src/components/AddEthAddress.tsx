@@ -3,6 +3,7 @@ import { Button, Dialog, DialogContent, DialogTitle, Grid, TextField } from '@ma
 import { useMutation } from '@apollo/client';
 import { ClaimEthereumAddress } from '../types';
 import { ATTACH_WALLET } from '../operations/mutations/ethereum';
+import { RefetchExternalAddresses } from './AddressList';
 
 interface AttachWallet {
   ethereumAddress: string;
@@ -10,23 +11,30 @@ interface AttachWallet {
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
+  refetchExternalAddresses: RefetchExternalAddresses;
 }
 
-export const AddEthAddress: React.FC<Props> = ({ setOpen, open }) => {
-  const [attachWallet, { error }] = useMutation<ClaimEthereumAddress, AttachWallet>(ATTACH_WALLET);
+export const AddEthAddress: React.FC<Props> = ({ setOpen, open, refetchExternalAddresses }) => {
+  const [attachWallet] = useMutation<ClaimEthereumAddress, AttachWallet>(ATTACH_WALLET);
   const [address, setAddress] = useState('');
   const handleClose = () => {
     setOpen(false);
   };
   const handleAttachWallet = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await attachWallet({ variables: { ethereumAddress: address } });
-    handleClose();
+    try {
+      await attachWallet({ variables: { ethereumAddress: address } });
+      handleClose();
+      refetchExternalAddresses();
+    } catch (e) {
+      console.log(e);
+    }
   };
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.persist();
     setAddress(e.target.value);
   };
+
   return (
     <Dialog open={open}>
       <DialogTitle>Add ETH Address</DialogTitle>

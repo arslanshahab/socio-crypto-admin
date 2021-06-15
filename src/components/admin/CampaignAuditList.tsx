@@ -4,12 +4,20 @@ import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
 import { useHistory } from 'react-router';
 import { Button, CircularProgress } from '@material-ui/core';
 
-export const CampaignAuditList: React.FC = () => {
+interface Props {
+  location?: {
+    state: {
+      reload: boolean;
+      deletedCampaignId: string;
+    };
+  };
+}
+
+export const CampaignAuditList: React.FC<Props> = () => {
   const history = useHistory();
   const [loaded, setLoaded] = useState(false);
   const [skip, setSkip] = useState(0);
-  const [campaigns, setCampaigns] = useState<any>([]);
-  const [getCampaigns, { loading, data, error }] = useLazyQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
+  const [getCampaigns, { loading, data }] = useLazyQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
       open: false,
       scoped: true,
@@ -18,12 +26,12 @@ export const CampaignAuditList: React.FC = () => {
       take: 10,
       pendingAudit: true,
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const loadData = async (skip: number) => {
     try {
       await getCampaigns();
-      setCampaigns([...campaigns]);
       await setSkip(skip);
     } catch (e) {
       console.log('Error: Load Data Error');
@@ -31,6 +39,7 @@ export const CampaignAuditList: React.FC = () => {
     }
     await setLoaded(true);
   };
+
   const handleClick = (data: any) => {
     history.push('/dashboard/admin/campaign-audit', { data: data });
   };
