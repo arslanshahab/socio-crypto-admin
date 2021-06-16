@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
-import { Campaign, CampaignRequirementSpecs, NewCampaignVars, RafflePrizeStructure } from '../../types';
+import { useMutation } from '@apollo/client';
+import { Campaign, CampaignRequirementSpecs, NewCampaignVars } from '../../types';
 import { Paper, Stepper, Step, StepLabel, Button, CircularProgress } from '@material-ui/core';
 import { Initialize } from './Initialize';
 import { PostsAndTags } from './PostsAndTags';
@@ -133,7 +133,8 @@ export const NewCampaign: React.FC<Props> = (props) => {
           campaign.config.numOfSuggestedPosts &&
           campaign.config.numOfTiers &&
           campaign.target.startsWith('http') &&
-          new Date(campaign.beginDate).getTime() < new Date(campaign.endDate).getTime()
+          new Date(campaign.beginDate).getTime() < new Date(campaign.endDate).getTime() &&
+          campaign.keywords.length
         )
           validated = true;
       } else if (campaign.config.budgetType == 'raffle') {
