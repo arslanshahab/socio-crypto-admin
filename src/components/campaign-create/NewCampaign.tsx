@@ -27,7 +27,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
 
   const steps = ['Purpose and Budget', 'Campaign Information', 'Suggested Posts', 'Campaign Requirements', 'Algorithm'];
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
   const [saveCampaign, { error, loading }] = useMutation<Campaign, NewCampaignVars>(NEW_CAMPAIGN, {

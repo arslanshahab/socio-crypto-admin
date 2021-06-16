@@ -331,6 +331,7 @@ export interface CampaignState {
   requirements?: CampaignRequirementSpecs;
   suggestedPosts: string[];
   suggestedTags: string[];
+  keywords: string[];
   config: CampaignConfig;
 }
 
