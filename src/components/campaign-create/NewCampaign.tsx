@@ -27,10 +27,10 @@ export const NewCampaign: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
 
   const steps = ['Purpose and Budget', 'Campaign Information', 'Suggested Posts', 'Campaign Requirements', 'Algorithm'];
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
-  const [saveCampaign, { error, loading }] = useMutation<Campaign, NewCampaignVars>(NEW_CAMPAIGN, {
+  const [saveCampaign, { loading }] = useMutation<Campaign, NewCampaignVars>(NEW_CAMPAIGN, {
     variables: {
       name: campaign.name,
       coiinTotal: parseFloat(campaign.config.budgetType === 'raffle' ? '0' : (campaign.config.coiinBudget as string)),
@@ -49,6 +49,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       tagline: campaign.tagline,
       suggestedPosts: campaign.suggestedPosts,
       suggestedTags: campaign.suggestedTags,
+      keywords: campaign.keywords,
       type: (campaign.config.budgetType as string) || 'coiin',
       rafflePrize:
         campaign.config && campaign.config.budgetType === 'raffle'
@@ -231,10 +232,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
                   color="primary"
                   onClick={async () => {
                     try {
-                      if (!payloadReady(activeStep)) {
-                        showFormError();
-                        throw new Error('bad payload');
-                      }
                       await saveCampaign();
                       dispatch(updateCampaignState({ cat: 'config', key: 'success', val: true }));
                       setTimeout(() => {

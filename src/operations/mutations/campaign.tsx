@@ -22,6 +22,7 @@ export const NEW_CAMPAIGN = gql`
     $requirements: JSON!
     $suggestedPosts: [String]
     $suggestedTags: [String]
+    $keywords: [String]
     $type: String
     $rafflePrize: JSON
     $cryptoId: String
@@ -41,6 +42,7 @@ export const NEW_CAMPAIGN = gql`
       requirements: $requirements
       suggestedPosts: $suggestedPosts
       suggestedTags: $suggestedTags
+      keywords: $keywords
       type: $type
       rafflePrize: $rafflePrize
       cryptoId: $cryptoId

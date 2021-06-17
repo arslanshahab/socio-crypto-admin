@@ -236,6 +236,7 @@ export interface NewCampaignVars {
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+  keywords: string[];
   type: string;
   rafflePrize?: RafflePrizeStructure;
 }
