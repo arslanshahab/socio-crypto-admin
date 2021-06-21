@@ -236,6 +236,7 @@ export interface NewCampaignVars {
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+  keywords: string[];
   type: string;
   rafflePrize?: RafflePrizeStructure;
 }
@@ -331,6 +332,7 @@ export interface CampaignState {
   requirements?: CampaignRequirementSpecs;
   suggestedPosts: string[];
   suggestedTags: string[];
+  keywords: string[];
   config: CampaignConfig;
 }
 

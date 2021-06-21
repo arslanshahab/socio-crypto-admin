@@ -27,6 +27,7 @@ const initialState: CampaignState = {
   tagline: '',
   suggestedPosts: [],
   suggestedTags: [],
+  keywords: [],
   config: {
     type: 'crypto',
     numOfSuggestedPosts: 2,
@@ -103,6 +104,9 @@ const campaignSlice = createSlice({
           break;
         case 'image':
           state['image'] = value;
+          break;
+        case 'keywords':
+          state.keywords = value;
           break;
         case 'algoTiersCount':
           if (tier) {
