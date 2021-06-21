@@ -330,9 +330,10 @@ export const Initialize: React.FC<Props> = (props) => {
                 id="keywords"
                 freeSolo={true}
                 multiple={true}
-                options={[]}
+                options={campaign.keywords}
                 onChange={handleKeywordsChange}
                 getOptionLabel={(option) => option}
+                defaultValue={campaign.keywords}
                 renderInput={(params) => (
                   <TextField
                     {...params}
