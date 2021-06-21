@@ -13,6 +13,7 @@ import InfoIcon from '@material-ui/icons/Info';
 
 import icon from '../../assets/svg/camera.svg';
 import { handleImage } from '../../helpers/utils';
+import { Autocomplete } from '@material-ui/lab';
 
 interface Props {
   userData: {
@@ -32,6 +33,10 @@ const useStyles = makeStyles(() =>
       marginRight: 5,
       paddingTop: 5,
       paddingBottom: 5,
+      width: '100%',
+    },
+    autoComplete: {
+      width: '100%',
     },
   }),
 );
@@ -42,10 +47,12 @@ export const Initialize: React.FC<Props> = (props) => {
   const beginDate = useSelector((state: RootState) => state.newCampaign.beginDate);
   const campaign = useSelector((state: RootState) => state.newCampaign);
   const endDate = useSelector((state: RootState) => state.newCampaign.endDate);
+
   const handleCampaignChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     event.persist();
     dispatch(updateCampaignState({ cat: 'info', key: event.target.name, val: event.target.value }));
   };
+
   const handleConfigChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     event.persist();
     if (event.target.name === 'numOfTiers') {
@@ -103,6 +110,12 @@ export const Initialize: React.FC<Props> = (props) => {
       return displayDateError();
     }
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
+  };
+
+  const handleKeywordsChange = (event: ChangeEvent<unknown>, value: string[]) => {
+    if (value.length) {
+      dispatch(updateCampaignState({ cat: 'keywords', key: 'keywords', val: value }));
+    }
   };
 
   return (
@@ -309,6 +322,28 @@ export const Initialize: React.FC<Props> = (props) => {
                 />
               </Grid>
             </Grid>
+          </div>
+          <div className="margin-bottom">
+            <Box width="98%" paddingLeft={0} paddingRight={1}>
+              <Autocomplete
+                className={classes.autoComplete}
+                id="keywords"
+                freeSolo={true}
+                multiple={true}
+                options={[]}
+                onChange={handleKeywordsChange}
+                getOptionLabel={(option) => option}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    className={classes.textField}
+                    variant="outlined"
+                    label="Keywords"
+                    placeholder="Add keywords for campaign"
+                  />
+                )}
+              />
+            </Box>
           </div>
         </Grid>
         <ToastContainer />

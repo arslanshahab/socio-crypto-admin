@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
-import { Campaign, CampaignRequirementSpecs, NewCampaignVars, RafflePrizeStructure } from '../../types';
+import { useMutation } from '@apollo/client';
+import { Campaign, CampaignRequirementSpecs, NewCampaignVars } from '../../types';
 import { Paper, Stepper, Step, StepLabel, Button, CircularProgress } from '@material-ui/core';
 import { Initialize } from './Initialize';
 import { PostsAndTags } from './PostsAndTags';
@@ -30,7 +30,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
   const [activeStep, setActiveStep] = useState(0);
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
-  const [saveCampaign, { error, loading }] = useMutation<Campaign, NewCampaignVars>(NEW_CAMPAIGN, {
+  const [saveCampaign, { loading }] = useMutation<Campaign, NewCampaignVars>(NEW_CAMPAIGN, {
     variables: {
       name: campaign.name,
       coiinTotal: parseFloat(campaign.config.budgetType === 'raffle' ? '0' : (campaign.config.coiinBudget as string)),
@@ -49,6 +49,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       tagline: campaign.tagline,
       suggestedPosts: campaign.suggestedPosts,
       suggestedTags: campaign.suggestedTags,
+      keywords: campaign.keywords,
       type: (campaign.config.budgetType as string) || 'coiin',
       rafflePrize:
         campaign.config && campaign.config.budgetType === 'raffle'
@@ -133,7 +134,8 @@ export const NewCampaign: React.FC<Props> = (props) => {
           campaign.config.numOfSuggestedPosts &&
           campaign.config.numOfTiers &&
           campaign.target.startsWith('http') &&
-          new Date(campaign.beginDate).getTime() < new Date(campaign.endDate).getTime()
+          new Date(campaign.beginDate).getTime() < new Date(campaign.endDate).getTime() &&
+          campaign.keywords.length
         )
           validated = true;
       } else if (campaign.config.budgetType == 'raffle') {
@@ -230,10 +232,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
                   color="primary"
                   onClick={async () => {
                     try {
-                      if (!payloadReady(activeStep)) {
-                        showFormError();
-                        throw new Error('bad payload');
-                      }
                       await saveCampaign();
                       dispatch(updateCampaignState({ cat: 'config', key: 'success', val: true }));
                       setTimeout(() => {
