@@ -122,40 +122,77 @@ export const Initialize: React.FC<Props> = (props) => {
     <Fade>
       <div className="init-campaign-container">
         <Grid container className="form-container" direction={'column'}>
-          <div className="image-upload-container">
-            <label htmlFor="single">
-              <div>
-                {campaign.image ? (
-                  <div className="image-preview">
-                    <img src={campaign.image} alt="image" />
-                  </div>
-                ) : (
-                  <ReactSVG src={icon} color="#3B5998" />
-                )}
-              </div>
-            </label>
-            <input
-              className="hidden"
-              type="file"
-              id="single"
-              onChange={(e) => handleImage(e, dispatch, 'campaign-image')}
-            />
-            <Box
-              className="margin-bottom"
-              minWidth="100%"
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <p className="center-text setup-campaign-question">
-                {campaign.image ? 'Update Campaign Image' : 'Add Campaign Image'}
-              </p>
-              <Tooltip placement="top" title="Please provide an image size of 1200px X 675px or aspect ratio of 16:9">
-                <InfoIcon className="tooltipIcon" />
-              </Tooltip>
-            </Box>
-          </div>
+          <Grid container direction="row" justify="space-evenly">
+            <div className="image-upload-container">
+              <label htmlFor="campaignImage">
+                <div>
+                  {campaign.image ? (
+                    <div className="image-preview">
+                      <img src={campaign.image} alt="image" />
+                    </div>
+                  ) : (
+                    <ReactSVG src={icon} color="#3B5998" />
+                  )}
+                </div>
+              </label>
+              <input
+                className="hidden"
+                type="file"
+                id="campaignImage"
+                onChange={(e) => handleImage(e, dispatch, 'campaign-image')}
+              />
+              <Box
+                className="margin-bottom"
+                minWidth="100%"
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <p className="center-text setup-campaign-question">
+                  {campaign.image ? 'Update Campaign Image' : 'Add Campaign Image'}
+                </p>
+                <Tooltip placement="top" title="Please provide an image size of 1200px X 675px or aspect ratio of 16:9">
+                  <InfoIcon className="tooltipIcon" />
+                </Tooltip>
+              </Box>
+            </div>
+
+            <div className="image-upload-container">
+              <label htmlFor="sharedMedia">
+                <div>
+                  {campaign.sharedImage ? (
+                    <div className="image-preview">
+                      <img src={campaign.sharedImage} alt="image" />
+                    </div>
+                  ) : (
+                    <ReactSVG src={icon} color="#3B5998" />
+                  )}
+                </div>
+              </label>
+              <input
+                className="hidden"
+                type="file"
+                id="sharedMedia"
+                onChange={(e) => handleImage(e, dispatch, 'shared-media')}
+              />
+              <Box
+                className="margin-bottom"
+                minWidth="100%"
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <p className="center-text setup-campaign-question">
+                  {campaign.sharedImage ? 'Update Shared Media' : 'Default Shared Media'}
+                </p>
+                <Tooltip placement="top" title="Please provide an image size of 1200px X 675px or aspect ratio of 16:9">
+                  <InfoIcon className="tooltipIcon" />
+                </Tooltip>
+              </Box>
+            </div>
+          </Grid>
           <div className="margin-bottom">
             <Grid container justify={'center'}>
               <Grid item>

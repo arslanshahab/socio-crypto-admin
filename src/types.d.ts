@@ -232,6 +232,7 @@ export interface NewCampaignVars {
   company: string;
   algorithm: string;
   image: string;
+  sharedImage: string;
   requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
@@ -328,6 +329,7 @@ export interface CampaignState {
   targetVideo: string;
   cryptoId: string;
   image: string;
+  sharedImage: string;
   tagline: string;
   requirements?: CampaignRequirementSpecs;
   suggestedPosts: string[];
