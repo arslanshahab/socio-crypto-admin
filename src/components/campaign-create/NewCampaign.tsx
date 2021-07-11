@@ -46,6 +46,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
         ? { email: true, ...campaign.requirements }
         : { ...campaign.requirements }) as CampaignRequirementSpecs,
       image: campaign.image,
+      sharedImage: campaign.sharedImage,
       tagline: campaign.tagline,
       suggestedPosts: campaign.suggestedPosts,
       suggestedTags: campaign.suggestedTags,

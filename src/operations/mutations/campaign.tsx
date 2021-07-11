@@ -18,6 +18,7 @@ export const NEW_CAMPAIGN = gql`
     $company: String
     $targetVideo: String
     $image: String
+    $sharedImage: String
     $tagline: String!
     $requirements: JSON!
     $suggestedPosts: [String]
@@ -38,6 +39,7 @@ export const NEW_CAMPAIGN = gql`
       company: $company
       targetVideo: $targetVideo
       image: $image
+      sharedImage: $sharedImage
       tagline: $tagline
       requirements: $requirements
       suggestedPosts: $suggestedPosts

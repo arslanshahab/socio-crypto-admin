@@ -24,6 +24,7 @@ const initialState: CampaignState = {
   targetVideo: '',
   cryptoId: '',
   image: '',
+  sharedImage: '',
   tagline: '',
   suggestedPosts: [],
   suggestedTags: [],
@@ -103,7 +104,7 @@ const campaignSlice = createSlice({
           state['algorithm']['pointValues'][key] = value;
           break;
         case 'image':
-          state['image'] = value;
+          state[action.payload.key] = value;
           break;
         case 'keywords':
           state.keywords = value;
