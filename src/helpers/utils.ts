@@ -12,6 +12,8 @@ const getBase64 = (file: Blob, dispatch: any, type: string) => {
         dispatch(updateCampaignState({ cat: 'config', key: 'raffleImage', val: reader.result }));
       } else if (type == 'campaign-image') {
         dispatch(updateCampaignState({ cat: 'image', key: 'image', val: reader.result }));
+      } else if (type == 'shared-media') {
+        dispatch(updateCampaignState({ cat: 'image', key: 'sharedImage', val: reader.result }));
       }
     }
   };
