@@ -140,7 +140,7 @@ export const Initialize: React.FC<Props> = (props) => {
                 justifyContent="center"
               >
                 <p className="center-text setup-campaign-question">
-                  {campaign.image ? 'Update Campaign Image' : 'Add Campaign Image'}
+                  {campaign.image.filename ? 'Update Campaign Image' : 'Add Campaign Image'}
                 </p>
 
                 <Tooltip
@@ -192,11 +192,11 @@ export const Initialize: React.FC<Props> = (props) => {
                 justifyContent="center"
               >
                 <p className="center-text setup-campaign-question">
-                  {campaign.sharedMedia ? 'Update Shared Media' : 'Default Shared Media'}
+                  {campaign.sharedMedia.filename ? 'Update Shared Media' : 'Default Shared Media'}
                 </p>
                 <Tooltip
                   placement="top"
-                  title="Image/Video/GIF files are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+                  title="This is the default media to be shared by the Raiinmaker in this particular campaign. Image/Video/GIF files are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
                 >
                   <InfoIcon className="tooltipIcon" />
                 </Tooltip>
