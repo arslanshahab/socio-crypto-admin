@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { fireClient, getAuthPersistence } from '../clients/firebase';
-import { Button, Grid, Paper, TextField } from '@material-ui/core';
+import { Button, CircularProgress, Grid, Paper, TextField } from '@material-ui/core';
 import { sessionLogin } from '../clients/raiinmaker-api';
 import { ChangePasswordDialog } from '../components/ChangePasswordDialog';
 import { ReactComponent as RaiinmakerLogo } from '../assets/svg/raiinmaker_logo2x1.svg';
@@ -13,7 +13,8 @@ interface UserData {
 
 export const Login: React.FC = () => {
   const history = useHistory();
-  const [changePassword, setChangePassword] = React.useState(false);
+  const [changePassword, setChangePassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState({
     code: '',
   });
@@ -34,6 +35,7 @@ export const Login: React.FC = () => {
     event.preventDefault();
     setError({ code: '' });
     try {
+      setLoading(true);
       await fireClient.auth().setPersistence(getAuthPersistence);
       await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
       const { status, body } = await sessionLogin();
@@ -46,6 +48,7 @@ export const Login: React.FC = () => {
     } catch (e) {
       console.log('error: ', e);
       setError(e);
+      setLoading(false);
     }
   };
 
@@ -98,8 +101,8 @@ export const Login: React.FC = () => {
                 ) : (
                   <div />
                 )}
-                <Button className="button" onClick={handleSubmit}>
-                  Login
+                <Button disabled={loading} className="button" onClick={handleSubmit}>
+                  {loading ? <CircularProgress color="primary" size={30} /> : 'Login'}
                 </Button>
               </div>
             </form>

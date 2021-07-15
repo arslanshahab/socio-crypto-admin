@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ADMIN_LIST_CAMPAIGNS } from '../operations/queries/campaign';
 import { useMutation, useQuery } from '@apollo/client';
 import { ListPendingCampaignsAdminResults } from '../types';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Grid, Typography } from '@material-ui/core';
 import { UPDATE_CAMPAIGN_STATUS } from '../operations/mutations/Admin';
 
 export const PendingCampaigns: React.FC = () => {
   const { data, loading, refetch } = useQuery<ListPendingCampaignsAdminResults>(ADMIN_LIST_CAMPAIGNS);
-  const [updateStatus] = useMutation(UPDATE_CAMPAIGN_STATUS);
+  const [updateStatus, { loading: actionLoading }] = useMutation(UPDATE_CAMPAIGN_STATUS);
+  const [status, setStatus] = useState({ status: '', campaignId: '' });
 
   const handleStatusChange = async (status: string, campaignId: string) => {
+    setStatus({ status: status, campaignId: campaignId });
     await updateStatus({ variables: { status, campaignId } });
     await refetch();
+    setStatus({ status: '', campaignId: '' });
   };
 
   return (
@@ -51,15 +54,24 @@ export const PendingCampaigns: React.FC = () => {
                       onClick={() => handleStatusChange('APPROVED', campaign.id)}
                       variant={'contained'}
                       color={'primary'}
+                      style={{ minWidth: '120px' }}
                     >
-                      Approve
+                      {actionLoading && status.status === 'APPROVED' && status.campaignId === campaign.id ? (
+                        <CircularProgress size={25} style={{ color: 'white' }} />
+                      ) : (
+                        'Approve'
+                      )}
                     </Button>
                     <Button
                       onClick={() => handleStatusChange('DENIED', campaign.id)}
                       variant={'contained'}
-                      style={{ marginLeft: '2px', backgroundColor: '#ca2c2c', color: 'white' }}
+                      style={{ marginLeft: '2px', backgroundColor: '#ca2c2c', color: 'white', minWidth: '120px' }}
                     >
-                      Deny
+                      {actionLoading && status.status === 'DENIED' && status.campaignId === campaign.id ? (
+                        <CircularProgress size={25} style={{ color: 'white' }} />
+                      ) : (
+                        'Deny'
+                      )}
                     </Button>
                   </Grid>
                 </Grid>

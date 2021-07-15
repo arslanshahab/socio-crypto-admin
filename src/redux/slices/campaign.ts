@@ -23,8 +23,8 @@ const initialState: CampaignState = {
   target: '',
   targetVideo: '',
   cryptoId: '',
-  image: '',
-  sharedImage: '',
+  image: { filename: '', file: null, format: '' },
+  sharedMedia: { filename: '', file: null, format: '' },
   tagline: '',
   suggestedPosts: [],
   suggestedTags: [],
@@ -39,7 +39,7 @@ const initialState: CampaignState = {
     budgetType: '',
     campaignType: '',
     agreementChecked: false,
-    raffleImage: '',
+    raffleImage: { filename: '', file: null, format: '' },
     rafflePrizeName: '',
     rafflePrizeAffiliateLink: '',
     success: false,
@@ -52,9 +52,6 @@ interface CampaignUpdate {
   val: any;
   tier?: string;
   index?: number;
-}
-interface CampaignReset {
-  cat: string;
 }
 
 const campaignSlice = createSlice({

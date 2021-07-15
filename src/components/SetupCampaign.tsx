@@ -19,7 +19,6 @@ import { useHistory } from 'react-router';
 
 interface Props {
   company: string;
-  raffleImage?: string;
 }
 
 interface Crypto {
@@ -223,9 +222,9 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                       <div className="image-upload-container">
                         <label htmlFor="single">
                           <div>
-                            {props.raffleImage ? (
+                            {campaign.config.raffleImage?.file ? (
                               <div className="image-preview">
-                                <img src={props.raffleImage} alt="Raffle" />
+                                <img src={URL.createObjectURL(campaign.config.raffleImage.file)} alt="Raffle" />
                               </div>
                             ) : (
                               <ReactSVG src={icon} color="#3B5998" />
