@@ -8,11 +8,11 @@ import { RootState } from '../../redux/reducer';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { ReactSVG } from 'react-svg';
 import { Fade } from 'react-awesome-reveal';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import InfoIcon from '@material-ui/icons/Info';
 
 import icon from '../../assets/svg/camera.svg';
-import { handleImage } from '../../helpers/utils';
+import { handleImage, showErrorMessage } from '../../helpers/utils';
 import { Autocomplete } from '@material-ui/lab';
 
 interface Props {
@@ -85,21 +85,10 @@ export const Initialize: React.FC<Props> = (props) => {
     dispatch(updateCampaignState({ cat: 'config', key: event.target.name, val: event.target.value }));
   };
 
-  const displayDateError = () => {
-    toast.error('Beginning date must be before end date', {
-      position: 'bottom-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      progress: undefined,
-    });
-  };
-
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
     if (endDate && dateIsoString && new Date(endDate).getTime() < new Date(dateIsoString).getTime()) {
-      return displayDateError();
+      return showErrorMessage('Beginning date must be before end date');
     }
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'beginDate', val: dateIsoString }));
   };
@@ -107,7 +96,7 @@ export const Initialize: React.FC<Props> = (props) => {
   const handleEndDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
     if (beginDate && dateIsoString && new Date(beginDate).getTime() >= new Date(dateIsoString).getTime()) {
-      return displayDateError();
+      return showErrorMessage('Beginning date must be before end date');
     }
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
   };
@@ -126,9 +115,10 @@ export const Initialize: React.FC<Props> = (props) => {
             <div className="image-upload-container">
               <label htmlFor="campaignImage">
                 <div>
-                  {campaign.image ? (
+                  {campaign.image.file ? (
                     <div className="image-preview">
-                      <img src={campaign.image} alt="image" />
+                      <img src={URL.createObjectURL(campaign.image.file)} alt="image" />
+                      <span>{campaign.image.filename}</span>
                     </div>
                   ) : (
                     <ReactSVG src={icon} color="#3B5998" />
@@ -150,9 +140,13 @@ export const Initialize: React.FC<Props> = (props) => {
                 justifyContent="center"
               >
                 <p className="center-text setup-campaign-question">
-                  {campaign.image ? 'Update Campaign Image' : 'Add Campaign Image'}
+                  {campaign.image.filename ? 'Update Campaign Image' : 'Add Campaign Image'}
                 </p>
-                <Tooltip placement="top" title="Please provide an image size of 1200px X 675px or aspect ratio of 16:9">
+
+                <Tooltip
+                  placement="top"
+                  title="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+                >
                   <InfoIcon className="tooltipIcon" />
                 </Tooltip>
               </Box>
@@ -161,10 +155,23 @@ export const Initialize: React.FC<Props> = (props) => {
             <div className="image-upload-container">
               <label htmlFor="sharedMedia">
                 <div>
-                  {campaign.sharedImage ? (
-                    <div className="image-preview">
-                      <img src={campaign.sharedImage} alt="image" />
-                    </div>
+                  {campaign.sharedMedia.file ? (
+                    campaign.sharedMedia.format.includes('image') ? (
+                      <div className="image-preview">
+                        <img src={URL.createObjectURL(campaign.sharedMedia.file)} alt="image" />
+                        <span>{campaign.sharedMedia.filename}</span>
+                      </div>
+                    ) : (
+                      <div className="image-preview">
+                        <video
+                          autoPlay={true}
+                          height="150"
+                          width="250"
+                          src={URL.createObjectURL(campaign.sharedMedia.file)}
+                        />
+                        <span>{campaign.sharedMedia.filename}</span>
+                      </div>
+                    )
                   ) : (
                     <ReactSVG src={icon} color="#3B5998" />
                   )}
@@ -185,9 +192,12 @@ export const Initialize: React.FC<Props> = (props) => {
                 justifyContent="center"
               >
                 <p className="center-text setup-campaign-question">
-                  {campaign.sharedImage ? 'Update Shared Media' : 'Default Shared Media'}
+                  {campaign.sharedMedia.filename ? 'Update Shared Media' : 'Default Shared Media'}
                 </p>
-                <Tooltip placement="top" title="Please provide an image size of 1200px X 675px or aspect ratio of 16:9">
+                <Tooltip
+                  placement="top"
+                  title="This is the default media to be shared by the Raiinmaker in this particular campaign. Image/Video/GIF files are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+                >
                   <InfoIcon className="tooltipIcon" />
                 </Tooltip>
               </Box>

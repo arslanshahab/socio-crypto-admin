@@ -232,7 +232,7 @@ export interface NewCampaignVars {
   company: string;
   algorithm: string;
   image: string;
-  sharedImage: string;
+  sharedMedia: string;
   requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
@@ -242,6 +242,13 @@ export interface NewCampaignVars {
   rafflePrize?: RafflePrizeStructure;
 }
 
+export interface NewCampaignImageVars {
+  id: string;
+  image: string;
+  sharedMedia: string;
+  sharedMediaFormat: string;
+}
+
 export interface RafflePrizeStructure {
   displayName: string;
   affiliateLink?: string;
@@ -249,7 +256,7 @@ export interface RafflePrizeStructure {
 }
 
 export interface CampaignConfig {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | FileObject;
   numOfSuggestedPosts: number;
   numOfTiers: number;
   initialTotal: string;
@@ -257,7 +264,7 @@ export interface CampaignConfig {
   cryptoSymbol?: string;
   rafflePrizeName?: string;
   rafflePrizeAffiliateLink?: string;
-  raffleImage?: string;
+  raffleImage?: FileObject;
 }
 
 export interface Campaign {
@@ -281,6 +288,13 @@ export interface Campaign {
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+}
+
+export interface CampaignCreationResponse {
+  campaignId: string;
+  campaignImageSignedURL: string;
+  sharedMediaSignedURL: string;
+  raffleImageSignedURL: string;
 }
 
 export interface CryptoCurrency {
@@ -316,8 +330,14 @@ export interface ListPendingCampaignsAdminResults {
   };
 }
 
+export interface FileObject {
+  filename: string;
+  format: string;
+  file: File | null;
+}
+
 export interface CampaignState {
-  [key: string]: string | string[] | AlgorithmSpecs | CampaignConfig | CampaignRequirementSpecs;
+  [key: string]: string | string[] | AlgorithmSpecs | CampaignConfig | CampaignRequirementSpecs | FileObject;
   name: string;
   beginDate: string;
   endDate: string;
@@ -328,8 +348,8 @@ export interface CampaignState {
   company: string;
   targetVideo: string;
   cryptoId: string;
-  image: string;
-  sharedImage: string;
+  image: FileObject;
+  sharedMedia: FileObject;
   tagline: string;
   requirements?: CampaignRequirementSpecs;
   suggestedPosts: string[];
