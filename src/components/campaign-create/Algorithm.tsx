@@ -105,7 +105,7 @@ export const Algorithm: React.FC = () => {
             all or any part of the Applications/Services, without notice, at any time, for any reason or for no reason.
           </p>
           <p className="copy">
-            Rainmaker provides members with the opportunity to participate in marketing campaigns and brands to create
+            Raiinmaker provides members with the opportunity to participate in marketing campaigns and brands to create
             marketing campaigns. Participation in marketing campaigns is voluntary. By agreeing to become a member, you
             agree to receive invitations to participate in marketing campaigns. You may unsubscribe from membership at
             any time.
@@ -154,8 +154,8 @@ export const Algorithm: React.FC = () => {
           <p className="title">Campaign Creation System </p>
           <p className="copy">
             Brands are able to create marketing campaigns. These campaigns are then checked by Raiinmaker and approved
-            or denied on any basis whatsoever. Rainmaker can reject, approve, remove, or change your campaign at any
-            time. Rainmaker can make edits and changes as desired as well.
+            or denied on any basis whatsoever. Raiinmaker can reject, approve, remove, or change your campaign at any
+            time. Raiinmaker can make edits and changes as desired as well.
           </p>
 
           <p className="title">Tiering System </p>
@@ -233,7 +233,7 @@ export const Algorithm: React.FC = () => {
 
           <p className="title">Influence Data and Metrics</p>
           <p className="copy">
-            Some Influence data, metrics and graphs may not be accurate. Rainmaker can make changes to the data at any
+            Some Influence data, metrics and graphs may not be accurate. Raiinmaker can make changes to the data at any
             time. You may receive and download the information.
           </p>
 
