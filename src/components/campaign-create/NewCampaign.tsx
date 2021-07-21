@@ -229,6 +229,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
           },
         });
       }
+      showProgressModal(false);
 
       setTimeout(() => {
         dispatch(updateCampaignState({ cat: 'reset', key: 'reset', val: 'reset' }));

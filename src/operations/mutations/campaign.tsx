@@ -58,8 +58,8 @@ export const NEW_CAMPAIGN = gql`
 `;
 
 export const NEW_CAMPAIGN_IMAGES = gql`
-  mutation newCampaignImages($id: String!, $image: String, $sharedMedia: String) {
-    newCampaignImages(id: $id, image: $image, sharedMedia: $sharedMedia) {
+  mutation newCampaignImages($id: String!, $image: String, $sharedMedia: String, $sharedMediaFormat: String) {
+    newCampaignImages(id: $id, image: $image, sharedMedia: $sharedMedia, sharedMediaFormat: $sharedMediaFormat) {
       id
       imagePath
       sharedMedia
