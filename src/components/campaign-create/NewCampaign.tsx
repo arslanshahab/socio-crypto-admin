@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { Campaign, CampaignRequirementSpecs, NewCampaignVars } from '../../types';
-import { Paper, Stepper, Step, StepLabel, Button, CircularProgress } from '@material-ui/core';
+import React, { useState, Fragment } from 'react';
+import { FetchResult, MutationResult, useMutation } from '@apollo/client';
+import { CampaignCreationResponse, CampaignRequirementSpecs, NewCampaignVars } from '../../types';
+import { Paper, Stepper, Step, StepLabel, Button, CircularProgress, Dialog, Box, Typography } from '@material-ui/core';
 import { Initialize } from './Initialize';
 import { PostsAndTags } from './PostsAndTags';
 import { Algorithm } from './Algorithm';
@@ -13,10 +13,12 @@ import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';
 import { Requirements } from './Requirements';
 import { SetupCampaign } from '../SetupCampaign';
-import { ToastContainer, toast } from 'react-toastify';
-import { LoaderDots } from '@thumbtack/thumbprint-react';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { NEW_CAMPAIGN } from '../../operations/mutations/campaign';
+import { NEW_CAMPAIGN, NEW_CAMPAIGN_IMAGES } from '../../operations/mutations/campaign';
+import { showErrorMessage } from '../../helpers/utils';
+import axios from 'axios';
+import { NewCampaignImageVars } from '../../types.d';
 
 interface Props {
   userData: any;
@@ -25,12 +27,16 @@ interface Props {
 export const NewCampaign: React.FC<Props> = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [progressModal, showProgressModal] = useState(false);
+  const [campaignUploadProgress, setCampaignUploadProgress] = useState(0);
+  const [sharedMediaUploadProgress, setSharedMediaUploadProgress] = useState(0);
+  const [raffleUploadProgress, setRaffleUploadProgress] = useState(0);
 
   const steps = ['Purpose and Budget', 'Campaign Information', 'Suggested Posts', 'Campaign Requirements', 'Algorithm'];
   const [activeStep, setActiveStep] = useState(0);
   const state = useSelector((state: RootState) => state);
   const campaign = state.newCampaign;
-  const [saveCampaign, { loading }] = useMutation<Campaign, NewCampaignVars>(NEW_CAMPAIGN, {
+  const [saveCampaign, { loading }] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN, {
     variables: {
       name: campaign.name,
       coiinTotal: parseFloat(campaign.config.budgetType === 'raffle' ? '0' : (campaign.config.coiinBudget as string)),
@@ -45,8 +51,8 @@ export const NewCampaign: React.FC<Props> = (props) => {
       requirements: (campaign.config && campaign.config.budgetType === 'raffle'
         ? { email: true, ...campaign.requirements }
         : { ...campaign.requirements }) as CampaignRequirementSpecs,
-      image: campaign.image,
-      sharedImage: campaign.sharedImage,
+      image: campaign.image.filename,
+      sharedMedia: campaign.sharedMedia.filename,
       tagline: campaign.tagline,
       suggestedPosts: campaign.suggestedPosts,
       suggestedTags: campaign.suggestedTags,
@@ -57,11 +63,16 @@ export const NewCampaign: React.FC<Props> = (props) => {
           ? {
               displayName: campaign.config['rafflePrizeName'] as string,
               affiliateLink: campaign.config['rafflePrizeAffiliateLink'] as string,
-              image: campaign.config['raffleImage'] as string,
+              image: campaign.config.raffleImage?.filename as string,
             }
           : undefined,
     },
   });
+
+  const [saveCampaignImages, { loading: savingImagesLoading }] = useMutation<
+    CampaignCreationResponse,
+    NewCampaignImageVars
+  >(NEW_CAMPAIGN_IMAGES);
 
   const handleNext = (e: any) => {
     e.preventDefault();
@@ -75,7 +86,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
   const renderStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <SetupCampaign raffleImage={campaign.config.raffleImage} company={props.userData.company} />;
+        return <SetupCampaign company={props.userData.company} />;
       case 1:
         return <Initialize campaignType={campaign.config.budgetType as string} {...props} />;
       case 2:
@@ -96,18 +107,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
     }
     validated = true;
     return validated;
-  };
-
-  const showFormError = () => {
-    return toast.error('Form Incomplete', {
-      position: 'bottom-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
   };
 
   const payloadReady = (step: number) => {
@@ -191,87 +190,191 @@ export const NewCampaign: React.FC<Props> = (props) => {
     return validated;
   };
 
+  const createCampaign = async () => {
+    try {
+      showProgressModal(true);
+      const response: FetchResult<
+        CampaignCreationResponse,
+        Record<string, any>,
+        Record<string, any>
+      > = await saveCampaign();
+      if (response.data) {
+        // eslint-disable-next-line
+        // @ts-ignore
+        const { newCampaign: campaignCreateResponse } = response.data;
+        if (campaign.image.file) {
+          await uploadCampaignImage(campaignCreateResponse, campaign.image.file as Blob, campaign.image.format);
+        }
+        if (campaign.sharedMedia.file) {
+          await uploadSharedMedia(
+            campaignCreateResponse,
+            campaign.sharedMedia.file as Blob,
+            campaign.sharedMedia.format,
+          );
+        }
+        if (campaign.config.raffleImage?.file) {
+          await uploadRaffleImage(
+            campaignCreateResponse,
+            campaign.config.raffleImage?.file as Blob,
+            campaign.config.raffleImage?.format,
+          );
+        }
+
+        await saveCampaignImages({
+          variables: {
+            id: campaignCreateResponse.campaignId,
+            image: campaign.image.filename,
+            sharedMedia: campaign.sharedMedia.filename,
+            sharedMediaFormat: campaign.sharedMedia.format,
+          },
+        });
+      }
+      showProgressModal(false);
+
+      setTimeout(() => {
+        dispatch(updateCampaignState({ cat: 'reset', key: 'reset', val: 'reset' }));
+        showProgressModal(false);
+        history.push('/dashboard/campaigns');
+      }, 1000);
+    } catch (e) {
+      showProgressModal(false);
+    }
+  };
+
+  const uploadRaffleImage = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+    await axios({
+      method: 'PUT',
+      url: data.raffleImageSignedURL,
+      data: file,
+      headers: {
+        'Content-Type': format,
+      },
+      onUploadProgress: (event) => {
+        const progress = ((event.loaded / event.total) * 100).toFixed(2);
+        setRaffleUploadProgress(parseFloat(progress));
+      },
+    });
+  };
+
+  const uploadCampaignImage = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+    await axios({
+      method: 'PUT',
+      url: data.campaignImageSignedURL,
+      data: file,
+      headers: {
+        'Content-Type': format,
+      },
+      onUploadProgress: (event) => {
+        const progress = ((event.loaded / event.total) * 100).toFixed(2);
+        setCampaignUploadProgress(parseFloat(progress));
+      },
+    });
+  };
+
+  const uploadSharedMedia = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+    await axios({
+      method: 'PUT',
+      url: data.sharedMediaSignedURL,
+      data: file,
+      headers: {
+        'Content-Type': format,
+      },
+      onUploadProgress: (event) => {
+        const progress = ((event.loaded / event.total) * 100).toFixed(2);
+        setSharedMediaUploadProgress(parseFloat(progress));
+      },
+    });
+  };
+
   return (
     <div className="new-campaign">
-      {campaign.config.success ? (
-        <Fade>
-          <div className="campaign-created-container">
-            <div className="center-text campaign-created-text"></div>
-            <div className="center-text campaign-created-text">Your Campaign is now being submitted for review</div>
-            <div className="created-loading-icon">
-              <LoaderDots theme="muted" size="medium" />
-            </div>
-          </div>
-        </Fade>
-      ) : (
-        <React.Fragment>
-          <Paper>
-            <Stepper activeStep={activeStep} alternativeLabel>
-              {steps.map((label, i) => (
-                <Step key={label}>
-                  <StepLabel
-                    onClick={() => {
-                      if ((payloadReady(activeStep) || i < activeStep) && i <= activeStep + 1) {
-                        setActiveStep(i);
-                      } else {
-                      }
-                    }}
-                  >
-                    {label}
-                  </StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-          </Paper>
-          <Paper>
-            {renderStepContent(activeStep)}
-            <div>
-              {activeStep === steps.length - 1 ? (
-                <Button
-                  variant="contained"
-                  className="new-campaign-button"
-                  color="primary"
-                  onClick={async () => {
-                    try {
-                      await saveCampaign();
-                      dispatch(updateCampaignState({ cat: 'config', key: 'success', val: true }));
-                      setTimeout(() => {
-                        dispatch(updateCampaignState({ cat: 'reset', key: 'reset', val: 'reset' }));
-                        history.push('/dashboard/campaigns');
-                      }, 3000);
-                    } catch (e) {
-                      console.log(e);
-                    }
-                  }}
-                >
-                  {loading ? <CircularProgress></CircularProgress> : 'Submit'}
-                </Button>
-              ) : (
-                <Button
-                  className="new-campaign-button"
-                  variant="contained"
-                  color="primary"
-                  onClick={(e) => {
-                    if (payloadReady(activeStep)) {
-                      handleNext(e);
+      <Dialog
+        open={progressModal}
+        onClose={() => showProgressModal(false)}
+        closeAfterTransition
+        BackdropProps={{
+          timeout: 500,
+        }}
+        maxWidth="sm"
+        disableBackdropClick={true}
+        disableEscapeKeyDown={true}
+      >
+        <Box className="progressModal">
+          <CircularProgress size={35} color="primary" />
+          <Typography variant="h3">Creating your campaign, Please wait...</Typography>
+          <Box className="statusContainer">
+            {campaign.image.file && (
+              <Box className="statusBox">
+                <Typography variant="h5">Uploading campaign image</Typography>
+                <Typography variant="h5"> {campaignUploadProgress}%</Typography>
+              </Box>
+            )}
+            {campaign.sharedMedia.file && (
+              <Box className="statusBox">
+                <Typography variant="h5">Uploading shared media</Typography>{' '}
+                <Typography variant="h5">{sharedMediaUploadProgress}%</Typography>
+              </Box>
+            )}
+            {campaign.config.raffleImage?.file && (
+              <Box className="statusBox">
+                <Typography variant="h5">Uploading raffle image</Typography>{' '}
+                <Typography variant="h5">{raffleUploadProgress}%</Typography>
+              </Box>
+            )}
+          </Box>
+        </Box>
+      </Dialog>
+      <Fragment>
+        <Paper>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label, i) => (
+              <Step key={label}>
+                <StepLabel
+                  onClick={() => {
+                    if ((payloadReady(activeStep) || i < activeStep) && i <= activeStep + 1) {
+                      setActiveStep(i);
                     } else {
-                      showFormError();
                     }
                   }}
                 >
-                  Next
-                </Button>
-              )}
-              {activeStep !== 0 && (
-                <Button className="new-campaign-button" onClick={handleBack} color="primary">
-                  Back
-                </Button>
-              )}
-              <ToastContainer />
-            </div>
-          </Paper>
-        </React.Fragment>
-      )}
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Paper>
+        <Paper>
+          {renderStepContent(activeStep)}
+          <div>
+            {activeStep === steps.length - 1 ? (
+              <Button variant="contained" className="new-campaign-button" color="primary" onClick={createCampaign}>
+                {loading ? <CircularProgress></CircularProgress> : 'Submit'}
+              </Button>
+            ) : (
+              <Button
+                className="new-campaign-button"
+                variant="contained"
+                color="primary"
+                onClick={(e) => {
+                  if (payloadReady(activeStep)) {
+                    handleNext(e);
+                  } else {
+                    showErrorMessage('Form Incomplete');
+                  }
+                }}
+              >
+                Next
+              </Button>
+            )}
+            {activeStep !== 0 && (
+              <Button className="new-campaign-button" onClick={handleBack} color="primary">
+                Back
+              </Button>
+            )}
+          </div>
+          <ToastContainer />
+        </Paper>
+      </Fragment>
     </div>
   );
 };
