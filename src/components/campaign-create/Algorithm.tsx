@@ -23,7 +23,7 @@ export const Algorithm: React.FC = () => {
     event.persist();
     dispatch(updateCampaignState({ cat: 'algoValues', key: event.target.name, val: event.target.value }));
   };
-  const coiinBudget = campaign.config.coiinBudget;
+  const coiinBudget = campaign.config.coiinBudget ? parseFloat(campaign.config.coiinBudget.toString()) : 0;
   const initMaxThresh = 100;
 
   const renderTiers = () => {
@@ -57,7 +57,7 @@ export const Algorithm: React.FC = () => {
                 name={'totalCoiins'}
                 placeholder={'Total Coiins'}
                 fullWidth
-                value={coiinBudget ? (i / numOfTiers) * parseFloat(coiinBudget.toString()) : ''}
+                value={coiinBudget ? (i / numOfTiers) * coiinBudget : ''}
                 disabled={i == numOfTiers}
                 onChange={handleTierChange}
                 className="text-field"
