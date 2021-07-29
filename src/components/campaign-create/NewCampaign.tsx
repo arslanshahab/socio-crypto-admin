@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { FetchResult, MutationResult, useMutation } from '@apollo/client';
+import { FetchResult, useMutation } from '@apollo/client';
 import { CampaignCreationResponse, CampaignRequirementSpecs, NewCampaignVars } from '../../types';
 import { Paper, Stepper, Step, StepLabel, Button, CircularProgress, Dialog, Box, Typography } from '@material-ui/core';
 import { Initialize } from './Initialize';
@@ -7,7 +7,6 @@ import { PostsAndTags } from './PostsAndTags';
 import { Algorithm } from './Algorithm';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateCampaignState } from '../../redux/slices/campaign';
-import { Fade } from 'react-awesome-reveal';
 
 import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';

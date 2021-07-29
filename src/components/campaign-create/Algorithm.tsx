@@ -23,11 +23,14 @@ export const Algorithm: React.FC = () => {
     event.persist();
     dispatch(updateCampaignState({ cat: 'algoValues', key: event.target.name, val: event.target.value }));
   };
+  const coiinBudget = campaign.config.coiinBudget;
+  const initMaxThresh = 100;
+
   const renderTiers = () => {
     const tiers: JSX.Element[] = [];
-    for (let i = 0; i < numOfTiers; i++) {
-      const label = `Tier ${i + 1}`;
-      const id = `${i + 1}`;
+    for (let i = 1; i <= numOfTiers; i++) {
+      const label = `Tier ${i}`;
+      const id = `${i}`;
       tiers.push(
         <div className="margin-bottom">
           <div>
@@ -41,13 +44,7 @@ export const Algorithm: React.FC = () => {
                 id={id}
                 name={'threshold'}
                 placeholder={'Threshold'}
-                value={
-                  i == 0
-                    ? 0
-                    : campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
-                    ? campaign.algorithm.tiers[i + 1].threshold
-                    : ''
-                }
+                value={(i / numOfTiers) * initMaxThresh}
                 onChange={handleTierChange}
                 className="text-field"
                 defaultValue={i === 0 ? 0 : undefined}
@@ -60,12 +57,8 @@ export const Algorithm: React.FC = () => {
                 name={'totalCoiins'}
                 placeholder={'Total Coiins'}
                 fullWidth
-                value={
-                  campaign.algorithm.tiers && campaign.algorithm.tiers[i + 1]
-                    ? campaign.algorithm.tiers[i + 1].totalCoiins
-                    : ''
-                }
-                disabled={i == numOfTiers - 1}
+                value={coiinBudget ? (i / numOfTiers) * parseFloat(coiinBudget.toString()) : ''}
+                disabled={i == numOfTiers}
                 onChange={handleTierChange}
                 className="text-field"
                 defaultValue={i === 0 ? initialOffering : undefined}
