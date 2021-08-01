@@ -52,6 +52,7 @@ interface CampaignUpdate {
   val: any;
   tier?: string;
   index?: number;
+  initialTiers?: any;
 }
 
 const campaignSlice = createSlice({
@@ -63,6 +64,7 @@ const campaignSlice = createSlice({
       const value = action.payload.val;
       const tier = action.payload.tier;
       const index = action.payload.index;
+      const initialTiers = action.payload.initialTiers;
       switch (action.payload.cat) {
         case 'info':
           if (key === 'suggestedPosts') {
@@ -125,10 +127,21 @@ const campaignSlice = createSlice({
           break;
         case 'algoTiers':
           if (tier) {
+            console.log('aaaa', tier);
             const tierUpdate = { [key]: value };
+            console.log('bbbb', tierUpdate);
+
             state['algorithm']['tiers'][tier] = {
               ...state['algorithm']['tiers'][tier],
               ...tierUpdate,
+            };
+          }
+          break;
+        case 'initAlgoTiers':
+          if (initialTiers) {
+            state['algorithm']['tiers'] = {
+              ...state['algorithm']['tiers'],
+              ...initialTiers,
             };
           }
           break;

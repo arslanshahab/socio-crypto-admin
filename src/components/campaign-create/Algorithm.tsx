@@ -1,10 +1,15 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Checkbox, FormControlLabel, Grid, TextField, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { updateCampaignState } from '../../redux/slices/campaign';
 import { Fade } from 'react-awesome-reveal';
 import Modal from 'react-modal';
+
+interface Tier {
+  threshold: number;
+  totalCoiins: number;
+}
 
 export const Algorithm: React.FC = () => {
   const campaign = useSelector((state: RootState) => state.newCampaign);
@@ -14,17 +19,28 @@ export const Algorithm: React.FC = () => {
   const [modalOpen, toggleModal] = useState(false);
   const dispatch = useDispatch();
   const handleTierChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    event.persist();
     dispatch(
       updateCampaignState({ cat: 'algoTiers', tier: event.target.id, key: event.target.name, val: event.target.value }),
     );
   };
   const handleValueChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    event.persist();
     dispatch(updateCampaignState({ cat: 'algoValues', key: event.target.name, val: event.target.value }));
   };
   const coiinBudget = campaign.config.coiinBudget ? parseFloat(campaign.config.coiinBudget.toString()) : 0;
   const initMaxThresh = 100;
+
+  const initThresh = () => {
+    const tiersObject: any = {};
+    for (let i = 1; i <= numOfTiers; i++) {
+      const dataObject: Tier = { threshold: 0, totalCoiins: 0 };
+      dataObject.threshold = (i / numOfTiers) * initMaxThresh;
+      dataObject.totalCoiins = (i / numOfTiers) * coiinBudget;
+      tiersObject[i.toString()] = dataObject;
+    }
+    dispatch(updateCampaignState({ cat: 'initAlgoTiers', initialTiers: tiersObject, key: '', val: null }));
+  };
+
+  useEffect(initThresh, []);
 
   const renderTiers = () => {
     const tiers: JSX.Element[] = [];
@@ -44,7 +60,7 @@ export const Algorithm: React.FC = () => {
                 id={id}
                 name={'threshold'}
                 placeholder={'Threshold'}
-                value={(i / numOfTiers) * initMaxThresh}
+                value={campaign.algorithm.tiers[id] ? campaign.algorithm.tiers[id].threshold : ''}
                 onChange={handleTierChange}
                 className="text-field"
                 defaultValue={i === 0 ? 0 : undefined}
@@ -57,7 +73,7 @@ export const Algorithm: React.FC = () => {
                 name={'totalCoiins'}
                 placeholder={'Total Coiins'}
                 fullWidth
-                value={coiinBudget ? (i / numOfTiers) * coiinBudget : ''}
+                value={campaign.algorithm.tiers[id] ? campaign.algorithm.tiers[id].totalCoiins : ''}
                 disabled={i == numOfTiers}
                 onChange={handleTierChange}
                 className="text-field"
