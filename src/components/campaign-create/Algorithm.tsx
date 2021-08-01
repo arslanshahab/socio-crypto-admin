@@ -7,8 +7,8 @@ import { Fade } from 'react-awesome-reveal';
 import Modal from 'react-modal';
 
 interface Tier {
-  threshold: number;
-  totalCoiins: number;
+  threshold: string;
+  totalCoiins: string;
 }
 
 export const Algorithm: React.FC = () => {
@@ -32,9 +32,9 @@ export const Algorithm: React.FC = () => {
   const initThresh = () => {
     const tiersObject: any = {};
     for (let i = 1; i <= numOfTiers; i++) {
-      const dataObject: Tier = { threshold: 0, totalCoiins: 0 };
-      dataObject.threshold = (i / numOfTiers) * initMaxThresh;
-      dataObject.totalCoiins = (i / numOfTiers) * coiinBudget;
+      const dataObject: Tier = { threshold: '', totalCoiins: '' };
+      dataObject.threshold = ((i / numOfTiers) * initMaxThresh).toString();
+      dataObject.totalCoiins = ((i / numOfTiers) * coiinBudget).toString();
       tiersObject[i.toString()] = dataObject;
     }
     dispatch(updateCampaignState({ cat: 'initAlgoTiers', initialTiers: tiersObject, key: '', val: null }));
