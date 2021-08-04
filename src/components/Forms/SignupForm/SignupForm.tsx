@@ -12,7 +12,7 @@ interface UserData {
   password: string;
 }
 
-const LoginForm: React.FC = () => {
+const SignupForm: React.FC = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
@@ -104,4 +104,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default SignupForm;

@@ -15,7 +15,7 @@ import {
   defaultSocialFollowers,
   defaultStates,
   defaultValues,
-} from '../../globals';
+} from '../../helpers/globals';
 import { LocationRequirementSpecs } from '../../types';
 import { BootstrapInput } from '../BootstrapInput';
 
