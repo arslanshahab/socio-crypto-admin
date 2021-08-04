@@ -1,0 +1,11 @@
+.customButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .loader {
+    margin: 0;
+    color: white;
+  }
+}

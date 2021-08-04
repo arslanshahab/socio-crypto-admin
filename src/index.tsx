@@ -6,12 +6,13 @@ import { ApolloProvider } from '@apollo/client';
 import { graphqlClient } from './clients/raiinmaker-api';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import './assets/styles/tailwind.generated.css';
 import './assets/styles/main.scss';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DayJsUtils from '@date-io/dayjs';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { createTheme, MuiThemeProvider } from '@material-ui/core';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   overrides: {
     MuiButton: {
       root: {

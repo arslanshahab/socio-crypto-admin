@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import { Login } from './screens/Login';
-import { Dashboard } from './screens/Dashboard';
+import { Login } from './pages/Login';
+import { Dashboard } from './pages/Dashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 export const App: React.FC = () => {

@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client';
 import { DELETE_CRYPTO_FROM_WALLET } from '../operations/mutations/crypto';
 import { RefetchWallet } from './PaymentsAccount';
 import { formatFloat } from '../helpers/formatter';
+// eslint-disable-next-line
 // @ts-ignore
 import getImage from 'cryptoicons-cdn';
 
