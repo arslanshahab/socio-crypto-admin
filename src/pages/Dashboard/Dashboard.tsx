@@ -1,45 +1,32 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import { Switch } from 'react-router';
-import { CampaignsList } from '../components/CampaignsList';
-import { NewCampaign } from '../components/campaign-create/NewCampaign';
+import { CampaignsList } from '../../components/CampaignsList';
+import { NewCampaign } from '../../components/campaign-create/NewCampaign';
 import { Link, useHistory } from 'react-router-dom';
-import { MarketData } from '../components/MarketData';
-import { DashboardHome } from '../components/DashboardHome';
-import RaiinmakerLogo from '../assets/svg/logo.svg';
-import StoreIcon from '@material-ui/icons/Store';
-import AddIcon from '@material-ui/icons/Add';
+import { MarketData } from '../../components/MarketData';
+import { DashboardHome } from '../../components/DashboardHome';
+import RaiinmakerLogo from '../../assets/svg/logo.svg';
+
 import SettingsIcon from '@material-ui/icons/Settings';
-import { PaymentsAccount } from '../components/PaymentsAccount';
+import { PaymentsAccount } from '../../components/PaymentsAccount';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { ProtectedRoute, UserContext } from '../components/ProtectedRoute';
-import { Button, Grid } from '@material-ui/core';
-import { graphqlClient, sessionLogout } from '../clients/raiinmaker-api';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import ContactSupportIcon from '@material-ui/icons/ContactSupport';
-import { Link as MuiLink } from '@material-ui/core';
-import { Admin } from '../components/Admin';
-import { ManageWithdrawRequests } from '../components/admin/ManageWithdrawRequests';
-import { CampaignAudit } from '../components/admin/CampaignAudit';
-import { UserManagement } from '../components/UserManagement';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
-import { CampaignAuditList } from '../components/admin/CampaignAuditList';
+import { ProtectedRoute, UserContext } from '../../components/ProtectedRoute';
+import { Button, Grid, Box } from '@material-ui/core';
+import { graphqlClient, sessionLogout } from '../../clients/raiinmaker-api';
+
+import { Admin } from '../../components/Admin';
+import { ManageWithdrawRequests } from '../../components/admin/ManageWithdrawRequests';
+import { CampaignAudit } from '../../components/admin/CampaignAudit';
+import { UserManagement } from '../../components/UserManagement';
+import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
+import Sidebar from '../../components/Sidebar';
 
 const drawerWidth = 240;
 
@@ -102,19 +89,14 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export const Dashboard: React.FC = (props) => {
+const Dashboard: React.FC = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
   const history = useHistory();
 
   const handleDrawerOpen = () => {
     setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
   };
 
   const handleLogout = async () => {
@@ -168,103 +150,11 @@ export const Dashboard: React.FC = (props) => {
                 </Grid>
               </Toolbar>
             </AppBar>
-            <Drawer
-              className={classes.drawer}
-              variant="persistent"
-              anchor="left"
-              open={open}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-            >
-              <div className={classes.drawerHeader}>
-                <IconButton onClick={handleDrawerClose}>
-                  {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                </IconButton>
-              </div>
-              <Divider />
-              <List>
-                <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'black' }}>
-                  <ListItem button key={'Campaigns'}>
-                    <ListItemIcon>
-                      <StoreIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'Campaigns'} />
-                  </ListItem>
-                </Link>
-                {/* <Link to={'/dashboard/marketData'} style={{ textDecoration: 'none', color: 'black' }}>
-                  <ListItem button key={'MarketData'}>
-                    <ListItemIcon>
-                      <TrendingUpIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'Market Data'} />
-                  </ListItem>
-                </Link> */}
-                <Link to={'/dashboard/newCampaign'} style={{ textDecoration: 'none', color: 'black' }}>
-                  <ListItem button key={'New Campaign'}>
-                    <ListItemIcon>
-                      <AddIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'New Campaign'} />
-                  </ListItem>
-                </Link>
-                <MuiLink
-                  href={'https://www.raiinmaker.com/resources/'}
-                  style={{ textDecoration: 'none', color: 'black' }}
-                >
-                  {value.company == 'raiinmaker' ? (
-                    <Link to={'/dashboard/admin'} style={{ textDecoration: 'none', color: 'black' }}>
-                      <ListItem button key={'Admin'}>
-                        <ListItemIcon>
-                          <AssignmentIndIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Admin'} />
-                      </ListItem>
-                    </Link>
-                  ) : (
-                    <div />
-                  )}
-                  {value.role == 'admin' ? (
-                    <Link to={'/dashboard/admin/audit-campaigns'} style={{ textDecoration: 'none', color: 'black' }}>
-                      <ListItem button key={'Audit'}>
-                        <ListItemIcon>
-                          <AssignmentIndIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Audit Campaigns'} />
-                      </ListItem>
-                    </Link>
-                  ) : (
-                    <div />
-                  )}
-                  {value.role == 'admin' ? (
-                    <Link to={'/dashboard/admin/userManagement'} style={{ textDecoration: 'none', color: 'black' }}>
-                      <ListItem button key={'Manage Users'}>
-                        <ListItemIcon>
-                          <PeopleAltIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Manage Users'} />
-                      </ListItem>
-                    </Link>
-                  ) : (
-                    <div />
-                  )}
-                  <ListItem button key={'FAQ'}>
-                    <ListItemIcon>
-                      <QuestionAnswerIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'FAQ'} />
-                  </ListItem>
-                </MuiLink>
-                <MuiLink href={'mailto:support@raiinmaker.com'} style={{ textDecoration: 'none', color: 'black' }}>
-                  <ListItem button key={'Contact Support'}>
-                    <ListItemIcon>
-                      <ContactSupportIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={'Contact Support'} />
-                  </ListItem>
-                </MuiLink>
-              </List>
-            </Drawer>
+
+            <Box className="w-72">
+              <Sidebar value={value} />
+            </Box>
+
             <main
               className={`${clsx(classes.content, {
                 [classes.contentShift]: open,
@@ -321,3 +211,5 @@ export const Dashboard: React.FC = (props) => {
     </UserContext.Consumer>
   );
 };
+
+export default Dashboard;

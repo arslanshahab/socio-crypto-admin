@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import LoginPage from './pages/Login';
-import { Dashboard } from './pages/Dashboard';
+import Dashboard from './pages/Dashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
 export const App: React.FC = () => {
