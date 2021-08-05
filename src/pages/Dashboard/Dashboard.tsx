@@ -12,7 +12,6 @@ import { NewCampaign } from '../../components/campaign-create/NewCampaign';
 import { Link, useHistory } from 'react-router-dom';
 import { MarketData } from '../../components/MarketData';
 import { DashboardHome } from '../../components/DashboardHome';
-import RaiinmakerLogo from '../../assets/svg/logo.svg';
 
 import SettingsIcon from '@material-ui/icons/Settings';
 import { PaymentsAccount } from '../../components/PaymentsAccount';
@@ -131,9 +130,6 @@ const Dashboard: React.FC = (props) => {
                 >
                   <MenuIcon />
                 </IconButton>
-                <Link to={'/dashboard/campaigns'} style={{ textDecoration: 'none', color: 'white', width: '40px' }}>
-                  <img src={RaiinmakerLogo} alt="raiinmaker" />
-                </Link>
                 <Grid container direction={'row'} justify={'flex-end'}>
                   <Grid item>
                     <Button style={{ backgroundColor: 'transparent' }}>
@@ -184,7 +180,7 @@ const Dashboard: React.FC = (props) => {
                   </ProtectedRoute>
                 )}
                 {value['company'] === 'raiinmaker' && (
-                  <ProtectedRoute exact path={'/dashboard/admin'} adminOnly={true}>
+                  <ProtectedRoute exact path={'/dashboard/admin/management'} adminOnly={true}>
                     <Admin {...props} />
                   </ProtectedRoute>
                 )}

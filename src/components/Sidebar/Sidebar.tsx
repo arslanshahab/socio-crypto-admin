@@ -9,6 +9,8 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import { TrendingUp } from '@material-ui/icons';
 import { NavLink } from 'react-router-dom';
 import { getRoutesMapping } from '../../helpers/routesMapping';
+import RaiinmakerLogo from '../../assets/svg/logo.svg';
+import styles from './Sidebar.module.scss';
 
 interface Props {
   value: any;
@@ -40,7 +42,13 @@ const Sidebar: React.FC<Props> = (props) => {
     }
   };
   return (
-    <Box className="w-full pt-20 bg-blue-800 h-screen">
+    <Box className="w-full pt-20 bg-gradient-to-b from-blue-800 to-gray-900 h-screen">
+      <Box className="flex flex-col justify-center items-center w-full">
+        <NavLink to={'/dashboard/campaigns'}>
+          <img className="w-16" src={RaiinmakerLogo} alt="raiinmaker" />
+        </NavLink>
+        <h4 className="text-lg text-gray-300 mt-1">Raiinmaker</h4>
+      </Box>
       <Box className="flex flex-col justify-center items-center pt-20 w-full">
         {menuList.map(
           (item, index) =>
@@ -50,6 +58,7 @@ const Sidebar: React.FC<Props> = (props) => {
                 key={index}
                 to={item.to}
                 className="flex flex-row justify-start items-center px-10 py-3 text-lg text-gray-200 w-full"
+                activeClassName={styles.active}
               >
                 {getIcon(item.icon)}
                 <span className="ml-3 capitalize">{item.name}</span>
@@ -59,6 +68,8 @@ const Sidebar: React.FC<Props> = (props) => {
                 className="flex flex-row justify-start items-center px-10 py-3 text-lg text-gray-200 w-full"
                 key={index}
                 href={item.href}
+                target="_blank"
+                rel="noreferrer"
               >
                 {getIcon(item.icon)}
                 <span className="ml-3 capitalize">{item.name}</span>

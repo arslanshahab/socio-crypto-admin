@@ -15,7 +15,7 @@ export const getRoutesMapping = (data: any): Array<MenuObject> => {
     { name: 'new campaign', to: '/dashboard/newCampaign', icon: 'add', enabled: true },
     {
       name: 'Admin',
-      to: '/dashboard/admin',
+      to: '/dashboard/admin/management',
       icon: 'assign',
       enabled: (data && data.company === 'raiinmaker') || false,
     },
