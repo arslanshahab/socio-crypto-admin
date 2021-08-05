@@ -12,15 +12,7 @@ interface Props extends RouteProps {
 export const ProtectedRoute: React.FC<Props> = (props) => {
   const history = useHistory();
   const { loading, data, error } = useQuery(VERIFY_SESSION);
-  const routeState = props.location && props.location.state && props.location.state ? props.location.state : null;
-  const redirect = () => {
-    const renderComponent = () => <Redirect to={{ pathname: '/' }} />;
-    return (
-      <div>
-        <Route {...props} component={renderComponent} render={undefined} />;
-      </div>
-    );
-  };
+
   const renderRoute = () => {
     if (loading) return <div />;
     if (data) {
@@ -29,12 +21,12 @@ export const ProtectedRoute: React.FC<Props> = (props) => {
       }
       return (
         <UserContext.Provider value={data.verifySession}>
-          <Route routeState={routeState} company={data.verifySession.company} {...props} />
+          <Route {...props} />
         </UserContext.Provider>
       );
     } else if (error) {
       console.log('ERROR: ', error);
-      return redirect();
+      return <Redirect to={{ pathname: '/' }} />;
     }
   };
 

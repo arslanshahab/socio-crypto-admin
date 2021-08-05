@@ -1,12 +1,9 @@
 import React from 'react';
-import clsx from 'clsx';
-import IconButton from '@material-ui/core/IconButton';
 import { Switch } from 'react-router';
-import { CampaignsList } from '../../components/CampaignsList';
+import CampaignsPage from '../Campaigns';
 import { NewCampaign } from '../../components/campaign-create/NewCampaign';
 import { Link, useHistory } from 'react-router-dom';
 import { MarketData } from '../../components/MarketData';
-import { DashboardHome } from '../../components/DashboardHome';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { PaymentsAccount } from '../../components/PaymentsAccount';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -20,10 +17,9 @@ import { UserManagement } from '../../components/UserManagement';
 import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
 import Sidebar from '../../components/Sidebar';
 import styles from './Dashboard.module.scss';
+import { DashboardHome } from '../../components/DashboardHome';
 
 const Dashboard: React.FC = (props) => {
-  const [open, setOpen] = React.useState(true);
-
   const history = useHistory();
 
   const handleLogout = async () => {
@@ -45,21 +41,19 @@ const Dashboard: React.FC = (props) => {
               <Sidebar value={value} />
             </Box>
             <Box className={styles.content}>
-              <Box className="w-full flex flex-row justify-end items-center px-4 py-3 bg-gray-100 mb-10">
-                <Link className="mr-2" to={'/dashboard/paymentsAccount'}>
+              <Box className={styles.topbar}>
+                <Link className="mr-4 text-blue-700 cursor-pointer" to={'/dashboard/paymentsAccount'}>
                   <SettingsIcon />
                 </Link>
-                <IconButton onClick={handleLogout}>
-                  <ExitToAppIcon />
-                </IconButton>
+                <ExitToAppIcon className="text-blue-700 cursor-pointer" onClick={handleLogout} />
               </Box>
-              <Box className="w-full">
+              <Box className={styles.main}>
                 <Switch>
                   <ProtectedRoute exact path={'/dashboard'}>
                     <DashboardHome />
                   </ProtectedRoute>
                   <ProtectedRoute exact path={'/dashboard/campaigns'}>
-                    <CampaignsList />
+                    <CampaignsPage />
                   </ProtectedRoute>
                   <ProtectedRoute exact path={'/dashboard/newCampaign'}>
                     <NewCampaign userData={value} {...props} />

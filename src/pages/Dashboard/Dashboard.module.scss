@@ -4,7 +4,7 @@
 }
 
 .content {
-  min-height: 100vh;
+  height: 100vh;
   width: calc(100% - 300px);
 }
 
@@ -15,4 +15,16 @@
   justify-content: flex-end;
   align-items: center;
   padding: 1rem;
+  background: #f3f4f6;
+  height: 75px;
+}
+
+.main {
+  width: 100%;
+  height: calc(100% - 75px);
+  padding-top: 30px;
+
+  > div:first-child {
+    height: 100%;
+  }
 }
