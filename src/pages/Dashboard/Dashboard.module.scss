@@ -1,0 +1,18 @@
+.side {
+  width: 300px;
+  min-height: 100vh;
+}
+
+.content {
+  min-height: 100vh;
+  width: calc(100% - 300px);
+}
+
+.topbar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem;
+}
