@@ -109,7 +109,7 @@ export const Initialize: React.FC<Props> = (props) => {
 
   return (
     <Fade>
-      <div className="init-campaign-container">
+      <Box className="w-full">
         <Grid container className="form-container" direction={'column'}>
           <Grid container direction="row" justify="space-evenly">
             <div className="image-upload-container">
@@ -395,7 +395,7 @@ export const Initialize: React.FC<Props> = (props) => {
           </div>
         </Grid>
         <ToastContainer />
-      </div>
+      </Box>
     </Fade>
   );
 };

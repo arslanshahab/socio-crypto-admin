@@ -57,7 +57,7 @@ const Sidebar: React.FC<Props> = (props) => {
               <NavLink
                 key={index}
                 to={item.to}
-                className="flex flex-row justify-start items-center px-10 py-3 text-lg text-gray-200 w-full"
+                className="flex flex-row justify-start items-center px-10 py-3 text-md text-gray-200 w-full"
                 activeClassName={styles.active}
               >
                 {getIcon(item.icon)}
@@ -65,7 +65,7 @@ const Sidebar: React.FC<Props> = (props) => {
               </NavLink>
             ) : (
               <a
-                className="flex flex-row justify-start items-center px-10 py-3 text-lg text-gray-200 w-full"
+                className="flex flex-row justify-start items-center px-10 py-3 text-mg text-gray-200 w-full"
                 key={index}
                 href={item.href}
                 target="_blank"

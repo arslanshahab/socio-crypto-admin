@@ -3,7 +3,7 @@ import { Switch } from 'react-router';
 import CampaignsPage from '../Campaigns';
 import { NewCampaign } from '../../components/campaign-create/NewCampaign';
 import { Link, useHistory } from 'react-router-dom';
-import { MarketData } from '../../components/MarketData';
+// import { MarketData } from '../../components/MarketData';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { PaymentsAccount } from '../../components/PaymentsAccount';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -18,6 +18,7 @@ import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
 import Sidebar from '../../components/Sidebar';
 import styles from './Dashboard.module.scss';
 import { DashboardHome } from '../../components/DashboardHome';
+import NewCampaignPage from '../NewCampaign';
 
 const Dashboard: React.FC = (props) => {
   const history = useHistory();
@@ -56,11 +57,11 @@ const Dashboard: React.FC = (props) => {
                     <CampaignsPage />
                   </ProtectedRoute>
                   <ProtectedRoute exact path={'/dashboard/newCampaign'}>
-                    <NewCampaign userData={value} {...props} />
+                    <NewCampaignPage userData={value} {...props} />
                   </ProtectedRoute>
-                  <ProtectedRoute exact path={'/dashboard/marketData'}>
+                  {/* <ProtectedRoute exact path={'/dashboard/marketData'}>
                     <MarketData />
-                  </ProtectedRoute>
+                  </ProtectedRoute> */}
                   <ProtectedRoute exact path={'/dashboard/paymentsAccount'}>
                     <PaymentsAccount />
                   </ProtectedRoute>

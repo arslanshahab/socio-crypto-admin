@@ -11,7 +11,7 @@ import { updateCampaignState } from '../../redux/slices/campaign';
 import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';
 import { Requirements } from './Requirements';
-import { SetupCampaign } from '../SetupCampaign';
+import { SetupCampaign } from './SetupCampaign';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { NEW_CAMPAIGN, NEW_CAMPAIGN_IMAGES } from '../../operations/mutations/campaign';

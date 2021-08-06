@@ -330,6 +330,16 @@ export interface ListPendingCampaignsAdminResults {
   };
 }
 
+export interface Alert {
+  message: string;
+  open: boolean;
+}
+
+export interface StoreAlerts {
+  success: Alert;
+  error: Alert;
+}
+
 export interface FileObject {
   filename: string;
   format: string;
