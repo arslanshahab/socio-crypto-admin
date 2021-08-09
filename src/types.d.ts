@@ -256,15 +256,21 @@ export interface RafflePrizeStructure {
 }
 
 export interface CampaignConfig {
-  [key: string]: string | number | boolean | FileObject;
+  [key: string]: string | boolean | number | FileObject;
   numOfSuggestedPosts: number;
   numOfTiers: number;
   initialTotal: string;
   type: string;
-  cryptoSymbol?: string;
-  rafflePrizeName?: string;
-  rafflePrizeAffiliateLink?: string;
-  raffleImage?: FileObject;
+  budget: string;
+  agreementChecked: boolean;
+  cryptoSymbol: string;
+  rafflePrizeName: string;
+  rafflePrizeAffiliateLink: string;
+  raffleImage: FileObject;
+  coiinBudget: string;
+  budgetType: string;
+  campaignType: string;
+  success: boolean;
 }
 
 export interface Campaign {
@@ -347,7 +353,14 @@ export interface FileObject {
 }
 
 export interface CampaignState {
-  [key: string]: string | string[] | AlgorithmSpecs | CampaignConfig | CampaignRequirementSpecs | FileObject;
+  [key: string]:
+    | string
+    | string[]
+    | FileObject
+    | CampaignConfig
+    | AlgorithmSpecs
+    | CampaignRequirementSpecs
+    | undefined;
   name: string;
   beginDate: string;
   endDate: string;

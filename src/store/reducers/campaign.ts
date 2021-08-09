@@ -6,6 +6,7 @@ import { CampaignState } from '../../types.d';
 const campaign = createReducer(initialState.newCampaign, {
   [UPDATE_CAMPAIGN]: (state, action: PayloadAction<CampaignState>) => {
     state = action.payload;
+    return state;
   },
 
   [RESET_CAMPAIGN]: () => {

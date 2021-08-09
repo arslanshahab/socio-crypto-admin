@@ -36,6 +36,7 @@ const initialState: CampaignState = {
     numOfTiers: 3,
     initialTotal: '',
     budget: '',
+    coiinBudget: '',
     budgetType: '',
     campaignType: '',
     agreementChecked: false,

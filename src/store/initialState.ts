@@ -34,6 +34,7 @@ const campaignInitState: CampaignState = {
     cryptoSymbol: '',
     numOfTiers: 3,
     initialTotal: '',
+    coiinBudget: '',
     budget: '',
     budgetType: '',
     campaignType: '',

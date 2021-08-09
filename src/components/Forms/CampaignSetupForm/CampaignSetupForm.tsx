@@ -4,8 +4,6 @@ import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
 import { updateCampaignState } from '../../../redux/slices/campaign';
 import icon from '../../../assets/svg/camera.svg';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/reducer';
 import { useQuery } from '@apollo/client';
 import { GetFundingWalletResponse } from '../../../types';
 import { GET_FUNDING_WALLET } from '../../../operations/queries/fundingWallet';
@@ -15,6 +13,8 @@ import { useHistory } from 'react-router';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
 import Actions from '../../NewCampaign/Actions';
+import { resetCampaign, updateCampaign } from '../../../store/actions/campaign';
+import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 
 interface Props {
   company: string;
@@ -44,17 +44,13 @@ const CampaignSetupForm: React.FC<Props> = ({
   const dispatch = useDispatch();
   const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
   const history = useHistory();
-  const state = useSelector((state: RootState) => state);
-  const campaign = state.newCampaign;
-  const [campaignType, setCampaignType] = useState(
-    campaign.config.campaignType ? campaign.config.campaignType.toString() : '',
-  );
-  const [budgetType, setBudgetType] = useState(campaign.config.budgetType ? campaign.config.budgetType.toString() : '');
-
-  const handleCampaignChange = (key: string, value: any) => {
-    const cat = key === 'cryptoId' ? 'info' : 'config';
-    dispatch(updateCampaignState({ cat, key: key, val: value }));
-  };
+  const campaign = useStoreCampaignSelector();
+  const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
+  const [budgetType, setBudgetType] = useState(campaign.config.budgetType);
+  const [cryptoSymbol, setCryptoSymbol] = useState(campaign.config.cryptoSymbol);
+  const [coiinBudget, setCoiinBudget] = useState(campaign.config.coiinBudget);
+  const [rafflePrizeName, setRafflePrizeName] = useState(campaign.config.rafflePrizeName);
+  const [rafflePrizeLink, setRafflePrizeLink] = useState(campaign.config.rafflePrizeAffiliateLink);
 
   const hasValue = (token: Crypto) => {
     return token.balance > 0;
@@ -62,15 +58,56 @@ const CampaignSetupForm: React.FC<Props> = ({
 
   const handleCampaignType = (type: string) => {
     setCampaignType(type);
-    dispatch(updateCampaignState({ cat: 'config', key: 'campaignType', val: type }));
   };
 
   const handleBudgetType = (type: string) => {
     setBudgetType(type);
-    handleCampaignChange('budgetType', type);
   };
 
-  console.log(data);
+  const handleSymbolChange = (e: React.ChangeEvent<any>) => {
+    setCryptoSymbol(e.target.value);
+  };
+
+  const handleCoiinBudgetChange = (event: React.ChangeEvent<any>) => {
+    if (data && data.getFundingWallet) {
+      const token = data.getFundingWallet.currency.find(
+        (item) => item.type.toLowerCase() === cryptoSymbol.toLowerCase(),
+      );
+      if (token) {
+        let value = event.target.value;
+        if (parseInt(value) > token.balance) {
+          value = token.balance.toString();
+        }
+        setCoiinBudget(value);
+      }
+    }
+  };
+
+  const next = () => {
+    const currencyObject =
+      data && data.getFundingWallet
+        ? data.getFundingWallet.currency.find((item) => item.type.toLowerCase() === cryptoSymbol)
+        : null;
+    const symbolId: string = currencyObject ? currencyObject.id : '';
+    const augmentedCampaign = {
+      ...campaign,
+      cryptoId: symbolId,
+      config: {
+        ...campaign.config,
+        coiinBudget,
+        campaignType,
+        budgetType,
+        cryptoSymbol,
+        ...(budgetType === 'raffle' && {
+          rafflePrizeName,
+          rafflePrizeAffiliateLink: rafflePrizeLink,
+        }),
+      },
+    };
+    console.log(augmentedCampaign);
+    dispatch(updateCampaign(augmentedCampaign));
+    handleNext();
+  };
 
   return (
     <Box className="w-full px-28">
@@ -89,7 +126,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                     <Box className="flex flex-col justify-start w-2/6">
                       <FormControl className="w-2/5" variant={'outlined'} fullWidth>
                         <InputLabel>Select Token</InputLabel>
-                        <Select value={campaign.config.cryptoSymbol?.toUpperCase()}>
+                        <Select value={cryptoSymbol} onChange={handleSymbolChange}>
                           {loading ? (
                             <div />
                           ) : data && data.getFundingWallet.currency.filter(hasValue).length ? (
@@ -97,11 +134,11 @@ const CampaignSetupForm: React.FC<Props> = ({
                               return (
                                 <MenuItem
                                   alignItems="flex-start"
-                                  value={crypto.type.toUpperCase()}
-                                  onClick={() => {
-                                    handleCampaignChange('cryptoSymbol', crypto.type);
-                                    handleCampaignChange('cryptoId', crypto.id);
-                                  }}
+                                  value={crypto.type.toLowerCase()}
+                                  // onClick={() => {
+                                  //   handleCampaignChange('cryptoSymbol', crypto.type);
+                                  //   handleCampaignChange('cryptoId', crypto.id);
+                                  // }}
                                   key={index}
                                 >
                                   {capitalize(crypto.type.toUpperCase())}
@@ -112,7 +149,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                             <MenuItem
                               value="Register Token"
                               onClick={() => {
-                                dispatch(updateCampaignState({ cat: 'reset', key: 'reset', val: 'reset' }));
+                                dispatch(resetCampaign());
                                 history.push('/dashboard/paymentsAccount');
                               }}
                             >
@@ -129,28 +166,8 @@ const CampaignSetupForm: React.FC<Props> = ({
                         variant="outlined"
                         margin={'normal'}
                         type="number"
-                        value={campaign.config.coiinBudget}
-                        onChange={(event) => {
-                          if (data && data.getFundingWallet) {
-                            const token = data.getFundingWallet.currency.find(
-                              (item) => item.type === campaign.config.cryptoSymbol,
-                            );
-                            if (token) {
-                              if (parseInt(event.target.value) > token.balance) {
-                                event.target.value = token.balance.toString();
-                              }
-                            }
-                          }
-                          handleCampaignChange('coiinBudget', event.target.value as string);
-                          dispatch(
-                            updateCampaignState({
-                              cat: 'algoTiers',
-                              tier: '3',
-                              key: 'totalCoiins',
-                              val: event.target.value,
-                            }),
-                          );
-                        }}
+                        value={coiinBudget}
+                        onChange={handleCoiinBudgetChange}
                       />
                     </Box>
                   </Fade>
@@ -160,15 +177,15 @@ const CampaignSetupForm: React.FC<Props> = ({
                   <Box className="flex flex-row justify-between w-full">
                     <Box className="w/-2/6">
                       <TextField
-                        label={'Raffle Prize Name'}
-                        name={''}
+                        label="Raffle Prize Name"
                         placeholder={'Raffle Campaign Prize'}
                         fullWidth
                         variant="outlined"
                         margin={'normal'}
                         type="text"
+                        value={rafflePrizeName}
                         onChange={(event) => {
-                          handleCampaignChange('rafflePrizeName', event.target.value as string);
+                          setRafflePrizeName(event.target.value);
                         }}
                       />
                       <TextField
@@ -179,8 +196,9 @@ const CampaignSetupForm: React.FC<Props> = ({
                         variant="outlined"
                         margin={'normal'}
                         type="text"
+                        value={rafflePrizeLink}
                         onChange={(event) => {
-                          handleCampaignChange('rafflePrizeAffiliateLink', event.target.value as string);
+                          setRafflePrizeLink(event.target.value);
                         }}
                       />
                     </Box>
@@ -208,21 +226,6 @@ const CampaignSetupForm: React.FC<Props> = ({
                     </Box>
                   </Box>
                 )}
-
-                {budgetType !== 'crypto' && budgetType !== 'raffle' && (
-                  <TextField
-                    label={'Campaign Budget (USD)'}
-                    name={'budget'}
-                    placeholder={'Campaign Budget (USD)'}
-                    fullWidth
-                    variant="outlined"
-                    margin={'normal'}
-                    type="number"
-                    onChange={(event) => {
-                      handleCampaignChange('usdBudget', event.target.value as string);
-                    }}
-                  />
-                )}
               </Box>
             )}
           </Box>
@@ -233,7 +236,7 @@ const CampaignSetupForm: React.FC<Props> = ({
         firstStep={firstStep}
         finalStep={finalStep}
         handleBack={handleBack}
-        handleNext={handleNext}
+        handleNext={next}
         handleSubmit={handleSubmit}
       />
     </Box>
