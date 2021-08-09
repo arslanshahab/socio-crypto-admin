@@ -1,8 +1,7 @@
 import { Box } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/reducer';
+import { useDispatch } from 'react-redux';
 import { useMutation, FetchResult } from '@apollo/client';
 import {
   CampaignCreationResponse,
@@ -15,6 +14,7 @@ import StepsView from '../../components/NewCampaign/StepsView';
 import StepContent from '../../components/NewCampaign/StepsContent';
 import { updateCampaignState } from '../../redux/slices/campaign';
 import axios from 'axios';
+import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
 
 interface Props {
   userData: any;
@@ -29,8 +29,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
   const [raffleUploadProgress, setRaffleUploadProgress] = useState(0);
   const steps = ['Purpose and Budget', 'Campaign Information', 'Suggested Posts', 'Campaign Requirements', 'Algorithm'];
   const [activeStep, setActiveStep] = useState(0);
-  const state = useSelector((state: RootState) => state);
-  const campaign = state.newCampaign;
+  const campaign = useStoreCampaignSelector();
 
   const [saveCampaign, { loading }] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN, {
     variables: {

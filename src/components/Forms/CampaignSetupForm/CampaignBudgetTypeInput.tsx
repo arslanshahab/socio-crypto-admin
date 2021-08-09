@@ -21,7 +21,7 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange, co
   return (
     <Box className="w-full mt-16">
       <p className="mb-3 text-center text-2xl">How will this campaign reward participants?</p>
-      <Box className="flex flex-row justify-center space-x-4 ">
+      <Box className="flex flex-row justify-center space-x-4">
         {menu.map((item, index) => (
           <Box
             key={index}
@@ -30,7 +30,7 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange, co
                 handleChange(item.value);
               }
             }}
-            className={`cursor-pointer flex flex-row justify-center items-center rounded-lg w-96 h-28 bg-gray-200 spacing-2 ${
+            className={`cursor-pointer flex flex-row justify-center items-center rounded-lg w-2/6 h-28 bg-gray-200 spacing-2 ${
               budgetType === item.value ? 'bg-blue-800 text-white' : ''
             }`}
           >

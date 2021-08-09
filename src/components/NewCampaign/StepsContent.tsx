@@ -1,10 +1,10 @@
 import React from 'react';
-import { Initialize } from '../campaign-create/Initialize';
 import { PostsAndTags } from '../campaign-create/PostsAndTags';
 import { Algorithm } from '../campaign-create/Algorithm';
 import { Requirements } from '../campaign-create/Requirements';
 import { CampaignState } from '../../types.d';
 import CampaignSetupForm from '../Forms/CampaignSetupForm';
+import CampaignInitializeForm from '../Forms/CampaignInitializeForm/CampaignInitializeForm';
 
 interface Props {
   userData: any;
@@ -41,7 +41,18 @@ const StepContent: React.FC<Props> = ({
         />
       );
     case 1:
-      return <Initialize campaignType={campaign?.config.budgetType as string} userData={userData} />;
+      return (
+        <CampaignInitializeForm
+          activeStep={activeStep}
+          firstStep={firstStep}
+          finalStep={finalStep}
+          handleBack={handleBack}
+          handleNext={handleNext}
+          handleSubmit={handleSubmit}
+          campaignType={campaign.config.budgetType as string}
+          userData={userData}
+        />
+      );
     case 2:
       return <PostsAndTags />;
     case 3:

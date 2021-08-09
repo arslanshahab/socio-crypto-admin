@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
-import { updateCampaignState } from '../../../redux/slices/campaign';
 import icon from '../../../assets/svg/camera.svg';
 import { useQuery } from '@apollo/client';
 import { GetFundingWalletResponse } from '../../../types';
@@ -65,7 +64,9 @@ const CampaignSetupForm: React.FC<Props> = ({
   };
 
   const handleSymbolChange = (e: React.ChangeEvent<any>) => {
-    setCryptoSymbol(e.target.value);
+    if (e.target.value !== 'register') {
+      setCryptoSymbol(e.target.value);
+    }
   };
 
   const handleCoiinBudgetChange = (event: React.ChangeEvent<any>) => {
@@ -110,7 +111,7 @@ const CampaignSetupForm: React.FC<Props> = ({
   };
 
   return (
-    <Box className="w-full px-28">
+    <Box className="w-full px-20">
       <Fade triggerOnce>
         <CampaignTypeInput campaignType={campaignType} handleChange={handleCampaignType} />
       </Fade>
@@ -123,52 +124,45 @@ const CampaignSetupForm: React.FC<Props> = ({
               <Box className="w-full mt-10">
                 {budgetType == 'crypto' && (
                   <Fade triggerOnce>
-                    <Box className="flex flex-col justify-start w-2/6">
-                      <FormControl className="w-2/5" variant={'outlined'} fullWidth>
-                        <InputLabel>Select Token</InputLabel>
-                        <Select value={cryptoSymbol} onChange={handleSymbolChange}>
-                          {loading ? (
-                            <div />
-                          ) : data && data.getFundingWallet.currency.filter(hasValue).length ? (
-                            data.getFundingWallet.currency.filter(hasValue).map((crypto, index) => {
-                              return (
-                                <MenuItem
-                                  alignItems="flex-start"
-                                  value={crypto.type.toLowerCase()}
-                                  // onClick={() => {
-                                  //   handleCampaignChange('cryptoSymbol', crypto.type);
-                                  //   handleCampaignChange('cryptoId', crypto.id);
-                                  // }}
-                                  key={index}
-                                >
+                    <Box className="flex flex-row justify-start w-full">
+                      <Box className="w-2/6 box-border pr-4">
+                        <FormControl variant={'outlined'} fullWidth>
+                          <InputLabel>Select Token</InputLabel>
+                          <Select value={cryptoSymbol} onChange={handleSymbolChange}>
+                            {loading ? (
+                              <div />
+                            ) : data && data.getFundingWallet.currency.filter(hasValue).length ? (
+                              data.getFundingWallet.currency.filter(hasValue).map((crypto, index) => (
+                                <MenuItem alignItems="flex-start" value={crypto.type.toLowerCase()} key={index}>
                                   {capitalize(crypto.type.toUpperCase())}
                                 </MenuItem>
-                              );
-                            })
-                          ) : (
-                            <MenuItem
-                              value="Register Token"
-                              onClick={() => {
-                                dispatch(resetCampaign());
-                                history.push('/dashboard/paymentsAccount');
-                              }}
-                            >
-                              No Crypto Currency Found - Register Crypto
-                            </MenuItem>
-                          )}
-                        </Select>
-                      </FormControl>
-                      <TextField
-                        label="Campaign Budget"
-                        name="budget"
-                        placeholder={'100'}
-                        fullWidth
-                        variant="outlined"
-                        margin={'normal'}
-                        type="number"
-                        value={coiinBudget}
-                        onChange={handleCoiinBudgetChange}
-                      />
+                              ))
+                            ) : (
+                              <MenuItem
+                                value="register"
+                                onClick={() => {
+                                  dispatch(resetCampaign());
+                                  history.push('/dashboard/paymentsAccount');
+                                }}
+                              >
+                                No Crypto Currency Found - Register Crypto
+                              </MenuItem>
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                      <Box className="w-2/6 box-border pr-4">
+                        <TextField
+                          label="Campaign Budget"
+                          name="budget"
+                          placeholder={'100'}
+                          fullWidth
+                          variant="outlined"
+                          type="number"
+                          value={coiinBudget}
+                          onChange={handleCoiinBudgetChange}
+                        />
+                      </Box>
                     </Box>
                   </Fade>
                 )}

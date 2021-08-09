@@ -20,9 +20,9 @@ const Actions: React.FC<CampaignActionProps> = ({
   handleSubmit,
 }) => {
   return (
-    <Box className="mt-14 flex flex-row justify-between items-center">
+    <Box className="mt-14 flex flex-row justify-start items-center">
       <CustomButton
-        className={`w-24 mr-5 rounded-md text-md border-2 bg-transparent ${
+        className={`w-24 h-12 mr-5 rounded-md text-md border-2 bg-transparent ${
           activeStep > firstStep ? 'border-blue-800 text-blue-800' : 'text-gray-300 border-gray-300'
         }`}
         onClick={handleBack}
@@ -32,7 +32,7 @@ const Actions: React.FC<CampaignActionProps> = ({
       </CustomButton>
       {activeStep < finalStep && (
         <CustomButton
-          className="w-24 mr-5 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
+          className="w-24 h-12 mr-5 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
           onClick={handleNext}
         >
           Next
@@ -40,7 +40,7 @@ const Actions: React.FC<CampaignActionProps> = ({
       )}
       {activeStep === finalStep && (
         <CustomButton
-          className="w-24 mr-5 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
+          className="w-24 h-12 mr-5 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
           onClick={handleSubmit}
         >
           Submit
