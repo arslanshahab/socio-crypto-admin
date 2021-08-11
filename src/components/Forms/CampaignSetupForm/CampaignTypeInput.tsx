@@ -18,7 +18,7 @@ const CampaignTypeInput: React.FC<Props> = ({ campaignType, handleChange }) => {
   ];
 
   return (
-    <Box className="w-full mt-16">
+    <Box className="w-full mt-10">
       <p className="mb-3 text-center text-2xl">What will this campaign prioritize?</p>
       <Box className="flex flex-row justify-between space-x-4">
         {menu.map((item, index) => (

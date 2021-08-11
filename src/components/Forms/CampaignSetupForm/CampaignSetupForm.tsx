@@ -4,10 +4,10 @@ import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
 import icon from '../../../assets/svg/camera.svg';
 import { useQuery } from '@apollo/client';
-import { GetFundingWalletResponse } from '../../../types';
+import { FileObject, GetFundingWalletResponse } from '../../../types';
 import { GET_FUNDING_WALLET } from '../../../operations/queries/fundingWallet';
 import { capitalize } from '../../../helpers/formatter';
-import { handleImage } from '../../../helpers/utils';
+import { handleImage } from '../../../helpers/fileHandler';
 import { useHistory } from 'react-router';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
@@ -50,6 +50,7 @@ const CampaignSetupForm: React.FC<Props> = ({
   const [coiinBudget, setCoiinBudget] = useState(campaign.config.coiinBudget);
   const [rafflePrizeName, setRafflePrizeName] = useState(campaign.config.rafflePrizeName);
   const [rafflePrizeLink, setRafflePrizeLink] = useState(campaign.config.rafflePrizeAffiliateLink);
+  const [raffleImage, setRaffleImage] = useState(campaign.config.raffleImage);
 
   const hasValue = (token: Crypto) => {
     return token.balance > 0;
@@ -102,12 +103,21 @@ const CampaignSetupForm: React.FC<Props> = ({
         ...(budgetType === 'raffle' && {
           rafflePrizeName,
           rafflePrizeAffiliateLink: rafflePrizeLink,
+          raffleImage,
         }),
       },
     };
-    console.log(augmentedCampaign);
     dispatch(updateCampaign(augmentedCampaign));
     handleNext();
+  };
+
+  const onSuccess = (data: FileObject) => {
+    console.log(data);
+    setRaffleImage(data);
+  };
+
+  const onError = (msg: string) => {
+    console.log(msg);
   };
 
   return (
@@ -118,7 +128,7 @@ const CampaignSetupForm: React.FC<Props> = ({
 
       {campaignType && (
         <Fade triggerOnce>
-          <Box className="w-full mt-16">
+          <Box className="w-full mt-10">
             <CampaignBudgetTypeInput budgetType={budgetType} company={company} handleChange={handleBudgetType} />
             {budgetType && (
               <Box className="w-full mt-10">
@@ -126,7 +136,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                   <Fade triggerOnce>
                     <Box className="flex flex-row justify-start w-full">
                       <Box className="w-2/6 box-border pr-4">
-                        <FormControl variant={'outlined'} fullWidth>
+                        <FormControl variant={'outlined'} fullWidth className="customInput">
                           <InputLabel>Select Token</InputLabel>
                           <Select value={cryptoSymbol} onChange={handleSymbolChange}>
                             {loading ? (
@@ -160,6 +170,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                           variant="outlined"
                           type="number"
                           value={coiinBudget}
+                          className="customInput"
                           onChange={handleCoiinBudgetChange}
                         />
                       </Box>
@@ -169,54 +180,64 @@ const CampaignSetupForm: React.FC<Props> = ({
 
                 {budgetType === 'raffle' && (
                   <Box className="flex flex-row justify-between w-full">
-                    <Box className="w/-2/6">
-                      <TextField
-                        label="Raffle Prize Name"
-                        placeholder={'Raffle Campaign Prize'}
-                        fullWidth
-                        variant="outlined"
-                        margin={'normal'}
-                        type="text"
-                        value={rafflePrizeName}
-                        onChange={(event) => {
-                          setRafflePrizeName(event.target.value);
-                        }}
-                      />
-                      <TextField
-                        label={'Raffle Affiliate Link (optional)'}
-                        name={''}
-                        placeholder={'Raffle Affiliate Link'}
-                        fullWidth
-                        variant="outlined"
-                        margin={'normal'}
-                        type="text"
-                        value={rafflePrizeLink}
-                        onChange={(event) => {
-                          setRafflePrizeLink(event.target.value);
-                        }}
-                      />
+                    <Box className="w-2/6 pr-3">
+                      <Box className="mb-4 w-full">
+                        <TextField
+                          label="Raffle Prize Name"
+                          placeholder={'Raffle Campaign Prize'}
+                          fullWidth
+                          variant="outlined"
+                          type="text"
+                          value={rafflePrizeName}
+                          className="customInput"
+                          onChange={(event) => {
+                            setRafflePrizeName(event.target.value);
+                          }}
+                        />
+                      </Box>
+                      <Box className="w-full">
+                        <TextField
+                          label={'Raffle Affiliate Link (optional)'}
+                          name={''}
+                          placeholder={'Raffle Affiliate Link'}
+                          fullWidth
+                          variant="outlined"
+                          type="text"
+                          value={rafflePrizeLink}
+                          className="customInput"
+                          onChange={(event) => {
+                            setRafflePrizeLink(event.target.value);
+                          }}
+                        />
+                      </Box>
                     </Box>
-                    <Box className="image-upload-container w-1/6">
+                    <Box className="flex flex-col justify-start w-2/6 pl-3">
                       <label htmlFor="single" className="cursor-pointer">
-                        <div>
-                          {campaign.config.raffleImage?.file ? (
-                            <div className="w-48 h-32">
-                              <img src={URL.createObjectURL(campaign.config.raffleImage.file)} alt="Raffle" />
-                            </div>
+                        <Box className="flex flex-col justify-center items-center h-44 w-full bg-gray-100 rounded-lg">
+                          {raffleImage?.file ? (
+                            <img
+                              src={raffleImage.file}
+                              alt="Raffle"
+                              className="w-full h-44 mb-2 rounded-md object-cover"
+                            />
                           ) : (
-                            <Box className="flex flex-col justify-center items-center">
-                              <img className="w-28 h-28 mb-2" src={icon} color="#3B5998" />
-                            </Box>
+                            <>
+                              <img className="w-24" src={icon} color="#3B5998" />
+                            </>
                           )}
-                        </div>
-                        <p>Upload Raffle Image</p>
+                        </Box>
                       </label>
                       <input
                         className="hidden"
                         type="file"
                         id="single"
-                        onChange={(e) => handleImage(e, dispatch, 'raffle')}
+                        onChange={(e) => handleImage(e, 'raffle', onSuccess, onError)}
                       />
+                      <label>
+                        <Box className="w-full flex flex-row justify-center items-center bg-gray-100 pb-2 rounded-b-lg">
+                          <p className="text-center text-gray-600 text-lg mt-1 pb-1">Upload Raffle Image</p>
+                        </Box>
+                      </label>
                     </Box>
                   </Box>
                 )}

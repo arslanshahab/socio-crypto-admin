@@ -89,19 +89,15 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         // @ts-ignore
         const { newCampaign: campaignCreateResponse } = response.data;
         if (campaign.image.file) {
-          await uploadCampaignImage(campaignCreateResponse, campaign.image.file as Blob, campaign.image.format);
+          await uploadCampaignImage(campaignCreateResponse, campaign.image.file, campaign.image.format);
         }
         if (campaign.sharedMedia.file) {
-          await uploadSharedMedia(
-            campaignCreateResponse,
-            campaign.sharedMedia.file as Blob,
-            campaign.sharedMedia.format,
-          );
+          await uploadSharedMedia(campaignCreateResponse, campaign.sharedMedia.file, campaign.sharedMedia.format);
         }
         if (campaign.config.raffleImage?.file) {
           await uploadRaffleImage(
             campaignCreateResponse,
-            campaign.config.raffleImage?.file as Blob,
+            campaign.config.raffleImage?.file,
             campaign.config.raffleImage?.format,
           );
         }
@@ -127,7 +123,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
     }
   };
 
-  const uploadRaffleImage = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+  const uploadRaffleImage = async (data: CampaignCreationResponse, file: string, format: string) => {
     await axios({
       method: 'PUT',
       url: data.raffleImageSignedURL,
@@ -142,7 +138,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
     });
   };
 
-  const uploadCampaignImage = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+  const uploadCampaignImage = async (data: CampaignCreationResponse, file: string, format: string) => {
     await axios({
       method: 'PUT',
       url: data.campaignImageSignedURL,
@@ -157,7 +153,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
     });
   };
 
-  const uploadSharedMedia = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+  const uploadSharedMedia = async (data: CampaignCreationResponse, file: string, format: string) => {
     await axios({
       method: 'PUT',
       url: data.sharedMediaSignedURL,

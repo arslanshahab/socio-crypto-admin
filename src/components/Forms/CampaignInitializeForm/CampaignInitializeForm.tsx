@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { Box, TextField, Tooltip } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { updateCampaignState } from '../../../redux/slices/campaign';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
@@ -10,10 +9,18 @@ import { ToastContainer } from 'react-toastify';
 import InfoIcon from '@material-ui/icons/Info';
 
 import icon from '../../../assets/svg/camera.svg';
-import { handleImage, showErrorMessage } from '../../../helpers/utils';
+import { handleImage } from '../../../helpers/fileHandler';
 import { Autocomplete } from '@material-ui/lab';
 import Actions from '../../NewCampaign/Actions';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
+import { useState } from 'react';
+import { FileObject } from '../../../types';
+import { showErrorAlert } from '../../../store/actions/alerts';
+import { updateCampaign } from '../../../store/actions/campaign';
+
+interface ErrorObject {
+  [key: string]: boolean;
+}
 
 interface Props {
   userData: {
@@ -39,9 +46,19 @@ const CampaignInitializeForm: React.FC<Props> = ({
 }) => {
   const dispatch = useDispatch();
   const campaign = useStoreCampaignSelector();
-
-  const beginDate = campaign.beginDate;
-  const endDate = campaign.endDate;
+  const [name, setName] = useState(campaign.name);
+  const [target, setTarget] = useState(campaign.target);
+  const [targetVideo, setTargetVideo] = useState(campaign.targetVideo);
+  const [numOfTiers, setTiers] = useState(campaign.config.numOfTiers);
+  const [numOfSuggestedPosts, setPosts] = useState(campaign.config.numOfSuggestedPosts);
+  const [tagline, setTagline] = useState(campaign.tagline);
+  const [keywords, setKeywords] = useState(campaign.keywords);
+  const [description, setDescription] = useState(campaign.description);
+  const [beginDate, setBeginDate] = useState(campaign.beginDate);
+  const [endDate, setEndDate] = useState(campaign.endDate);
+  const [campaignImage, setCampaignImage] = useState(campaign.image);
+  const [sharedMedia, setSharedMedia] = useState(campaign.sharedMedia);
+  const [errors, setErrors] = useState<ErrorObject>({});
 
   const handleCampaignChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     event.persist();
@@ -83,23 +100,68 @@ const CampaignInitializeForm: React.FC<Props> = ({
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
     if (endDate && dateIsoString && new Date(endDate).getTime() < new Date(dateIsoString).getTime()) {
-      return showErrorMessage('Beginning date must be before end date');
+      updateErrors('beginDate', '');
     }
-    if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'beginDate', val: dateIsoString }));
+    if (dateIsoString) {
+      setBeginDate(dateIsoString);
+    }
   };
 
   const handleEndDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
     if (beginDate && dateIsoString && new Date(beginDate).getTime() >= new Date(dateIsoString).getTime()) {
-      return showErrorMessage('Beginning date must be before end date');
+      updateErrors('endDate', '');
     }
-    if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
+    if (dateIsoString) {
+      setEndDate(dateIsoString);
+    }
   };
 
-  const handleKeywordsChange = (event: ChangeEvent<unknown>, value: string[]) => {
-    if (value.length) {
-      dispatch(updateCampaignState({ cat: 'keywords', key: 'keywords', val: value }));
+  const onSuccess = (data: FileObject, type: string) => {
+    if (type === 'campaignImage') {
+      setCampaignImage(data);
+    } else {
+      setSharedMedia(data);
     }
+  };
+
+  const onError = (msg: string) => {
+    dispatch(showErrorAlert(msg));
+  };
+
+  const updateErrors = (name: string, data: any) => {
+    const key = name;
+    const value = data;
+    const newErrors = { ...errors };
+    if (!value || value.length === 0) {
+      newErrors[key] = true;
+    } else {
+      newErrors[key] = false;
+    }
+    setErrors(newErrors);
+  };
+
+  const next = () => {
+    const augmentedCampaign = {
+      ...campaign,
+      name,
+      description,
+      tagline,
+      target,
+      targetVideo,
+      keywords,
+      beginDate,
+      endDate,
+      image: campaignImage,
+      sharedMedia,
+      config: {
+        ...campaign.config,
+        numOfTiers,
+        numOfSuggestedPosts,
+      },
+    };
+    dispatch(updateCampaign(augmentedCampaign));
+    handleNext();
   };
 
   return (
@@ -113,38 +175,50 @@ const CampaignInitializeForm: React.FC<Props> = ({
               label="Name of Campaign"
               name="name"
               placeholder={'name'}
-              value={campaign.name}
+              value={name}
               variant="outlined"
-              onChange={handleCampaignChange}
+              error={errors['name']}
+              onChange={(e) => {
+                setName(e.target.value);
+                updateErrors('name', e.target.value);
+              }}
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <TextField
               fullWidth
               className="customInput"
-              label={'Landing Page URL'}
-              name={'target'}
+              label="Landing Page URL"
+              name="target"
               placeholder={'Landing Page URL: must start with http or https'}
-              value={campaign.target}
+              value={target}
               variant="outlined"
-              onChange={handleCampaignChange}
+              error={errors['target']}
+              onChange={(e) => {
+                setTarget(e.target.value);
+                updateErrors('target', e.target.value);
+              }}
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <TextField
-              label={'Landing Page Video URL (Optional)'}
-              name={'targetVideo'}
+              label="Landing Page Video URL (Optional)"
+              name="targetVideo"
               placeholder={'Video URL (Optional)'}
-              value={campaign.targetVideo}
-              onChange={handleCampaignChange}
+              value={targetVideo}
               fullWidth
               variant="outlined"
               className="customInput"
+              error={errors['targetVideo']}
+              onChange={(e) => {
+                setTargetVideo(e.target.value);
+                updateErrors('targetVideo', e.target.value);
+              }}
             />
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <TextField
-              label={'How many Reward Tiers would you like to provide? (1-10)'}
+              label="How many Reward Tiers would you like to provide? (1-10)"
               fullWidth
               type="number"
               InputProps={{
@@ -154,39 +228,21 @@ const CampaignInitializeForm: React.FC<Props> = ({
                 },
               }}
               variant="outlined"
-              name={'numOfTiers'}
-              defaultValue={campaignType === 'raffle' ? 0 : 3}
-              placeholder={campaignType === 'raffle' ? '0' : '3'}
-              value={campaign.config.numOfTiers}
-              onChange={(e) => {
-                handleConfigChange(e);
-                dispatch(
-                  updateCampaignState({
-                    cat: 'algoTiersCount',
-                    tier: campaign.config.numOfTiers.toString(),
-                    key: 'totalCoiins',
-                    val: '',
-                  }),
-                );
-                dispatch(
-                  updateCampaignState({
-                    cat: 'algoTiersCount',
-                    tier: e.target.value,
-                    key: 'totalCoiins',
-                    val: campaign.config.coiinBudget,
-                  }),
-                );
-              }}
+              name="numOfTiers"
+              value={numOfTiers}
               className="customInput"
               disabled={campaignType === 'raffle'}
+              error={errors['numOfTiers']}
+              onChange={(e) => {
+                setTiers(parseInt(e.target.value));
+                updateErrors('numOfTiers', e.target.value);
+              }}
             />
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <TextField
               label={'How many Posting Templates would you like to provide? (1-5)'}
-              name={'numOfSuggestedPosts'}
-              placeholder={'2'}
-              defaultValue={2}
+              name="numOfSuggestedPosts"
               type="number"
               InputProps={{
                 inputProps: {
@@ -194,23 +250,31 @@ const CampaignInitializeForm: React.FC<Props> = ({
                   min: 1,
                 },
               }}
-              onChange={handleConfigChange}
-              value={campaign.config.numOfSuggestedPosts}
+              value={numOfSuggestedPosts}
               className="customInput"
               fullWidth
               variant="outlined"
+              error={errors['numOfSuggestedPosts']}
+              onChange={(e) => {
+                setPosts(parseInt(e.target.value));
+                updateErrors('numOfSuggestedPosts', e.target.value);
+              }}
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <TextField
-              label={'Campaign Tagline'}
-              name={'tagline'}
+              label="Campaign Tagline"
+              name="tagline"
               placeholder={'Campaign Tagline'}
-              value={campaign.tagline}
-              onChange={handleCampaignChange}
+              value={tagline}
               className="customInput"
               fullWidth
               variant="outlined"
+              error={errors['tagline']}
+              onChange={(e) => {
+                setTagline(e.target.value);
+                updateErrors('tagline', e.target.value);
+              }}
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
@@ -219,72 +283,93 @@ const CampaignInitializeForm: React.FC<Props> = ({
               id="keywords"
               freeSolo={true}
               multiple={true}
-              options={campaign.keywords}
-              onChange={handleKeywordsChange}
+              options={keywords}
               getOptionLabel={(option) => option}
-              defaultValue={campaign.keywords}
+              defaultValue={keywords}
               renderInput={(params) => (
-                <TextField {...params} variant="outlined" label="Keywords" placeholder="Add keywords for campaign" />
+                <TextField
+                  error={errors['keywords']}
+                  {...params}
+                  variant="outlined"
+                  label="Keywords"
+                  placeholder="Add keywords for campaign"
+                />
               )}
+              onChange={(e, val) => {
+                setKeywords(val);
+                updateErrors('keywords', val.length ? val : '');
+              }}
             />
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <TextField
               label="Description"
               name="description"
-              onChange={handleCampaignChange}
               multiline
-              value={campaign.description}
+              value={description}
               rows={4}
               fullWidth
               variant="outlined"
               className="customInput"
+              error={errors['description']}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                updateErrors('description', e.target.value);
+              }}
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <DateTimePicker
-              value={beginDate || null}
+              value={beginDate}
               inputVariant="outlined"
               variant="dialog"
               fullWidth
-              onChange={handleBeginDateChange}
               label="Campaign Start Date"
               showTodayButton
               className="customInput"
+              error={errors['beginDate']}
+              onChange={handleBeginDateChange}
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <DateTimePicker
               inputVariant="outlined"
               fullWidth
-              value={endDate || null}
+              value={endDate}
               disablePast
-              onChange={handleEndDateChange}
               label="Campaign End Date"
               showTodayButton
               className="customInput"
+              error={errors['endDate']}
+              onChange={handleEndDateChange}
             />
           </Box>
         </Box>
         <Box className="w-2/6 flex flex-col flex-wrap">
-          <Box className="flex flex-col p-5">
-            <label htmlFor="campaignImage cursor-pointer">
-              <Box className="flex flex-row justify-center items-center w-full h-44 bg-gray-100 rounded-lg">
-                {campaign.image.file ? (
-                  <div className="image-preview">
-                    <img src={URL.createObjectURL(campaign.image.file)} alt="image" />
-                    <span>{campaign.image.filename}</span>
-                  </div>
+          <Box className="flex flex-col p-5 w-full">
+            <label htmlFor="campaignImage" className="cursor-pointer w-full">
+              <Box className=" w-full flex flex-col justify-center items-center w-full h-44 bg-gray-100 rounded-lg">
+                {campaignImage.file ? (
+                  <Box className="w-full">
+                    <img src={campaignImage.file} alt="image" className="w-full h-44 mb-2 rounded-md object-cover" />
+                  </Box>
                 ) : (
-                  <img src={icon} alt="campaign-media" className="w-24" />
+                  <>
+                    <img src={icon} alt="campaign-media" className="w-24" />
+                  </>
                 )}
               </Box>
             </label>
-            <input hidden type="file" id="campaignImage" onChange={(e) => handleImage(e, dispatch, 'campaign-image')} />
+            <input
+              hidden
+              type="file"
+              id="campaignImage"
+              onChange={(e) => handleImage(e, 'campaignImage', onSuccess, onError)}
+            />
             <label htmlFor="campaignImage">
               <Box className="w-full flex flex-row justify-center items-center bg-gray-100 pb-2 cursor-pointer rounded-b-lg">
-                <p className="text-center text-gray-600 text-xl mt-2 mr-2">
-                  {campaign.image.filename ? 'Update Campaign Image' : 'Add Campaign Image'}
+                <p className="text-center text-gray-600 text-lg mt-2 mr-2">
+                  {campaignImage.filename ? 'Update Campaign Image' : 'Add Campaign Image'}
                 </p>
 
                 <Tooltip
@@ -297,36 +382,42 @@ const CampaignInitializeForm: React.FC<Props> = ({
             </label>
           </Box>
 
-          <Box className="flex flex-col p-5">
-            <label htmlFor="sharedMedia">
-              <Box className="flex flex-row justify-center items-center w-full h-44 bg-gray-100 rounded-lg">
-                {campaign.sharedMedia.file ? (
-                  campaign.sharedMedia.format.includes('image') ? (
-                    <div className="image-preview">
-                      <img src={URL.createObjectURL(campaign.sharedMedia.file)} alt="image" />
-                      <span>{campaign.sharedMedia.filename}</span>
-                    </div>
+          <Box className="flex flex-col p-5 w-full mt-10">
+            <label htmlFor="sharedMedia" className="cursor-pointer w-full">
+              <Box className="flex flex-col justify-center items-center w-full h-44 bg-gray-100 rounded-lg">
+                {sharedMedia.file ? (
+                  sharedMedia.format.includes('image') ? (
+                    <Box className="w-full">
+                      <img src={sharedMedia.file} alt="image" className="w-full h-44 mb-2 rounded-md object-cover" />
+                    </Box>
                   ) : (
-                    <div className="image-preview">
+                    <Box className="w-full">
                       <video
-                        autoPlay={true}
+                        autoPlay={false}
                         height="150"
                         width="250"
                         src={URL.createObjectURL(campaign.sharedMedia.file)}
                       />
-                      <span>{campaign.sharedMedia.filename}</span>
-                    </div>
+                      <span>{sharedMedia.filename}</span>
+                    </Box>
                   )
                 ) : (
-                  <img src={icon} alt="shared-media" className="w-24" />
+                  <>
+                    <img src={icon} alt="shared-media" className="w-24" />
+                  </>
                 )}
               </Box>
             </label>
-            <input hidden type="file" id="sharedMedia" onChange={(e) => handleImage(e, dispatch, 'shared-media')} />
+            <input
+              hidden
+              type="file"
+              id="sharedMedia"
+              onChange={(e) => handleImage(e, 'sharedMedia', onSuccess, onError)}
+            />
             <label htmlFor="sharedMedia">
               <Box className="w-full flex flex-row justify-center items-center bg-gray-100 pb-2 rounded-b-lg">
-                <p className="text-center text-gray-600 text-xl mt-2 mr-2">
-                  {campaign.sharedMedia.filename ? 'Update Shared Media' : 'Default Shared Media'}
+                <p className="text-center text-gray-600 text-lg mt-2 mr-2">
+                  {sharedMedia.filename ? 'Update Shared Media' : 'Default Shared Media'}
                 </p>
                 <Tooltip
                   placement="top"
@@ -345,7 +436,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
             firstStep={firstStep}
             finalStep={finalStep}
             handleBack={handleBack}
-            handleNext={handleNext}
+            handleNext={next}
             handleSubmit={handleSubmit}
           />
         </Box>

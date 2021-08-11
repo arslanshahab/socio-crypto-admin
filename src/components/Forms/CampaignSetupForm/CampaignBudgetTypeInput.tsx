@@ -19,7 +19,7 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange, co
   ];
 
   return (
-    <Box className="w-full mt-16">
+    <Box className="w-full mt-10">
       <p className="mb-3 text-center text-2xl">How will this campaign reward participants?</p>
       <Box className="flex flex-row justify-center space-x-4">
         {menu.map((item, index) => (

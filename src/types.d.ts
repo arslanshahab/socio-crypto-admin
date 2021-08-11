@@ -349,7 +349,7 @@ export interface StoreAlerts {
 export interface FileObject {
   filename: string;
   format: string;
-  file: File | null;
+  file: string;
 }
 
 export interface CampaignState {

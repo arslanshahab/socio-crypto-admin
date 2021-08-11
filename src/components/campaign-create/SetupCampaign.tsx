@@ -11,10 +11,10 @@ import icon from '../../assets/svg/camera.svg';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/reducer';
 import { useQuery } from '@apollo/client';
-import { GetFundingWalletResponse } from '../../types';
+import { FileObject, GetFundingWalletResponse } from '../../types';
 import { GET_FUNDING_WALLET } from '../../operations/queries/fundingWallet';
 import { capitalize } from '../../helpers/formatter';
-import { handleImage } from '../../helpers/utils';
+import { handleImage } from '../../helpers/fileHandler';
 import { useHistory } from 'react-router';
 
 interface Props {
@@ -52,6 +52,14 @@ export const SetupCampaign: React.FC<Props> = (props) => {
   const handleBudgetType = (type: string) => {
     setBudgetType(type);
     handleCampaignChange('budgetType', type);
+  };
+
+  const onSuccess = (data: FileObject) => {
+    console.log(data);
+  };
+
+  const onError = (msg: string) => {
+    console.log(msg);
   };
 
   return (
@@ -234,7 +242,7 @@ export const SetupCampaign: React.FC<Props> = (props) => {
                         className="hidden"
                         type="file"
                         id="single"
-                        onChange={(e) => handleImage(e, dispatch, 'raffle')}
+                        onChange={(e) => handleImage(e, 'raffle', onSuccess, onError)}
                       />
                     </div>
                     <TextField

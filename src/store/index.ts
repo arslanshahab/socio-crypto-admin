@@ -11,6 +11,7 @@ const persistConfig = {
   storage,
   stateReconciler: autoMergeLevel2,
   version: 2,
+  blacklist: ['newCampaign'],
 };
 
 // eslint-disable-next-line
