@@ -1,37 +1,3 @@
-.customButton {
-  min-width: 200px;
-  padding: 10px 20px;
-
-  span {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: capitalize;
-  }
-
-  &.MuiButtonBase-root {
-    margin: 0 15px 0 0;
-  }
-
-  &.submitButton {
-    background: green;
-    color: white;
-
-    &:hover {
-      background: green;
-    }
-  }
-
-  &.deleteButton {
-    background: rgb(199, 1, 1);
-    color: white;
-
-    &:hover {
-      background: rgb(199, 1, 1);
-    }
-  }
-}
-
 .customInput {
   fieldset {
     border-color: #e5e7eb;

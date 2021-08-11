@@ -44,7 +44,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
       company: userData.company,
       algorithm: JSON.stringify(campaign.algorithm),
       requirements: (campaign.config && campaign.config.budgetType === 'raffle'
-        ? { email: true, ...campaign.requirements }
+        ? { ...campaign.requirements, email: true }
         : { ...campaign.requirements }) as CampaignRequirementSpecs,
       image: campaign.image.filename,
       sharedMedia: campaign.sharedMedia.filename,

@@ -1,8 +1,7 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Box, TextField, Tooltip } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
 import { useDispatch } from 'react-redux';
-import { updateCampaignState } from '../../../redux/slices/campaign';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { Fade } from 'react-awesome-reveal';
 import { ToastContainer } from 'react-toastify';
@@ -59,43 +58,6 @@ const CampaignInitializeForm: React.FC<Props> = ({
   const [campaignImage, setCampaignImage] = useState(campaign.image);
   const [sharedMedia, setSharedMedia] = useState(campaign.sharedMedia);
   const [errors, setErrors] = useState<ErrorObject>({});
-
-  const handleCampaignChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    event.persist();
-    dispatch(updateCampaignState({ cat: 'info', key: event.target.name, val: event.target.value }));
-  };
-
-  const handleConfigChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    event.persist();
-    if (event.target.name === 'numOfTiers') {
-      if (parseInt(event.target.value) > 10) {
-        event.target.value = '10';
-      }
-      if (parseInt(event.target.value) < 1) {
-        event.target.value = '1';
-      }
-    }
-    if (event.target.name === 'numOfSuggestedPosts') {
-      if (parseInt(event.target.value) > 5) {
-        event.target.value = '5';
-      }
-      if (parseInt(event.target.value) < 1) {
-        event.target.value = '1';
-      }
-    }
-    if (event.target.name === 'initialTotal') {
-      dispatch(updateCampaignState({ cat: 'algoTiersCount', tier: '1', key: 'threshold', val: '0' }));
-      dispatch(
-        updateCampaignState({
-          cat: 'algoTiersCount',
-          tier: '1',
-          key: 'totalCoiins',
-          val: campaignType === 'raffle' ? '0' : event.target.value,
-        }),
-      );
-    }
-    dispatch(updateCampaignState({ cat: 'config', key: event.target.name, val: event.target.value }));
-  };
 
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
@@ -320,7 +282,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <DateTimePicker
-              value={beginDate}
+              value={beginDate || null}
               inputVariant="outlined"
               variant="dialog"
               fullWidth
@@ -335,7 +297,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
             <DateTimePicker
               inputVariant="outlined"
               fullWidth
-              value={endDate}
+              value={endDate || null}
               disablePast
               label="Campaign End Date"
               showTodayButton

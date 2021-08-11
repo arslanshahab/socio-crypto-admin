@@ -1,10 +1,10 @@
 import React from 'react';
 import { Algorithm } from '../campaign-create/Algorithm';
-import { Requirements } from '../campaign-create/Requirements';
 import { CampaignState } from '../../types.d';
 import CampaignSetupForm from '../Forms/CampaignSetupForm';
-import CampaignInitializeForm from '../Forms/CampaignInitializeForm/CampaignInitializeForm';
-import CampaignPostAnndTagsForm from '../Forms/CampaignPostAnndTagsForm/CampaignPostAnndTagsForm';
+import CampaignInitializeForm from '../Forms/CampaignInitializeForm';
+import CampaignPostAnndTagsForm from '../Forms/CampaignPostAnndTagsForm';
+import CampaignRequirementsForm from '../Forms/CampaignRequirementsForm';
 
 interface Props {
   userData: any;
@@ -65,7 +65,16 @@ const StepContent: React.FC<Props> = ({
         />
       );
     case 3:
-      return <Requirements />;
+      return (
+        <CampaignRequirementsForm
+          activeStep={activeStep}
+          firstStep={0}
+          finalStep={4}
+          handleBack={handleBack}
+          handleNext={handleNext}
+          handleSubmit={handleSubmit}
+        />
+      );
     case 4:
       return <Algorithm />;
     default:

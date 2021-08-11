@@ -374,7 +374,7 @@ export interface CampaignState {
   image: FileObject;
   sharedMedia: FileObject;
   tagline: string;
-  requirements?: CampaignRequirementSpecs;
+  requirements: CampaignRequirementSpecs;
   suggestedPosts: string[];
   suggestedTags: string[];
   keywords: string[];
@@ -392,12 +392,12 @@ export interface Participant {
 
 export interface CampaignRequirementSpecs {
   version: string;
-  location?: LocationRequirementSpecs[];
-  values?: string[];
-  interests?: string[];
-  ageRange?: AgeRangeRequirementSpecs;
-  socialFollowing?: SocialFollowingSpecs;
-  email?: boolean;
+  location: LocationRequirementSpecs[];
+  values: string[];
+  interests: string[];
+  ageRange: string;
+  socialFollowing: SocialFollowingSpecs;
+  email: boolean;
 }
 export interface LocationRequirementSpecs {
   city?: string;

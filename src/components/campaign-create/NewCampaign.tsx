@@ -10,7 +10,6 @@ import { updateCampaignState } from '../../redux/slices/campaign';
 
 import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';
-import { Requirements } from './Requirements';
 import { SetupCampaign } from './SetupCampaign';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -48,7 +47,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       company: props.userData.company,
       algorithm: JSON.stringify(campaign.algorithm),
       requirements: (campaign.config && campaign.config.budgetType === 'raffle'
-        ? { email: true, ...campaign.requirements }
+        ? { ...campaign.requirements, email: true }
         : { ...campaign.requirements }) as CampaignRequirementSpecs,
       image: campaign.image.filename,
       sharedMedia: campaign.sharedMedia.filename,
@@ -90,8 +89,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
         return <Initialize campaignType={campaign.config.budgetType as string} {...props} />;
       case 2:
         return <PostsAndTags />;
-      case 3:
-        return <Requirements />;
       case 4:
         return <Algorithm />;
     }

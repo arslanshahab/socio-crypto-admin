@@ -29,6 +29,19 @@ const initialState: CampaignState = {
   suggestedPosts: [],
   suggestedTags: [],
   keywords: [],
+  requirements: {
+    version: '',
+    location: [],
+    values: [],
+    ageRange: '',
+    interests: [],
+    email: false,
+    socialFollowing: {
+      twitter: {
+        minFollower: 0,
+      },
+    },
+  },
   config: {
     type: 'crypto',
     numOfSuggestedPosts: 2,
@@ -82,7 +95,6 @@ const campaignSlice = createSlice({
           state[key] = value;
           break;
         case 'requirements':
-          if (!state.requirements) state.requirements = { version: '1.0.0' };
           if (
             key == 'location' ||
             key == 'values' ||
@@ -91,8 +103,6 @@ const campaignSlice = createSlice({
             key == 'socialFollowing'
           ) {
             if (!state['requirements']) {
-              const requirement: CampaignRequirementSpecs = { version: '1.0.0' };
-              state['requirements'] = requirement;
             }
             state['requirements'][key] = value;
           }

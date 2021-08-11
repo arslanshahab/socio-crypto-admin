@@ -28,6 +28,19 @@ const campaignInitState: CampaignState = {
   suggestedPosts: [],
   suggestedTags: [],
   keywords: [],
+  requirements: {
+    version: '',
+    location: [],
+    values: [],
+    ageRange: '',
+    interests: [],
+    email: false,
+    socialFollowing: {
+      twitter: {
+        minFollower: 0,
+      },
+    },
+  },
   config: {
     type: 'crypto',
     numOfSuggestedPosts: 2,
