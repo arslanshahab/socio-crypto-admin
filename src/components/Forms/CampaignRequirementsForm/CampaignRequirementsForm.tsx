@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { updateCampaignState } from '../../../redux/slices/campaign';
-import Modal from 'react-modal';
-import { MultiSelectList } from '../../multiSelectList';
 import { Fade } from 'react-awesome-reveal';
-
-import { defaultSocialFollowers } from '../../../helpers/globals';
 import { LocationRequirementSpecs } from '../../../types';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import LocationForm from './LocationForm';
@@ -18,6 +13,7 @@ import ValuesForm from './ValuesForm';
 import DisplayRequirements from './DisplayRequirements';
 import InterestsForm from './InterestsForm';
 import SocialFollowersForm from './SocialFollowersForm';
+import { updateCampaign } from '../../../store/actions/campaign';
 
 interface Props {
   activeStep: number;
@@ -37,126 +33,16 @@ const CampaignRequirementsForm: React.FC<Props> = ({
   finalStep,
 }) => {
   const campaign = useStoreCampaignSelector();
-  const requirements = campaign.requirements;
+  const { requirements } = campaign;
   const dispatch = useDispatch();
   const [formType, setFormtype] = useState<'location' | 'age' | 'values' | 'interests' | 'social' | ''>('');
-  const [selectedFollowerCount, setSelectedFollowerCount] = useState<string>('');
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const [locations, setLocations] = useState<LocationRequirementSpecs[]>(requirements?.location);
-  const [selectedAgeRange, setAgeRange] = useState<string[]>([]);
-
-  const handleClose = (type: string) => {
-    switch (type) {
-      case 'location':
-        setFormtype('');
-        break;
-      case 'age':
-        setFormtype('');
-        if (requirements != null) {
-          if (requirements.ageRange != null) {
-            const temp: string[] = [];
-            if (requirements) {
-              if (requirements.ageRange) {
-                temp.push(requirements.ageRange);
-              }
-            }
-            setAgeRange([]);
-          } else {
-            setAgeRange([]);
-          }
-        } else {
-          setAgeRange([]);
-        }
-        break;
-      case 'social':
-        setFormtype('');
-        if (requirements != null) {
-          if (requirements.socialFollowing != null) {
-            if (requirements.socialFollowing.twitter != null) {
-              setSelectedFollowerCount(requirements.socialFollowing.twitter.minFollower.toString());
-            }
-          } else setSelectedFollowerCount('');
-        } else setSelectedFollowerCount('');
-        break;
-      case 'values':
-        setFormtype('');
-        if (requirements != null) {
-          if (requirements.values != null) {
-            setSelectedValues(requirements.values);
-          } else setSelectedValues([]);
-        } else setSelectedValues([]);
-        break;
-      case 'interests':
-        setFormtype('');
-        if (requirements != null) {
-          if (requirements.interests != null) {
-            setSelectedInterests(requirements.interests);
-          } else setSelectedInterests([]);
-        } else setSelectedInterests([]);
-        break;
-    }
-  };
-
-  const handleSubmit = (type: string, data: any) => {
-    switch (type) {
-      case 'location':
-        dispatch(
-          updateCampaignState({
-            cat: 'requirements',
-            key: 'state',
-            val: 'WA',
-          }),
-        );
-        dispatch(
-          updateCampaignState({
-            cat: 'requirements',
-            key: 'city',
-            val: 'Seattle',
-          }),
-        );
-        dispatch(
-          updateCampaignState({
-            cat: 'requirements',
-            key: 'country',
-            val: 'USA',
-          }),
-        );
-        break;
-      case 'age':
-        setAgeRange([]);
-        break;
-      case 'social':
-        if (selectedFollowerCount != null) {
-          dispatch(
-            updateCampaignState({
-              cat: 'requirements',
-              key: 'socialFollowing',
-              val: { twitter: { minFollower: parseInt(selectedFollowerCount) } },
-            }),
-          );
-        }
-        break;
-      case 'values':
-        dispatch(
-          updateCampaignState({
-            cat: 'requirements',
-            key: 'values',
-            val: selectedValues,
-          }),
-        );
-        break;
-      case 'interests':
-        dispatch(
-          updateCampaignState({
-            cat: 'requirements',
-            key: 'interests',
-            val: selectedInterests,
-          }),
-        );
-        break;
-    }
-  };
+  const [selectedFollowerCount, setSelectedFollowerCount] = useState<string>(
+    requirements.socialFollowing.twitter.minFollower ? requirements.socialFollowing.twitter.minFollower.toString() : '',
+  );
+  const [selectedInterests, setSelectedInterests] = useState<string[]>(requirements.interests);
+  const [selectedValues, setSelectedValues] = useState<string[]>(requirements.values);
+  const [locations, setLocations] = useState<LocationRequirementSpecs[]>(requirements.location);
+  const [selectedAgeRange, setAgeRange] = useState<string[]>(requirements.ageRange);
 
   const getLocationString = (val: LocationRequirementSpecs): string => {
     let locationString = '';
@@ -164,6 +50,26 @@ const CampaignRequirementsForm: React.FC<Props> = ({
     if (val.state) locationString += `, ${val.state}`;
     if (val.city) locationString += `, ${val.city}`;
     return locationString;
+  };
+
+  const next = () => {
+    const augmentedCampaign = {
+      ...campaign,
+      requirements: {
+        ...campaign.requirements,
+        location: locations,
+        values: selectedValues,
+        interests: selectedInterests,
+        ageRange: selectedAgeRange,
+        socialFollowing: {
+          twitter: {
+            minFollower: parseInt(selectedFollowerCount),
+          },
+        },
+      },
+    };
+    dispatch(updateCampaign(augmentedCampaign));
+    handleNext();
   };
 
   return (
@@ -222,6 +128,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
               />
             )}
           </GenericModal>
+
           <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Location Requirements</p>
@@ -232,7 +139,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
                 +
               </CustomButton>
             </Box>
-            <Box className="w-full flex flex-row justify-start items-center">
+            <Box className="w-full flex flex-row flex-wrap justify-start items-center">
               {locations.map((location) => {
                 return (
                   <DisplayRequirements
@@ -248,6 +155,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
               })}
             </Box>
           </Box>
+
           <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Age Requirements</p>
@@ -258,7 +166,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
                 +
               </CustomButton>
             </Box>
-            <Box className="w-full flex flex-row justify-start items-center">
+            <Box className="w-full flex flex-row flex-wrap justify-start items-center">
               {selectedAgeRange.map((age) => {
                 return (
                   <DisplayRequirements
@@ -274,6 +182,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
               })}
             </Box>
           </Box>
+
           <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Values Requirements</p>
@@ -284,7 +193,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
                 +
               </CustomButton>
             </Box>
-            <Box className="w-full flex flex-row justify-start items-center">
+            <Box className="w-full flex flex-row flex-wrap justify-start items-center">
               {selectedValues.map((value) => {
                 return (
                   <DisplayRequirements
@@ -300,6 +209,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
               })}
             </Box>
           </Box>
+
           <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Interests Requirements</p>
@@ -310,7 +220,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
                 +
               </CustomButton>
             </Box>
-            <Box className="w-full flex flex-row justify-start items-center">
+            <Box className="w-full flex flex-row flex-wrap justify-start items-center">
               {selectedInterests.map((value) => {
                 return (
                   <DisplayRequirements
@@ -326,6 +236,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
               })}
             </Box>
           </Box>
+
           <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Social Media Follower Requirements</p>
@@ -336,7 +247,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
                 +
               </CustomButton>
             </Box>
-            <Box className="w-full flex flex-row justify-start items-center">
+            <Box className="w-full flex flex-row flex-wrap justify-start items-center">
               {selectedFollowerCount && (
                 <DisplayRequirements value={selectedFollowerCount} onRemove={() => setSelectedFollowerCount('')} />
               )}
@@ -349,7 +260,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
         firstStep={firstStep}
         finalStep={finalStep}
         handleBack={handleBack}
-        handleNext={handleNext}
+        handleNext={next}
         handleSubmit={handleFormSubmit}
       />
     </Box>

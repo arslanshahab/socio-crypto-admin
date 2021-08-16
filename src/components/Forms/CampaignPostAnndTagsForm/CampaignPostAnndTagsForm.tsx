@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, TextField } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { Fade } from 'react-awesome-reveal';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { Box } from '@material-ui/core';
 import Actions from '../../NewCampaign/Actions';
 import { updateCampaign } from '../../../store/actions/campaign';
+import CustomInput from '../../CustomInput';
 
 interface Props {
   activeStep: number;
@@ -74,46 +74,36 @@ const CampaignPostAnndTagsForm: React.FC<Props> = ({
       <Fade>
         {postValues.map((item, index) => (
           <Box key={index} className="w-full mb-6">
-            <TextField
+            <CustomInput
               id={index.toString()}
               label={`Suggested Post #${index + 1}`}
-              name="suggestedPosts"
               multiline
-              fullWidth
               value={item}
               rows={4}
               placeholder={`Check out ${campaign.name}...`}
-              variant="outlined"
-              className="customInput"
               onChange={handlePostChange}
             />
           </Box>
         ))}
-        <Grid container justify={'center'} xs={12}>
-          <Grid item className="form-item" xs={12} spacing={2}>
-            <TextField
-              fullWidth
-              label={'Suggested Tags - Comma Separated With Hashtags'}
-              name={'suggestedTags'}
-              value={tags}
-              placeholder={'#raiinmaker, #coiin'}
-              variant="outlined"
-              className="customInput"
-              onChange={(e) => setTags(e.target.value)}
-            />
-          </Grid>
-        </Grid>
+        <Box className="w-full mb-6">
+          <CustomInput
+            label="Suggested Tags - Comma Separated With Hashtags"
+            value={tags}
+            placeholder="#raiinmaker, #coiin"
+            onChange={(e) => setTags(e.target.value)}
+          />
+        </Box>
+        <Box className="w-full">
+          <Actions
+            activeStep={activeStep}
+            firstStep={firstStep}
+            finalStep={finalStep}
+            handleBack={handleBack}
+            handleNext={next}
+            handleSubmit={handleSubmit}
+          />
+        </Box>
       </Fade>
-      <Box className="w-full">
-        <Actions
-          activeStep={activeStep}
-          firstStep={firstStep}
-          finalStep={finalStep}
-          handleBack={handleBack}
-          handleNext={next}
-          handleSubmit={handleSubmit}
-        />
-      </Box>
     </Box>
   );
 };

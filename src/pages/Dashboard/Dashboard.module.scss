@@ -22,6 +22,8 @@
 .main {
   width: 100%;
   height: calc(100% - 75px);
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   > div:first-child {
     height: 100%;

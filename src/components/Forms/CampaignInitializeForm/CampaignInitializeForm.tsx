@@ -13,13 +13,10 @@ import { Autocomplete } from '@material-ui/lab';
 import Actions from '../../NewCampaign/Actions';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { useState } from 'react';
-import { FileObject } from '../../../types';
+import { ErrorObject, FileObject } from '../../../types';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import { updateCampaign } from '../../../store/actions/campaign';
-
-interface ErrorObject {
-  [key: string]: boolean;
-}
+import CustomInput from '../../CustomInput';
 
 interface Props {
   userData: {
@@ -128,17 +125,13 @@ const CampaignInitializeForm: React.FC<Props> = ({
 
   return (
     <Fade>
-      <Box className="w-full flex flex-row flex-wrap px-20 mt-10">
+      <Box className="w-full flex flex-row flex-wrap px-28 mt-10">
         <Box className="box-border w-4/6 flex flex-row flex-wrap">
           <Box className="w-full box-border pr-4 mt-5">
-            <TextField
-              fullWidth
-              className="customInput"
-              label="Name of Campaign"
-              name="name"
-              placeholder={'name'}
+            <CustomInput
               value={name}
-              variant="outlined"
+              placeholder="name"
+              label="Name of Campaign"
               error={errors['name']}
               onChange={(e) => {
                 setName(e.target.value);
@@ -147,14 +140,10 @@ const CampaignInitializeForm: React.FC<Props> = ({
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
-            <TextField
-              fullWidth
-              className="customInput"
-              label="Landing Page URL"
-              name="target"
-              placeholder={'Landing Page URL: must start with http or https'}
+            <CustomInput
               value={target}
-              variant="outlined"
+              placeholder="Landing Page URL: must start with http or https"
+              label="Landing Page URL"
               error={errors['target']}
               onChange={(e) => {
                 setTarget(e.target.value);
@@ -163,14 +152,10 @@ const CampaignInitializeForm: React.FC<Props> = ({
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
-            <TextField
+            <CustomInput
               label="Landing Page Video URL (Optional)"
-              name="targetVideo"
               placeholder={'Video URL (Optional)'}
               value={targetVideo}
-              fullWidth
-              variant="outlined"
-              className="customInput"
               error={errors['targetVideo']}
               onChange={(e) => {
                 setTargetVideo(e.target.value);
@@ -179,59 +164,37 @@ const CampaignInitializeForm: React.FC<Props> = ({
             />
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
-            <TextField
+            <CustomInput
               label="How many Reward Tiers would you like to provide? (1-10)"
-              fullWidth
               type="number"
-              InputProps={{
-                inputProps: {
-                  max: 10,
-                  min: 1,
-                },
-              }}
-              variant="outlined"
-              name="numOfTiers"
               value={numOfTiers}
-              className="customInput"
               disabled={campaignType === 'raffle'}
               error={errors['numOfTiers']}
               onChange={(e) => {
-                setTiers(parseInt(e.target.value));
+                const value = parseInt(e.target.value) < 1 ? 1 : parseInt(e.target.value) > 10 ? 10 : 0;
+                setTiers(value);
                 updateErrors('numOfTiers', e.target.value);
               }}
             />
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
-            <TextField
-              label={'How many Posting Templates would you like to provide? (1-5)'}
-              name="numOfSuggestedPosts"
+            <CustomInput
+              label="How many Posting Templates would you like to provide? (1-5)"
               type="number"
-              InputProps={{
-                inputProps: {
-                  max: 5,
-                  min: 1,
-                },
-              }}
               value={numOfSuggestedPosts}
-              className="customInput"
-              fullWidth
-              variant="outlined"
               error={errors['numOfSuggestedPosts']}
               onChange={(e) => {
-                setPosts(parseInt(e.target.value));
+                const value = parseInt(e.target.value) < 1 ? 1 : parseInt(e.target.value) > 5 ? 5 : 0;
+                setPosts(value);
                 updateErrors('numOfSuggestedPosts', e.target.value);
               }}
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
-            <TextField
+            <CustomInput
               label="Campaign Tagline"
-              name="tagline"
-              placeholder={'Campaign Tagline'}
+              placeholder="Campaign Tagline"
               value={tagline}
-              className="customInput"
-              fullWidth
-              variant="outlined"
               error={errors['tagline']}
               onChange={(e) => {
                 setTagline(e.target.value);
@@ -264,15 +227,11 @@ const CampaignInitializeForm: React.FC<Props> = ({
             />
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
-            <TextField
+            <CustomInput
               label="Description"
-              name="description"
               multiline
               value={description}
               rows={4}
-              fullWidth
-              variant="outlined"
-              className="customInput"
               error={errors['description']}
               onChange={(e) => {
                 setDescription(e.target.value);
@@ -344,7 +303,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
             </label>
           </Box>
 
-          <Box className="flex flex-col p-5 w-full mt-10">
+          <Box className="flex flex-col p-5 w-full">
             <label htmlFor="sharedMedia" className="cursor-pointer w-full">
               <Box className="flex flex-col justify-center items-center w-full h-44 bg-gray-100 rounded-lg">
                 {sharedMedia.file ? (

@@ -6,12 +6,16 @@ import Dashboard from './pages/Dashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import ErrorAlert from './components/Alerts/ErrorAlert/ErrorAlert';
 import SuccessAlert from './components/Alerts/SuccessAlert/SuccessAlert';
+import AppLoader from './components/AppLoader';
+import useStoreSettingsSelector from './hooks/useStoreSettingsSelector';
 
 export const App: React.FC = () => {
+  const storeSettings = useStoreSettingsSelector();
   return (
     <div>
       <ErrorAlert />
       <SuccessAlert />
+      {storeSettings.appLoader && <AppLoader message={storeSettings.loadingMessage} />}
       <BrowserRouter>
         <Switch>
           <Route exact path={'/'} component={LoginPage} />

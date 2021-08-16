@@ -1,4 +1,4 @@
-import { Alert, AlgorithmSpecs, CampaignState, StoreAlerts } from '../types.d';
+import { Alert, AlgorithmSpecs, CampaignState, StoreAlerts, StoreSettings } from '../types.d';
 
 const initialAlgorithmState: AlgorithmSpecs = {
   pointValues: {
@@ -8,7 +8,7 @@ const initialAlgorithmState: AlgorithmSpecs = {
     likes: '3',
     shares: '9',
   },
-  tiers: { '1': { threshold: '0', totalCoiins: '' } },
+  tiers: [],
 };
 
 const campaignInitState: CampaignState = {
@@ -32,7 +32,7 @@ const campaignInitState: CampaignState = {
     version: '',
     location: [],
     values: [],
-    ageRange: '',
+    ageRange: [],
     interests: [],
     email: false,
     socialFollowing: {
@@ -47,7 +47,7 @@ const campaignInitState: CampaignState = {
     cryptoSymbol: '',
     numOfTiers: 3,
     initialTotal: '',
-    coiinBudget: '',
+    coiinBudget: '0',
     budget: '',
     budgetType: '',
     campaignType: '',
@@ -74,9 +74,16 @@ const alerts: StoreAlerts = {
   error: errorAlert,
 };
 
+const settings: StoreSettings = {
+  appLoader: false,
+  loadingMessage: '',
+  languageCode: '',
+};
+
 const initialState = {
   alerts: alerts,
   newCampaign: campaignInitState,
+  settings: settings,
 };
 
 export default initialState;

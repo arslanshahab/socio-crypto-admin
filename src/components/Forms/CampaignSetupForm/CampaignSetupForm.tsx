@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
 import icon from '../../../assets/svg/camera.svg';
 import { useQuery } from '@apollo/client';
-import { FileObject, GetFundingWalletResponse } from '../../../types';
+import { ErrorObject, FileObject, GetFundingWalletResponse } from '../../../types';
 import { GET_FUNDING_WALLET } from '../../../operations/queries/fundingWallet';
-import { capitalize } from '../../../helpers/formatter';
 import { handleImage } from '../../../helpers/fileHandler';
 import { useHistory } from 'react-router';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
 import Actions from '../../NewCampaign/Actions';
-import { resetCampaign, updateCampaign } from '../../../store/actions/campaign';
+import { updateCampaign } from '../../../store/actions/campaign';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
+import CustomSelect from '../../CustomSelect/CustomSelect';
+import CustomInput from '../../CustomInput';
+import { showErrorAlert } from '../../../store/actions/alerts';
 
 interface Props {
   company: string;
@@ -23,12 +25,6 @@ interface Props {
   handleNext: () => void;
   handleBack: () => void;
   handleSubmit: () => void;
-}
-
-interface Crypto {
-  type: string;
-  id: string;
-  balance: number;
 }
 
 const CampaignSetupForm: React.FC<Props> = ({
@@ -42,7 +38,6 @@ const CampaignSetupForm: React.FC<Props> = ({
 }) => {
   const dispatch = useDispatch();
   const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
-  const history = useHistory();
   const campaign = useStoreCampaignSelector();
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
   const [budgetType, setBudgetType] = useState(campaign.config.budgetType);
@@ -51,10 +46,11 @@ const CampaignSetupForm: React.FC<Props> = ({
   const [rafflePrizeName, setRafflePrizeName] = useState(campaign.config.rafflePrizeName);
   const [rafflePrizeLink, setRafflePrizeLink] = useState(campaign.config.rafflePrizeAffiliateLink);
   const [raffleImage, setRaffleImage] = useState(campaign.config.raffleImage);
-
-  const hasValue = (token: Crypto) => {
-    return token.balance > 0;
-  };
+  const [errors, setErrors] = useState<ErrorObject>({});
+  const coiinOptions =
+    !loading && data && data.getFundingWallet
+      ? data.getFundingWallet.currency.filter((token) => token.balance > 0).map((item) => item.type.toLowerCase())
+      : [];
 
   const handleCampaignType = (type: string) => {
     setCampaignType(type);
@@ -62,12 +58,6 @@ const CampaignSetupForm: React.FC<Props> = ({
 
   const handleBudgetType = (type: string) => {
     setBudgetType(type);
-  };
-
-  const handleSymbolChange = (e: React.ChangeEvent<any>) => {
-    if (e.target.value !== 'register') {
-      setCryptoSymbol(e.target.value);
-    }
   };
 
   const handleCoiinBudgetChange = (event: React.ChangeEvent<any>) => {
@@ -81,47 +71,101 @@ const CampaignSetupForm: React.FC<Props> = ({
           value = token.balance.toString();
         }
         setCoiinBudget(value);
+        updateErrors('coiinBudget', value);
       }
     }
   };
 
   const next = () => {
-    const currencyObject =
-      data && data.getFundingWallet
-        ? data.getFundingWallet.currency.find((item) => item.type.toLowerCase() === cryptoSymbol)
-        : null;
-    const symbolId: string = currencyObject ? currencyObject.id : '';
-    const augmentedCampaign = {
-      ...campaign,
-      cryptoId: symbolId,
-      config: {
-        ...campaign.config,
-        coiinBudget,
-        campaignType,
-        budgetType,
-        cryptoSymbol,
-        ...(budgetType === 'raffle' && {
-          rafflePrizeName,
-          rafflePrizeAffiliateLink: rafflePrizeLink,
-          raffleImage,
-        }),
-      },
-    };
-    dispatch(updateCampaign(augmentedCampaign));
-    handleNext();
+    if (validateInputs()) {
+      const currencyObject =
+        data && data.getFundingWallet
+          ? data.getFundingWallet.currency.find((item) => item.type.toLowerCase() === cryptoSymbol)
+          : null;
+      const symbolId: string = currencyObject ? currencyObject.id : '';
+      const augmentedCampaign = {
+        ...campaign,
+        cryptoId: symbolId,
+        config: {
+          ...campaign.config,
+          coiinBudget,
+          campaignType,
+          budgetType,
+          cryptoSymbol,
+          ...(budgetType === 'raffle' && {
+            rafflePrizeName,
+            rafflePrizeAffiliateLink: rafflePrizeLink,
+            raffleImage,
+          }),
+        },
+      };
+      dispatch(updateCampaign(augmentedCampaign));
+      handleNext();
+    }
   };
 
-  const onSuccess = (data: FileObject) => {
-    console.log(data);
+  const onFileSuccess = (data: FileObject) => {
     setRaffleImage(data);
   };
 
-  const onError = (msg: string) => {
-    console.log(msg);
+  const onFileError = (msg: string) => {
+    dispatch(showErrorAlert(msg));
+  };
+
+  const validateInputs = (): boolean => {
+    let validated = true;
+    if (!campaignType) {
+      dispatch(showErrorAlert('Please select type of campaign'));
+      return (validated = false);
+    }
+    if (!budgetType) {
+      dispatch(showErrorAlert('Please select budget type of your campaign campaign'));
+      return (validated = false);
+    }
+    if (budgetType == 'crypto') {
+      if (!cryptoSymbol) {
+        setErrors((prev) => ({ ...prev, cryptoSymbol: true }));
+        return (validated = false);
+      }
+      if (!parseInt(coiinBudget)) {
+        setErrors((prev) => ({ ...prev, coiinBudget: true }));
+        return (validated = false);
+      }
+    } else if (budgetType === 'raffle') {
+      if (!rafflePrizeName) {
+        setErrors((prev) => ({ ...prev, rafflePrizeName: true }));
+        return (validated = false);
+      }
+      if (!rafflePrizeLink) {
+        setErrors((prev) => ({ ...prev, rafflePrizeLink: true }));
+        return (validated = false);
+      }
+    }
+    return validated;
+  };
+
+  const updateErrors = (name: string, data: any) => {
+    const key = name;
+    const value = data;
+    const newErrors = { ...errors };
+    if (!value || value.length === 0) {
+      newErrors[key] = true;
+    } else {
+      newErrors[key] = false;
+    }
+    setErrors(newErrors);
   };
 
   return (
     <Box className="w-full px-20">
+      {/* <Box
+        onClick={() => {
+          dispatch(resetCampaign());
+          history.push('/dashboard/paymentsAccount');
+        }}
+      >
+        No Crypto Currency Found - Register Crypto
+      </Box> */}
       <Fade triggerOnce>
         <CampaignTypeInput campaignType={campaignType} handleChange={handleCampaignType} />
       </Fade>
@@ -136,42 +180,26 @@ const CampaignSetupForm: React.FC<Props> = ({
                   <Fade triggerOnce>
                     <Box className="flex flex-row justify-start w-full">
                       <Box className="w-2/6 box-border pr-4">
-                        <FormControl variant={'outlined'} fullWidth className="customInput">
-                          <InputLabel>Select Token</InputLabel>
-                          <Select value={cryptoSymbol} onChange={handleSymbolChange}>
-                            {loading ? (
-                              <div />
-                            ) : data && data.getFundingWallet.currency.filter(hasValue).length ? (
-                              data.getFundingWallet.currency.filter(hasValue).map((crypto, index) => (
-                                <MenuItem alignItems="flex-start" value={crypto.type.toLowerCase()} key={index}>
-                                  {capitalize(crypto.type.toUpperCase())}
-                                </MenuItem>
-                              ))
-                            ) : (
-                              <MenuItem
-                                value="register"
-                                onClick={() => {
-                                  dispatch(resetCampaign());
-                                  history.push('/dashboard/paymentsAccount');
-                                }}
-                              >
-                                No Crypto Currency Found - Register Crypto
-                              </MenuItem>
-                            )}
-                          </Select>
-                        </FormControl>
+                        <CustomSelect
+                          value={cryptoSymbol}
+                          onChange={(event: React.ChangeEvent<any>) => {
+                            setCryptoSymbol(event.target.value);
+                            updateErrors('cryptoSymbol', event.target.value);
+                          }}
+                          label="Select Token"
+                          options={coiinOptions}
+                          upperCaseOptions={true}
+                          error={errors['cryptoSymbol']}
+                        />
                       </Box>
                       <Box className="w-2/6 box-border pr-4">
-                        <TextField
-                          label="Campaign Budget"
-                          name="budget"
-                          placeholder={'100'}
-                          fullWidth
-                          variant="outlined"
-                          type="number"
+                        <CustomInput
                           value={coiinBudget}
-                          className="customInput"
                           onChange={handleCoiinBudgetChange}
+                          placeholder="100"
+                          label="CampaignBudget"
+                          type="number"
+                          error={errors['coiinBudget']}
                         />
                       </Box>
                     </Box>
@@ -182,32 +210,29 @@ const CampaignSetupForm: React.FC<Props> = ({
                   <Box className="flex flex-row justify-between w-full">
                     <Box className="w-2/6 pr-3">
                       <Box className="mb-4 w-full">
-                        <TextField
-                          label="Raffle Prize Name"
-                          placeholder={'Raffle Campaign Prize'}
-                          fullWidth
-                          variant="outlined"
-                          type="text"
+                        <CustomInput
                           value={rafflePrizeName}
-                          className="customInput"
-                          onChange={(event) => {
+                          placeholder="Raffle Campaign Prize"
+                          label="Raffle Prize Name"
+                          type="text"
+                          onChange={(event: React.ChangeEvent<any>) => {
                             setRafflePrizeName(event.target.value);
+                            updateErrors('rafflePrizeName', event.target.value);
                           }}
+                          error={errors['rafflePrizeName']}
                         />
                       </Box>
                       <Box className="w-full">
-                        <TextField
-                          label={'Raffle Affiliate Link (optional)'}
-                          name={''}
-                          placeholder={'Raffle Affiliate Link'}
-                          fullWidth
-                          variant="outlined"
-                          type="text"
+                        <CustomInput
                           value={rafflePrizeLink}
-                          className="customInput"
-                          onChange={(event) => {
+                          placeholder="Raffle Affiliate Link"
+                          label="Raffle Affiliate Link (optional)"
+                          type="text"
+                          onChange={(event: React.ChangeEvent<any>) => {
                             setRafflePrizeLink(event.target.value);
+                            updateErrors('rafflePrizeLink', event.target.value);
                           }}
+                          error={errors['rafflePrizeLink']}
                         />
                       </Box>
                     </Box>
@@ -231,7 +256,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                         className="hidden"
                         type="file"
                         id="single"
-                        onChange={(e) => handleImage(e, 'raffle', onSuccess, onError)}
+                        onChange={(e) => handleImage(e, 'raffle', onFileSuccess, onFileError)}
                       />
                       <label>
                         <Box className="w-full flex flex-row justify-center items-center bg-gray-100 pb-2 rounded-b-lg">

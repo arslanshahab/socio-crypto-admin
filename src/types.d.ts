@@ -336,6 +336,12 @@ export interface ListPendingCampaignsAdminResults {
   };
 }
 
+export interface StoreSettings {
+  appLoader: boolean;
+  languageCode: string;
+  loadingMessage: string;
+}
+
 export interface Alert {
   message: string;
   open: boolean;
@@ -395,7 +401,7 @@ export interface CampaignRequirementSpecs {
   location: LocationRequirementSpecs[];
   values: string[];
   interests: string[];
-  ageRange: string;
+  ageRange: string[];
   socialFollowing: SocialFollowingSpecs;
   email: boolean;
 }
@@ -436,11 +442,12 @@ export interface PublicUser {
 export interface AlgorithmSpecs {
   [key: string]: ActionValues | Tiers;
   pointValues: ActionValues;
-  tiers: Tiers;
+  tiers: Tier[];
 }
 
-export interface Tiers {
-  [index: string]: { threshold: string; totalCoiins: string };
+export interface Tier {
+  threshold: string;
+  totalCoiins: string;
 }
 
 export interface ActionValues {
@@ -450,6 +457,10 @@ export interface ActionValues {
   submissions: string;
   likes: string;
   shares: string;
+}
+
+export interface ErrorObject {
+  [key: string]: boolean;
 }
 
 export type APIError = GraphQLError;

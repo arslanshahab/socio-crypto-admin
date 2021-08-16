@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-router';
 import CampaignsPage from '../Campaigns';
-import { NewCampaign } from '../../components/campaign-create/NewCampaign';
 import { Link, useHistory } from 'react-router-dom';
 // import { MarketData } from '../../components/MarketData';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -19,17 +18,25 @@ import Sidebar from '../../components/Sidebar';
 import styles from './Dashboard.module.scss';
 import { DashboardHome } from '../../components/DashboardHome';
 import NewCampaignPage from '../NewCampaign';
+import { useDispatch } from 'react-redux';
+import { showAppLoader } from '../../store/actions/settings';
+import { showErrorAlert } from '../../store/actions/alerts';
 
 const Dashboard: React.FC = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
+    dispatch(showAppLoader({ flag: true, message: 'Ending your session!' }));
     const res = await sessionLogout();
     if (res.status === 200) {
       await graphqlClient.clearStore();
       history.push('/');
+      dispatch(showAppLoader({ flag: false, message: '' }));
     } else {
       console.log('ERROR: ', res.body);
+      dispatch(showAppLoader({ flag: false, message: '' }));
+      dispatch(showErrorAlert('There was an error logging while you out'));
     }
   };
 

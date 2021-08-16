@@ -28,14 +28,16 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
     return now < endDate ? 'Open' : 'Closed';
   };
 
-  const numberOfTiers = Object.keys(campaign.algorithm.tiers).filter(
-    (key) => campaign.algorithm.tiers[key]['threshold'] !== '' && campaign.algorithm.tiers[key]['totalCoiins'] !== '',
-  ).length;
+  // const numberOfTiers = campaign.algorithm.tiers.filter(
+  //   (item) => item.threshold !== '' && item.totalCoiins !== '',
+  // ).length;
+
+  const numberOfTiers = 0;
   const hasTier = campaign.algorithm.tiers[numberOfTiers];
   const budget = hasTier ? campaign.algorithm.tiers[numberOfTiers].totalCoiins : '0';
 
   return (
-    <tr className="cursor-pointer hover:bg-gray-100">
+    <tr className="cursor-pointer hover:bg-gray-100 border-b-2 border-solid border-gray-100">
       <td className="px-7 py-5 text-left capitalize">{campaign.name}</td>
       <td className="px-7 py-5 text-left">{budget}</td>
       <td className="px-7 py-5 text-left">

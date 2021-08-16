@@ -9,7 +9,7 @@ const initialAlgorithmState: AlgorithmSpecs = {
     likes: '3',
     shares: '9',
   },
-  tiers: { '1': { threshold: '0', totalCoiins: '' } },
+  tiers: [],
 };
 
 const initialState: CampaignState = {
@@ -33,7 +33,7 @@ const initialState: CampaignState = {
     version: '',
     location: [],
     values: [],
-    ageRange: '',
+    ageRange: [],
     interests: [],
     email: false,
     socialFollowing: {
@@ -120,33 +120,33 @@ const campaignSlice = createSlice({
           state.keywords = value;
           break;
         case 'algoTiersCount':
-          if (tier) {
-            const tierUpdate = { [key]: value };
-            state['algorithm']['tiers'][tier] = {
-              ...state['algorithm']['tiers'][tier],
-              ...tierUpdate,
-            };
-            for (let index = 0; index < Object.keys(state['algorithm']['tiers']).length; index++) {
-              const element = Object.keys(state['algorithm']['tiers'])[index];
-              console.log('element');
-              console.log(element);
-              console.log('tier');
-              console.log(tier);
-              if (element > tier) delete state['algorithm']['tiers'][element];
-            }
-          }
+          // if (tier) {
+          //   const tierUpdate = { [key]: value };
+          //   state['algorithm']['tiers'][tier] = {
+          //     ...state['algorithm']['tiers'][tier],
+          //     ...tierUpdate,
+          //   };
+          //   for (let index = 0; index < Object.keys(state['algorithm']['tiers']).length; index++) {
+          //     const element = Object.keys(state['algorithm']['tiers'])[index];
+          //     console.log('element');
+          //     console.log(element);
+          //     console.log('tier');
+          //     console.log(tier);
+          //     if (element > tier) delete state['algorithm']['tiers'][element];
+          //   }
+          // }
           break;
         case 'algoTiers':
-          if (tier) {
-            console.log('aaaa', tier);
-            const tierUpdate = { [key]: value };
-            console.log('bbbb', tierUpdate);
+          // if (tier) {
+          //   console.log('aaaa', tier);
+          //   const tierUpdate = { [key]: value };
+          //   console.log('bbbb', tierUpdate);
 
-            state['algorithm']['tiers'][tier] = {
-              ...state['algorithm']['tiers'][tier],
-              ...tierUpdate,
-            };
-          }
+          //   state['algorithm']['tiers'][tier] = {
+          //     ...state['algorithm']['tiers'][tier],
+          //     ...tierUpdate,
+          //   };
+          // }
           break;
         case 'initAlgoTiers':
           if (initialTiers) {

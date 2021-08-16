@@ -4,7 +4,6 @@ import { StoreAlerts } from '../types.d';
 
 const useStoreUIAlertsSelector = (): StoreAlerts => {
   const selectStoreAlerts = (state: RootStoreState) => state.alerts;
-
   return useSelector(selectStoreAlerts);
 };
 
