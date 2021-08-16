@@ -117,7 +117,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         'Content-Type': file.format,
       },
       onUploadProgress: (event) => {
-        const progress = ((event.loaded / event.total) * 100).toFixed(2);
+        const progress = ((event.loaded / event.total) * 100).toFixed(0);
         progressCallback(parseFloat(progress));
       },
     });
