@@ -9,15 +9,18 @@ import CampaignAlgorithmForm from '../Forms/CampaignAlgorithmForm';
 interface Props {
   userData: any;
   campaign: CampaignState;
+}
+
+export interface ActionsProps {
   activeStep: number;
   firstStep: number;
   finalStep: number;
   handleNext: () => void;
   handleBack: () => void;
-  handleSubmit: () => void;
+  handleSubmit?: (data: CampaignState) => void;
 }
 
-const StepContent: React.FC<Props> = ({
+const StepContent: React.FC<Props & ActionsProps> = ({
   userData,
   activeStep,
   firstStep,
@@ -37,7 +40,6 @@ const StepContent: React.FC<Props> = ({
           finalStep={finalStep}
           handleBack={handleBack}
           handleNext={handleNext}
-          handleSubmit={handleSubmit}
         />
       );
     case 1:
@@ -48,7 +50,6 @@ const StepContent: React.FC<Props> = ({
           finalStep={finalStep}
           handleBack={handleBack}
           handleNext={handleNext}
-          handleSubmit={handleSubmit}
           campaignType={campaign.config.budgetType as string}
           userData={userData}
         />
@@ -61,7 +62,6 @@ const StepContent: React.FC<Props> = ({
           finalStep={finalStep}
           handleBack={handleBack}
           handleNext={handleNext}
-          handleSubmit={handleSubmit}
         />
       );
     case 3:
@@ -72,7 +72,6 @@ const StepContent: React.FC<Props> = ({
           finalStep={4}
           handleBack={handleBack}
           handleNext={handleNext}
-          handleSubmit={handleSubmit}
         />
       );
     case 4:
@@ -95,7 +94,6 @@ const StepContent: React.FC<Props> = ({
           finalStep={4}
           handleBack={handleBack}
           handleNext={handleNext}
-          handleSubmit={handleSubmit}
         />
       );
   }

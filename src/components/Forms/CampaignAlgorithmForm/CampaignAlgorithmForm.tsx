@@ -9,19 +9,13 @@ import GenericModal from '../../GenericModal';
 import TermsAndConditions from './TermsAndConditions';
 import CustomInput from '../../CustomInput';
 import InfoIcon from '@material-ui/icons/Info';
-import { Tier } from '../../../types';
+import { AlgoTier, Tier } from '../../../types';
 import { formatFloat } from '../../../helpers/formatter';
+import { updateCampaign } from '../../../store/actions/campaign';
+import { ActionsProps } from '../../NewCampaign/StepsContent';
+import { showErrorAlert } from '../../../store/actions/alerts';
 
-interface Props {
-  activeStep: number;
-  firstStep: number;
-  finalStep: number;
-  handleNext: () => void;
-  handleBack: () => void;
-  handleSubmit: () => void;
-}
-
-const CampaignAlgorithmForm: React.FC<Props> = ({
+const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
   activeStep,
   handleBack,
   handleNext,
@@ -30,7 +24,7 @@ const CampaignAlgorithmForm: React.FC<Props> = ({
   finalStep,
 }) => {
   const campaign = useStoreCampaignSelector();
-  const numOfTiers = campaign.config.numOfTiers;
+  const numOfTiers = parseInt(campaign.config.numOfTiers);
   const [agreementChecked, handleAgreementChecked] = useState(campaign.config.agreementChecked);
   const [clickCount, setClickCount] = useState(campaign.algorithm.pointValues.clicks);
   const [viewCount, setViewCount] = useState(campaign.algorithm.pointValues.views);
@@ -44,27 +38,72 @@ const CampaignAlgorithmForm: React.FC<Props> = ({
   const initMaxThresh = 100;
 
   const handleTierChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    dispatch(
-      updateCampaignState({ cat: 'algoTiers', tier: event.target.id, key: event.target.name, val: event.target.value }),
-    );
+    const key = event.target.id;
+    const name = event.target.name;
+    const tier = { ...tiers[key] };
+    if (name === 'thershold') {
+      tier.threshold = event.target.value;
+    } else {
+      tier.totalCoiins = event.target.value;
+    }
+    const newTiers = { ...tiers };
+    newTiers[key] = tier;
+    setTiers(newTiers);
   };
 
   const initThresh = () => {
-    const initialTiers: Tier[] = [];
+    const initialTiers: AlgoTier = {};
     for (let i = 1; i <= numOfTiers; i++) {
       const dataObject: Tier = { threshold: '', totalCoiins: '' };
-      dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh, 2);
-      dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget, 2);
-      initialTiers.push(dataObject);
+      dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh, 0);
+      dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget, 0);
+      initialTiers[i - 1] = dataObject;
     }
     setTiers(initialTiers);
   };
 
   useEffect(initThresh, []);
 
+  const submit = () => {
+    if (!agreementChecked) {
+      dispatch(showErrorAlert('Please Accept Terms and Conditions!'));
+      return;
+    }
+    if (validateTiers()) {
+      const augmentedCampaign = {
+        ...campaign,
+        algorithm: {
+          ...campaign.algorithm,
+          tiers,
+          clicks: clickCount,
+          views: viewCount,
+          submissions: submissionCount,
+          likes: likeCount,
+          shares: shareCount,
+        },
+      };
+      dispatch(updateCampaign(augmentedCampaign));
+      if (handleSubmit) {
+        handleSubmit(augmentedCampaign);
+      }
+    }
+  };
+
+  const validateTiers = () => {
+    let validated = true;
+    for (let i = 0; i < numOfTiers; i++) {
+      const tier = tiers[i];
+      if (!tier.threshold || !tier.totalCoiins) {
+        dispatch(showErrorAlert('Please add all Reward values'));
+        return (validated = false);
+      }
+    }
+    return validated;
+  };
+
   return (
     <Fade>
-      <Box className="w-full px-20 mt-10">
+      <Box className="w-full px-28 mt-10">
         <GenericModal open={modalOpen} onClose={() => toggleModal(false)} size="medium">
           <TermsAndConditions />
         </GenericModal>
@@ -137,7 +176,7 @@ const CampaignAlgorithmForm: React.FC<Props> = ({
               </Tooltip>
             </Box>
             <Box className="w-full flex flex-col">
-              {tiers.map((item, index) => (
+              {Object.values(tiers).map((item, index) => (
                 <Box key={index} className="w-full mb-5">
                   <h3 className="text-lg mb-3">{`Tier ${index + 1}`}</h3>
                   <Box className="w-full flex flex-row justify-between items-center space-x-5">
@@ -195,7 +234,7 @@ const CampaignAlgorithmForm: React.FC<Props> = ({
             finalStep={finalStep}
             handleBack={handleBack}
             handleNext={handleNext}
-            handleSubmit={handleSubmit}
+            handleSubmit={submit}
           />
         </Box>
       </Box>

@@ -17,26 +17,20 @@ import { ErrorObject, FileObject } from '../../../types';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
+import { ActionsProps } from '../../NewCampaign/StepsContent';
 
 interface Props {
   userData: {
     company: string;
   };
   campaignType: string;
-  activeStep: number;
-  firstStep: number;
-  finalStep: number;
-  handleNext: () => void;
-  handleBack: () => void;
-  handleSubmit: () => void;
 }
 
-const CampaignInitializeForm: React.FC<Props> = ({
+const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   campaignType,
   activeStep,
   handleBack,
   handleNext,
-  handleSubmit,
   firstStep,
   finalStep,
 }) => {
@@ -170,10 +164,11 @@ const CampaignInitializeForm: React.FC<Props> = ({
 
   return (
     <Fade>
-      <Box className="w-full flex flex-row flex-wrap px-20 mt-10">
+      <Box className="w-full flex flex-row flex-wrap px-28 mt-10">
         <Box className="box-border w-4/6 flex flex-row flex-wrap">
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
+              required={true}
               value={name}
               placeholder="name"
               label="Name of Campaign"
@@ -186,6 +181,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <CustomInput
+              required={true}
               value={target}
               placeholder="Landing Page URL: must start with http or https"
               label="Landing Page URL"
@@ -198,8 +194,8 @@ const CampaignInitializeForm: React.FC<Props> = ({
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <CustomInput
-              label="Landing Page Video URL (Optional)"
-              placeholder={'Video URL (Optional)'}
+              label="Landing Page Video URL"
+              placeholder="Video URL"
               value={targetVideo}
               error={errors['targetVideo']}
               onChange={(e) => {
@@ -210,33 +206,30 @@ const CampaignInitializeForm: React.FC<Props> = ({
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
+              required={true}
               label="How many Reward Tiers would you like to provide? (1-10)"
               type="number"
               value={numOfTiers}
               disabled={campaignType === 'raffle'}
               error={errors['numOfTiers']}
-              onChange={(e) => {
-                const value = parseInt(e.target.value) < 1 ? 1 : parseInt(e.target.value) > 10 ? 10 : 0;
-                setTiers(value);
-                updateErrors('numOfTiers', e.target.value);
-              }}
+              InputProps={{ inputProps: { min: 0, max: 10 } }}
+              onChange={(e) => setTiers(e.target.value)}
             />
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
+              required={true}
               label="How many Posting Templates would you like to provide? (1-5)"
               type="number"
               value={numOfSuggestedPosts}
               error={errors['numOfSuggestedPosts']}
-              onChange={(e) => {
-                const value = parseInt(e.target.value) < 1 ? 1 : parseInt(e.target.value) > 5 ? 5 : 0;
-                setPosts(value);
-                updateErrors('numOfSuggestedPosts', e.target.value);
-              }}
+              InputProps={{ inputProps: { min: 0, max: 10 } }}
+              onChange={(e) => setPosts(e.target.value)}
             />
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <CustomInput
+              required={true}
               label="Campaign Tagline"
               placeholder="Campaign Tagline"
               value={tagline}
@@ -258,6 +251,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
               defaultValue={keywords}
               renderInput={(params) => (
                 <TextField
+                  required={true}
                   error={errors['keywords']}
                   {...params}
                   variant="outlined"
@@ -273,6 +267,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
+              required={true}
               label="Description"
               multiline
               value={description}
@@ -286,6 +281,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <DateTimePicker
+              required={true}
               value={beginDate || null}
               inputVariant="outlined"
               variant="dialog"
@@ -299,6 +295,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
           </Box>
           <Box className="w-3/6 box-border pr-4 mt-5">
             <DateTimePicker
+              required={true}
               inputVariant="outlined"
               fullWidth
               value={endDate || null}
@@ -403,7 +400,6 @@ const CampaignInitializeForm: React.FC<Props> = ({
             finalStep={finalStep}
             handleBack={handleBack}
             handleNext={next}
-            handleSubmit={handleSubmit}
           />
         </Box>
       </Box>

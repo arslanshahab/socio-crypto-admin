@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { Fade } from 'react-awesome-reveal';
-import { LocationRequirementSpecs } from '../../../types';
+import { AgeRangeRequirementSpecs, LocationRequirementSpecs } from '../../../types';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import LocationForm from './LocationForm';
 import GenericModal from '../../GenericModal';
@@ -14,21 +14,12 @@ import DisplayRequirements from './DisplayRequirements';
 import InterestsForm from './InterestsForm';
 import SocialFollowersForm from './SocialFollowersForm';
 import { updateCampaign } from '../../../store/actions/campaign';
+import { ActionsProps } from '../../NewCampaign/StepsContent';
 
-interface Props {
-  activeStep: number;
-  firstStep: number;
-  finalStep: number;
-  handleNext: () => void;
-  handleBack: () => void;
-  handleSubmit: () => void;
-}
-
-const CampaignRequirementsForm: React.FC<Props> = ({
+const CampaignRequirementsForm: React.FC<ActionsProps> = ({
   activeStep,
   handleBack,
   handleNext,
-  handleSubmit: handleFormSubmit,
   firstStep,
   finalStep,
 }) => {
@@ -42,7 +33,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
   const [selectedInterests, setSelectedInterests] = useState<string[]>(requirements.interests);
   const [selectedValues, setSelectedValues] = useState<string[]>(requirements.values);
   const [locations, setLocations] = useState<LocationRequirementSpecs[]>(requirements.location);
-  const [selectedAgeRange, setAgeRange] = useState<string[]>(requirements.ageRange);
+  const [selectedAgeRange, setAgeRange] = useState<AgeRangeRequirementSpecs>(requirements.ageRange);
 
   const getLocationString = (val: LocationRequirementSpecs): string => {
     let locationString = '';
@@ -72,8 +63,17 @@ const CampaignRequirementsForm: React.FC<Props> = ({
     handleNext();
   };
 
+  const handleAgeSubmit = (data: string[]) => {
+    const ages: AgeRangeRequirementSpecs = { ...campaign.requirements.ageRange };
+    data.forEach((item) => {
+      ages[item] = true;
+    });
+    setAgeRange(ages);
+    setFormtype('');
+  };
+
   return (
-    <Box className="w-full px-20 mt-10">
+    <Box className="w-full px-28 mt-10">
       <Fade>
         <Box className="w-full">
           <GenericModal open={Boolean(formType)} onClose={() => setFormtype('')} size="small">
@@ -91,15 +91,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
                 }}
               />
             )}
-            {formType === 'age' && (
-              <AgeForm
-                defaultValues={selectedAgeRange}
-                handleSubmit={(data) => {
-                  setAgeRange(data);
-                  setFormtype('');
-                }}
-              />
-            )}
+            {formType === 'age' && <AgeForm defaultValues={selectedAgeRange} handleSubmit={handleAgeSubmit} />}
             {formType === 'values' && (
               <ValuesForm
                 defaultValue={selectedValues}
@@ -167,19 +159,22 @@ const CampaignRequirementsForm: React.FC<Props> = ({
               </CustomButton>
             </Box>
             <Box className="w-full flex flex-row flex-wrap justify-start items-center">
-              {selectedAgeRange.map((age) => {
-                return (
-                  <DisplayRequirements
-                    key={age}
-                    value={age}
-                    onRemove={(val) => {
-                      setAgeRange((prev) => {
-                        return prev.filter((item) => item !== val);
-                      });
-                    }}
-                  />
-                );
-              })}
+              {Object.keys(selectedAgeRange).map(
+                (age) =>
+                  selectedAgeRange[age] && (
+                    <DisplayRequirements
+                      key={age}
+                      value={age}
+                      onRemove={(val) => {
+                        setAgeRange((prev) => {
+                          const ages = { ...prev };
+                          ages[val] = false;
+                          return ages;
+                        });
+                      }}
+                    />
+                  ),
+              )}
             </Box>
           </Box>
 
@@ -261,7 +256,6 @@ const CampaignRequirementsForm: React.FC<Props> = ({
         finalStep={finalStep}
         handleBack={handleBack}
         handleNext={next}
-        handleSubmit={handleFormSubmit}
       />
     </Box>
   );

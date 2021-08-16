@@ -8,7 +8,7 @@ export interface CampaignActionProps {
   finalStep: number;
   handleNext: () => void;
   handleBack: () => void;
-  handleSubmit: () => void;
+  handleSubmit?: () => void;
 }
 
 const Actions: React.FC<CampaignActionProps> = ({

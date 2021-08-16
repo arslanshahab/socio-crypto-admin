@@ -8,7 +8,7 @@ const initialAlgorithmState: AlgorithmSpecs = {
     likes: '3',
     shares: '9',
   },
-  tiers: [],
+  tiers: {},
 };
 
 const campaignInitState: CampaignState = {
@@ -32,7 +32,13 @@ const campaignInitState: CampaignState = {
     version: '',
     location: [],
     values: [],
-    ageRange: [],
+    ageRange: {
+      '0-17': false,
+      '18-25': false,
+      '26-40': false,
+      '41-55': false,
+      '55+': false,
+    },
     interests: [],
     email: false,
     socialFollowing: {
@@ -43,9 +49,9 @@ const campaignInitState: CampaignState = {
   },
   config: {
     type: 'crypto',
-    numOfSuggestedPosts: 2,
+    numOfSuggestedPosts: '2',
     cryptoSymbol: '',
-    numOfTiers: 3,
+    numOfTiers: '3',
     initialTotal: '',
     coiinBudget: '0',
     budget: '',

@@ -96,8 +96,8 @@ export const NewCampaign: React.FC<Props> = (props) => {
 
   const validateTiers = () => {
     let validated = false;
-    if (campaign.config.numOfTiers > Object.entries(campaign.algorithm.tiers).length) return validated;
-    for (let i = 0; i < campaign.config.numOfTiers; i++) {
+    if (parseInt(campaign.config.numOfTiers) > Object.entries(campaign.algorithm.tiers).length) return validated;
+    for (let i = 0; i < parseInt(campaign.config.numOfTiers); i++) {
       const tier = campaign.algorithm.tiers[i + 1];
       if (!tier.threshold || !tier.totalCoiins) return validated;
     }
@@ -150,7 +150,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       }
     }
     if (step == 2) {
-      for (let i = 0; i < campaign.config.numOfSuggestedPosts; i++) {
+      for (let i = 0; i < parseInt(campaign.config.numOfSuggestedPosts); i++) {
         const post = campaign.suggestedPosts[i];
         if (post && post.length == 0) return validated;
       }
@@ -280,42 +280,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
 
   return (
     <div className="new-campaign">
-      <Dialog
-        open={progressModal}
-        onClose={() => showProgressModal(false)}
-        closeAfterTransition
-        BackdropProps={{
-          timeout: 500,
-        }}
-        maxWidth="sm"
-        disableBackdropClick={true}
-        disableEscapeKeyDown={true}
-      >
-        <Box className="progressModal">
-          <CircularProgress size={35} color="primary" />
-          <Typography variant="h3">Creating your campaign, Please wait...</Typography>
-          <Box className="statusContainer">
-            {campaign.image.file && (
-              <Box className="statusBox">
-                <Typography variant="h5">Uploading campaign image</Typography>
-                <Typography variant="h5"> {campaignUploadProgress}%</Typography>
-              </Box>
-            )}
-            {campaign.sharedMedia.file && (
-              <Box className="statusBox">
-                <Typography variant="h5">Uploading shared media</Typography>{' '}
-                <Typography variant="h5">{sharedMediaUploadProgress}%</Typography>
-              </Box>
-            )}
-            {campaign.config.raffleImage?.file && (
-              <Box className="statusBox">
-                <Typography variant="h5">Uploading raffle image</Typography>{' '}
-                <Typography variant="h5">{raffleUploadProgress}%</Typography>
-              </Box>
-            )}
-          </Box>
-        </Box>
-      </Dialog>
       <Fragment>
         <Paper>
           <Stepper activeStep={activeStep} alternativeLabel>

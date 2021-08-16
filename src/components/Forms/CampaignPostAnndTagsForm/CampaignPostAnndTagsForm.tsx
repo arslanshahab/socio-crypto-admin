@@ -7,25 +7,17 @@ import Actions from '../../NewCampaign/Actions';
 import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
 import { ErrorObject } from '../../../types';
+import { ActionsProps } from '../../NewCampaign/StepsContent';
 
-interface Props {
-  activeStep: number;
-  firstStep: number;
-  finalStep: number;
-  handleNext: () => void;
-  handleBack: () => void;
-  handleSubmit: () => void;
-}
-
-const CampaignPostAnndTagsForm: React.FC<Props> = ({
+const CampaignPostAnndTagsForm: React.FC<ActionsProps> = ({
   activeStep,
   handleBack,
   handleNext,
-  handleSubmit,
   firstStep,
   finalStep,
 }) => {
   const campaign = useStoreCampaignSelector();
+  const numOfSuggestedPosts = parseInt(campaign.config.numOfSuggestedPosts);
   const dispatch = useDispatch();
   const [postValues, setPostValues] = useState<Array<string>>([]);
   const [tags, setTags] = useState(campaign.suggestedTags.join(','));
@@ -33,8 +25,8 @@ const CampaignPostAnndTagsForm: React.FC<Props> = ({
 
   const initializeSocials = () => {
     const intitValues = [];
-    if (campaign.config.numOfSuggestedPosts) {
-      for (let a = 0; a < campaign.config.numOfSuggestedPosts; a++) {
+    if (numOfSuggestedPosts) {
+      for (let a = 0; a < numOfSuggestedPosts; a++) {
         if (campaign.suggestedPosts[a]) {
           intitValues.push(campaign.suggestedPosts[a]);
         } else {
@@ -45,7 +37,7 @@ const CampaignPostAnndTagsForm: React.FC<Props> = ({
     }
   };
 
-  useEffect(initializeSocials, [campaign.config.numOfSuggestedPosts]);
+  useEffect(initializeSocials, [numOfSuggestedPosts]);
 
   const handlePostChange = (e: React.ChangeEvent<any>) => {
     const posts = [...postValues];
@@ -83,7 +75,7 @@ const CampaignPostAnndTagsForm: React.FC<Props> = ({
   };
 
   return (
-    <Box className="w-full mt-10 px-20">
+    <Box className="w-full mt-10 px-28">
       <Fade>
         {postValues.map((item, index) => (
           <Box key={index} className="w-full mb-6">
@@ -114,7 +106,6 @@ const CampaignPostAnndTagsForm: React.FC<Props> = ({
             finalStep={finalStep}
             handleBack={handleBack}
             handleNext={next}
-            handleSubmit={handleSubmit}
           />
         </Box>
       </Fade>

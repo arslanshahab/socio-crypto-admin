@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, LinearProgress } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
@@ -6,15 +6,19 @@ import { useMutation, FetchResult } from '@apollo/client';
 import {
   CampaignCreationResponse,
   NewCampaignVars,
-  CampaignRequirementSpecs,
   NewCampaignImageVars,
+  CampaignState,
+  FileObject,
 } from '../../types.d';
 import { NEW_CAMPAIGN, NEW_CAMPAIGN_IMAGES } from '../../operations/mutations/campaign';
 import StepsView from '../../components/NewCampaign/StepsView';
 import StepContent from '../../components/NewCampaign/StepsContent';
-import { updateCampaignState } from '../../redux/slices/campaign';
 import axios from 'axios';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
+import GenericModal from '../../components/GenericModal';
+import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
+import { resetCampaign } from '../../store/actions/campaign';
+import { dataURLtoFile } from '../../helpers/fileHandler';
 
 interface Props {
   userData: any;
@@ -31,43 +35,8 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
   const [activeStep, setActiveStep] = useState(0);
   const campaign = useStoreCampaignSelector();
 
-  const [saveCampaign, { loading }] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN, {
-    variables: {
-      name: campaign.name,
-      coiinTotal: parseFloat(campaign.config.budgetType === 'raffle' ? '0' : (campaign.config.coiinBudget as string)),
-      target: campaign.target,
-      targetVideo: campaign.targetVideo || '',
-      beginDate: campaign.beginDate,
-      endDate: campaign.endDate,
-      cryptoId: campaign.cryptoId,
-      description: campaign.description,
-      company: userData.company,
-      algorithm: JSON.stringify(campaign.algorithm),
-      requirements: (campaign.config && campaign.config.budgetType === 'raffle'
-        ? { ...campaign.requirements, email: true }
-        : { ...campaign.requirements }) as CampaignRequirementSpecs,
-      image: campaign.image.filename,
-      sharedMedia: campaign.sharedMedia.filename,
-      tagline: campaign.tagline,
-      suggestedPosts: campaign.suggestedPosts,
-      suggestedTags: campaign.suggestedTags,
-      keywords: campaign.keywords,
-      type: (campaign.config.budgetType as string) || 'coiin',
-      rafflePrize:
-        campaign.config && campaign.config.budgetType === 'raffle'
-          ? {
-              displayName: campaign.config['rafflePrizeName'] as string,
-              affiliateLink: campaign.config['rafflePrizeAffiliateLink'] as string,
-              image: campaign.config.raffleImage?.filename as string,
-            }
-          : undefined,
-    },
-  });
-
-  const [saveCampaignImages, { loading: savingImagesLoading }] = useMutation<
-    CampaignCreationResponse,
-    NewCampaignImageVars
-  >(NEW_CAMPAIGN_IMAGES);
+  const [saveCampaign] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN);
+  const [saveCampaignImages] = useMutation<CampaignCreationResponse, NewCampaignImageVars>(NEW_CAMPAIGN_IMAGES);
 
   const handleNext = () => {
     setActiveStep((prevState) => (prevState < 4 ? prevState + 1 : prevState));
@@ -76,35 +45,55 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
     setActiveStep((prevState) => (prevState > 0 ? prevState - 1 : prevState));
   };
 
-  const createCampaign = async () => {
+  const createCampaign = async (data: CampaignState) => {
     try {
       showProgressModal(true);
-      const response: FetchResult<
-        CampaignCreationResponse,
-        Record<string, any>,
-        Record<string, any>
-      > = await saveCampaign();
+      const response: FetchResult<Record<string, any>, Record<string, any>> = await saveCampaign({
+        variables: {
+          name: data.name,
+          coiinTotal: parseFloat(data.config.budgetType === 'raffle' ? '0' : data.config.coiinBudget),
+          target: data.target,
+          targetVideo: data.targetVideo || '',
+          beginDate: data.beginDate,
+          endDate: data.endDate,
+          cryptoId: data.cryptoId,
+          description: data.description,
+          company: userData.company,
+          algorithm: JSON.stringify(data.algorithm),
+          requirements:
+            data.config.budgetType === 'raffle' ? { ...data.requirements, email: true } : { ...data.requirements },
+          image: data.image.filename,
+          sharedMedia: data.sharedMedia.filename,
+          tagline: data.tagline,
+          suggestedPosts: data.suggestedPosts,
+          suggestedTags: data.suggestedTags,
+          keywords: data.keywords,
+          type: data.config.budgetType || 'coiin',
+          rafflePrize:
+            data.config.budgetType === 'raffle'
+              ? {
+                  displayName: data.config.rafflePrizeName,
+                  affiliateLink: data.config.rafflePrizeAffiliateLink,
+                  image: data.config.raffleImage.filename,
+                }
+              : undefined,
+        },
+      });
       if (response.data) {
-        // eslint-disable-next-line
-        // @ts-ignore
-        const { newCampaign: campaignCreateResponse } = response.data;
+        const { newCampaign } = response.data;
         if (campaign.image.file) {
-          await uploadCampaignImage(campaignCreateResponse, campaign.image.file, campaign.image.format);
+          await uploadMedia(newCampaign.campaignImageSignedURL, campaign.image, setCampaignUploadProgress);
         }
         if (campaign.sharedMedia.file) {
-          await uploadSharedMedia(campaignCreateResponse, campaign.sharedMedia.file, campaign.sharedMedia.format);
+          await uploadMedia(newCampaign.sharedMediaSignedURL, campaign.sharedMedia, setSharedMediaUploadProgress);
         }
-        if (campaign.config.raffleImage?.file) {
-          await uploadRaffleImage(
-            campaignCreateResponse,
-            campaign.config.raffleImage?.file,
-            campaign.config.raffleImage?.format,
-          );
+        if (campaign.config.raffleImage.file) {
+          await uploadMedia(newCampaign.raffleImageSignedURL, campaign.config.raffleImage, setRaffleUploadProgress);
         }
 
         await saveCampaignImages({
           variables: {
-            id: campaignCreateResponse.campaignId,
+            id: newCampaign.campaignId,
             image: campaign.image.filename,
             sharedMedia: campaign.sharedMedia.filename,
             sharedMediaFormat: campaign.sharedMedia.format,
@@ -112,64 +101,56 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         });
       }
       showProgressModal(false);
-
-      setTimeout(() => {
-        dispatch(updateCampaignState({ cat: 'reset', key: 'reset', val: 'reset' }));
-        showProgressModal(false);
-        history.push('/dashboard/campaigns');
-      }, 1000);
+      dispatch(resetCampaign());
+      history.push('/dashboard/campaigns');
     } catch (e) {
       showProgressModal(false);
     }
   };
 
-  const uploadRaffleImage = async (data: CampaignCreationResponse, file: string, format: string) => {
+  const uploadMedia = async (url: string, file: FileObject, progressCallback: (p: number) => void) => {
     await axios({
       method: 'PUT',
-      url: data.raffleImageSignedURL,
-      data: file,
+      url: url,
+      data: dataURLtoFile(file.file, file.filename),
       headers: {
-        'Content-Type': format,
+        'Content-Type': file.format,
       },
       onUploadProgress: (event) => {
         const progress = ((event.loaded / event.total) * 100).toFixed(2);
-        setRaffleUploadProgress(parseFloat(progress));
-      },
-    });
-  };
-
-  const uploadCampaignImage = async (data: CampaignCreationResponse, file: string, format: string) => {
-    await axios({
-      method: 'PUT',
-      url: data.campaignImageSignedURL,
-      data: file,
-      headers: {
-        'Content-Type': format,
-      },
-      onUploadProgress: (event) => {
-        const progress = ((event.loaded / event.total) * 100).toFixed(2);
-        setCampaignUploadProgress(parseFloat(progress));
-      },
-    });
-  };
-
-  const uploadSharedMedia = async (data: CampaignCreationResponse, file: string, format: string) => {
-    await axios({
-      method: 'PUT',
-      url: data.sharedMediaSignedURL,
-      data: file,
-      headers: {
-        'Content-Type': format,
-      },
-      onUploadProgress: (event) => {
-        const progress = ((event.loaded / event.total) * 100).toFixed(2);
-        setSharedMediaUploadProgress(parseFloat(progress));
+        progressCallback(parseFloat(progress));
       },
     });
   };
 
   return (
     <Box className="w-full p-10 overflow-scroll">
+      <GenericModal open={progressModal} onClose={() => showProgressModal(false)} size="mini" persist={true}>
+        <Box className="w-full p-10">
+          <LinearProgress className="mb-5" />
+          <h3 className="animate-pulse text-xl">Creating campaign, Please wait...</h3>
+          <Box className="w-full mt-5">
+            {campaign.image.file && (
+              <Box className="w-full flex flex-row items-center justify-between mb-3">
+                <p>Uploading campaign image</p>
+                <CircularProgressWithLabel value={campaignUploadProgress} />
+              </Box>
+            )}
+            {campaign.sharedMedia.file && (
+              <Box className="w-full flex flex-row items-center justify-between mb-3">
+                <p>Uploading shared media</p>
+                <CircularProgressWithLabel value={sharedMediaUploadProgress} />
+              </Box>
+            )}
+            {campaign.config.raffleImage?.file && (
+              <Box className="w-full flex flex-row items-center justify-between">
+                <p>Uploading raffle image</p>
+                <CircularProgressWithLabel value={raffleUploadProgress} />
+              </Box>
+            )}
+          </Box>
+        </Box>
+      </GenericModal>
       <StepsView list={steps} activeStep={activeStep} />
       <Box className="w-full">
         <StepContent

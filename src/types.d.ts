@@ -257,8 +257,8 @@ export interface RafflePrizeStructure {
 
 export interface CampaignConfig {
   [key: string]: string | boolean | number | FileObject;
-  numOfSuggestedPosts: number;
-  numOfTiers: number;
+  numOfSuggestedPosts: string;
+  numOfTiers: string;
   initialTotal: string;
   type: string;
   budget: string;
@@ -401,7 +401,7 @@ export interface CampaignRequirementSpecs {
   location: LocationRequirementSpecs[];
   values: string[];
   interests: string[];
-  ageRange: string[];
+  ageRange: AgeRangeRequirementSpecs;
   socialFollowing: SocialFollowingSpecs;
   email: boolean;
 }
@@ -419,6 +419,7 @@ export interface TwitterSocialFollowingSpecs {
 }
 
 export interface AgeRangeRequirementSpecs {
+  [key: string]: boolean;
   '0-17': boolean;
   '18-25': boolean;
   '26-40': boolean;
@@ -439,10 +440,14 @@ export interface PublicUser {
   ageRange: string;
 }
 
+export interface AlgoTier {
+  [key: string]: Tier;
+}
+
 export interface AlgorithmSpecs {
   [key: string]: ActionValues | Tiers;
   pointValues: ActionValues;
-  tiers: Tier[];
+  tiers: AlgoTier;
 }
 
 export interface Tier {

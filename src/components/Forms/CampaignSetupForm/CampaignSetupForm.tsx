@@ -7,7 +7,6 @@ import { useQuery } from '@apollo/client';
 import { ErrorObject, FileObject, GetFundingWalletResponse } from '../../../types';
 import { GET_FUNDING_WALLET } from '../../../operations/queries/fundingWallet';
 import { handleImage } from '../../../helpers/fileHandler';
-import { useHistory } from 'react-router';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
 import Actions from '../../NewCampaign/Actions';
@@ -16,23 +15,17 @@ import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import CustomSelect from '../../CustomSelect/CustomSelect';
 import CustomInput from '../../CustomInput';
 import { showErrorAlert } from '../../../store/actions/alerts';
+import { ActionsProps } from '../../NewCampaign/StepsContent';
 
 interface Props {
   company: string;
-  activeStep: number;
-  firstStep: number;
-  finalStep: number;
-  handleNext: () => void;
-  handleBack: () => void;
-  handleSubmit: () => void;
 }
 
-const CampaignSetupForm: React.FC<Props> = ({
+const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   company,
   activeStep,
   handleBack,
   handleNext,
-  handleSubmit,
   firstStep,
   finalStep,
 }) => {
@@ -157,7 +150,7 @@ const CampaignSetupForm: React.FC<Props> = ({
   };
 
   return (
-    <Box className="w-full px-20">
+    <Box className="w-full px-28">
       {/* <Box
         onClick={() => {
           dispatch(resetCampaign());
@@ -181,6 +174,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                     <Box className="flex flex-row justify-start w-full">
                       <Box className="w-2/6 box-border pr-4">
                         <CustomSelect
+                          required={true}
                           value={cryptoSymbol}
                           onChange={(event: React.ChangeEvent<any>) => {
                             setCryptoSymbol(event.target.value);
@@ -194,6 +188,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                       </Box>
                       <Box className="w-2/6 box-border pr-4">
                         <CustomInput
+                          required={true}
                           value={coiinBudget}
                           onChange={handleCoiinBudgetChange}
                           placeholder="100"
@@ -211,6 +206,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                     <Box className="w-2/6 pr-3">
                       <Box className="mb-4 w-full">
                         <CustomInput
+                          required={true}
                           value={rafflePrizeName}
                           placeholder="Raffle Campaign Prize"
                           label="Raffle Prize Name"
@@ -224,6 +220,7 @@ const CampaignSetupForm: React.FC<Props> = ({
                       </Box>
                       <Box className="w-full">
                         <CustomInput
+                          required={true}
                           value={rafflePrizeLink}
                           placeholder="Raffle Affiliate Link"
                           label="Raffle Affiliate Link (optional)"
@@ -277,7 +274,6 @@ const CampaignSetupForm: React.FC<Props> = ({
         finalStep={finalStep}
         handleBack={handleBack}
         handleNext={next}
-        handleSubmit={handleSubmit}
       />
     </Box>
   );

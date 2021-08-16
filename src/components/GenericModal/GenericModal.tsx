@@ -29,7 +29,7 @@ const GenericModal: React.FC<DialogProps & Props> = (props) => {
       onClose={onClose}
       open={open}
     >
-      {showCloseIcon && <CloseIcon className="closeIcon" onClick={closeModal} />}
+      {showCloseIcon && !persist && <CloseIcon className="closeIcon" onClick={closeModal} />}
       {children}
     </Dialog>
   );
