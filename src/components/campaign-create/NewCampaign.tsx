@@ -10,12 +10,11 @@ import { updateCampaignState } from '../../redux/slices/campaign';
 
 import { RootState } from '../../redux/reducer';
 import { useHistory } from 'react-router';
-import { Requirements } from './Requirements';
-import { SetupCampaign } from '../SetupCampaign';
+import { SetupCampaign } from './SetupCampaign';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { NEW_CAMPAIGN, NEW_CAMPAIGN_IMAGES } from '../../operations/mutations/campaign';
-import { showErrorMessage } from '../../helpers/utils';
+// import { showErrorMessage } from '../../helpers/utils';
 import axios from 'axios';
 import { NewCampaignImageVars } from '../../types.d';
 
@@ -48,7 +47,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       company: props.userData.company,
       algorithm: JSON.stringify(campaign.algorithm),
       requirements: (campaign.config && campaign.config.budgetType === 'raffle'
-        ? { email: true, ...campaign.requirements }
+        ? { ...campaign.requirements, email: true }
         : { ...campaign.requirements }) as CampaignRequirementSpecs,
       image: campaign.image.filename,
       sharedMedia: campaign.sharedMedia.filename,
@@ -90,8 +89,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
         return <Initialize campaignType={campaign.config.budgetType as string} {...props} />;
       case 2:
         return <PostsAndTags />;
-      case 3:
-        return <Requirements />;
       case 4:
         return <Algorithm />;
     }
@@ -99,8 +96,8 @@ export const NewCampaign: React.FC<Props> = (props) => {
 
   const validateTiers = () => {
     let validated = false;
-    if (campaign.config.numOfTiers > Object.entries(campaign.algorithm.tiers).length) return validated;
-    for (let i = 0; i < campaign.config.numOfTiers; i++) {
+    if (parseInt(campaign.config.numOfTiers) > Object.entries(campaign.algorithm.tiers).length) return validated;
+    for (let i = 0; i < parseInt(campaign.config.numOfTiers); i++) {
       const tier = campaign.algorithm.tiers[i + 1];
       if (!tier.threshold || !tier.totalCoiins) return validated;
     }
@@ -153,7 +150,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
       }
     }
     if (step == 2) {
-      for (let i = 0; i < campaign.config.numOfSuggestedPosts; i++) {
+      for (let i = 0; i < parseInt(campaign.config.numOfSuggestedPosts); i++) {
         const post = campaign.suggestedPosts[i];
         if (post && post.length == 0) return validated;
       }
@@ -202,19 +199,15 @@ export const NewCampaign: React.FC<Props> = (props) => {
         // @ts-ignore
         const { newCampaign: campaignCreateResponse } = response.data;
         if (campaign.image.file) {
-          await uploadCampaignImage(campaignCreateResponse, campaign.image.file as Blob, campaign.image.format);
+          await uploadCampaignImage(campaignCreateResponse, campaign.image.file, campaign.image.format);
         }
         if (campaign.sharedMedia.file) {
-          await uploadSharedMedia(
-            campaignCreateResponse,
-            campaign.sharedMedia.file as Blob,
-            campaign.sharedMedia.format,
-          );
+          await uploadSharedMedia(campaignCreateResponse, campaign.sharedMedia.file, campaign.sharedMedia.format);
         }
         if (campaign.config.raffleImage?.file) {
           await uploadRaffleImage(
             campaignCreateResponse,
-            campaign.config.raffleImage?.file as Blob,
+            campaign.config.raffleImage?.file,
             campaign.config.raffleImage?.format,
           );
         }
@@ -240,7 +233,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
     }
   };
 
-  const uploadRaffleImage = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+  const uploadRaffleImage = async (data: CampaignCreationResponse, file: string, format: string) => {
     await axios({
       method: 'PUT',
       url: data.raffleImageSignedURL,
@@ -255,7 +248,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
     });
   };
 
-  const uploadCampaignImage = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+  const uploadCampaignImage = async (data: CampaignCreationResponse, file: string, format: string) => {
     await axios({
       method: 'PUT',
       url: data.campaignImageSignedURL,
@@ -270,7 +263,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
     });
   };
 
-  const uploadSharedMedia = async (data: CampaignCreationResponse, file: Blob, format: string) => {
+  const uploadSharedMedia = async (data: CampaignCreationResponse, file: string, format: string) => {
     await axios({
       method: 'PUT',
       url: data.sharedMediaSignedURL,
@@ -287,42 +280,6 @@ export const NewCampaign: React.FC<Props> = (props) => {
 
   return (
     <div className="new-campaign">
-      <Dialog
-        open={progressModal}
-        onClose={() => showProgressModal(false)}
-        closeAfterTransition
-        BackdropProps={{
-          timeout: 500,
-        }}
-        maxWidth="sm"
-        disableBackdropClick={true}
-        disableEscapeKeyDown={true}
-      >
-        <Box className="progressModal">
-          <CircularProgress size={35} color="primary" />
-          <Typography variant="h3">Creating your campaign, Please wait...</Typography>
-          <Box className="statusContainer">
-            {campaign.image.file && (
-              <Box className="statusBox">
-                <Typography variant="h5">Uploading campaign image</Typography>
-                <Typography variant="h5"> {campaignUploadProgress}%</Typography>
-              </Box>
-            )}
-            {campaign.sharedMedia.file && (
-              <Box className="statusBox">
-                <Typography variant="h5">Uploading shared media</Typography>{' '}
-                <Typography variant="h5">{sharedMediaUploadProgress}%</Typography>
-              </Box>
-            )}
-            {campaign.config.raffleImage?.file && (
-              <Box className="statusBox">
-                <Typography variant="h5">Uploading raffle image</Typography>{' '}
-                <Typography variant="h5">{raffleUploadProgress}%</Typography>
-              </Box>
-            )}
-          </Box>
-        </Box>
-      </Dialog>
       <Fragment>
         <Paper>
           <Stepper activeStep={activeStep} alternativeLabel>
@@ -358,7 +315,7 @@ export const NewCampaign: React.FC<Props> = (props) => {
                   if (payloadReady(activeStep)) {
                     handleNext(e);
                   } else {
-                    showErrorMessage('Form Incomplete');
+                    // showErrorMessage('Form Incomplete');
                   }
                 }}
               >

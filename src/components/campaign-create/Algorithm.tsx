@@ -13,79 +13,79 @@ interface Tier {
 
 export const Algorithm: React.FC = () => {
   const campaign = useSelector((state: RootState) => state.newCampaign);
-  const numOfTiers = useSelector((state: RootState) => state.newCampaign.config.numOfTiers);
-  const initialOffering = useSelector((state: RootState) => state.newCampaign.config.initialTotal);
+  // const numOfTiers = useSelector((state: RootState) => state.newCampaign.config.numOfTiers);
+  // const initialOffering = useSelector((state: RootState) => state.newCampaign.config.initialTotal);
   const [agreementChecked, handleAgreementChecked] = useState(campaign.config.agreementChecked || false);
   const [modalOpen, toggleModal] = useState(false);
   const dispatch = useDispatch();
-  const handleTierChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    dispatch(
-      updateCampaignState({ cat: 'algoTiers', tier: event.target.id, key: event.target.name, val: event.target.value }),
-    );
-  };
+  // const handleTierChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  //   dispatch(
+  //     updateCampaignState({ cat: 'algoTiers', tier: event.target.id, key: event.target.name, val: event.target.value }),
+  //   );
+  // };
   const handleValueChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     dispatch(updateCampaignState({ cat: 'algoValues', key: event.target.name, val: event.target.value }));
   };
-  const coiinBudget = campaign.config.coiinBudget ? parseFloat(campaign.config.coiinBudget.toString()) : 0;
-  const initMaxThresh = 100;
+  // const coiinBudget = campaign.config.coiinBudget ? parseFloat(campaign.config.coiinBudget.toString()) : 0;
+  // const initMaxThresh = 100;
 
-  const initThresh = () => {
-    const tiersObject: any = {};
-    for (let i = 1; i <= numOfTiers; i++) {
-      const dataObject: Tier = { threshold: '', totalCoiins: '' };
-      dataObject.threshold = ((i / numOfTiers) * initMaxThresh).toString();
-      dataObject.totalCoiins = ((i / numOfTiers) * coiinBudget).toString();
-      tiersObject[i.toString()] = dataObject;
-    }
-    dispatch(updateCampaignState({ cat: 'initAlgoTiers', initialTiers: tiersObject, key: '', val: null }));
-  };
+  // const initThresh = () => {
+  //   const tiersObject: Tier[] = [];
+  //   for (let i = 1; i <= numOfTiers; i++) {
+  //     const dataObject: Tier = { threshold: '', totalCoiins: '' };
+  //     dataObject.threshold = ((i / numOfTiers) * initMaxThresh).toString();
+  //     dataObject.totalCoiins = ((i / numOfTiers) * coiinBudget).toString();
+  //     tiersObject.push(dataObject);
+  //   }
+  //   dispatch(updateCampaignState({ cat: 'initAlgoTiers', initialTiers: tiersObject, key: '', val: null }));
+  // };
 
-  useEffect(initThresh, []);
+  // useEffect(initThresh, []);
 
-  const renderTiers = () => {
-    const tiers: JSX.Element[] = [];
-    for (let i = 1; i <= numOfTiers; i++) {
-      const label = `Tier ${i}`;
-      const id = `${i}`;
-      tiers.push(
-        <div className="margin-bottom">
-          <div>
-            <Typography component="div">{label}</Typography>
-          </div>
-          <Grid container xs={12} spacing={3} direction={'row'} justify={'center'}>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label={'Threshold'}
-                id={id}
-                name={'threshold'}
-                placeholder={'Threshold'}
-                value={campaign.algorithm.tiers[id] ? campaign.algorithm.tiers[id].threshold : ''}
-                onChange={handleTierChange}
-                className="text-field"
-                defaultValue={i === 0 ? 0 : undefined}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label={'Total Coiins'}
-                id={id}
-                name={'totalCoiins'}
-                placeholder={'Total Coiins'}
-                fullWidth
-                value={campaign.algorithm.tiers[id] ? campaign.algorithm.tiers[id].totalCoiins : ''}
-                disabled={i == numOfTiers}
-                onChange={handleTierChange}
-                className="text-field"
-                defaultValue={i === 0 ? initialOffering : undefined}
-              />
-            </Grid>
-          </Grid>
-        </div>,
-      );
-    }
-    return tiers;
-  };
+  // const renderTiers = () => {
+  //   const tiers: JSX.Element[] = [];
+  //   for (let i = 1; i <= numOfTiers; i++) {
+  //     const label = `Tier ${i}`;
+  //     const id = `${i}`;
+  //     tiers.push(
+  //       <div className="margin-bottom">
+  //         <div>
+  //           <Typography component="div">{label}</Typography>
+  //         </div>
+  //         <Grid container xs={12} spacing={3} direction={'row'} justify={'center'}>
+  //           <Grid item xs={6}>
+  //             <TextField
+  //               fullWidth
+  //               label={'Threshold'}
+  //               id={id}
+  //               name={'threshold'}
+  //               placeholder={'Threshold'}
+  //               value={campaign.algorithm.tiers[id] ? campaign.algorithm.tiers[id].threshold : ''}
+  //               onChange={handleTierChange}
+  //               className="text-field"
+  //               defaultValue={i === 0 ? 0 : undefined}
+  //             />
+  //           </Grid>
+  //           <Grid item xs={6}>
+  //             <TextField
+  //               label={'Total Coiins'}
+  //               id={id}
+  //               name={'totalCoiins'}
+  //               placeholder={'Total Coiins'}
+  //               fullWidth
+  //               value={campaign.algorithm.tiers[id] ? campaign.algorithm.tiers[id].totalCoiins : ''}
+  //               disabled={i == numOfTiers}
+  //               onChange={handleTierChange}
+  //               className="text-field"
+  //               defaultValue={i === 0 ? initialOffering : undefined}
+  //             />
+  //           </Grid>
+  //         </Grid>
+  //       </div>,
+  //     );
+  //   }
+  //   return tiers;
+  // };
 
   const renderAgreementModal = () => {
     return (
@@ -465,7 +465,7 @@ export const Algorithm: React.FC = () => {
             </Grid>
           </Grid>
           <Grid container item xs={6} spacing={3} direction={'column'} justify={'flex-start'}>
-            {renderTiers().map((element) => element)}
+            {/* {renderTiers().map((element) => element)} */}
           </Grid>
           <Grid container item xs={12} spacing={3} direction={'column'} justify={'flex-start'}>
             {renderBrandAgreement()}

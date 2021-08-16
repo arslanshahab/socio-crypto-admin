@@ -12,7 +12,7 @@ import { ToastContainer } from 'react-toastify';
 import InfoIcon from '@material-ui/icons/Info';
 
 import icon from '../../assets/svg/camera.svg';
-import { handleImage, showErrorMessage } from '../../helpers/utils';
+import { handleImage } from '../../helpers/fileHandler';
 import { Autocomplete } from '@material-ui/lab';
 
 interface Props {
@@ -88,7 +88,6 @@ export const Initialize: React.FC<Props> = (props) => {
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
     if (endDate && dateIsoString && new Date(endDate).getTime() < new Date(dateIsoString).getTime()) {
-      return showErrorMessage('Beginning date must be before end date');
     }
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'beginDate', val: dateIsoString }));
   };
@@ -96,7 +95,6 @@ export const Initialize: React.FC<Props> = (props) => {
   const handleEndDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
     if (beginDate && dateIsoString && new Date(beginDate).getTime() >= new Date(dateIsoString).getTime()) {
-      return showErrorMessage('Beginning date must be before end date');
     }
     if (dateIsoString) dispatch(updateCampaignState({ cat: 'info', key: 'endDate', val: dateIsoString }));
   };
@@ -107,9 +105,17 @@ export const Initialize: React.FC<Props> = (props) => {
     }
   };
 
+  const onSuccess = (msg: string) => {
+    console.log();
+  };
+
+  const onError = (msg: string) => {
+    console.log();
+  };
+
   return (
     <Fade>
-      <div className="init-campaign-container">
+      <Box className="w-full">
         <Grid container className="form-container" direction={'column'}>
           <Grid container direction="row" justify="space-evenly">
             <div className="image-upload-container">
@@ -129,7 +135,7 @@ export const Initialize: React.FC<Props> = (props) => {
                 className="hidden"
                 type="file"
                 id="campaignImage"
-                onChange={(e) => handleImage(e, dispatch, 'campaign-image')}
+                onChange={(e) => handleImage(e, 'campaign-image', onSuccess, onError)}
               />
               <Box
                 className="margin-bottom"
@@ -181,7 +187,7 @@ export const Initialize: React.FC<Props> = (props) => {
                 className="hidden"
                 type="file"
                 id="sharedMedia"
-                onChange={(e) => handleImage(e, dispatch, 'shared-media')}
+                onChange={(e) => handleImage(e, 'shared-media', onSuccess, onError)}
               />
               <Box
                 className="margin-bottom"
@@ -395,7 +401,7 @@ export const Initialize: React.FC<Props> = (props) => {
           </div>
         </Grid>
         <ToastContainer />
-      </div>
+      </Box>
     </Fade>
   );
 };

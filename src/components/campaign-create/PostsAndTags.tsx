@@ -26,7 +26,7 @@ export const PostsAndTags: React.FC = () => {
   };
   const renderSuggestedPosts = () => {
     const suggestedPosts: JSX.Element[] = [];
-    for (let i = 0; i < numOfPosts; i++) {
+    for (let i = 0; i < parseInt(numOfPosts); i++) {
       const label = `Suggested Post #${i + 1}`;
       suggestedPosts.push(
         <div className="margin-bottom">

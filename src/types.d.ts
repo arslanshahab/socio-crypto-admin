@@ -256,15 +256,21 @@ export interface RafflePrizeStructure {
 }
 
 export interface CampaignConfig {
-  [key: string]: string | number | boolean | FileObject;
-  numOfSuggestedPosts: number;
-  numOfTiers: number;
+  [key: string]: string | boolean | number | FileObject;
+  numOfSuggestedPosts: string;
+  numOfTiers: string;
   initialTotal: string;
   type: string;
-  cryptoSymbol?: string;
-  rafflePrizeName?: string;
-  rafflePrizeAffiliateLink?: string;
-  raffleImage?: FileObject;
+  budget: string;
+  agreementChecked: boolean;
+  cryptoSymbol: string;
+  rafflePrizeName: string;
+  rafflePrizeAffiliateLink: string;
+  raffleImage: FileObject;
+  coiinBudget: string;
+  budgetType: string;
+  campaignType: string;
+  success: boolean;
 }
 
 export interface Campaign {
@@ -330,14 +336,37 @@ export interface ListPendingCampaignsAdminResults {
   };
 }
 
+export interface StoreSettings {
+  appLoader: boolean;
+  languageCode: string;
+  loadingMessage: string;
+}
+
+export interface Alert {
+  message: string;
+  open: boolean;
+}
+
+export interface StoreAlerts {
+  success: Alert;
+  error: Alert;
+}
+
 export interface FileObject {
   filename: string;
   format: string;
-  file: File | null;
+  file: string;
 }
 
 export interface CampaignState {
-  [key: string]: string | string[] | AlgorithmSpecs | CampaignConfig | CampaignRequirementSpecs | FileObject;
+  [key: string]:
+    | string
+    | string[]
+    | FileObject
+    | CampaignConfig
+    | AlgorithmSpecs
+    | CampaignRequirementSpecs
+    | undefined;
   name: string;
   beginDate: string;
   endDate: string;
@@ -351,7 +380,7 @@ export interface CampaignState {
   image: FileObject;
   sharedMedia: FileObject;
   tagline: string;
-  requirements?: CampaignRequirementSpecs;
+  requirements: CampaignRequirementSpecs;
   suggestedPosts: string[];
   suggestedTags: string[];
   keywords: string[];
@@ -369,12 +398,12 @@ export interface Participant {
 
 export interface CampaignRequirementSpecs {
   version: string;
-  location?: LocationRequirementSpecs[];
-  values?: string[];
-  interests?: string[];
-  ageRange?: AgeRangeRequirementSpecs;
-  socialFollowing?: SocialFollowingSpecs;
-  email?: boolean;
+  location: LocationRequirementSpecs[];
+  values: string[];
+  interests: string[];
+  ageRange: AgeRangeRequirementSpecs;
+  socialFollowing: SocialFollowingSpecs;
+  email: boolean;
 }
 export interface LocationRequirementSpecs {
   city?: string;
@@ -390,6 +419,7 @@ export interface TwitterSocialFollowingSpecs {
 }
 
 export interface AgeRangeRequirementSpecs {
+  [key: string]: boolean;
   '0-17': boolean;
   '18-25': boolean;
   '26-40': boolean;
@@ -410,14 +440,19 @@ export interface PublicUser {
   ageRange: string;
 }
 
+export interface AlgoTier {
+  [key: string]: Tier;
+}
+
 export interface AlgorithmSpecs {
   [key: string]: ActionValues | Tiers;
   pointValues: ActionValues;
-  tiers: Tiers;
+  tiers: AlgoTier;
 }
 
-export interface Tiers {
-  [index: string]: { threshold: string; totalCoiins: string };
+export interface Tier {
+  threshold: string;
+  totalCoiins: string;
 }
 
 export interface ActionValues {
@@ -427,6 +462,10 @@ export interface ActionValues {
   submissions: string;
   likes: string;
   shares: string;
+}
+
+export interface ErrorObject {
+  [key: string]: boolean;
 }
 
 export type APIError = GraphQLError;

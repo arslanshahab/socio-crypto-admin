@@ -5,13 +5,15 @@ import * as serviceWorker from './serviceWorker';
 import { ApolloProvider } from '@apollo/client';
 import { graphqlClient } from './clients/raiinmaker-api';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import { persistor, store } from './store';
+import './assets/styles/tailwind.generated.css';
 import './assets/styles/main.scss';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DayJsUtils from '@date-io/dayjs';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { createTheme, MuiThemeProvider } from '@material-ui/core';
+import { PersistGate } from 'redux-persist/integration/react';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   overrides: {
     MuiButton: {
       root: {
@@ -26,9 +28,11 @@ ReactDOM.render(
     <MuiThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DayJsUtils}>
         <Provider store={store}>
-          <ApolloProvider client={graphqlClient}>
-            <App />
-          </ApolloProvider>
+          <PersistGate loading={null} persistor={persistor}>
+            <ApolloProvider client={graphqlClient}>
+              <App />
+            </ApolloProvider>
+          </PersistGate>
         </Provider>
       </MuiPickersUtilsProvider>
     </MuiThemeProvider>

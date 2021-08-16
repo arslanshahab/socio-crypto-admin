@@ -1,0 +1,25 @@
+.appLoader {
+  width: 100%;
+  height: 100vh;
+  z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .loader {
+    color: #3b82f6;
+  }
+
+  .circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 100%;
+    border: 4px solid #3b82f6;
+  }
+}

@@ -9,7 +9,7 @@ const initialAlgorithmState: AlgorithmSpecs = {
     likes: '3',
     shares: '9',
   },
-  tiers: { '1': { threshold: '0', totalCoiins: '' } },
+  tiers: {},
 };
 
 const initialState: CampaignState = {
@@ -23,23 +23,43 @@ const initialState: CampaignState = {
   target: '',
   targetVideo: '',
   cryptoId: '',
-  image: { filename: '', file: null, format: '' },
-  sharedMedia: { filename: '', file: null, format: '' },
+  image: { filename: '', file: '', format: '' },
+  sharedMedia: { filename: '', file: '', format: '' },
   tagline: '',
   suggestedPosts: [],
   suggestedTags: [],
   keywords: [],
+  requirements: {
+    version: '',
+    location: [],
+    values: [],
+    ageRange: {
+      '0-17': false,
+      '18-25': false,
+      '26-40': false,
+      '41-55': false,
+      '55+': false,
+    },
+    interests: [],
+    email: false,
+    socialFollowing: {
+      twitter: {
+        minFollower: 0,
+      },
+    },
+  },
   config: {
     type: 'crypto',
-    numOfSuggestedPosts: 2,
+    numOfSuggestedPosts: '2',
     cryptoSymbol: '',
-    numOfTiers: 3,
+    numOfTiers: '3',
     initialTotal: '',
     budget: '',
+    coiinBudget: '',
     budgetType: '',
     campaignType: '',
     agreementChecked: false,
-    raffleImage: { filename: '', file: null, format: '' },
+    raffleImage: { filename: '', file: '', format: '' },
     rafflePrizeName: '',
     rafflePrizeAffiliateLink: '',
     success: false,
@@ -81,7 +101,6 @@ const campaignSlice = createSlice({
           state[key] = value;
           break;
         case 'requirements':
-          if (!state.requirements) state.requirements = { version: '1.0.0' };
           if (
             key == 'location' ||
             key == 'values' ||
@@ -90,8 +109,6 @@ const campaignSlice = createSlice({
             key == 'socialFollowing'
           ) {
             if (!state['requirements']) {
-              const requirement: CampaignRequirementSpecs = { version: '1.0.0' };
-              state['requirements'] = requirement;
             }
             state['requirements'][key] = value;
           }
@@ -109,33 +126,33 @@ const campaignSlice = createSlice({
           state.keywords = value;
           break;
         case 'algoTiersCount':
-          if (tier) {
-            const tierUpdate = { [key]: value };
-            state['algorithm']['tiers'][tier] = {
-              ...state['algorithm']['tiers'][tier],
-              ...tierUpdate,
-            };
-            for (let index = 0; index < Object.keys(state['algorithm']['tiers']).length; index++) {
-              const element = Object.keys(state['algorithm']['tiers'])[index];
-              console.log('element');
-              console.log(element);
-              console.log('tier');
-              console.log(tier);
-              if (element > tier) delete state['algorithm']['tiers'][element];
-            }
-          }
+          // if (tier) {
+          //   const tierUpdate = { [key]: value };
+          //   state['algorithm']['tiers'][tier] = {
+          //     ...state['algorithm']['tiers'][tier],
+          //     ...tierUpdate,
+          //   };
+          //   for (let index = 0; index < Object.keys(state['algorithm']['tiers']).length; index++) {
+          //     const element = Object.keys(state['algorithm']['tiers'])[index];
+          //     console.log('element');
+          //     console.log(element);
+          //     console.log('tier');
+          //     console.log(tier);
+          //     if (element > tier) delete state['algorithm']['tiers'][element];
+          //   }
+          // }
           break;
         case 'algoTiers':
-          if (tier) {
-            console.log('aaaa', tier);
-            const tierUpdate = { [key]: value };
-            console.log('bbbb', tierUpdate);
+          // if (tier) {
+          //   console.log('aaaa', tier);
+          //   const tierUpdate = { [key]: value };
+          //   console.log('bbbb', tierUpdate);
 
-            state['algorithm']['tiers'][tier] = {
-              ...state['algorithm']['tiers'][tier],
-              ...tierUpdate,
-            };
-          }
+          //   state['algorithm']['tiers'][tier] = {
+          //     ...state['algorithm']['tiers'][tier],
+          //     ...tierUpdate,
+          //   };
+          // }
           break;
         case 'initAlgoTiers':
           if (initialTiers) {
