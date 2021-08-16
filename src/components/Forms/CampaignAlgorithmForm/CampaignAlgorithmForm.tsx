@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
-import { Box, Checkbox, FormControlLabel, Grid, TextField, Tooltip, Typography } from '@material-ui/core';
+import { Box, Checkbox, FormControlLabel, Tooltip } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { updateCampaignState } from '../../../redux/slices/campaign';
 import { Fade } from 'react-awesome-reveal';
@@ -64,7 +64,7 @@ const CampaignAlgorithmForm: React.FC<Props> = ({
 
   return (
     <Fade>
-      <Box className="w-full px-28 mt-10">
+      <Box className="w-full px-20 mt-10">
         <GenericModal open={modalOpen} onClose={() => toggleModal(false)} size="medium">
           <TermsAndConditions />
         </GenericModal>

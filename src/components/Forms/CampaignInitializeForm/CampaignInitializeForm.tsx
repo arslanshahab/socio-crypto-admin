@@ -64,6 +64,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
     if (dateIsoString) {
       setBeginDate(dateIsoString);
     }
+    updateErrors('beginDate', dateIsoString);
   };
 
   const handleEndDateChange = (date: MaterialUiPickersDate) => {
@@ -74,6 +75,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
     if (dateIsoString) {
       setEndDate(dateIsoString);
     }
+    updateErrors('endDate', dateIsoString);
   };
 
   const onSuccess = (data: FileObject, type: string) => {
@@ -101,31 +103,74 @@ const CampaignInitializeForm: React.FC<Props> = ({
   };
 
   const next = () => {
-    const augmentedCampaign = {
-      ...campaign,
-      name,
-      description,
-      tagline,
-      target,
-      targetVideo,
-      keywords,
-      beginDate,
-      endDate,
-      image: campaignImage,
-      sharedMedia,
-      config: {
-        ...campaign.config,
-        numOfTiers,
-        numOfSuggestedPosts,
-      },
-    };
-    dispatch(updateCampaign(augmentedCampaign));
-    handleNext();
+    if (validateInputs()) {
+      const augmentedCampaign = {
+        ...campaign,
+        name,
+        description,
+        tagline,
+        target,
+        targetVideo,
+        keywords,
+        beginDate,
+        endDate,
+        image: campaignImage,
+        sharedMedia,
+        config: {
+          ...campaign.config,
+          numOfTiers,
+          numOfSuggestedPosts,
+        },
+      };
+      dispatch(updateCampaign(augmentedCampaign));
+      handleNext();
+    }
+  };
+
+  const validateInputs = (): boolean => {
+    let validated = true;
+    if (!name) {
+      setErrors((prev) => ({ ...prev, name: true }));
+      return (validated = false);
+    }
+    if (!target) {
+      setErrors((prev) => ({ ...prev, target: true }));
+      return (validated = false);
+    }
+    if (!numOfTiers) {
+      setErrors((prev) => ({ ...prev, numOfTiers: true }));
+      return (validated = false);
+    }
+    if (!numOfSuggestedPosts) {
+      setErrors((prev) => ({ ...prev, numOfSuggestedPosts: true }));
+      return (validated = false);
+    }
+    if (!tagline) {
+      setErrors((prev) => ({ ...prev, tagline: true }));
+      return (validated = false);
+    }
+    if (!keywords || !keywords.length) {
+      setErrors((prev) => ({ ...prev, keywords: true }));
+      return (validated = false);
+    }
+    if (!description) {
+      setErrors((prev) => ({ ...prev, description: true }));
+      return (validated = false);
+    }
+    if (!beginDate) {
+      setErrors((prev) => ({ ...prev, beginDate: true }));
+      return (validated = false);
+    }
+    if (!endDate) {
+      setErrors((prev) => ({ ...prev, endDate: true }));
+      return (validated = false);
+    }
+    return validated;
   };
 
   return (
     <Fade>
-      <Box className="w-full flex flex-row flex-wrap px-28 mt-10">
+      <Box className="w-full flex flex-row flex-wrap px-20 mt-10">
         <Box className="box-border w-4/6 flex flex-row flex-wrap">
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
@@ -217,7 +262,7 @@ const CampaignInitializeForm: React.FC<Props> = ({
                   {...params}
                   variant="outlined"
                   label="Keywords"
-                  placeholder="Add keywords for campaign"
+                  placeholder="Add keywords for campaign and press enter"
                 />
               )}
               onChange={(e, val) => {

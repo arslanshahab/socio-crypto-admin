@@ -6,6 +6,7 @@ import { Box } from '@material-ui/core';
 import Actions from '../../NewCampaign/Actions';
 import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
+import { ErrorObject } from '../../../types';
 
 interface Props {
   activeStep: number;
@@ -28,6 +29,7 @@ const CampaignPostAnndTagsForm: React.FC<Props> = ({
   const dispatch = useDispatch();
   const [postValues, setPostValues] = useState<Array<string>>([]);
   const [tags, setTags] = useState(campaign.suggestedTags.join(','));
+  const [errors, setErrors] = useState<ErrorObject>({});
 
   const initializeSocials = () => {
     const intitValues = [];
@@ -55,22 +57,33 @@ const CampaignPostAnndTagsForm: React.FC<Props> = ({
     const values = tags.split(',');
     return values.map((item) => {
       item = item.trim();
-      return item.includes('#') ? `${item}` : `#${item}`;
+      return item ? (item.includes('#') ? `${item}` : `#${item}`) : '';
     });
   };
 
   const next = () => {
-    const augmentedCampaign = {
-      ...campaign,
-      suggestedPosts: postValues,
-      suggestedTags: getTagValue(),
-    };
-    dispatch(updateCampaign(augmentedCampaign));
-    handleNext();
+    if (validateInputs()) {
+      const augmentedCampaign = {
+        ...campaign,
+        suggestedPosts: postValues,
+        suggestedTags: getTagValue(),
+      };
+      dispatch(updateCampaign(augmentedCampaign));
+      handleNext();
+    }
+  };
+
+  const validateInputs = (): boolean => {
+    let validated = true;
+    if (!tags) {
+      setErrors((prev) => ({ ...prev, tags: true }));
+      return (validated = false);
+    }
+    return validated;
   };
 
   return (
-    <Box className="w-full mt-10 px-28">
+    <Box className="w-full mt-10 px-20">
       <Fade>
         {postValues.map((item, index) => (
           <Box key={index} className="w-full mb-6">
@@ -91,6 +104,7 @@ const CampaignPostAnndTagsForm: React.FC<Props> = ({
             value={tags}
             placeholder="#raiinmaker, #coiin"
             onChange={(e) => setTags(e.target.value)}
+            error={errors['tags']}
           />
         </Box>
         <Box className="w-full">

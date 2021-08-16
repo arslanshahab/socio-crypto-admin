@@ -73,7 +73,7 @@ const CampaignRequirementsForm: React.FC<Props> = ({
   };
 
   return (
-    <Box className="w-full px-28 mt-10">
+    <Box className="w-full px-20 mt-10">
       <Fade>
         <Box className="w-full">
           <GenericModal open={Boolean(formType)} onClose={() => setFormtype('')} size="small">
