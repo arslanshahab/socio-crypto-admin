@@ -26,9 +26,9 @@ const CustomSelect: React.FC<Props & FormControlProps & SelectProps> = ({
   ...others
 }) => {
   return (
-    <FormControl variant={'outlined'} fullWidth className={`customSelect ${className}`} {...others}>
-      {label && <InputLabel>{label}</InputLabel>}
-      <Select value={value} onChange={onChange}>
+    <FormControl variant="outlined" fullWidth className={`customSelect ${className}`} {...others}>
+      {label && <InputLabel id="select-label">{label}</InputLabel>}
+      <Select value={value} onChange={onChange} labelId="select-label" label={label || ''}>
         {options.map((item, index) => (
           <MenuItem alignItems="flex-start" value={item.toLowerCase()} key={index}>
             {upperCaseOptions ? item.toUpperCase() : capitalize(item)}
