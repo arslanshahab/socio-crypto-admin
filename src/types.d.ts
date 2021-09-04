@@ -105,6 +105,7 @@ export interface DepositAddressResult {
   getDepositAddressForCurrency: {
     currency: string;
     address: string;
+    fromTatum: boolean;
   };
 }
 

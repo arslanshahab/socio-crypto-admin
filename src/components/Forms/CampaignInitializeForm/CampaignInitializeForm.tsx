@@ -355,13 +355,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
                     </Box>
                   ) : (
                     <Box className="w-full">
-                      <video
-                        autoPlay={false}
-                        height="150"
-                        width="250"
-                        src={URL.createObjectURL(campaign.sharedMedia.file)}
-                      />
-                      <span>{sharedMedia.filename}</span>
+                      <video autoPlay={false} height="100%" width="100%" src={sharedMedia.file} controls={true} />
                     </Box>
                   )
                 ) : (

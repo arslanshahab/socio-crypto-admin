@@ -57,7 +57,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
       const dataObject: Tier = { threshold: '', totalCoiins: '' };
       dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh, 0);
       dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget, 0);
-      initialTiers[i - 1] = dataObject;
+      initialTiers[i] = dataObject;
     }
     setTiers(initialTiers);
   };
@@ -91,7 +91,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
 
   const validateTiers = () => {
     let validated = true;
-    for (let i = 0; i < numOfTiers; i++) {
+    for (let i = 1; i < numOfTiers; i++) {
       const tier = tiers[i];
       if (!tier.threshold || !tier.totalCoiins) {
         dispatch(showErrorAlert('Please add all Reward values'));
@@ -183,7 +183,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
                     <Box className="w-3/6">
                       <CustomInput
                         label="Threshold"
-                        id={index.toString()}
+                        id={(index + 1).toString()}
                         name="threshold"
                         placeholder="Threshold"
                         value={item.threshold}
@@ -193,7 +193,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
                     <Box className="w-3/6">
                       <CustomInput
                         label={'Total Coiins'}
-                        id={index.toString()}
+                        id={(index + 1).toString()}
                         name="totalCoiins"
                         placeholder="Total Coiins"
                         value={item.totalCoiins}
