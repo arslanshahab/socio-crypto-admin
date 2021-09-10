@@ -53,7 +53,7 @@
     "prebuild": "npm run css",
     "lint": "eslint --ext .ts --format unix src/ && prettier --check 'src/**/*.ts'",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "cicd:update": "aws cloudformation deploy --stack-name raiinmaker-admin-cicd --template-file ./templates/CICD.cft.yml --region us-west-1 --capabilities CAPABILITY_NAMED_IAM --no-fail-on-empty-changeset"
+    "cicd:update": "aws cloudformation deploy --profile raiinmaker --stack-name raiinmaker-admin-cicd --template-file ./templates/CICD.cft.yml --region us-west-1 --capabilities CAPABILITY_NAMED_IAM --no-fail-on-empty-changeset"
   },
   "eslintConfig": {
     "extends": "react-app"
