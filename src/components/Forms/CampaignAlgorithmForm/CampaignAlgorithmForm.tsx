@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Box, Checkbox, FormControlLabel, Tooltip } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { updateCampaignState } from '../../../redux/slices/campaign';
 import { Fade } from 'react-awesome-reveal';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import Actions from '../../NewCampaign/Actions';
@@ -19,7 +18,6 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
   activeStep,
   handleBack,
   handleNext,
-  handleSubmit,
   firstStep,
   finalStep,
 }) => {
@@ -81,11 +79,13 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
           likes: likeCount,
           shares: shareCount,
         },
+        config: {
+          ...campaign.config,
+          agreementChecked: agreementChecked,
+        },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      if (handleSubmit) {
-        handleSubmit(augmentedCampaign);
-      }
+      handleNext();
     }
   };
 
@@ -213,7 +213,6 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
               <Checkbox
                 checked={agreementChecked as boolean}
                 onChange={(e, checked) => {
-                  dispatch(updateCampaignState({ cat: 'config', key: 'agreementChecked', val: checked }));
                   handleAgreementChecked(checked);
                 }}
                 style={{ color: '#3f51b5' }}
@@ -233,8 +232,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
             firstStep={firstStep}
             finalStep={finalStep}
             handleBack={handleBack}
-            handleNext={handleNext}
-            handleSubmit={submit}
+            handleNext={submit}
           />
         </Box>
       </Box>

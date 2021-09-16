@@ -9,19 +9,20 @@ interface MenuItem {
   name: string;
   value: string;
 }
-const CampaignTypeInput: React.FC<Props> = ({ campaignType, handleChange }) => {
-  const menu: Array<MenuItem> = [
-    { name: 'Video Views', value: 'video-views' },
-    { name: 'Brand Awareness', value: 'brand-awareness' },
-    { name: 'Social Engagement', value: 'social-engagement' },
-    { name: 'Conversion', value: 'conversion' },
-  ];
 
+export const campaignTypeMenu: Array<MenuItem> = [
+  { name: 'Video Views', value: 'video-views' },
+  { name: 'Brand Awareness', value: 'brand-awareness' },
+  { name: 'Social Engagement', value: 'social-engagement' },
+  { name: 'Conversion', value: 'conversion' },
+];
+
+const CampaignTypeInput: React.FC<Props> = ({ campaignType, handleChange }) => {
   return (
     <Box className="w-full mt-10">
       <p className="mb-3 text-center text-2xl">What will this campaign prioritize?</p>
       <Box className="flex flex-row justify-between space-x-4">
-        {menu.map((item, index) => (
+        {campaignTypeMenu.map((item, index) => (
           <Box
             key={index}
             onClick={() => handleChange(item.value)}

@@ -31,7 +31,14 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
   const [campaignUploadProgress, setCampaignUploadProgress] = useState(0);
   const [sharedMediaUploadProgress, setSharedMediaUploadProgress] = useState(0);
   const [raffleUploadProgress, setRaffleUploadProgress] = useState(0);
-  const steps = ['Purpose and Budget', 'Campaign Information', 'Suggested Posts', 'Campaign Requirements', 'Algorithm'];
+  const steps = [
+    'Purpose and Budget',
+    'Campaign Information',
+    'Suggested Posts',
+    'Campaign Requirements',
+    'Algorithm',
+    'Preview',
+  ];
   const [activeStep, setActiveStep] = useState(0);
   const campaign = useStoreCampaignSelector();
 
@@ -39,7 +46,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
   const [saveCampaignImages] = useMutation<CampaignCreationResponse, NewCampaignImageVars>(NEW_CAMPAIGN_IMAGES);
 
   const handleNext = () => {
-    setActiveStep((prevState) => (prevState < 4 ? prevState + 1 : prevState));
+    setActiveStep((prevState) => (prevState < 5 ? prevState + 1 : prevState));
   };
   const handleBack = () => {
     setActiveStep((prevState) => (prevState > 0 ? prevState - 1 : prevState));
@@ -62,8 +69,10 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           algorithm: JSON.stringify(data.algorithm),
           requirements:
             data.config.budgetType === 'raffle' ? { ...data.requirements, email: true } : { ...data.requirements },
-          image: data.image.filename,
-          sharedMedia: data.sharedMedia.filename,
+          campaignImage: data.campaignImage.filename,
+          media: data.media.filename,
+          campaignType: campaign.config.campaignType,
+          socialMediaType: campaign.config.socialMediaType,
           tagline: data.tagline,
           suggestedPosts: data.suggestedPosts,
           suggestedTags: data.suggestedTags,
@@ -81,11 +90,11 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
       });
       if (response.data) {
         const { newCampaign } = response.data;
-        if (campaign.image.file) {
-          await uploadMedia(newCampaign.campaignImageSignedURL, campaign.image, setCampaignUploadProgress);
+        if (campaign.campaignImage.file) {
+          await uploadMedia(newCampaign.campaignImageSignedURL, campaign.campaignImage, setCampaignUploadProgress);
         }
-        if (campaign.sharedMedia.file) {
-          await uploadMedia(newCampaign.sharedMediaSignedURL, campaign.sharedMedia, setSharedMediaUploadProgress);
+        if (campaign.media.file) {
+          await uploadMedia(newCampaign.sharedMediaSignedURL, campaign.media, setSharedMediaUploadProgress);
         }
         if (campaign.config.raffleImage.file) {
           await uploadMedia(newCampaign.raffleImageSignedURL, campaign.config.raffleImage, setRaffleUploadProgress);
@@ -94,9 +103,9 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         await saveCampaignImages({
           variables: {
             id: newCampaign.campaignId,
-            image: campaign.image.filename,
-            sharedMedia: campaign.sharedMedia.filename,
-            sharedMediaFormat: campaign.sharedMedia.format,
+            campaignImage: campaign.campaignImage.filename,
+            media: campaign.media.filename,
+            mediaFormat: campaign.media.format,
           },
         });
       }
@@ -130,13 +139,13 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           <LinearProgress className="mb-5" />
           <h3 className="animate-pulse text-xl">Creating campaign, Please wait...</h3>
           <Box className="w-full mt-5">
-            {campaign.image.file && (
+            {campaign.campaignImage.file && (
               <Box className="w-full flex flex-row items-center justify-between mb-3">
                 <p>Uploading campaign image</p>
                 <CircularProgressWithLabel value={campaignUploadProgress} />
               </Box>
             )}
-            {campaign.sharedMedia.file && (
+            {campaign.media.file && (
               <Box className="w-full flex flex-row items-center justify-between mb-3">
                 <p>Uploading shared media</p>
                 <CircularProgressWithLabel value={sharedMediaUploadProgress} />
@@ -156,7 +165,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         <StepContent
           activeStep={activeStep}
           firstStep={0}
-          finalStep={4}
+          finalStep={5}
           handleBack={handleBack}
           handleNext={handleNext}
           handleSubmit={createCampaign}

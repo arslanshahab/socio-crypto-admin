@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { Box } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
-import icon from '../../../assets/svg/camera.svg';
 import { useQuery } from '@apollo/client';
-import { ErrorObject, FileObject, GetFundingWalletResponse } from '../../../types';
+import { CampaignConfig, ErrorObject, FileObject, GetFundingWalletResponse } from '../../../types';
 import { GET_FUNDING_WALLET } from '../../../operations/queries/fundingWallet';
-import { handleImage } from '../../../helpers/fileHandler';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
 import Actions from '../../NewCampaign/Actions';
@@ -16,6 +14,8 @@ import CustomSelect from '../../CustomSelect/CustomSelect';
 import CustomInput from '../../CustomInput';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
+import SocialMediaTypeInput from './SocialMediaTypeInput';
+import FileUpload from '../../FileUpload';
 
 interface Props {
   company: string;
@@ -33,6 +33,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
   const campaign = useStoreCampaignSelector();
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
+  const [socialMediaType, setSocialMediaType] = useState(campaign.config.socialMediaType);
   const [budgetType, setBudgetType] = useState(campaign.config.budgetType);
   const [cryptoSymbol, setCryptoSymbol] = useState(campaign.config.cryptoSymbol);
   const [coiinBudget, setCoiinBudget] = useState(campaign.config.coiinBudget);
@@ -44,6 +45,10 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     !loading && data && data.getFundingWallet
       ? data.getFundingWallet.currency.filter((token) => token.balance > 0).map((item) => item.type.toLowerCase())
       : [];
+
+  const handleSocialMediaType = (type: CampaignConfig['socialMediaType']) => {
+    setSocialMediaType(type);
+  };
 
   const handleCampaignType = (type: string) => {
     setCampaignType(type);
@@ -83,6 +88,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
           ...campaign.config,
           coiinBudget,
           campaignType,
+          socialMediaType,
           budgetType,
           cryptoSymbol,
           ...(budgetType === 'raffle' && {
@@ -160,6 +166,9 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
         No Crypto Currency Found - Register Crypto
       </Box> */}
       <Fade triggerOnce>
+        <SocialMediaTypeInput socialMediaType={socialMediaType} handleChange={handleSocialMediaType} />
+      </Fade>
+      <Fade triggerOnce>
         <CampaignTypeInput campaignType={campaignType} handleChange={handleCampaignType} />
       </Fade>
 
@@ -234,32 +243,13 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                       </Box>
                     </Box>
                     <Box className="flex flex-col justify-start w-2/6 pl-3">
-                      <label htmlFor="single" className="cursor-pointer">
-                        <Box className="flex flex-col justify-center items-center h-44 w-full bg-gray-100 rounded-lg">
-                          {raffleImage?.file ? (
-                            <img
-                              src={raffleImage.file}
-                              alt="Raffle"
-                              className="w-full h-44 mb-2 rounded-md object-cover"
-                            />
-                          ) : (
-                            <>
-                              <img className="w-24" src={icon} color="#3B5998" />
-                            </>
-                          )}
-                        </Box>
-                      </label>
-                      <input
-                        className="hidden"
-                        type="file"
-                        id="single"
-                        onChange={(e) => handleImage(e, 'raffle', onFileSuccess, onFileError)}
+                      <FileUpload
+                        value={raffleImage}
+                        label="Upload Raffle Image"
+                        onFileSuccess={onFileSuccess}
+                        onFileError={onFileError}
+                        mediaType="raffle"
                       />
-                      <label>
-                        <Box className="w-full flex flex-row justify-center items-center bg-gray-100 pb-2 rounded-b-lg">
-                          <p className="text-center text-gray-600 text-lg mt-1 pb-1">Upload Raffle Image</p>
-                        </Box>
-                      </label>
                     </Box>
                   </Box>
                 )}

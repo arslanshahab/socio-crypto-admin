@@ -8,13 +8,18 @@ export const LIST_CAMPAIGNS = gql`
         name
         coiinTotal
         algorithm
+        requirements
         totalParticipationScore
         beginDate
         description
         status
         endDate
         company
-        imagePath
+        campaignImage
+        campaignType
+        socialMediaType
+        media
+        mediaFormat
         tagline
         crypto {
           type
@@ -54,7 +59,7 @@ export const ADMIN_LIST_CAMPAIGNS = gql`
           type
           contractAddress
         }
-        imagePath
+        campaignImage
         tagline
         org {
           name

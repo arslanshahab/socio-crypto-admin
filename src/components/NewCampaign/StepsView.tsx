@@ -1,4 +1,4 @@
-import { Box, Tooltip } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import React from 'react';
 
 interface Props {
@@ -8,24 +8,19 @@ interface Props {
 
 const StepsView: React.FC<Props> = ({ list, activeStep }) => {
   return (
-    <Box className="w-full flex flex-row justify-center">
+    <Box className="w-full flex flex-row justify-center space-x-3">
       {list.map((label, index) => (
         <Box
-          key={index}
-          className={`flex flex-row justify-evenly items-center ${index < list.length - 1 ? 'w-1/5' : ''}`}
+          key={label}
+          className={`w-1/5 p-3 flex flex-row justify-center items-center bg-gray-100 rounded-md text-xs	 ${
+            index < activeStep
+              ? 'bg-blue-700 text-white'
+              : index === activeStep
+              ? 'bg-blue-100'
+              : 'bg-gray-50 text-gray-400'
+          }`}
         >
-          <Tooltip placement="top" title={label}>
-            <Box
-              className={`flex flex-row justify-center items-center w-12 h-12 rounded-full text-xl ${
-                activeStep >= index ? 'bg-blue-800 text-white' : 'bg-gray-200 text-gray-700'
-              }`}
-            >
-              {index + 1}
-            </Box>
-          </Tooltip>
-          {index < list.length - 1 && (
-            <Box className={`w-5/6 h-2 ${activeStep > index ? 'bg-blue-800' : 'bg-gray-200'}`} />
-          )}
+          {label}
         </Box>
       ))}
     </Box>

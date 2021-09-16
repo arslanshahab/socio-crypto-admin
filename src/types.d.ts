@@ -239,8 +239,10 @@ export interface NewCampaignVars {
   cryptoId: string;
   company: string;
   algorithm: string;
-  image: string;
-  sharedMedia: string;
+  campaignImage: string;
+  media: string;
+  campaignType: string;
+  socialMediaType: string;
   requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
@@ -252,9 +254,9 @@ export interface NewCampaignVars {
 
 export interface NewCampaignImageVars {
   id: string;
-  image: string;
-  sharedMedia: string;
-  sharedMediaFormat: string;
+  campaignImage: string;
+  media: string;
+  mediaFormat: string;
 }
 
 export interface RafflePrizeStructure {
@@ -278,6 +280,7 @@ export interface CampaignConfig {
   coiinBudget: string;
   budgetType: string;
   campaignType: string;
+  socialMediaType: 'twitter' | 'tiktok' | 'instagram' | 'omni-channels';
   success: boolean;
 }
 
@@ -297,7 +300,9 @@ export interface Campaign {
   company: string;
   audited: boolean;
   targetVideo: string;
-  imagePath: string;
+  campaignImage: string;
+  campaignType: string;
+  socialMediaType: string;
   requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
@@ -333,7 +338,7 @@ export interface ListPendingCampaignsAdminResults {
       type: string;
       crypto: CryptoCurrency;
       targetVideo: string;
-      imagePath: string;
+      campaignImage: string;
       requirements?: CampaignRequirementSpecs;
       tagline: string;
       suggestedPosts: string[];
@@ -385,8 +390,8 @@ export interface CampaignState {
   company: string;
   targetVideo: string;
   cryptoId: string;
-  image: FileObject;
-  sharedMedia: FileObject;
+  campaignImage: FileObject;
+  media: FileObject;
   tagline: string;
   requirements: CampaignRequirementSpecs;
   suggestedPosts: string[];
