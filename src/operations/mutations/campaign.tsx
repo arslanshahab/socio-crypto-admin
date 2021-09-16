@@ -17,8 +17,8 @@ export const NEW_CAMPAIGN = gql`
     $algorithm: String!
     $company: String
     $targetVideo: String
-    $image: String
-    $sharedMedia: String
+    $campaignImage: String
+    $media: String
     $tagline: String!
     $requirements: JSON!
     $suggestedPosts: [String]
@@ -27,6 +27,8 @@ export const NEW_CAMPAIGN = gql`
     $type: String
     $rafflePrize: JSON
     $cryptoId: String
+    $campaignType: String
+    $socialMediaType: String
   ) {
     newCampaign(
       name: $name
@@ -38,8 +40,8 @@ export const NEW_CAMPAIGN = gql`
       algorithm: $algorithm
       company: $company
       targetVideo: $targetVideo
-      image: $image
-      sharedMedia: $sharedMedia
+      campaignImage: $campaignImage
+      media: $media
       tagline: $tagline
       requirements: $requirements
       suggestedPosts: $suggestedPosts
@@ -48,6 +50,8 @@ export const NEW_CAMPAIGN = gql`
       type: $type
       rafflePrize: $rafflePrize
       cryptoId: $cryptoId
+      campaignType: $campaignType
+      socialMediaType: $socialMediaType
     ) {
       campaignId
       campaignImageSignedURL
@@ -58,12 +62,12 @@ export const NEW_CAMPAIGN = gql`
 `;
 
 export const NEW_CAMPAIGN_IMAGES = gql`
-  mutation newCampaignImages($id: String!, $image: String, $sharedMedia: String, $sharedMediaFormat: String) {
-    newCampaignImages(id: $id, image: $image, sharedMedia: $sharedMedia, sharedMediaFormat: $sharedMediaFormat) {
+  mutation newCampaignImages($id: String!, $campaignImage: String, $media: String, $mediaFormat: String) {
+    newCampaignImages(id: $id, campaignImage: $campaignImage, media: $media, mediaFormat: $mediaFormat) {
       id
-      imagePath
-      sharedMedia
-      sharedMediaFormat
+      campaignImage
+      media
+      mediaFormat
     }
   }
 `;

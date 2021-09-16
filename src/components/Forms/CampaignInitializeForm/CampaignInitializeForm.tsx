@@ -1,14 +1,10 @@
 import React from 'react';
-import { Box, TextField, Tooltip } from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
 import { useDispatch } from 'react-redux';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { Fade } from 'react-awesome-reveal';
 import { ToastContainer } from 'react-toastify';
-import InfoIcon from '@material-ui/icons/Info';
-
-import icon from '../../../assets/svg/camera.svg';
-import { handleImage } from '../../../helpers/fileHandler';
 import { Autocomplete } from '@material-ui/lab';
 import Actions from '../../NewCampaign/Actions';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
@@ -18,6 +14,7 @@ import { showErrorAlert } from '../../../store/actions/alerts';
 import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
+import FileUpload from '../../FileUpload';
 
 interface Props {
   userData: {
@@ -46,9 +43,16 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   const [description, setDescription] = useState(campaign.description);
   const [beginDate, setBeginDate] = useState(campaign.beginDate);
   const [endDate, setEndDate] = useState(campaign.endDate);
-  const [campaignImage, setCampaignImage] = useState(campaign.image);
-  const [sharedMedia, setSharedMedia] = useState(campaign.sharedMedia);
+  const [campaignImage, setCampaignImage] = useState(campaign.campaignImage);
+  const [media, setMedia] = useState(campaign.media);
   const [errors, setErrors] = useState<ErrorObject>({});
+
+  const buttonTexts = {
+    twitter: { label: 'Add Twitter Media', updateLabel: 'Update Twitter Media' },
+    instagram: { label: 'Add Instagram Media', updateLabel: 'Update Instagram Media' },
+    tiktok: { label: 'Add Tiktok Media', updateLabel: 'Update Tiktok Media' },
+    'omni-channels': { label: 'Default Shared Media', updateLabel: 'Update Shared Media' },
+  };
 
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
@@ -76,7 +80,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
     if (type === 'campaignImage') {
       setCampaignImage(data);
     } else {
-      setSharedMedia(data);
+      setMedia(data);
     }
   };
 
@@ -108,8 +112,8 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
         keywords,
         beginDate,
         endDate,
-        image: campaignImage,
-        sharedMedia,
+        campaignImage,
+        media,
         config: {
           ...campaign.config,
           numOfTiers,
@@ -310,86 +314,27 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
         </Box>
         <Box className="w-2/6 flex flex-col flex-wrap">
           <Box className="flex flex-col p-5 w-full">
-            <label htmlFor="campaignImage" className="cursor-pointer w-full">
-              <Box className=" w-full flex flex-col justify-center items-center w-full h-44 bg-gray-100 rounded-lg">
-                {campaignImage.file ? (
-                  <Box className="w-full">
-                    <img src={campaignImage.file} alt="image" className="w-full h-44 mb-2 rounded-md object-cover" />
-                  </Box>
-                ) : (
-                  <>
-                    <img src={icon} alt="campaign-media" className="w-24" />
-                  </>
-                )}
-              </Box>
-            </label>
-            <input
-              hidden
-              type="file"
-              id="campaignImage"
-              onChange={(e) => handleImage(e, 'campaignImage', onSuccess, onError)}
+            <FileUpload
+              value={campaignImage}
+              label="Add Campaign Image"
+              updateLabel="Update Campaign Image"
+              mediaType="campaignImage"
+              tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+              onFileSuccess={onSuccess}
+              onFileError={onError}
             />
-            <label htmlFor="campaignImage">
-              <Box className="w-full flex flex-row justify-center items-center bg-gray-100 pb-2 cursor-pointer rounded-b-lg">
-                <p className="text-center text-gray-600 text-lg mt-2 mr-2">
-                  {campaignImage.filename ? 'Update Campaign Image' : 'Add Campaign Image'}
-                </p>
-
-                <Tooltip
-                  placement="top"
-                  title="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-                >
-                  <InfoIcon className="tooltipIcon" />
-                </Tooltip>
-              </Box>
-            </label>
           </Box>
 
           <Box className="flex flex-col p-5 w-full">
-            <label htmlFor="sharedMedia" className="cursor-pointer w-full">
-              <Box className="flex flex-col justify-center items-center w-full h-44 bg-gray-100 rounded-lg">
-                {sharedMedia.file ? (
-                  sharedMedia.format.includes('image') ? (
-                    <Box className="w-full">
-                      <img src={sharedMedia.file} alt="image" className="w-full h-44 mb-2 rounded-md object-cover" />
-                    </Box>
-                  ) : (
-                    <Box className="w-full">
-                      <video
-                        autoPlay={false}
-                        height="150"
-                        width="250"
-                        src={URL.createObjectURL(campaign.sharedMedia.file)}
-                      />
-                      <span>{sharedMedia.filename}</span>
-                    </Box>
-                  )
-                ) : (
-                  <>
-                    <img src={icon} alt="shared-media" className="w-24" />
-                  </>
-                )}
-              </Box>
-            </label>
-            <input
-              hidden
-              type="file"
-              id="sharedMedia"
-              onChange={(e) => handleImage(e, 'sharedMedia', onSuccess, onError)}
+            <FileUpload
+              value={media}
+              label={buttonTexts[campaign.config.socialMediaType].label}
+              updateLabel={buttonTexts[campaign.config.socialMediaType].updateLabel}
+              mediaType="sharedMedia"
+              tooltip="This is the default media to be shared by the Raiinmaker in this particular campaign. Image/Video/GIF files are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+              onFileSuccess={onSuccess}
+              onFileError={onError}
             />
-            <label htmlFor="sharedMedia">
-              <Box className="w-full flex flex-row justify-center items-center bg-gray-100 pb-2 rounded-b-lg">
-                <p className="text-center text-gray-600 text-lg mt-2 mr-2">
-                  {sharedMedia.filename ? 'Update Shared Media' : 'Default Shared Media'}
-                </p>
-                <Tooltip
-                  placement="top"
-                  title="This is the default media to be shared by the Raiinmaker in this particular campaign. Image/Video/GIF files are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-                >
-                  <InfoIcon className="tooltipIcon" />
-                </Tooltip>
-              </Box>
-            </label>
           </Box>
         </Box>
         <ToastContainer />

@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Box, Checkbox, FormControlLabel, Tooltip } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { updateCampaignState } from '../../../redux/slices/campaign';
 import { Fade } from 'react-awesome-reveal';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import Actions from '../../NewCampaign/Actions';
@@ -19,7 +18,6 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
   activeStep,
   handleBack,
   handleNext,
-  handleSubmit,
   firstStep,
   finalStep,
 }) => {
@@ -57,7 +55,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
       const dataObject: Tier = { threshold: '', totalCoiins: '' };
       dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh, 0);
       dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget, 0);
-      initialTiers[i - 1] = dataObject;
+      initialTiers[i] = dataObject;
     }
     setTiers(initialTiers);
   };
@@ -81,17 +79,19 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
           likes: likeCount,
           shares: shareCount,
         },
+        config: {
+          ...campaign.config,
+          agreementChecked: agreementChecked,
+        },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      if (handleSubmit) {
-        handleSubmit(augmentedCampaign);
-      }
+      handleNext();
     }
   };
 
   const validateTiers = () => {
     let validated = true;
-    for (let i = 0; i < numOfTiers; i++) {
+    for (let i = 1; i < numOfTiers; i++) {
       const tier = tiers[i];
       if (!tier.threshold || !tier.totalCoiins) {
         dispatch(showErrorAlert('Please add all Reward values'));
@@ -183,7 +183,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
                     <Box className="w-3/6">
                       <CustomInput
                         label="Threshold"
-                        id={index.toString()}
+                        id={(index + 1).toString()}
                         name="threshold"
                         placeholder="Threshold"
                         value={item.threshold}
@@ -193,7 +193,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
                     <Box className="w-3/6">
                       <CustomInput
                         label={'Total Coiins'}
-                        id={index.toString()}
+                        id={(index + 1).toString()}
                         name="totalCoiins"
                         placeholder="Total Coiins"
                         value={item.totalCoiins}
@@ -213,7 +213,6 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
               <Checkbox
                 checked={agreementChecked as boolean}
                 onChange={(e, checked) => {
-                  dispatch(updateCampaignState({ cat: 'config', key: 'agreementChecked', val: checked }));
                   handleAgreementChecked(checked);
                 }}
                 style={{ color: '#3f51b5' }}
@@ -233,8 +232,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
             firstStep={firstStep}
             finalStep={finalStep}
             handleBack={handleBack}
-            handleNext={handleNext}
-            handleSubmit={submit}
+            handleNext={submit}
           />
         </Box>
       </Box>

@@ -8,12 +8,12 @@ const EmptyCampaigns: React.FC = () => {
 
   return (
     <Box className="flex flex-col justify-center items-center w-full h-full">
-      <p className="text-xl mb-2">No Campaigns Found</p>
+      <p className="text-2xl mb-2">No Campaigns Found</p>
       <CustomButton
-        className="new-campaign-button"
+        className="w-60 bg-blue-600 h-12 rounded text-lg text-white"
         variant="outlined"
         color="primary"
-        onClick={(e) => {
+        onClick={() => {
           history.push('/dashboard/newCampaign');
         }}
       >

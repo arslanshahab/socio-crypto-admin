@@ -11,7 +11,7 @@ const allowedFileType: Array<FileFormatSizeMap> = [
   { format: 'image/PNG', size: 5, unit: 'MB', allowedFor: ['campaignImage', 'sharedMedia', 'raffle'] },
   { format: 'image/JPEG', size: 5, unit: 'MB', allowedFor: ['campaignImage', 'sharedMedia', 'raffle'] },
   { format: 'image/SVG', size: 5, unit: 'MB', allowedFor: ['campaignImage', 'sharedMedia', 'raffle'] },
-  { format: 'video/MP4', size: 512, unit: 'MB', allowedFor: ['shared-media'] },
+  { format: 'video/MP4', size: 512, unit: 'MB', allowedFor: ['sharedMedia'] },
 ];
 
 export const reloadWindow = (): void => window.location.reload();

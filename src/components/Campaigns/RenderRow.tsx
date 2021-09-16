@@ -13,6 +13,7 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
     GET_CURRENT_TIER,
     {
       variables: { campaignId: campaign.id },
+      fetchPolicy: 'network-only',
     },
   );
   const { loading: loadingMetrics, data: metricsData } = useQuery<GetTotalCampaignMetricsResults, GetCampaignVars>(
@@ -28,11 +29,10 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
     return now < endDate ? 'Open' : 'Closed';
   };
 
-  // const numberOfTiers = campaign.algorithm.tiers.filter(
-  //   (item) => item.threshold !== '' && item.totalCoiins !== '',
-  // ).length;
+  const numberOfTiers = Object.values(campaign.algorithm.tiers).filter(
+    (item) => item.threshold && item.totalCoiins,
+  ).length;
 
-  const numberOfTiers = 0;
   const hasTier = campaign.algorithm.tiers[numberOfTiers];
   const budget = hasTier ? campaign.algorithm.tiers[numberOfTiers].totalCoiins : '0';
 

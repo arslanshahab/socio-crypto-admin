@@ -19,6 +19,7 @@
     "autoprefixer": "^9.0.0",
     "axios": "^0.21.1",
     "cryptoicons-cdn": "^0.1.30",
+    "date-fns": "^2.23.0",
     "dayjs": "^1.9.1",
     "firebase": "^7.21.1",
     "graphql": "^15.3.0",
