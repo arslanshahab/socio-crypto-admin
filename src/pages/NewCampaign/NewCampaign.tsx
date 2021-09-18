@@ -69,8 +69,8 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           algorithm: JSON.stringify(data.algorithm),
           requirements:
             data.config.budgetType === 'raffle' ? { ...data.requirements, email: true } : { ...data.requirements },
-          campaignImage: data.campaignImage.filename,
-          media: data.media.filename,
+          imagePath: data.campaignImage.filename,
+          sharedMedia: data.media.filename,
           campaignType: campaign.config.campaignType,
           socialMediaType: campaign.config.socialMediaType,
           tagline: data.tagline,
@@ -103,9 +103,9 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         await saveCampaignImages({
           variables: {
             id: newCampaign.campaignId,
-            campaignImage: campaign.campaignImage.filename,
-            media: campaign.media.filename,
-            mediaFormat: campaign.media.format,
+            imagePath: campaign.campaignImage.filename,
+            sharedMedia: campaign.media.filename,
+            sharedMediaFormat: campaign.media.format,
           },
         });
       }

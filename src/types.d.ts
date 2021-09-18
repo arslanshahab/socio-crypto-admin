@@ -239,8 +239,8 @@ export interface NewCampaignVars {
   cryptoId: string;
   company: string;
   algorithm: string;
-  campaignImage: string;
-  media: string;
+  imagePath: string;
+  sharedMedia: string;
   campaignType: string;
   socialMediaType: string;
   requirements?: CampaignRequirementSpecs;
@@ -254,9 +254,9 @@ export interface NewCampaignVars {
 
 export interface NewCampaignImageVars {
   id: string;
-  campaignImage: string;
-  media: string;
-  mediaFormat: string;
+  imagePath: string;
+  sharedMedia: string;
+  sharedMediaFormat: string;
 }
 
 export interface RafflePrizeStructure {
@@ -300,7 +300,9 @@ export interface Campaign {
   company: string;
   audited: boolean;
   targetVideo: string;
-  campaignImage: string;
+  imagePath: string;
+  sharedMedia: string;
+  sharedMediaFormat: string;
   campaignType: string;
   socialMediaType: string;
   requirements?: CampaignRequirementSpecs;
@@ -338,7 +340,7 @@ export interface ListPendingCampaignsAdminResults {
       type: string;
       crypto: CryptoCurrency;
       targetVideo: string;
-      campaignImage: string;
+      imagePath: string;
       requirements?: CampaignRequirementSpecs;
       tagline: string;
       suggestedPosts: string[];

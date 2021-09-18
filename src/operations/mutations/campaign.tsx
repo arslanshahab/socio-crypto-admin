@@ -17,8 +17,8 @@ export const NEW_CAMPAIGN = gql`
     $algorithm: String!
     $company: String
     $targetVideo: String
-    $campaignImage: String
-    $media: String
+    $imagePath: String
+    $sharedMedia: String
     $tagline: String!
     $requirements: JSON!
     $suggestedPosts: [String]
@@ -40,8 +40,8 @@ export const NEW_CAMPAIGN = gql`
       algorithm: $algorithm
       company: $company
       targetVideo: $targetVideo
-      campaignImage: $campaignImage
-      media: $media
+      imagePath: $imagePath
+      sharedMedia: $sharedMedia
       tagline: $tagline
       requirements: $requirements
       suggestedPosts: $suggestedPosts
@@ -62,12 +62,17 @@ export const NEW_CAMPAIGN = gql`
 `;
 
 export const NEW_CAMPAIGN_IMAGES = gql`
-  mutation newCampaignImages($id: String!, $campaignImage: String, $media: String, $mediaFormat: String) {
-    newCampaignImages(id: $id, campaignImage: $campaignImage, media: $media, mediaFormat: $mediaFormat) {
+  mutation newCampaignImages($id: String!, $imagePath: String, $sharedMedia: String, $sharedMediaFormat: String) {
+    newCampaignImages(
+      id: $id
+      imagePath: $imagePath
+      sharedMedia: $sharedMedia
+      sharedMediaFormat: $sharedMediaFormat
+    ) {
       id
-      campaignImage
-      media
-      mediaFormat
+      imagePath
+      sharedMedia
+      sharedMediaFormat
     }
   }
 `;
