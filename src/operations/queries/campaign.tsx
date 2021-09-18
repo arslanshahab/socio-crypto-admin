@@ -15,11 +15,11 @@ export const LIST_CAMPAIGNS = gql`
         status
         endDate
         company
-        campaignImage
+        imagePath
         campaignType
         socialMediaType
-        media
-        mediaFormat
+        sharedMedia
+        sharedMediaFormat
         tagline
         crypto {
           type
@@ -59,7 +59,7 @@ export const ADMIN_LIST_CAMPAIGNS = gql`
           type
           contractAddress
         }
-        campaignImage
+        imagePath
         tagline
         org {
           name
