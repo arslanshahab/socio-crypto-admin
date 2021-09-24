@@ -33,16 +33,36 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   };
 
   const next = () => {
-    const augmentedCampaign = {
-      ...campaign,
-      campaignImage,
-      config: {
-        ...campaign.config,
-        channelMedia: channelMedia,
-      },
-    };
-    dispatch(updateCampaign(augmentedCampaign));
-    handleNext();
+    if (validateInputs()) {
+      const augmentedCampaign = {
+        ...campaign,
+        campaignImage,
+        config: {
+          ...campaign.config,
+          channelMedia: channelMedia,
+        },
+      };
+      dispatch(updateCampaign(augmentedCampaign));
+      handleNext();
+    }
+  };
+
+  const validateInputs = (): boolean => {
+    let validated = true;
+    const { socialMediaType } = campaign.config;
+    if (!campaignImage.filename) {
+      dispatch(showErrorAlert('Campaign image is required'));
+      return (validated = false);
+    }
+    for (let index = 0; index < socialMediaType.length; index++) {
+      const channel = socialMediaType[index];
+      const defaultMedia = channelMedia[channel].find((item) => item.isDefault);
+      if (!defaultMedia || !defaultMedia.media.filename) {
+        dispatch(showErrorAlert(`Default Media is required for ${channel}`));
+        return (validated = false);
+      }
+    }
+    return validated;
   };
 
   return (

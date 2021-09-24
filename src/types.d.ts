@@ -236,6 +236,7 @@ export interface NewCampaignVars {
   beginDate: string;
   endDate: string;
   description: string;
+  instructions: string;
   cryptoId: string;
   company: string;
   algorithm: string;

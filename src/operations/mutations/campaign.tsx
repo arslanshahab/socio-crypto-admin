@@ -12,7 +12,8 @@ export const NEW_CAMPAIGN = gql`
     $beginDate: String!
     $endDate: String!
     $target: String!
-    $description: String!
+    $description: String
+    $instructions: String
     $coiinTotal: Float!
     $algorithm: String!
     $company: String
@@ -37,6 +38,7 @@ export const NEW_CAMPAIGN = gql`
       endDate: $endDate
       target: $target
       description: $description
+      instructions: $instructions
       coiinTotal: $coiinTotal
       algorithm: $algorithm
       company: $company
