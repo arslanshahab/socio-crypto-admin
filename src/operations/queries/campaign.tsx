@@ -18,8 +18,18 @@ export const LIST_CAMPAIGNS = gql`
         imagePath
         campaignType
         socialMediaType
-        sharedMedia
-        sharedMediaFormat
+        campaignMedia {
+          id
+          channel
+          isDefault
+          media
+          mediaFormat
+        }
+        campaignTemplates {
+          id
+          channel
+          post
+        }
         tagline
         crypto {
           type

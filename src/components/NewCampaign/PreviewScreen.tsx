@@ -4,7 +4,6 @@ import { ActionsProps } from './StepsContent';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
 import Actions from './Actions';
 import { campaignTypeMenu } from '../Forms/CampaignSetupForm/CampaignTypeInput';
-import { socialMediaTypeMenu } from '../Forms/CampaignSetupForm/SocialMediaTypeInput';
 import { format } from 'date-fns';
 import CustomButton from '../CustomButton';
 import GenericModal from '../GenericModal';
@@ -21,10 +20,7 @@ const PreviewScreen: React.FC<ActionsProps> = ({
   const [previewType, setPreviewType] = useState('');
 
   const submit = () => {
-    console.log('111');
-
     if (handleSubmit) {
-      console.log('mmm');
       handleSubmit({ ...campaign });
     }
   };
@@ -83,7 +79,7 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Targetted Social Media</h5>
         <h2 className="w-4/6  text-gray-800 text-md">
-          {socialMediaTypeMenu.find((item) => item.value === campaign.config.socialMediaType)?.name}
+          {/* {socialMediaTypeMenu.find((item) => item === campaign.config.socialMediaType)?.name} */}
         </h2>
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
