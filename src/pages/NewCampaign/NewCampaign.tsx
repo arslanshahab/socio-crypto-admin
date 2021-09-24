@@ -69,6 +69,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           endDate: data.endDate,
           cryptoId: data.cryptoId,
           description: data.description,
+          instructions: data.instructions,
           company: userData.company,
           algorithm: JSON.stringify(data.algorithm),
           requirements:
@@ -103,7 +104,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         }
         if (newCampaign.mediaUrls) {
           const campaignMedia = flatten(Object.values(data.config.channelMedia));
-          setTotalMedia(campaignMedia.length);
+          setTotalMedia(data.config.socialMediaType.length);
           for (let index = 0; index < campaignMedia.length; index++) {
             setMediaCount(index + 1);
             const signedMediaObject = newCampaign.mediaUrls.find(

@@ -127,12 +127,12 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       setErrors((prev) => ({ ...prev, tagline: true }));
       return (validated = false);
     }
-    if (!tags) {
-      setErrors((prev) => ({ ...prev, tags: true }));
-      return (validated = false);
-    }
     if (!keywords || !keywords.length) {
       setErrors((prev) => ({ ...prev, keywords: true }));
+      return (validated = false);
+    }
+    if (!tags) {
+      setErrors((prev) => ({ ...prev, tags: true }));
       return (validated = false);
     }
     if (!description) {
@@ -253,6 +253,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               value={tags}
               placeholder="tags"
               label="Tags (Comma seperated values)"
+              error={errors['tags']}
               onChange={(e) => {
                 setTags(e.target.value);
                 updateErrors('tags', e.target.value);
