@@ -6,11 +6,13 @@ import { useMutation, FetchResult } from '@apollo/client';
 import {
   CampaignCreationResponse,
   NewCampaignVars,
-  NewCampaignImageVars,
   CampaignState,
   FileObject,
+  ChannelMediaStructure,
+  CampaignMediaSignedUrl,
+  ChannelMediaRequestStructure,
 } from '../../types.d';
-import { NEW_CAMPAIGN, NEW_CAMPAIGN_IMAGES } from '../../operations/mutations/campaign';
+import { NEW_CAMPAIGN } from '../../operations/mutations/campaign';
 import StepsView from '../../components/NewCampaign/StepsView';
 import StepContent from '../../components/NewCampaign/StepsContent';
 import axios from 'axios';
@@ -19,6 +21,7 @@ import GenericModal from '../../components/GenericModal';
 import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
 import { resetCampaign } from '../../store/actions/campaign';
 import { dataURLtoFile } from '../../helpers/fileHandler';
+import { flatten } from 'lodash';
 
 interface Props {
   userData: any;
@@ -31,22 +34,23 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
   const [campaignUploadProgress, setCampaignUploadProgress] = useState(0);
   const [sharedMediaUploadProgress, setSharedMediaUploadProgress] = useState(0);
   const [raffleUploadProgress, setRaffleUploadProgress] = useState(0);
+  const [mediaCount, setMediaCount] = useState(0);
+  const [totalMedia, setTotalMedia] = useState(0);
   const steps = [
     'Purpose and Budget',
     'Campaign Information',
-    'Suggested Posts',
+    'Campaign Media',
+    'Posting Templates',
     'Campaign Requirements',
     'Algorithm',
     'Preview',
   ];
   const [activeStep, setActiveStep] = useState(0);
   const campaign = useStoreCampaignSelector();
-
   const [saveCampaign] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN);
-  const [saveCampaignImages] = useMutation<CampaignCreationResponse, NewCampaignImageVars>(NEW_CAMPAIGN_IMAGES);
 
   const handleNext = () => {
-    setActiveStep((prevState) => (prevState < 5 ? prevState + 1 : prevState));
+    setActiveStep((prevState) => (prevState < steps.length - 1 ? prevState + 1 : prevState));
   };
   const handleBack = () => {
     setActiveStep((prevState) => (prevState > 0 ? prevState - 1 : prevState));
@@ -70,7 +74,6 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           requirements:
             data.config.budgetType === 'raffle' ? { ...data.requirements, email: true } : { ...data.requirements },
           imagePath: data.campaignImage.filename,
-          sharedMedia: data.media.filename,
           campaignType: campaign.config.campaignType,
           socialMediaType: campaign.config.socialMediaType,
           tagline: data.tagline,
@@ -78,6 +81,8 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           suggestedTags: data.suggestedTags,
           keywords: data.keywords,
           type: data.config.budgetType || 'coiin',
+          campaignMedia: prepareMedia(data.config.channelMedia),
+          campaignTemplates: flatten(Object.values(data.config.channelTemplates)),
           rafflePrize:
             data.config.budgetType === 'raffle'
               ? {
@@ -89,32 +94,51 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         },
       });
       if (response.data) {
-        const { newCampaign } = response.data;
-        if (campaign.campaignImage.file) {
+        const newCampaign: CampaignCreationResponse = response.data.newCampaign;
+        if (newCampaign.campaignImageSignedURL) {
           await uploadMedia(newCampaign.campaignImageSignedURL, campaign.campaignImage, setCampaignUploadProgress);
         }
-        if (campaign.media.file) {
-          await uploadMedia(newCampaign.sharedMediaSignedURL, campaign.media, setSharedMediaUploadProgress);
-        }
-        if (campaign.config.raffleImage.file) {
+        if (newCampaign.raffleImageSignedURL) {
           await uploadMedia(newCampaign.raffleImageSignedURL, campaign.config.raffleImage, setRaffleUploadProgress);
         }
-
-        await saveCampaignImages({
-          variables: {
-            id: newCampaign.campaignId,
-            imagePath: campaign.campaignImage.filename,
-            sharedMedia: campaign.media.filename,
-            sharedMediaFormat: campaign.media.format,
-          },
-        });
+        if (newCampaign.mediaUrls) {
+          const campaignMedia = flatten(Object.values(data.config.channelMedia));
+          setTotalMedia(campaignMedia.length);
+          for (let index = 0; index < campaignMedia.length; index++) {
+            setMediaCount(index + 1);
+            const signedMediaObject = newCampaign.mediaUrls.find(
+              (responseMedia: CampaignMediaSignedUrl) =>
+                responseMedia.name === campaignMedia[index].media.filename &&
+                responseMedia.channel === campaignMedia[index].channel,
+            );
+            if (signedMediaObject) {
+              await uploadMedia(signedMediaObject.signedUrl, campaignMedia[index].media, setSharedMediaUploadProgress);
+            }
+          }
+        }
       }
-      showProgressModal(false);
-      dispatch(resetCampaign());
-      history.push('/dashboard/campaigns');
+      setTimeout(() => {
+        showProgressModal(false);
+        dispatch(resetCampaign());
+        history.push('/dashboard/campaigns');
+      }, 1000);
     } catch (e) {
       showProgressModal(false);
     }
+  };
+
+  const prepareMedia = (data: ChannelMediaStructure) => {
+    const list: ChannelMediaRequestStructure[] = [];
+    const mediaList = flatten(Object.values(data));
+    mediaList.forEach((item) => {
+      const obj: any = {};
+      obj.channel = item.channel;
+      obj.media = item.media.filename;
+      obj.mediaFormat = item.media.format;
+      obj.isDefault = item.isDefault;
+      list.push(obj);
+    });
+    return list;
   };
 
   const uploadMedia = async (url: string, file: FileObject, progressCallback: (p: number) => void) => {
@@ -133,27 +157,23 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
   };
 
   return (
-    <Box className="w-full p-10 overflow-scroll">
+    <Box className="w-full px-10 py-5 overflow-scroll">
       <GenericModal open={progressModal} onClose={() => showProgressModal(false)} size="mini" persist={true}>
         <Box className="w-full p-10">
           <LinearProgress className="mb-5" />
           <h3 className="animate-pulse text-xl">Creating campaign, Please wait...</h3>
           <Box className="w-full mt-5">
-            {campaign.campaignImage.file && (
-              <Box className="w-full flex flex-row items-center justify-between mb-3">
-                <p>Uploading campaign image</p>
-                <CircularProgressWithLabel value={campaignUploadProgress} />
-              </Box>
-            )}
-            {campaign.media.file && (
-              <Box className="w-full flex flex-row items-center justify-between mb-3">
-                <p>Uploading shared media</p>
-                <CircularProgressWithLabel value={sharedMediaUploadProgress} />
-              </Box>
-            )}
+            <Box className="w-full flex flex-row items-center justify-between mb-3">
+              <p>Uploading campaign Image</p>
+              <CircularProgressWithLabel value={campaignUploadProgress} />
+            </Box>
+            <Box className="w-full flex flex-row items-center justify-between mb-3">
+              <p>{`Uploading Campaign Media ${mediaCount}/${totalMedia}`}</p>
+              <CircularProgressWithLabel value={sharedMediaUploadProgress} />
+            </Box>
             {campaign.config.raffleImage?.file && (
               <Box className="w-full flex flex-row items-center justify-between">
-                <p>Uploading raffle image</p>
+                <p>Uploading Raffle Image</p>
                 <CircularProgressWithLabel value={raffleUploadProgress} />
               </Box>
             )}
@@ -165,7 +185,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         <StepContent
           activeStep={activeStep}
           firstStep={0}
-          finalStep={5}
+          finalStep={steps.length - 1}
           handleBack={handleBack}
           handleNext={handleNext}
           handleSubmit={createCampaign}

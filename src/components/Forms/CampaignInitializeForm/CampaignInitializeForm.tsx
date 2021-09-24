@@ -4,17 +4,14 @@ import { DateTimePicker } from '@material-ui/pickers';
 import { useDispatch } from 'react-redux';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { Fade } from 'react-awesome-reveal';
-import { ToastContainer } from 'react-toastify';
 import { Autocomplete } from '@material-ui/lab';
 import Actions from '../../NewCampaign/Actions';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { useState } from 'react';
-import { ErrorObject, FileObject } from '../../../types';
-import { showErrorAlert } from '../../../store/actions/alerts';
+import { ErrorObject } from '../../../types';
 import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
-import FileUpload from '../../FileUpload';
 
 interface Props {
   userData: {
@@ -37,22 +34,14 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   const [target, setTarget] = useState(campaign.target);
   const [targetVideo, setTargetVideo] = useState(campaign.targetVideo);
   const [numOfTiers, setTiers] = useState(campaign.config.numOfTiers);
-  const [numOfSuggestedPosts, setPosts] = useState(campaign.config.numOfSuggestedPosts);
   const [tagline, setTagline] = useState(campaign.tagline);
   const [keywords, setKeywords] = useState(campaign.keywords);
   const [description, setDescription] = useState(campaign.description);
+  const [instructions, setInstructions] = useState(campaign.instructions);
   const [beginDate, setBeginDate] = useState(campaign.beginDate);
   const [endDate, setEndDate] = useState(campaign.endDate);
-  const [campaignImage, setCampaignImage] = useState(campaign.campaignImage);
-  const [media, setMedia] = useState(campaign.media);
+  const [tags, setTags] = useState(campaign.suggestedTags.join(','));
   const [errors, setErrors] = useState<ErrorObject>({});
-
-  const buttonTexts = {
-    twitter: { label: 'Add Twitter Media', updateLabel: 'Update Twitter Media' },
-    instagram: { label: 'Add Instagram Media', updateLabel: 'Update Instagram Media' },
-    tiktok: { label: 'Add Tiktok Media', updateLabel: 'Update Tiktok Media' },
-    'omni-channels': { label: 'Default Shared Media', updateLabel: 'Update Shared Media' },
-  };
 
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
@@ -76,18 +65,6 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
     updateErrors('endDate', dateIsoString);
   };
 
-  const onSuccess = (data: FileObject, type: string) => {
-    if (type === 'campaignImage') {
-      setCampaignImage(data);
-    } else {
-      setMedia(data);
-    }
-  };
-
-  const onError = (msg: string) => {
-    dispatch(showErrorAlert(msg));
-  };
-
   const updateErrors = (name: string, data: any) => {
     const key = name;
     const value = data;
@@ -106,23 +83,30 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
         ...campaign,
         name,
         description,
+        instructions,
         tagline,
         target,
         targetVideo,
         keywords,
         beginDate,
         endDate,
-        campaignImage,
-        media,
+        suggestedTags: getTagValue(),
         config: {
           ...campaign.config,
           numOfTiers,
-          numOfSuggestedPosts,
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
       handleNext();
     }
+  };
+
+  const getTagValue = () => {
+    const values = tags.split(',');
+    return values.map((item) => {
+      item = item.trim();
+      return item ? (item.includes('#') ? `${item}` : `#${item}`) : '';
+    });
   };
 
   const validateInputs = (): boolean => {
@@ -139,12 +123,12 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       setErrors((prev) => ({ ...prev, numOfTiers: true }));
       return (validated = false);
     }
-    if (!numOfSuggestedPosts) {
-      setErrors((prev) => ({ ...prev, numOfSuggestedPosts: true }));
-      return (validated = false);
-    }
     if (!tagline) {
       setErrors((prev) => ({ ...prev, tagline: true }));
+      return (validated = false);
+    }
+    if (!tags) {
+      setErrors((prev) => ({ ...prev, tags: true }));
       return (validated = false);
     }
     if (!keywords || !keywords.length) {
@@ -153,6 +137,10 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
     }
     if (!description) {
       setErrors((prev) => ({ ...prev, description: true }));
+      return (validated = false);
+    }
+    if (!instructions) {
+      setErrors((prev) => ({ ...prev, instructions: true }));
       return (validated = false);
     }
     if (!beginDate) {
@@ -168,8 +156,8 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
 
   return (
     <Fade>
-      <Box className="w-full flex flex-row flex-wrap px-28 mt-10">
-        <Box className="box-border w-4/6 flex flex-row flex-wrap">
+      <Box className="w-full flex flex-row justify-center flex-wrap px-28 mt-10">
+        <Box className="box-border w-5/6 flex flex-row flex-wrap">
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
               required={true}
@@ -220,17 +208,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               onChange={(e) => setTiers(e.target.value)}
             />
           </Box>
-          <Box className="w-full box-border pr-4 mt-5">
-            <CustomInput
-              required={true}
-              label="How many Posting Templates would you like to provide? (1-5)"
-              type="number"
-              value={numOfSuggestedPosts}
-              error={errors['numOfSuggestedPosts']}
-              InputProps={{ inputProps: { min: 0, max: 10 } }}
-              onChange={(e) => setPosts(e.target.value)}
-            />
-          </Box>
+
           <Box className="w-3/6 box-border pr-4 mt-5">
             <CustomInput
               required={true}
@@ -269,17 +247,43 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
+          <Box className="w-full box-border pr-4 mt-3">
+            <CustomInput
+              required={true}
+              value={tags}
+              placeholder="tags"
+              label="Tags (Comma seperated values)"
+              onChange={(e) => {
+                setTags(e.target.value);
+                updateErrors('tags', e.target.value);
+              }}
+            />
+          </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
               required={true}
               label="Description"
               multiline
               value={description}
-              rows={4}
+              rows={3}
               error={errors['description']}
               onChange={(e) => {
                 setDescription(e.target.value);
                 updateErrors('description', e.target.value);
+              }}
+            />
+          </Box>
+          <Box className="w-full box-border pr-4 mt-5">
+            <CustomInput
+              required={true}
+              label="Campaign instructions"
+              multiline
+              value={instructions}
+              rows={3}
+              error={errors['instructions']}
+              onChange={(e) => {
+                setInstructions(e.target.value);
+                updateErrors('instructions', e.target.value);
               }}
             />
           </Box>
@@ -312,32 +316,6 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
             />
           </Box>
         </Box>
-        <Box className="w-2/6 flex flex-col flex-wrap">
-          <Box className="flex flex-col p-5 w-full">
-            <FileUpload
-              value={campaignImage}
-              label="Add Campaign Image"
-              updateLabel="Update Campaign Image"
-              mediaType="campaignImage"
-              tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-              onFileSuccess={onSuccess}
-              onFileError={onError}
-            />
-          </Box>
-
-          <Box className="flex flex-col p-5 w-full">
-            <FileUpload
-              value={media}
-              label={buttonTexts[campaign.config.socialMediaType].label}
-              updateLabel={buttonTexts[campaign.config.socialMediaType].updateLabel}
-              mediaType="sharedMedia"
-              tooltip="This is the default media to be shared by the Raiinmaker in this particular campaign. Image/Video/GIF files are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-              onFileSuccess={onSuccess}
-              onFileError={onError}
-            />
-          </Box>
-        </Box>
-        <ToastContainer />
         <Box className="w-full">
           <Actions
             activeStep={activeStep}

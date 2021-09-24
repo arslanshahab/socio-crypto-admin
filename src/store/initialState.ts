@@ -25,7 +25,7 @@ const campaignInitState: CampaignState = {
   campaignImage: { filename: '', file: '', format: '' },
   media: { filename: '', file: '', format: '' },
   tagline: '',
-  suggestedPosts: [],
+  suggestedPosts: ['', ''],
   suggestedTags: [],
   keywords: [],
   requirements: {
@@ -57,13 +57,38 @@ const campaignInitState: CampaignState = {
     budget: '',
     budgetType: '',
     campaignType: '',
-    socialMediaType: 'omni-channels',
+    socialMediaType: ['Twitter'],
     agreementChecked: false,
     raffleImage: { filename: '', file: '', format: '' },
     rafflePrizeName: '',
     rafflePrizeAffiliateLink: '',
     success: false,
+    channelMedia: {
+      Tiktok: [{ channel: 'Tiktok', media: { filename: '', file: '', format: '' }, isDefault: true }],
+      Twitter: [{ channel: 'Twitter', media: { filename: '', file: '', format: '' }, isDefault: true }],
+      Instagram: [{ channel: 'Instagram', media: { filename: '', file: '', format: '' }, isDefault: true }],
+      Facebook: [{ channel: 'Facebook', media: { filename: '', file: '', format: '' }, isDefault: true }],
+    },
+    channelTemplates: {
+      Tiktok: [
+        { channel: 'Tiktok', post: '' },
+        { channel: 'Tiktok', post: '' },
+      ],
+      Twitter: [
+        { channel: 'Twitter', post: '' },
+        { channel: 'Twitter', post: '' },
+      ],
+      Instagram: [
+        { channel: 'Instagram', post: '' },
+        { channel: 'Instagram', post: '' },
+      ],
+      Facebook: [
+        { channel: 'Facebook', post: '' },
+        { channel: 'Facebook', post: '' },
+      ],
+    },
   },
+  instructions: '',
 };
 
 const success: Alert = {

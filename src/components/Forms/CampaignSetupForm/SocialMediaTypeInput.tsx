@@ -1,61 +1,92 @@
-import { Box } from '@material-ui/core';
-import React from 'react';
+import { Box, FormControlLabel, Checkbox } from '@material-ui/core';
+import React, { useState } from 'react';
 import InstaIcon from '../../../assets/png/instagram.png';
 import TiktonIcon from '../../../assets/png/tiktok.png';
 import TwitterIcon from '../../../assets/png/twitter.png';
-import { CampaignConfig } from '../../../types.d';
+import FacebookIcon from '../../../assets/png/facebook.png';
+import useEffectSkipFirst from '../../../hooks/useEffectSkipFirst';
 
 interface Props {
-  socialMediaType: string;
-  handleChange: (val: CampaignConfig['socialMediaType']) => void;
-}
-interface MenuItem {
-  name: string;
-  value: string;
+  socialMediaType: string[];
+  handleChange: (val: string[]) => void;
 }
 
-export const socialMediaTypeMenu: Array<MenuItem> = [
-  { name: 'Twitter', value: 'twitter' },
-  { name: 'Instagram', value: 'instagram' },
-  { name: 'Tiktok', value: 'tiktok' },
-  { name: 'Omni Channels', value: 'omni-channels' },
-];
+interface IconsObject {
+  [key: string]: string;
+  Twitter: string;
+  Facebook: string;
+  Tiktok: string;
+  Instagram: string;
+}
+
+export const socialMediaTypeMenu: string[] = ['Twitter', 'Instagram', 'Tiktok', 'Facebook'];
 
 const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange }) => {
-  const getIcon = (value: string) => {
-    switch (value) {
-      case 'twitter':
-        return TwitterIcon;
-      case 'instagram':
-        return InstaIcon;
-      case 'tiktok':
-        return TiktonIcon;
-      default:
-        return '';
+  const [all, setAll] = useState(false);
+
+  const selectAll = () => {
+    if (all) {
+      const channels = [...socialMediaType];
+      socialMediaTypeMenu.forEach((item) => {
+        if (!channels.includes(item)) {
+          channels.push(item);
+        }
+      });
+      handleChange(channels);
+    } else {
+      handleChange([]);
     }
+  };
+
+  useEffectSkipFirst(selectAll, [all]);
+
+  const handleSocialSelect = (val: string) => {
+    const channels = [...socialMediaType];
+    if (channels.includes(val)) {
+      const index = channels.findIndex((item) => item === val);
+      channels.splice(index, 1);
+    } else {
+      channels.push(val);
+    }
+    handleChange(channels);
+  };
+
+  const getIcon: IconsObject = {
+    Twitter: TwitterIcon,
+    Instagram: InstaIcon,
+    Tiktok: TiktonIcon,
+    Facebook: FacebookIcon,
   };
 
   return (
     <Box className="w-full mt-10">
       <p className="mb-3 text-center text-2xl">Choose the social media platform to promote your campaign!</p>
+      <Box className="w-full flex flex-row justify-start items-center">
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={all}
+              style={{ color: '#3f51b5' }}
+              name="Brand Agreement"
+              onChange={(e, checked) => {
+                setAll(checked);
+              }}
+            />
+          }
+          label="All channels"
+        />
+      </Box>
       <Box className="flex flex-row justify-between space-x-4">
         {socialMediaTypeMenu.map((item, index) => (
           <Box
             key={index}
-            onClick={() => handleChange(item.value as CampaignConfig['socialMediaType'])}
+            onClick={() => handleSocialSelect(item)}
             className={`cursor-pointer flex flex-col justify-center items-center rounded-lg w-72 h-28 bg-gray-200 spacing-2 ${
-              socialMediaType.includes(item.value) ? 'bg-blue-800 text-white' : ''
+              socialMediaType.includes(item) ? 'bg-blue-800 text-white' : ''
             }`}
           >
-            <p className="text-lg">{item.name}</p>
-            {item.value !== 'omni-channels' && <img className="w-16" src={getIcon(item.value)} alt="social-icon" />}
-            {item.value === 'omni-channels' && (
-              <Box className="flex flex-row justify-between space-x-2">
-                <img className="w-10" src={TwitterIcon} alt="social-icon" />
-                <img className="w-10" src={InstaIcon} alt="social-icon" />
-                <img className="w-10" src={TiktonIcon} alt="social-icon" />
-              </Box>
-            )}
+            <p className="text-lg">{item}</p>
+            <img className="w-16" src={getIcon[item]} alt="social-icon" />
           </Box>
         ))}
       </Box>

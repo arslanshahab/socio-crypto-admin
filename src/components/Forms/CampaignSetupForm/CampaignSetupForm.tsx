@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
 import { useQuery } from '@apollo/client';
-import { CampaignConfig, ErrorObject, FileObject, GetFundingWalletResponse } from '../../../types';
+import { ErrorObject, FileObject, GetFundingWalletResponse } from '../../../types';
 import { GET_FUNDING_WALLET } from '../../../operations/queries/fundingWallet';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
@@ -46,7 +46,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
       ? data.getFundingWallet.currency.filter((token) => token.balance > 0).map((item) => item.type.toLowerCase())
       : [];
 
-  const handleSocialMediaType = (type: CampaignConfig['socialMediaType']) => {
+  const handleSocialMediaType = (type: string[]) => {
     setSocialMediaType(type);
   };
 
@@ -113,6 +113,10 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   const validateInputs = (): boolean => {
     let validated = true;
+    if (!socialMediaType || socialMediaType.length === 0) {
+      dispatch(showErrorAlert('Please select atleast one social channel'));
+      return (validated = false);
+    }
     if (!campaignType) {
       dispatch(showErrorAlert('Please select type of campaign'));
       return (validated = false);

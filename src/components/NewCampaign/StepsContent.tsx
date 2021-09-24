@@ -2,10 +2,11 @@ import React from 'react';
 import { CampaignState } from '../../types.d';
 import CampaignSetupForm from '../Forms/CampaignSetupForm';
 import CampaignInitializeForm from '../Forms/CampaignInitializeForm';
-import CampaignPostAnndTagsForm from '../Forms/CampaignPostAnndTagsForm';
+import CampaignPostAnndTagsForm from '../Forms/CampaignPostsForm';
 import CampaignRequirementsForm from '../Forms/CampaignRequirementsForm';
 import CampaignAlgorithmForm from '../Forms/CampaignAlgorithmForm';
 import PreviewScreen from './PreviewScreen';
+import CampaignMediaForm from '../Forms/CampaignMediaForm/CampaignMediaForm';
 
 interface Props {
   userData: any;
@@ -57,7 +58,7 @@ const StepContent: React.FC<Props & ActionsProps> = ({
       );
     case 2:
       return (
-        <CampaignPostAnndTagsForm
+        <CampaignMediaForm
           activeStep={activeStep}
           firstStep={firstStep}
           finalStep={finalStep}
@@ -67,7 +68,7 @@ const StepContent: React.FC<Props & ActionsProps> = ({
       );
     case 3:
       return (
-        <CampaignRequirementsForm
+        <CampaignPostAnndTagsForm
           activeStep={activeStep}
           firstStep={firstStep}
           finalStep={finalStep}
@@ -76,6 +77,16 @@ const StepContent: React.FC<Props & ActionsProps> = ({
         />
       );
     case 4:
+      return (
+        <CampaignRequirementsForm
+          activeStep={activeStep}
+          firstStep={firstStep}
+          finalStep={finalStep}
+          handleBack={handleBack}
+          handleNext={handleNext}
+        />
+      );
+    case 5:
       return (
         <CampaignAlgorithmForm
           activeStep={activeStep}
@@ -86,7 +97,7 @@ const StepContent: React.FC<Props & ActionsProps> = ({
           handleSubmit={handleSubmit}
         />
       );
-    case 5:
+    case 6:
       return (
         <PreviewScreen
           activeStep={activeStep}

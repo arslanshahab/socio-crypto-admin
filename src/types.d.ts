@@ -240,9 +240,8 @@ export interface NewCampaignVars {
   company: string;
   algorithm: string;
   imagePath: string;
-  sharedMedia: string;
   campaignType: string;
-  socialMediaType: string;
+  socialMediaType: string[];
   requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
@@ -250,13 +249,8 @@ export interface NewCampaignVars {
   keywords: string[];
   type: string;
   rafflePrize?: RafflePrizeStructure;
-}
-
-export interface NewCampaignImageVars {
-  id: string;
-  imagePath: string;
-  sharedMedia: string;
-  sharedMediaFormat: string;
+  campaignTemplates: any;
+  campaignMedia: any;
 }
 
 export interface RafflePrizeStructure {
@@ -265,8 +259,41 @@ export interface RafflePrizeStructure {
   image?: string;
 }
 
+export interface ChannelMediaObject {
+  channel: string;
+  media: FileObject;
+  isDefault: boolean;
+}
+
+export interface ChannelMediaStructure {
+  [key: string]: ChannelMediaObject[];
+  Twitter: ChannelMediaObject[];
+  Facebook: ChannelMediaObject[];
+  Tiktok: ChannelMediaObject[];
+  Instagram: ChannelMediaObject[];
+}
+
+export interface ChannelTemplateObject {
+  channel: string;
+  post: string;
+}
+export interface ChannelTemplateStructure {
+  [key: string]: ChannelTemplateObject[];
+  Twitter: ChannelTemplateObject[];
+  Facebook: ChannelTemplateObject[];
+  Tiktok: ChannelTemplateObject[];
+  Instagram: ChannelTemplateObject[];
+}
+
+export interface ChannelMediaRequestStructure {
+  channel: string;
+  media: string;
+  mediaFormat: string;
+  isDefault: boolean;
+}
+
 export interface CampaignConfig {
-  [key: string]: string | boolean | number | FileObject;
+  [key: string]: string | string[] | boolean | number | FileObject | ChannelMediaStructure | ChannelTemplateStructure;
   numOfSuggestedPosts: string;
   numOfTiers: string;
   initialTotal: string;
@@ -280,8 +307,24 @@ export interface CampaignConfig {
   coiinBudget: string;
   budgetType: string;
   campaignType: string;
-  socialMediaType: 'twitter' | 'tiktok' | 'instagram' | 'omni-channels';
+  socialMediaType: string[];
   success: boolean;
+  channelMedia: ChannelMediaStructure;
+  channelTemplates: ChannelTemplateStructure;
+}
+
+export interface CampaignMediaResponse {
+  id: string;
+  channel: string;
+  media: string;
+  mediaFormat: string;
+  isDefault: boolean;
+}
+
+export interface CampaignTemplateResponse {
+  id: string;
+  channel: string;
+  post: string;
 }
 
 export interface Campaign {
@@ -301,21 +344,27 @@ export interface Campaign {
   audited: boolean;
   targetVideo: string;
   imagePath: string;
-  sharedMedia: string;
-  sharedMediaFormat: string;
   campaignType: string;
-  socialMediaType: string;
+  socialMediaType: string[];
   requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+  campaignMedia: CampaignMediaResponse[];
+  campaignTemplates: CampaignTemplateResponse[];
 }
 
 export interface CampaignCreationResponse {
   campaignId: string;
   campaignImageSignedURL: string;
-  sharedMediaSignedURL: string;
   raffleImageSignedURL: string;
+  mediaUrls: CampaignMediaSignedUrl[];
+}
+
+interface CampaignMediaSignedUrl {
+  name: string;
+  channel: string;
+  signedUrl: string;
 }
 
 export interface CryptoCurrency {
@@ -399,6 +448,7 @@ export interface CampaignState {
   suggestedPosts: string[];
   suggestedTags: string[];
   keywords: string[];
+  instructions: string;
   config: CampaignConfig;
 }
 

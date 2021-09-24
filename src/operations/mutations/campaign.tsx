@@ -18,7 +18,6 @@ export const NEW_CAMPAIGN = gql`
     $company: String
     $targetVideo: String
     $imagePath: String
-    $sharedMedia: String
     $tagline: String!
     $requirements: JSON!
     $suggestedPosts: [String]
@@ -28,7 +27,9 @@ export const NEW_CAMPAIGN = gql`
     $rafflePrize: JSON
     $cryptoId: String
     $campaignType: String
-    $socialMediaType: String
+    $socialMediaType: [String]
+    $campaignMedia: JSON
+    $campaignTemplates: JSON
   ) {
     newCampaign(
       name: $name
@@ -41,7 +42,6 @@ export const NEW_CAMPAIGN = gql`
       company: $company
       targetVideo: $targetVideo
       imagePath: $imagePath
-      sharedMedia: $sharedMedia
       tagline: $tagline
       requirements: $requirements
       suggestedPosts: $suggestedPosts
@@ -52,27 +52,17 @@ export const NEW_CAMPAIGN = gql`
       cryptoId: $cryptoId
       campaignType: $campaignType
       socialMediaType: $socialMediaType
+      campaignMedia: $campaignMedia
+      campaignTemplates: $campaignTemplates
     ) {
       campaignId
       campaignImageSignedURL
-      sharedMediaSignedURL
       raffleImageSignedURL
-    }
-  }
-`;
-
-export const NEW_CAMPAIGN_IMAGES = gql`
-  mutation newCampaignImages($id: String!, $imagePath: String, $sharedMedia: String, $sharedMediaFormat: String) {
-    newCampaignImages(
-      id: $id
-      imagePath: $imagePath
-      sharedMedia: $sharedMedia
-      sharedMediaFormat: $sharedMediaFormat
-    ) {
-      id
-      imagePath
-      sharedMedia
-      sharedMediaFormat
+      mediaUrls {
+        name
+        channel
+        signedUrl
+      }
     }
   }
 `;
