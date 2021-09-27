@@ -19,6 +19,13 @@ interface IconsObject {
   Instagram: string;
 }
 
+export const getSocialIcon: IconsObject = {
+  Twitter: TwitterIcon,
+  Instagram: InstaIcon,
+  Tiktok: TiktonIcon,
+  Facebook: FacebookIcon,
+};
+
 export const socialMediaTypeMenu: string[] = ['Twitter', 'Instagram', 'Tiktok', 'Facebook'];
 
 const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange }) => {
@@ -51,13 +58,6 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange }
     handleChange(channels);
   };
 
-  const getIcon: IconsObject = {
-    Twitter: TwitterIcon,
-    Instagram: InstaIcon,
-    Tiktok: TiktonIcon,
-    Facebook: FacebookIcon,
-  };
-
   return (
     <Box className="w-full mt-10">
       <p className="mb-3 text-center text-2xl">Choose the social media platform to promote your campaign!</p>
@@ -86,7 +86,7 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange }
             }`}
           >
             <p className="text-lg">{item}</p>
-            <img className="w-16" src={getIcon[item]} alt="social-icon" />
+            <img className="w-16" src={getSocialIcon[item]} alt="social-icon" />
           </Box>
         ))}
       </Box>

@@ -7,6 +7,7 @@ import { campaignTypeMenu } from '../Forms/CampaignSetupForm/CampaignTypeInput';
 import { format } from 'date-fns';
 import CustomButton from '../CustomButton';
 import GenericModal from '../GenericModal';
+import { getSocialIcon } from '../Forms/CampaignSetupForm/SocialMediaTypeInput';
 
 const PreviewScreen: React.FC<ActionsProps> = ({
   activeStep,
@@ -72,23 +73,25 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Campaign Type</h5>
-        <h2 className="w-4/6  text-gray-800 text-md">
+        <h2 className="w-5/6  text-gray-800 text-md">
           {campaignTypeMenu.find((item) => item.value === campaign.config.campaignType)?.name}
         </h2>
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Targetted Social Media</h5>
-        <h2 className="w-4/6  text-gray-800 text-md">
-          {/* {socialMediaTypeMenu.find((item) => item === campaign.config.socialMediaType)?.name} */}
-        </h2>
+        <h5 className="w-1/6  text-gray-500 text-sm">Social Media Channels</h5>
+        <Box className="w-5/6 flex flex-row">
+          {campaign.config.socialMediaType.map((item) => (
+            <img key={item} className="w-10 mr-3" src={getSocialIcon[item]} alt="social-icon" />
+          ))}
+        </Box>
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Budget Type</h5>
-        <h2 className="w-4/6  text-gray-800 text-md">{campaign.config.type}</h2>
+        <h2 className="w-5/6  text-gray-800 text-md capitalize">{campaign.config.type}</h2>
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Total Budget</h5>
-        <h2 className="w-4/6  text-gray-800 text-md">{`${
+        <h2 className="w-5/6  text-gray-800 text-md">{`${
           campaign.config.coiinBudget
         } ${campaign.config.cryptoSymbol.toUpperCase()}`}</h2>
       </Box>
@@ -105,33 +108,25 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Description</h5>
-        <h2 className="w-4/6  text-gray-800 text-md">{campaign.description}</h2>
+        <h2 className="w-5/6  text-gray-800 text-md">{campaign.description}</h2>
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Tagline</h5>
-        <h2 className="w-4/6  text-gray-800 text-md">{campaign.tagline}</h2>
+        <h2 className="w-5/6  text-gray-800 text-md">{campaign.tagline}</h2>
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Landing Page URL</h5>
-        <h2 className="w-4/6 text-gray-800 text-md">{campaign.target}</h2>
+        <h2 className="w-5/6 text-gray-800 text-md">{campaign.target}</h2>
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Campaign Media</h5>
-        <Box className="w-4/6 flex flex-row">
+        <Box className="w-5/6 flex flex-row">
           {campaign.campaignImage.file && (
             <CustomButton
               onClick={() => setPreviewType('campaignImage')}
               className="w-52 h-10 mr-5 rounded-md text-white text-md bg-gray-500"
             >
               Preview Campaign Image
-            </CustomButton>
-          )}
-          {campaign.media.file && (
-            <CustomButton
-              onClick={() => setPreviewType('media')}
-              className="w-52 h-10 mr-5 rounded-md text-white text-md bg-gray-500"
-            >
-              Preview Shared Media
             </CustomButton>
           )}
           {campaign.config.raffleImage.file && (
@@ -146,7 +141,7 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Campaign Tags</h5>
-        <Box className="w-4/6 flex flex-row">
+        <Box className="w-5/6 flex flex-row">
           {campaign.suggestedTags.map((item, index) => (
             <span
               key={index}
@@ -159,17 +154,20 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Posting Templates</h5>
-        <Box className="w-4/6 flex flex-col">
-          {campaign.suggestedPosts.map((item, index) => (
-            <span key={index} className="text-gray-800 text-md mt-2">
-              <p>{`Post#${index + 1}: ${item}`}</p>
-            </span>
+        <Box className="w-5/6 flex flex-col">
+          {Object.keys(campaign.config.channelTemplates).map((channel, index) => (
+            <Box className="w-full flex flex-col mt-3 p-3 bg-gray-100 rounded-md" key={index}>
+              <p>{`${channel} Templates`}</p>
+              {campaign.config.channelTemplates[channel].map((template, index2) => (
+                <p key={index2} className="text-gray-800 text-sm mt-2">{`Post#${index2 + 1}: ${template.post}`}</p>
+              ))}
+            </Box>
           ))}
         </Box>
       </Box>
       <Box className="w-full flex flex-row items-center space-x-5 mb-2">
         <h5 className="w-1/6  text-gray-500 text-sm">Campaign Keywords</h5>
-        <Box className="w-4/6 flex flex-row">
+        <Box className="w-5/6 flex flex-row">
           {campaign.keywords.map((item, index) => (
             <span
               key={index}
