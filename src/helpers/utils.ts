@@ -12,7 +12,7 @@ import { dataURLtoFile } from './fileHandler';
 import { flatten } from 'lodash';
 
 const assetUrl =
-  process.env.NODE_ENV === 'production'
+  process.env.REACT_APP_STAGE === 'production'
     ? 'https://raiinmaker-media.api.raiinmaker.com'
     : 'https://raiinmaker-media-staging.api.raiinmaker.com';
 
@@ -26,6 +26,7 @@ export const generateRandomId = (): string => {
 };
 
 export const generateCampaignMediaUrl = (id: string, filename: string): string => {
+  console.log(`generating url for ${process.env.REACT_APP_STAGE} environment`);
   return `${assetUrl}/campaign/${id}/${filename}`;
 };
 
