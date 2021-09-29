@@ -222,6 +222,10 @@ Resources:
                   - 'ecr:GetAuthorizationToken'
                 Effect: Allow
                 Resource: '*'
+              - Action:
+                  - 'cloudfront:CreateInvalidation'
+                Effect: Allow
+                Resource: 'arn:aws:cloudfront::527252880472:distribution/EYB3SRWJWDK6T'
 
   CodeBuildRole:
     Type: AWS::IAM::Role
@@ -282,6 +286,11 @@ Resources:
                   - 'ecr:GetAuthorizationToken'
                 Effect: Allow
                 Resource: '*'
+              - Action:
+                  - 'cloudfront:CreateInvalidation'
+                Effect: Allow
+                Resource:
+                  - 'arn:aws:cloudfront::527252880472:distribution/E3GGQBEA4YJZSG'
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
