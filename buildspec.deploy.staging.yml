@@ -13,3 +13,4 @@ phases:
       - yarn build:staging
       - mv ./src/robots-staging.txt ./build/robots.txt
       - aws s3 sync ./build s3://rm-raiinmaker-admin-ui-stg --delete --cache-control "max-age=31536000"
+      - aws cloudfront create-invalidation --distribution-id E3GGQBEA4YJZSG

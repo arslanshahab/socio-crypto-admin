@@ -11,4 +11,4 @@ phases:
       - yarn build:production
       - mv ./src/robots-production.txt ./build/robots.txt
       - aws s3 sync ./build s3://rm-raiinmaker-admin-ui-prod --delete --cache-control "max-age=31536000"
-      - aws s3 cp s3://rm-raiinmaker-admin-ui-prod/index.html s3://rm-raiinmaker-admin-ui-prod/index.html --metadata-directive REPLACE --cache-control "public, must-revalidate, proxy-revalidate, max-age=0"
+      - aws cloudfront create-invalidation --distribution-id EYB3SRWJWDK6T
