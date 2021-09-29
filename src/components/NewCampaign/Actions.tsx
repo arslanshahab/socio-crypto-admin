@@ -1,5 +1,6 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
+import { useParams } from 'react-router';
 import CustomButton from '../CustomButton';
 
 export interface CampaignActionProps {
@@ -11,6 +12,10 @@ export interface CampaignActionProps {
   handleSubmit?: () => void;
 }
 
+interface PageParams {
+  campaignId?: string;
+}
+
 const Actions: React.FC<CampaignActionProps> = ({
   firstStep,
   finalStep,
@@ -19,6 +24,7 @@ const Actions: React.FC<CampaignActionProps> = ({
   handleNext,
   handleSubmit,
 }) => {
+  const { campaignId } = useParams<PageParams>();
   return (
     <Box className="mt-10 flex flex-row justify-between items-center">
       <CustomButton
@@ -43,7 +49,7 @@ const Actions: React.FC<CampaignActionProps> = ({
           className="w-48 h-12 mr-5 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
           onClick={handleSubmit}
         >
-          Create Campaign
+          {campaignId ? 'Update Campaign' : 'Create Campaign'}
         </CustomButton>
       )}
     </Box>

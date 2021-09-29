@@ -21,6 +21,7 @@ import NewCampaignPage from '../NewCampaign';
 import { useDispatch } from 'react-redux';
 import { showAppLoader } from '../../store/actions/settings';
 import { showErrorAlert } from '../../store/actions/alerts';
+import EditCampaignPage from '../EditCampaign/EditCampaign';
 
 const Dashboard: React.FC = (props) => {
   const history = useHistory();
@@ -65,6 +66,9 @@ const Dashboard: React.FC = (props) => {
                   </ProtectedRoute>
                   <ProtectedRoute exact path={'/dashboard/newCampaign'}>
                     <NewCampaignPage userData={value} {...props} />
+                  </ProtectedRoute>
+                  <ProtectedRoute path={'/dashboard/editCampaign/:campaignId'}>
+                    <EditCampaignPage userData={value} {...props} />
                   </ProtectedRoute>
                   {/* <ProtectedRoute exact path={'/dashboard/marketData'}>
                     <MarketData />

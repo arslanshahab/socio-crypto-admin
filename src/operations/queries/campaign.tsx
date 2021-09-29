@@ -50,6 +50,59 @@ export const LIST_CAMPAIGNS = gql`
   }
 `;
 
+export const GET_CAMPAIGN = gql`
+  query getCampaign($id: String) {
+    getCampaign(id: $id) {
+      id
+      name
+      coiinTotal
+      algorithm
+      requirements
+      totalParticipationScore
+      beginDate
+      description
+      instructions
+      target
+      targetVideo
+      status
+      endDate
+      company
+      imagePath
+      campaignType
+      socialMediaType
+      suggestedTags
+      keywords
+      type
+      campaignMedia {
+        id
+        channel
+        isDefault
+        media
+        mediaFormat
+      }
+      campaignTemplates {
+        id
+        channel
+        post
+      }
+      tagline
+      crypto {
+        type
+        contractAddress
+      }
+      participants {
+        id
+        metrics {
+          clickCount
+        }
+        user {
+          id
+        }
+      }
+    }
+  }
+`;
+
 export const ADMIN_LIST_CAMPAIGNS = gql`
   query listPendingCampaigns($skip: Int, $take: Int) {
     listPendingCampaigns(skip: $skip, take: $take) {

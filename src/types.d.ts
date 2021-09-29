@@ -5,6 +5,10 @@ export interface PaginatedCampaignResults {
   };
 }
 
+export interface GetCampaignResult {
+  getCampaign: Campaign;
+}
+
 export interface AddPaymentMethod {
   addPaymentMethod: {
     clientSecret: string;
@@ -49,6 +53,10 @@ export interface CampaignListVars {
   scoped?: boolean;
   approved: boolean;
   sort?: boolean;
+}
+
+export interface CampaignGetVars {
+  id?: string;
 }
 
 export interface Wallet {
@@ -229,6 +237,7 @@ export interface GetHourlyPlatformMetrics {
 }
 
 export interface NewCampaignVars {
+  id?: string;
   name: string;
   coiinTotal: number;
   target: string;
@@ -261,6 +270,7 @@ export interface RafflePrizeStructure {
 }
 
 export interface ChannelMediaObject {
+  id?: string;
   channel: string;
   media: FileObject;
   isDefault: boolean;
@@ -275,6 +285,7 @@ export interface ChannelMediaStructure {
 }
 
 export interface ChannelTemplateObject {
+  id?: string;
   channel: string;
   post: string;
 }
@@ -284,13 +295,6 @@ export interface ChannelTemplateStructure {
   Facebook: ChannelTemplateObject[];
   Tiktok: ChannelTemplateObject[];
   Instagram: ChannelTemplateObject[];
-}
-
-export interface ChannelMediaRequestStructure {
-  channel: string;
-  media: string;
-  mediaFormat: string;
-  isDefault: boolean;
 }
 
 export interface CampaignConfig {
@@ -315,7 +319,7 @@ export interface CampaignConfig {
 }
 
 export interface CampaignMediaResponse {
-  id: string;
+  id?: string;
   channel: string;
   media: string;
   mediaFormat: string;
@@ -323,7 +327,7 @@ export interface CampaignMediaResponse {
 }
 
 export interface CampaignTemplateResponse {
-  id: string;
+  id?: string;
   channel: string;
   post: string;
 }
@@ -340,6 +344,8 @@ export interface Campaign {
   status: string;
   target: string;
   description: string;
+  instructions: string;
+  keywords: string[];
   algorithm: AlgorithmSpecs;
   company: string;
   audited: boolean;
@@ -347,7 +353,7 @@ export interface Campaign {
   imagePath: string;
   campaignType: string;
   socialMediaType: string[];
-  requirements?: CampaignRequirementSpecs;
+  requirements: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
@@ -432,6 +438,7 @@ export interface CampaignState {
     | AlgorithmSpecs
     | CampaignRequirementSpecs
     | undefined;
+  id: string;
   name: string;
   beginDate: string;
   endDate: string;

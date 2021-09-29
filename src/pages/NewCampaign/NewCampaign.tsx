@@ -3,25 +3,16 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useMutation, FetchResult } from '@apollo/client';
-import {
-  CampaignCreationResponse,
-  NewCampaignVars,
-  CampaignState,
-  FileObject,
-  ChannelMediaStructure,
-  CampaignMediaSignedUrl,
-  ChannelMediaRequestStructure,
-} from '../../types.d';
+import { CampaignCreationResponse, NewCampaignVars, CampaignState, CampaignMediaSignedUrl } from '../../types.d';
 import { NEW_CAMPAIGN } from '../../operations/mutations/campaign';
 import StepsView from '../../components/NewCampaign/StepsView';
 import StepContent from '../../components/NewCampaign/StepsContent';
-import axios from 'axios';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
 import GenericModal from '../../components/GenericModal';
 import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
 import { resetCampaign } from '../../store/actions/campaign';
-import { dataURLtoFile } from '../../helpers/fileHandler';
 import { flatten } from 'lodash';
+import { prepareMediaRequest, uploadMedia } from '../../helpers/utils';
 
 interface Props {
   userData: any;
@@ -34,7 +25,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
   const [campaignUploadProgress, setCampaignUploadProgress] = useState(0);
   const [sharedMediaUploadProgress, setSharedMediaUploadProgress] = useState(0);
   const [raffleUploadProgress, setRaffleUploadProgress] = useState(0);
-  const [mediaCount, setMediaCount] = useState(0);
+  const [mediaCount, setMediaCount] = useState(1);
   const [totalMedia, setTotalMedia] = useState(0);
   const steps = [
     'Purpose and Budget',
@@ -45,15 +36,17 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
     'Algorithm',
     'Preview',
   ];
-  const [activeStep, setActiveStep] = useState(0);
+  const firstStep = 0;
+  const finalStep = steps.length - 1;
+  const [activeStep, setActiveStep] = useState(firstStep);
   const campaign = useStoreCampaignSelector();
   const [saveCampaign] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN);
 
   const handleNext = () => {
-    setActiveStep((prevState) => (prevState < steps.length - 1 ? prevState + 1 : prevState));
+    setActiveStep((prevState) => (prevState < finalStep ? prevState + 1 : prevState));
   };
   const handleBack = () => {
-    setActiveStep((prevState) => (prevState > 0 ? prevState - 1 : prevState));
+    setActiveStep((prevState) => (prevState > firstStep ? prevState - 1 : prevState));
   };
 
   const createCampaign = async (data: CampaignState) => {
@@ -82,7 +75,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           suggestedTags: data.suggestedTags,
           keywords: data.keywords,
           type: data.config.budgetType || 'coiin',
-          campaignMedia: prepareMedia(data.config.channelMedia),
+          campaignMedia: prepareMediaRequest(data.config.channelMedia),
           campaignTemplates: flatten(Object.values(data.config.channelTemplates)),
           rafflePrize:
             data.config.budgetType === 'raffle'
@@ -106,7 +99,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           const campaignMedia = flatten(Object.values(data.config.channelMedia));
           setTotalMedia(data.config.socialMediaType.length);
           for (let index = 0; index < campaignMedia.length; index++) {
-            setMediaCount(index + 1);
+            setMediaCount((prev) => prev + 1);
             const signedMediaObject = newCampaign.mediaUrls.find(
               (responseMedia: CampaignMediaSignedUrl) =>
                 responseMedia.name === campaignMedia[index].media.filename &&
@@ -126,35 +119,6 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
     } catch (e) {
       showProgressModal(false);
     }
-  };
-
-  const prepareMedia = (data: ChannelMediaStructure) => {
-    const list: ChannelMediaRequestStructure[] = [];
-    const mediaList = flatten(Object.values(data));
-    mediaList.forEach((item) => {
-      const obj: any = {};
-      obj.channel = item.channel;
-      obj.media = item.media.filename;
-      obj.mediaFormat = item.media.format;
-      obj.isDefault = item.isDefault;
-      list.push(obj);
-    });
-    return list;
-  };
-
-  const uploadMedia = async (url: string, file: FileObject, progressCallback: (p: number) => void) => {
-    await axios({
-      method: 'PUT',
-      url: url,
-      data: dataURLtoFile(file.file, file.filename),
-      headers: {
-        'Content-Type': file.format,
-      },
-      onUploadProgress: (event) => {
-        const progress = ((event.loaded / event.total) * 100).toFixed(0);
-        progressCallback(parseFloat(progress));
-      },
-    });
   };
 
   return (
