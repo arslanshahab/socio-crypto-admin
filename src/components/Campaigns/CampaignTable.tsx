@@ -20,6 +20,7 @@ const CampaignTable: React.FC<Props> = ({ data }) => {
             <th className="px-7 py-5 text-left">TiConversion Actionser</th>
             <th className="px-7 py-5 text-left">Cost</th>
             <th className="px-7 py-5 text-left">Status</th>
+            <th className="px-7 py-5 text-left"></th>
           </tr>
         </thead>
         <tbody>

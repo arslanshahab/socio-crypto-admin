@@ -12,6 +12,7 @@ const initialAlgorithmState: AlgorithmSpecs = {
 };
 
 const campaignInitState: CampaignState = {
+  id: '',
   name: '',
   beginDate: '',
   endDate: '',
