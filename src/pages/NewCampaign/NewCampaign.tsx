@@ -25,7 +25,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
   const [campaignUploadProgress, setCampaignUploadProgress] = useState(0);
   const [sharedMediaUploadProgress, setSharedMediaUploadProgress] = useState(0);
   const [raffleUploadProgress, setRaffleUploadProgress] = useState(0);
-  const [mediaCount, setMediaCount] = useState(1);
+  const [mediaCount, setMediaCount] = useState(0);
   const [totalMedia, setTotalMedia] = useState(0);
   const steps = [
     'Purpose and Budget',
@@ -97,7 +97,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
         }
         if (newCampaign.mediaUrls) {
           const campaignMedia = flatten(Object.values(data.config.channelMedia));
-          setTotalMedia(data.config.socialMediaType.length);
+          setTotalMedia(newCampaign.mediaUrls.length);
           for (let index = 0; index < campaignMedia.length; index++) {
             setMediaCount((prev) => prev + 1);
             const signedMediaObject = newCampaign.mediaUrls.find(

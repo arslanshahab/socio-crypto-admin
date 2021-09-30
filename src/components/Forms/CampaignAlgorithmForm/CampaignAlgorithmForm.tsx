@@ -24,11 +24,11 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
   const campaign = useStoreCampaignSelector();
   const numOfTiers = parseInt(campaign.config.numOfTiers);
   const [agreementChecked, handleAgreementChecked] = useState(campaign.config.agreementChecked);
-  const [clickCount, setClickCount] = useState(campaign.algorithm.clicks);
-  const [viewCount, setViewCount] = useState(campaign.algorithm.views);
-  const [submissionCount, setSubmissionCount] = useState(campaign.algorithm.submissions);
-  const [shareCount, setShareCount] = useState(campaign.algorithm.shares);
-  const [likeCount, setLikeCount] = useState(campaign.algorithm.likes);
+  const [clickCount, setClickCount] = useState(campaign.algorithm.pointValues.clicks);
+  const [viewCount, setViewCount] = useState(campaign.algorithm.pointValues.views);
+  const [submissionCount, setSubmissionCount] = useState(campaign.algorithm.pointValues.submissions);
+  const [shareCount, setShareCount] = useState(campaign.algorithm.pointValues.shares);
+  const [likeCount, setLikeCount] = useState(campaign.algorithm.pointValues.likes);
   const [modalOpen, toggleModal] = useState(false);
   const [tiers, setTiers] = useState(campaign.algorithm.tiers);
   const dispatch = useDispatch();
@@ -73,11 +73,14 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
         algorithm: {
           ...campaign.algorithm,
           tiers,
-          clicks: clickCount,
-          views: viewCount,
-          submissions: submissionCount,
-          likes: likeCount,
-          shares: shareCount,
+          pointValues: {
+            ...campaign.algorithm.pointValues,
+            clicks: clickCount,
+            views: viewCount,
+            submissions: submissionCount,
+            likes: likeCount,
+            shares: shareCount,
+          },
         },
         config: {
           ...campaign.config,
