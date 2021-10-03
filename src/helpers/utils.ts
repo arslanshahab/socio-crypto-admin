@@ -10,11 +10,9 @@ import {
 import axios from 'axios';
 import { dataURLtoFile } from './fileHandler';
 import { flatten } from 'lodash';
+import { s3ProdMediaUrl, s3StagingMediaUrl } from './affiliateURLs';
 
-const assetUrl =
-  process.env.REACT_APP_STAGE === 'production'
-    ? 'https://raiinmaker-media.api.raiinmaker.com'
-    : 'https://raiinmaker-media-staging.api.raiinmaker.com';
+const assetUrl = process.env.REACT_APP_STAGE === 'production' ? s3ProdMediaUrl : s3StagingMediaUrl;
 
 export const generateRandomId = (): string => {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -59,6 +57,20 @@ export const prepareMediaRequest = (data: ChannelMediaStructure): CampaignMediaR
       media: item.media.filename,
       mediaFormat: item.media.format,
       isDefault: item.isDefault,
+    };
+    list.push(obj);
+  });
+  return list;
+};
+
+export const prepareTemplateRequest = (data: ChannelTemplateStructure): CampaignTemplateResponse[] => {
+  const list: CampaignTemplateResponse[] = [];
+  const templateList = flatten(Object.values(data));
+  templateList.forEach((item) => {
+    const obj: CampaignTemplateResponse = {
+      ...(item.id && { id: item.id }),
+      channel: item.channel,
+      post: item.channel === 'Twitter' ? item.post.replace('@', '#') : item.post,
     };
     list.push(obj);
   });

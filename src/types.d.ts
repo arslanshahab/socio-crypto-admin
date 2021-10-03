@@ -259,8 +259,8 @@ export interface NewCampaignVars {
   keywords: string[];
   type: string;
   rafflePrize?: RafflePrizeStructure;
-  campaignTemplates: any;
-  campaignMedia: any;
+  campaignTemplates: CampaignTemplateResponse[];
+  campaignMedia: CampaignMediaResponse[];
 }
 
 export interface RafflePrizeStructure {
