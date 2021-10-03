@@ -12,7 +12,7 @@ import GenericModal from '../../components/GenericModal';
 import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
 import { resetCampaign } from '../../store/actions/campaign';
 import { flatten } from 'lodash';
-import { prepareMediaRequest, uploadMedia } from '../../helpers/utils';
+import { prepareMediaRequest, prepareTemplateRequest, uploadMedia } from '../../helpers/utils';
 
 interface Props {
   userData: any;
@@ -76,7 +76,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           keywords: data.keywords,
           type: data.config.budgetType || 'coiin',
           campaignMedia: prepareMediaRequest(data.config.channelMedia),
-          campaignTemplates: flatten(Object.values(data.config.channelTemplates)),
+          campaignTemplates: prepareTemplateRequest(data.config.channelTemplates),
           rafflePrize:
             data.config.budgetType === 'raffle'
               ? {

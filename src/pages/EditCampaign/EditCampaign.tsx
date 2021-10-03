@@ -27,6 +27,7 @@ import {
   uploadMedia,
   prepareChannelMediaFromResponse,
   prepareChannelTemplatesFromResponse,
+  prepareTemplateRequest,
 } from '../../helpers/utils';
 
 interface Props {
@@ -146,7 +147,7 @@ const EditCampaignPage: React.FC<Props> = ({ userData }) => {
           keywords: data.keywords,
           type: data.config.budgetType || 'coiin',
           campaignMedia: prepareMediaRequest(data.config.channelMedia),
-          campaignTemplates: flatten(Object.values(data.config.channelTemplates)),
+          campaignTemplates: prepareTemplateRequest(data.config.channelTemplates),
           rafflePrize:
             data.config.budgetType === 'raffle'
               ? {
