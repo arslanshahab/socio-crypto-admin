@@ -109,6 +109,10 @@ export interface ListSupportedCryptoResults {
   }[];
 }
 
+export interface ListCurrenciesResult {
+  getSupportedCurrencies: string[];
+}
+
 export interface DepositAddressResult {
   getDepositAddressForCurrency: {
     currency: string;
