@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress, Tooltip } from '@material-ui/core';
 import CustomSelect from '../../CustomSelect/CustomSelect';
-import { DepositAddressResult, ListSupportedCryptoResults } from '../../../types.d';
+import { DepositAddressResult } from '../../../types.d';
 import { useQuery } from '@apollo/client';
 import { GET_DEPOSIT_ADDRESS } from '../../../operations/queries/crypto';
+import copy from 'copy-to-clipboard';
+import { useDispatch } from 'react-redux';
+import { showSuccessAlert } from '../../../store/actions/alerts';
+import ContentCopyIcon from '@material-ui/icons/FileCopy';
 
 interface Props {
-  cryptoList: ListSupportedCryptoResults | undefined;
+  cryptoList: string[] | undefined;
 }
 
 const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
   const [currency, setCurrency] = useState('coiin');
-  const cryptoOptions = cryptoList ? cryptoList.listSupportedCrypto.map((item) => item.type.toUpperCase()) : [];
-  cryptoOptions.push('BTC');
+  const dispatch = useDispatch();
   const { data, loading } = useQuery<DepositAddressResult>(GET_DEPOSIT_ADDRESS, {
     variables: { currency: currency },
     fetchPolicy: 'network-only',
   });
+
+  const copyAddress = () => {
+    copy(data?.getDepositAddressForCurrency?.address || '');
+    dispatch(showSuccessAlert('Address copied to Clipboard!'));
+  };
 
   return (
     <Box className="p-10 w-full flex flex-col justify-center items-center">
@@ -27,7 +35,7 @@ const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
           value={currency}
           onChange={(event: React.ChangeEvent<any>) => setCurrency(event.target.value)}
           label="Select Token to Deposit"
-          options={cryptoOptions}
+          options={cryptoList || []}
           upperCaseOptions={true}
         />
       </Box>
@@ -43,9 +51,16 @@ const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
         {loading ? (
           <CircularProgress size={30} color="primary" className="mt-3" />
         ) : (
-          <p className="text-md p-3 text-center text-gray-800 bg-gray-100 mt-2">
-            {data?.getDepositAddressForCurrency?.address || ''}
-          </p>
+          <Box className="flex flex-row justify-center items-center w-full text-md p-3 bg-gray-100 mt-2">
+            <p className="w-5/6 overflow-ellipsis overflow-hidden text-center text-gray-800">
+              {data?.getDepositAddressForCurrency?.address || ''}
+            </p>
+            <Tooltip title="Copy Address" placement="top">
+              <span onClick={copyAddress}>
+                <ContentCopyIcon className="ml-2 cursor-pointer" />
+              </span>
+            </Tooltip>
+          </Box>
         )}
       </Box>
     </Box>

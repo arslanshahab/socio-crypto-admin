@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { CryptoItem } from './CryptoItem';
-import { GetFundingWalletResponse, ListSupportedCryptoResults } from '../types';
+import { GetFundingWalletResponse, ListCurrenciesResult, ListSupportedCryptoResults } from '../types';
 import { RefetchWallet } from './PaymentsAccount';
 import { CryptoDialog } from './CryptoDialog';
 import AddIcon from '@material-ui/icons/Add';
 import { useQuery } from '@apollo/client';
-import { LIST_SUPPORTED_CRYPTO } from '../operations/queries/crypto';
+import { LIST_CURRENCIES, LIST_SUPPORTED_CRYPTO } from '../operations/queries/crypto';
 import GenericModal from './GenericModal';
 import DepositCryptoForm from './Forms/DepositCryptoForm';
 
@@ -18,6 +18,7 @@ interface Props {
 
 export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) => {
   const { data: currencyData, loading } = useQuery<ListSupportedCryptoResults>(LIST_SUPPORTED_CRYPTO);
+  const { data: currencyList } = useQuery<ListCurrenciesResult>(LIST_CURRENCIES, { fetchPolicy: 'network-only' });
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
 
@@ -59,7 +60,7 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
         refetchWallet={refetchWallet}
       />
       <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
-        <DepositCryptoForm cryptoList={currencyData} />
+        <DepositCryptoForm cryptoList={currencyList?.getSupportedCurrencies} />
       </GenericModal>
       <Grid item container className="list-header" direction={'column'}>
         <Grid item container>
