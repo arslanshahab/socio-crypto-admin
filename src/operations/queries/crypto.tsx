@@ -8,3 +8,9 @@ export const LIST_SUPPORTED_CRYPTO = gql`
     }
   }
 `;
+
+export const GET_DEPOSIT_ADDRESS = gql`
+  query getDepositAddressForCurrency($currency: String!) {
+    getDepositAddressForCurrency(currency: $currency)
+  }
+`;

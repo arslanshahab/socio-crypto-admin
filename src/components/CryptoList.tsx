@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
 import { CryptoItem } from './CryptoItem';
 import { GetFundingWalletResponse, ListSupportedCryptoResults } from '../types';
-import { coldWallet, RefetchWallet } from './PaymentsAccount';
+import { RefetchWallet } from './PaymentsAccount';
 import { CryptoDialog } from './CryptoDialog';
 import AddIcon from '@material-ui/icons/Add';
 import { useQuery } from '@apollo/client';
 import { LIST_SUPPORTED_CRYPTO } from '../operations/queries/crypto';
+import GenericModal from './GenericModal';
+import DepositCryptoForm from './Forms/DepositCryptoForm';
 
 interface Props {
   data: GetFundingWalletResponse | undefined;
@@ -56,19 +58,9 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
         isLoading={loading}
         refetchWallet={refetchWallet}
       />
-      <Dialog open={openCrypto}>
-        <DialogContent>
-          <DialogContentText>
-            Please send one of the listed tokens from one of your claimed addresses to this address:
-          </DialogContentText>
-          <DialogContentText>{coldWallet}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenCrypto(false)} color="primary" variant={'contained'}>
-            Okay
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
+        <DepositCryptoForm cryptoList={currencyData} />
+      </GenericModal>
       <Grid item container className="list-header" direction={'column'}>
         <Grid item container>
           <Grid item>

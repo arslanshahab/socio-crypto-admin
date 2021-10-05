@@ -5,6 +5,10 @@ export interface PaginatedCampaignResults {
   };
 }
 
+export interface GetCampaignResult {
+  getCampaign: Campaign;
+}
+
 export interface AddPaymentMethod {
   addPaymentMethod: {
     clientSecret: string;
@@ -49,6 +53,10 @@ export interface CampaignListVars {
   scoped?: boolean;
   approved: boolean;
   sort?: boolean;
+}
+
+export interface CampaignGetVars {
+  id?: string;
 }
 
 export interface Wallet {
@@ -99,6 +107,14 @@ export interface ListSupportedCryptoResults {
     type: string;
     contractAddress: string;
   }[];
+}
+
+export interface DepositAddressResult {
+  getDepositAddressForCurrency: {
+    currency: string;
+    address: string;
+    fromTatum: boolean;
+  };
 }
 
 export interface Transfer {
@@ -221,6 +237,7 @@ export interface GetHourlyPlatformMetrics {
 }
 
 export interface NewCampaignVars {
+  id?: string;
   name: string;
   coiinTotal: number;
   target: string;
@@ -228,11 +245,13 @@ export interface NewCampaignVars {
   beginDate: string;
   endDate: string;
   description: string;
+  instructions: string;
   cryptoId: string;
   company: string;
   algorithm: string;
-  image: string;
-  sharedMedia: string;
+  imagePath: string;
+  campaignType: string;
+  socialMediaType: string[];
   requirements?: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
@@ -240,13 +259,8 @@ export interface NewCampaignVars {
   keywords: string[];
   type: string;
   rafflePrize?: RafflePrizeStructure;
-}
-
-export interface NewCampaignImageVars {
-  id: string;
-  image: string;
-  sharedMedia: string;
-  sharedMediaFormat: string;
+  campaignTemplates: CampaignTemplateResponse[];
+  campaignMedia: CampaignMediaResponse[];
 }
 
 export interface RafflePrizeStructure {
@@ -255,16 +269,67 @@ export interface RafflePrizeStructure {
   image?: string;
 }
 
+export interface ChannelMediaObject {
+  id?: string;
+  channel: string;
+  media: FileObject;
+  isDefault: boolean;
+}
+
+export interface ChannelMediaStructure {
+  [key: string]: ChannelMediaObject[];
+  Twitter: ChannelMediaObject[];
+  Facebook: ChannelMediaObject[];
+  Tiktok: ChannelMediaObject[];
+  Instagram: ChannelMediaObject[];
+}
+
+export interface ChannelTemplateObject {
+  id?: string;
+  channel: string;
+  post: string;
+}
+export interface ChannelTemplateStructure {
+  [key: string]: ChannelTemplateObject[];
+  Twitter: ChannelTemplateObject[];
+  Facebook: ChannelTemplateObject[];
+  Tiktok: ChannelTemplateObject[];
+  Instagram: ChannelTemplateObject[];
+}
+
 export interface CampaignConfig {
-  [key: string]: string | number | boolean | FileObject;
-  numOfSuggestedPosts: number;
-  numOfTiers: number;
+  [key: string]: string | string[] | boolean | number | FileObject | ChannelMediaStructure | ChannelTemplateStructure;
+  numOfSuggestedPosts: string;
+  numOfTiers: string;
   initialTotal: string;
   type: string;
-  cryptoSymbol?: string;
-  rafflePrizeName?: string;
-  rafflePrizeAffiliateLink?: string;
-  raffleImage?: FileObject;
+  budget: string;
+  agreementChecked: boolean;
+  cryptoSymbol: string;
+  rafflePrizeName: string;
+  rafflePrizeAffiliateLink: string;
+  raffleImage: FileObject;
+  coiinBudget: string;
+  budgetType: string;
+  campaignType: string;
+  socialMediaType: string[];
+  success: boolean;
+  channelMedia: ChannelMediaStructure;
+  channelTemplates: ChannelTemplateStructure;
+}
+
+export interface CampaignMediaResponse {
+  id?: string;
+  channel: string;
+  media: string;
+  mediaFormat: string;
+  isDefault: boolean;
+}
+
+export interface CampaignTemplateResponse {
+  id?: string;
+  channel: string;
+  post: string;
 }
 
 export interface Campaign {
@@ -279,22 +344,34 @@ export interface Campaign {
   status: string;
   target: string;
   description: string;
+  instructions: string;
+  keywords: string[];
   algorithm: AlgorithmSpecs;
   company: string;
   audited: boolean;
   targetVideo: string;
   imagePath: string;
-  requirements?: CampaignRequirementSpecs;
+  campaignType: string;
+  socialMediaType: string[];
+  requirements: CampaignRequirementSpecs;
   tagline: string;
   suggestedPosts: string[];
   suggestedTags: string[];
+  campaignMedia: CampaignMediaResponse[];
+  campaignTemplates: CampaignTemplateResponse[];
 }
 
 export interface CampaignCreationResponse {
   campaignId: string;
   campaignImageSignedURL: string;
-  sharedMediaSignedURL: string;
   raffleImageSignedURL: string;
+  mediaUrls: CampaignMediaSignedUrl[];
+}
+
+interface CampaignMediaSignedUrl {
+  name: string;
+  channel: string;
+  signedUrl: string;
 }
 
 export interface CryptoCurrency {
@@ -330,14 +407,38 @@ export interface ListPendingCampaignsAdminResults {
   };
 }
 
+export interface StoreSettings {
+  appLoader: boolean;
+  languageCode: string;
+  loadingMessage: string;
+}
+
+export interface Alert {
+  message: string;
+  open: boolean;
+}
+
+export interface StoreAlerts {
+  success: Alert;
+  error: Alert;
+}
+
 export interface FileObject {
   filename: string;
   format: string;
-  file: File | null;
+  file: string;
 }
 
 export interface CampaignState {
-  [key: string]: string | string[] | AlgorithmSpecs | CampaignConfig | CampaignRequirementSpecs | FileObject;
+  [key: string]:
+    | string
+    | string[]
+    | FileObject
+    | CampaignConfig
+    | AlgorithmSpecs
+    | CampaignRequirementSpecs
+    | undefined;
+  id: string;
   name: string;
   beginDate: string;
   endDate: string;
@@ -348,13 +449,14 @@ export interface CampaignState {
   company: string;
   targetVideo: string;
   cryptoId: string;
-  image: FileObject;
-  sharedMedia: FileObject;
+  campaignImage: FileObject;
+  media: FileObject;
   tagline: string;
-  requirements?: CampaignRequirementSpecs;
+  requirements: CampaignRequirementSpecs;
   suggestedPosts: string[];
   suggestedTags: string[];
   keywords: string[];
+  instructions: string;
   config: CampaignConfig;
 }
 
@@ -369,12 +471,12 @@ export interface Participant {
 
 export interface CampaignRequirementSpecs {
   version: string;
-  location?: LocationRequirementSpecs[];
-  values?: string[];
-  interests?: string[];
-  ageRange?: AgeRangeRequirementSpecs;
-  socialFollowing?: SocialFollowingSpecs;
-  email?: boolean;
+  location: LocationRequirementSpecs[];
+  values: string[];
+  interests: string[];
+  ageRange: AgeRangeRequirementSpecs;
+  socialFollowing: SocialFollowingSpecs;
+  email: boolean;
 }
 export interface LocationRequirementSpecs {
   city?: string;
@@ -390,6 +492,7 @@ export interface TwitterSocialFollowingSpecs {
 }
 
 export interface AgeRangeRequirementSpecs {
+  [key: string]: boolean;
   '0-17': boolean;
   '18-25': boolean;
   '26-40': boolean;
@@ -410,14 +513,19 @@ export interface PublicUser {
   ageRange: string;
 }
 
+export interface AlgoTier {
+  [key: string]: Tier;
+}
+
 export interface AlgorithmSpecs {
   [key: string]: ActionValues | Tiers;
   pointValues: ActionValues;
-  tiers: Tiers;
+  tiers: AlgoTier;
 }
 
-export interface Tiers {
-  [index: string]: { threshold: string; totalCoiins: string };
+export interface Tier {
+  threshold: string;
+  totalCoiins: string;
 }
 
 export interface ActionValues {
@@ -427,6 +535,10 @@ export interface ActionValues {
   submissions: string;
   likes: string;
   shares: string;
+}
+
+export interface ErrorObject {
+  [key: string]: boolean;
 }
 
 export type APIError = GraphQLError;

@@ -36,8 +36,8 @@ export const CampaignMetricsCard: React.FC<Props> = ({ campaign, checkedIndex, s
       <Typography component="div">Closed</Typography>
     );
   };
-  const numberOfTiers = Object.keys(campaign.algorithm.tiers).filter(
-    (key) => campaign.algorithm.tiers[key]['threshold'] !== '' && campaign.algorithm.tiers[key]['totalCoiins'] !== '',
+  const numberOfTiers = Object.values(campaign.algorithm.tiers).filter(
+    (item) => item.threshold !== '' && item.totalCoiins !== '',
   ).length;
   const hasTier = campaign.algorithm.tiers[numberOfTiers];
   const budget = hasTier ? campaign.algorithm.tiers[numberOfTiers].totalCoiins : '0';

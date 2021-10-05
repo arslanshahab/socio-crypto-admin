@@ -16,7 +16,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_LARGE
-        Image: aws/codebuild/standard:2.0
+        Image: aws/codebuild/standard:5.0
         PrivilegedMode: true
       VpcConfig:
         VpcId: vpc-d6c707b0
@@ -45,7 +45,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_LARGE
-        Image: aws/codebuild/standard:2.0
+        Image: aws/codebuild/standard:5.0
         EnvironmentVariables:
           - Name: STAGE
             Type: PLAINTEXT
@@ -71,7 +71,7 @@ Resources:
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_LARGE
-        Image: aws/codebuild/standard:2.0
+        Image: aws/codebuild/standard:5.0
         EnvironmentVariables:
           - Name: STAGE
             Type: PLAINTEXT
@@ -222,6 +222,10 @@ Resources:
                   - 'ecr:GetAuthorizationToken'
                 Effect: Allow
                 Resource: '*'
+              - Action:
+                  - 'cloudfront:CreateInvalidation'
+                Effect: Allow
+                Resource: 'arn:aws:cloudfront::527252880472:distribution/EYB3SRWJWDK6T'
 
   CodeBuildRole:
     Type: AWS::IAM::Role
@@ -282,6 +286,11 @@ Resources:
                   - 'ecr:GetAuthorizationToken'
                 Effect: Allow
                 Resource: '*'
+              - Action:
+                  - 'cloudfront:CreateInvalidation'
+                Effect: Allow
+                Resource:
+                  - 'arn:aws:cloudfront::527252880472:distribution/E3GGQBEA4YJZSG'
 
   ArtifactBucket:
     Type: AWS::S3::Bucket

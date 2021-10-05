@@ -1,0 +1,44 @@
+.modal {
+  border-radius: 4px;
+  max-height: 100%;
+  max-width: 100%;
+  min-height: 200px;
+  overflow: visible;
+  overflow-y: auto;
+  position: relative;
+
+  .closeIcon {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 1;
+  }
+
+  &:not(.fullscreen) {
+    height: fit-content;
+    // max-height: 700px;
+  }
+
+  &.mini {
+    width: 380px;
+  }
+
+  &.small {
+    width: 500px;
+  }
+
+  &.medium {
+    width: 800px;
+  }
+
+  &.large {
+    width: 1200px;
+  }
+
+  &.fullscreen {
+    height: auto;
+    margin: 0 100px;
+    min-height: 75%;
+  }
+}

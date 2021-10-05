@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import { AddPaymentMethod } from '../types';
 import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
 import { Button, Dialog, DialogContent, DialogTitle, Grid } from '@material-ui/core';
-import { reloadWindow } from '../helpers/utils';
+import { reloadWindow } from '../helpers/fileHandler';
 
 interface Props {
   callback: () => void;

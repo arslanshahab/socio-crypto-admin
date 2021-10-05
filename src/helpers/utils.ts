@@ -1,101 +1,126 @@
-import React from 'react';
-import { updateCampaignState } from '../redux/slices/campaign';
-import { ToastContent, toast } from 'react-toastify';
+import {
+  CampaignMediaResponse,
+  CampaignTemplateResponse,
+  ChannelMediaObject,
+  ChannelMediaStructure,
+  ChannelTemplateObject,
+  ChannelTemplateStructure,
+  FileObject,
+} from '../types';
+import axios from 'axios';
+import { dataURLtoFile } from './fileHandler';
+import { flatten } from 'lodash';
+import { s3ProdMediaUrl, s3StagingMediaUrl } from './affiliateURLs';
 
-interface FileFormatSizeMap {
-  format: string;
-  size: number;
-  allowedFor: Array<string>;
-  unit: string;
-}
+const assetUrl = process.env.REACT_APP_STAGE === 'production' ? s3ProdMediaUrl : s3StagingMediaUrl;
 
-const allowedFileType: Array<FileFormatSizeMap> = [
-  { format: 'image/JPG', size: 5, unit: 'MB', allowedFor: ['campaign-image', 'shared-media', 'raffle'] },
-  { format: 'image/GIF', size: 15, unit: 'MB', allowedFor: ['shared-media'] },
-  { format: 'image/PNG', size: 5, unit: 'MB', allowedFor: ['campaign-image', 'shared-media', 'raffle'] },
-  { format: 'image/JPEG', size: 5, unit: 'MB', allowedFor: ['campaign-image', 'shared-media', 'raffle'] },
-  { format: 'image/SVG', size: 5, unit: 'MB', allowedFor: ['campaign-image', 'shared-media', 'raffle'] },
-  { format: 'video/MP4', size: 512, unit: 'MB', allowedFor: ['shared-media'] },
-  { format: 'video/WebM', size: 512, unit: 'MB', allowedFor: ['shared-media'] },
-  { format: 'video/OGG', size: 512, unit: 'MB', allowedFor: ['shared-media'] },
-];
-
-export const reloadWindow = (): void => window.location.reload();
-
-// eslint-disable-next-line
-export const handleImage = (event: React.ChangeEvent<HTMLInputElement>, dispatch: any, type: string) => {
-  const files = event.target.files;
-  if (files && files.length) {
-    const file = files[0];
-    const extension = file.type ? file.type.split('/')[1] : '';
-    const fileFormatSizeMap = getFileFormatSizeMapping(file.type, type);
-    if (!fileFormatSizeMap) {
-      showErrorMessage(
-        `Selected file type '${extension}' is not allowed, Following are allowed types: ${getAllowedFileTypes(type)}`,
-      );
-      return '';
-    }
-    if (fileSizeInMB(file.size) > fileFormatSizeMap.size) {
-      showErrorMessage(
-        `File size is greater than allowed limit, Maximum allowed size for ${extension} is ${fileFormatSizeMap.size}${fileFormatSizeMap.unit}`,
-      );
-      return '';
-    }
-    if (type == 'raffle') {
-      dispatch(
-        updateCampaignState({
-          cat: 'config',
-          key: 'raffleImage',
-          val: { filename: `raffle.${extension}`, file: file, format: file.type },
-        }),
-      );
-    } else if (type == 'campaign-image') {
-      dispatch(
-        updateCampaignState({
-          cat: 'image',
-          key: 'image',
-          val: { filename: `banner.${extension}`, file: file, format: file.type },
-        }),
-      );
-    } else if (type == 'shared-media') {
-      dispatch(
-        updateCampaignState({
-          cat: 'image',
-          key: 'sharedMedia',
-          val: { filename: `sharedMedia.${extension}`, file: file, format: file.type },
-        }),
-      );
-    }
+export const generateRandomId = (): string => {
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const stringLength = 20;
+  function pickRandom() {
+    return possible[Math.floor(Math.random() * possible.length)];
   }
+  return [...Array(stringLength)].map(pickRandom).join('');
 };
 
-const fileSizeInMB = (bytes: number): number => {
-  return bytes / (1024 * 1024);
+export const generateCampaignMediaUrl = (id: string, filename: string): string => {
+  console.log(`generating url for ${process.env.REACT_APP_STAGE} environment`);
+  return `${assetUrl}/campaign/${id}/${filename}`;
 };
 
-const getFileFormatSizeMapping = (format: string, type: string): FileFormatSizeMap | undefined => {
-  if (!format) return undefined;
-  return allowedFileType.find(
-    (item) => item.format.toLowerCase() == format.toLowerCase() && item.allowedFor.includes(type),
-  );
-};
-
-const getAllowedFileTypes = (type: string): string => {
-  const types = allowedFileType
-    .filter((item) => item.allowedFor.includes(type))
-    .map((a) => a.format)
-    .join(', ');
-  return types;
-};
-
-export const showErrorMessage = (msg: string): ToastContent => {
-  return toast.error(msg, {
-    position: 'bottom-center',
-    autoClose: 6000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: false,
-    progress: undefined,
+export const uploadMedia = async (
+  url: string,
+  file: FileObject,
+  progressCallback: (p: number) => void,
+): Promise<void> => {
+  await axios({
+    method: 'PUT',
+    url: url,
+    data: dataURLtoFile(file.file, file.filename),
+    headers: {
+      'Content-Type': file.format,
+    },
+    onUploadProgress: (event) => {
+      const progress = ((event.loaded / event.total) * 100).toFixed(0);
+      progressCallback(parseFloat(progress));
+    },
   });
+};
+
+export const prepareMediaRequest = (data: ChannelMediaStructure): CampaignMediaResponse[] => {
+  const list: CampaignMediaResponse[] = [];
+  const mediaList = flatten(Object.values(data));
+  mediaList.forEach((item) => {
+    const obj: CampaignMediaResponse = {
+      ...(item.id && { id: item.id }),
+      channel: item.channel,
+      media: item.media.filename,
+      mediaFormat: item.media.format,
+      isDefault: item.isDefault,
+    };
+    list.push(obj);
+  });
+  return list;
+};
+
+export const prepareTemplateRequest = (data: ChannelTemplateStructure): CampaignTemplateResponse[] => {
+  const list: CampaignTemplateResponse[] = [];
+  const templateList = flatten(Object.values(data));
+  templateList.forEach((item) => {
+    const obj: CampaignTemplateResponse = {
+      ...(item.id && { id: item.id }),
+      channel: item.channel,
+      post: item.channel === 'Twitter' ? item.post.replace('@', '#') : item.post,
+    };
+    list.push(obj);
+  });
+  return list;
+};
+
+export const prepareChannelMediaFromResponse = (
+  initData: ChannelMediaStructure,
+  id: string,
+  list: CampaignMediaResponse[],
+): ChannelMediaStructure => {
+  if (list) {
+    list.forEach((item) => {
+      const obj: ChannelMediaObject = {
+        ...(item.id && { id: item.id }),
+        isDefault: item.isDefault,
+        channel: item.channel,
+        media: { file: generateCampaignMediaUrl(id, item.media), filename: item.media, format: item.mediaFormat },
+      };
+      if (obj.isDefault) {
+        const mediaList = [...initData[item.channel]];
+        const findDefaultIndex = mediaList.findIndex((item) => item.isDefault);
+        mediaList[findDefaultIndex] = obj;
+        initData[item.channel] = mediaList;
+      } else {
+        const mediaList = [...initData[item.channel]];
+        mediaList.push(obj);
+        initData[item.channel] = mediaList;
+      }
+    });
+  }
+  return initData;
+};
+
+export const prepareChannelTemplatesFromResponse = (
+  initData: ChannelTemplateStructure,
+  list: CampaignTemplateResponse[],
+): ChannelTemplateStructure => {
+  if (list) {
+    list.forEach((item) => {
+      const obj: ChannelTemplateObject = {
+        ...(item.id && { id: item.id }),
+        channel: item.channel,
+        post: item.post,
+      };
+      let templateList = [...initData[item.channel]];
+      templateList.push(obj);
+      templateList = templateList.filter((item) => item.id);
+      initData[item.channel] = templateList;
+    });
+  }
+  return initData;
 };
