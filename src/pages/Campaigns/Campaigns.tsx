@@ -12,7 +12,7 @@ const CampaignsPage: React.FC = () => {
   initialStartDate.setUTCDate(initialEndDate.getUTCDate() - 7);
 
   const { loading, data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
-    variables: { scoped: true, skip: 0, take: 10, sort: true, approved: true, open: true },
+    variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
     fetchPolicy: 'cache-and-network',
   });
 
