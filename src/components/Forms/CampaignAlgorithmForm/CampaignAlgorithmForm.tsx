@@ -39,11 +39,13 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
     const key = event.target.id;
     const name = event.target.name as 'totalCoiins' | 'threshold';
     const newTiers = { ...tiers };
+    const tier = { ...tiers[key] };
     if (name === 'threshold') {
-      newTiers[key].threshold = event.target.value;
+      tier.threshold = event.target.value;
     } else {
-      newTiers[key].totalCoiins = event.target.value;
+      tier.totalCoiins = event.target.value;
     }
+    newTiers[key] = tier;
     setTiers(newTiers);
   };
 
