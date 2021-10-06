@@ -96,7 +96,7 @@ const FileUpload: React.FC<Props> = ({ value, label, mediaType, onFileError, onF
               </Box>
             ) : (
               <Box className="w-full">
-                <video autoPlay={false} height="100%" width="100%" src={value.file} controls={true} />
+                <video autoPlay={false} src={value.file} controls={true} className="h-40 w-full" />
               </Box>
             )
           ) : (
@@ -112,7 +112,7 @@ const FileUpload: React.FC<Props> = ({ value, label, mediaType, onFileError, onF
         id={inputKey}
         onChange={(e) => handleImage(e, mediaType, onFileSuccess, onFileError)}
       />
-      <label>
+      <label htmlFor={inputKey} className="cursor-pointer">
         <Box className="w-full flex flex-row justify-center items-center bg-gray-100 pb-2 rounded-b-lg">
           <p className="text-center text-gray-600 text-md mt-3 pb-1">
             {value.file && updateLabel ? updateLabel : label}

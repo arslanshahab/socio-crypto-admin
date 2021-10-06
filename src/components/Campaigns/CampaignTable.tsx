@@ -9,7 +9,7 @@ interface Props {
 
 const CampaignTable: React.FC<Props> = ({ data }) => {
   return (
-    <Box className="w-full">
+    <Box className="w-full pb-10 overflow-scroll">
       <table className="w-full table-auto bg-gray-50">
         <thead>
           <tr className="font-semibold bg-gray-100">
