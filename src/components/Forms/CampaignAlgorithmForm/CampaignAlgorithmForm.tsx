@@ -37,27 +37,27 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
 
   const handleTierChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const key = event.target.id;
-    const name = event.target.name;
-    const tier = { ...tiers[key] };
-    if (name === 'thershold') {
-      tier.threshold = event.target.value;
-    } else {
-      tier.totalCoiins = event.target.value;
-    }
+    const name = event.target.name as 'totalCoiins' | 'threshold';
     const newTiers = { ...tiers };
-    newTiers[key] = tier;
+    if (name === 'threshold') {
+      newTiers[key].threshold = event.target.value;
+    } else {
+      newTiers[key].totalCoiins = event.target.value;
+    }
     setTiers(newTiers);
   };
 
   const initThresh = () => {
-    const initialTiers: AlgoTier = {};
-    for (let i = 1; i <= numOfTiers; i++) {
-      const dataObject: Tier = { threshold: '', totalCoiins: '' };
-      dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh, 0);
-      dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget, 0);
-      initialTiers[i] = dataObject;
+    if (!Object.values(campaign.algorithm.tiers).length) {
+      const initialTiers: AlgoTier = {};
+      for (let i = 1; i <= numOfTiers; i++) {
+        const dataObject: Tier = { threshold: '', totalCoiins: '' };
+        dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh, 0);
+        dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget, 0);
+        initialTiers[i] = dataObject;
+      }
+      setTiers(initialTiers);
     }
-    setTiers(initialTiers);
   };
 
   useEffect(initThresh, []);
