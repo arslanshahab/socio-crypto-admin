@@ -96,7 +96,7 @@ const FileUpload: React.FC<Props> = ({ value, label, mediaType, onFileError, onF
               </Box>
             ) : (
               <Box className="w-full">
-                <video autoPlay={false} src={value.file} controls={true} className="h-40 w-full" />
+                <video autoPlay={false} src={value.file} controls={true} className="h-44 w-full" />
               </Box>
             )
           ) : (
