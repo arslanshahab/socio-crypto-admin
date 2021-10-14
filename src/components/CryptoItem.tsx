@@ -42,11 +42,11 @@ export const CryptoItem: React.FC<Props> = ({ name, balance, id, refetchWallet }
         <Typography>{formatFloat(balance, 8)}</Typography>
       </Grid>
       <Grid item xs />
-      <Grid item className="list-button-container">
+      {/* <Grid item className="list-button-container">
         <Button onClick={handleDelete}>
           <DeleteIcon />
         </Button>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };
