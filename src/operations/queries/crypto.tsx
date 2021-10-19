@@ -21,6 +21,9 @@ export const GET_DEPOSIT_ADDRESS = gql`
       currency
       address
       fromTatum
+      memo
+      message
+      destinationTag
     }
   }
 `;

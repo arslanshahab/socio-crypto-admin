@@ -118,6 +118,9 @@ export interface DepositAddressResult {
     currency: string;
     address: string;
     fromTatum: boolean;
+    memo?: string;
+    message?: string;
+    destinationTag?: string;
   };
 }
 
