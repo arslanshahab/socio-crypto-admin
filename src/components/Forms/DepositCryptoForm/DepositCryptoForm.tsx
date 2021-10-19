@@ -51,16 +51,31 @@ const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
         {loading ? (
           <CircularProgress size={30} color="primary" className="mt-3" />
         ) : (
-          <Box className="flex flex-row justify-center items-center w-full text-md p-3 bg-gray-100 mt-2">
-            <p className="w-5/6 overflow-ellipsis overflow-hidden text-center text-gray-800">
-              {data?.getDepositAddressForCurrency?.address || ''}
-            </p>
-            <Tooltip title="Copy Address" placement="top">
-              <span onClick={copyAddress}>
-                <ContentCopyIcon className="ml-2 cursor-pointer" />
-              </span>
-            </Tooltip>
-          </Box>
+          <>
+            {data?.getDepositAddressForCurrency.memo && (
+              <p className="text-md text-center text-gray-800 mt-5">Memo: {data.getDepositAddressForCurrency.memo}</p>
+            )}
+            {data?.getDepositAddressForCurrency.message && (
+              <p className="text-md text-center text-gray-800 mt-5">
+                Message: {data.getDepositAddressForCurrency.message}
+              </p>
+            )}
+            {data?.getDepositAddressForCurrency.destinationTag && (
+              <p className="text-md text-center text-gray-800 mt-5">
+                DestinationTag: {data.getDepositAddressForCurrency.destinationTag}
+              </p>
+            )}
+            <Box className="flex flex-row justify-center items-center w-full text-md p-3 bg-gray-100 mt-2">
+              <p className="w-5/6 overflow-ellipsis overflow-hidden text-center text-gray-800">
+                {data?.getDepositAddressForCurrency?.address || ''}
+              </p>
+              <Tooltip title="Copy Address" placement="top">
+                <span onClick={copyAddress}>
+                  <ContentCopyIcon className="ml-2 cursor-pointer" />
+                </span>
+              </Tooltip>
+            </Box>
+          </>
         )}
       </Box>
     </Box>
