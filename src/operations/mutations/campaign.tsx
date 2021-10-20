@@ -26,7 +26,7 @@ export const NEW_CAMPAIGN = gql`
     $keywords: [String]
     $type: String
     $rafflePrize: JSON
-    $cryptoId: String
+    $symbol: String
     $campaignType: String
     $socialMediaType: [String]
     $campaignMedia: JSON
@@ -51,7 +51,7 @@ export const NEW_CAMPAIGN = gql`
       keywords: $keywords
       type: $type
       rafflePrize: $rafflePrize
-      cryptoId: $cryptoId
+      symbol: $symbol
       campaignType: $campaignType
       socialMediaType: $socialMediaType
       campaignMedia: $campaignMedia
@@ -90,7 +90,7 @@ export const UPDATE_CAMPAIGN = gql`
     $keywords: [String]
     $type: String
     $rafflePrize: JSON
-    $cryptoId: String
+    $symbol: String
     $campaignType: String
     $socialMediaType: [String]
     $campaignMedia: JSON
@@ -116,7 +116,7 @@ export const UPDATE_CAMPAIGN = gql`
       keywords: $keywords
       type: $type
       rafflePrize: $rafflePrize
-      cryptoId: $cryptoId
+      symbol: $symbol
       campaignType: $campaignType
       socialMediaType: $socialMediaType
       campaignMedia: $campaignMedia
