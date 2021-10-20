@@ -110,6 +110,9 @@ const EditCampaignPage: React.FC<Props> = ({ userData }) => {
       };
       dispatch(updateCampaign(augmentedCampaign));
     }
+    return () => {
+      dispatch(resetCampaign());
+    };
   }, [data?.getCampaign, campaignId]);
 
   const handleNext = () => {
