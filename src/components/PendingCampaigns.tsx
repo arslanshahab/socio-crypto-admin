@@ -45,7 +45,7 @@ export const PendingCampaigns: React.FC = () => {
                     <Typography>{`Type: ${campaign.type}`}</Typography>
                     <Typography>
                       {campaign.type == 'crypto'
-                        ? `Budget: ${campaign.coiinTotal} ${campaign.crypto.type.toUpperCase()}`
+                        ? `Budget: ${campaign.coiinTotal} ${campaign?.crypto?.type.toUpperCase() || ''}`
                         : ''}
                     </Typography>
                     <Typography>{`Begins: ${new Date(parseInt(campaign.beginDate)).toLocaleDateString()}`}</Typography>
