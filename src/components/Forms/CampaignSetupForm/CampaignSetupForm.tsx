@@ -76,14 +76,8 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   const next = () => {
     if (validateInputs()) {
-      const currencyObject =
-        data && data.getFundingWallet
-          ? data.getFundingWallet.currency.find((item) => item.type.toLowerCase() === cryptoSymbol)
-          : null;
-      const symbolId: string = currencyObject ? currencyObject.id : '';
       const augmentedCampaign = {
         ...campaign,
-        cryptoId: symbolId,
         config: {
           ...campaign.config,
           coiinBudget,
@@ -197,6 +191,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                           options={coiinOptions}
                           upperCaseOptions={true}
                           error={errors['cryptoSymbol']}
+                          disabled={Boolean(campaign.id)}
                         />
                       </Box>
                       <Box className="w-2/6 box-border pr-4">
@@ -208,6 +203,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                           label="CampaignBudget"
                           type="number"
                           error={errors['coiinBudget']}
+                          disabled={Boolean(campaign.id)}
                         />
                       </Box>
                     </Box>

@@ -253,7 +253,7 @@ export interface NewCampaignVars {
   endDate: string;
   description: string;
   instructions: string;
-  cryptoId: string;
+  symbol: string;
   company: string;
   algorithm: string;
   imagePath: string;
@@ -455,7 +455,7 @@ export interface CampaignState {
   algorithm: AlgorithmSpecs;
   company: string;
   targetVideo: string;
-  cryptoId: string;
+  symbol: string;
   campaignImage: FileObject;
   media: FileObject;
   tagline: string;
