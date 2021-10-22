@@ -4,7 +4,7 @@ import { TabPanel } from './TabPanel';
 import { WithdrawHistory } from './admin/WithdrawHistory';
 import { PendingWithdrawList } from './admin/PendingWithdrawList';
 import { BrandList } from './BrandList';
-import { RegisterBrand } from '../screens/RegisterBrand';
+import { RegisterBrand } from '../pages/RegisterBrand';
 import { PendingCampaigns } from './PendingCampaigns';
 
 export const Admin: React.FC = (props) => {

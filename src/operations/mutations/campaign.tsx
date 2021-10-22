@@ -12,13 +12,13 @@ export const NEW_CAMPAIGN = gql`
     $beginDate: String!
     $endDate: String!
     $target: String!
-    $description: String!
+    $description: String
+    $instructions: String
     $coiinTotal: Float!
     $algorithm: String!
     $company: String
     $targetVideo: String
-    $image: String
-    $sharedMedia: String
+    $imagePath: String
     $tagline: String!
     $requirements: JSON!
     $suggestedPosts: [String]
@@ -26,7 +26,11 @@ export const NEW_CAMPAIGN = gql`
     $keywords: [String]
     $type: String
     $rafflePrize: JSON
-    $cryptoId: String
+    $symbol: String
+    $campaignType: String
+    $socialMediaType: [String]
+    $campaignMedia: JSON
+    $campaignTemplates: JSON
   ) {
     newCampaign(
       name: $name
@@ -34,12 +38,12 @@ export const NEW_CAMPAIGN = gql`
       endDate: $endDate
       target: $target
       description: $description
+      instructions: $instructions
       coiinTotal: $coiinTotal
       algorithm: $algorithm
       company: $company
       targetVideo: $targetVideo
-      image: $image
-      sharedMedia: $sharedMedia
+      imagePath: $imagePath
       tagline: $tagline
       requirements: $requirements
       suggestedPosts: $suggestedPosts
@@ -47,23 +51,85 @@ export const NEW_CAMPAIGN = gql`
       keywords: $keywords
       type: $type
       rafflePrize: $rafflePrize
-      cryptoId: $cryptoId
+      symbol: $symbol
+      campaignType: $campaignType
+      socialMediaType: $socialMediaType
+      campaignMedia: $campaignMedia
+      campaignTemplates: $campaignTemplates
     ) {
       campaignId
       campaignImageSignedURL
-      sharedMediaSignedURL
       raffleImageSignedURL
+      mediaUrls {
+        name
+        channel
+        signedUrl
+      }
     }
   }
 `;
 
-export const NEW_CAMPAIGN_IMAGES = gql`
-  mutation newCampaignImages($id: String!, $image: String, $sharedMedia: String, $sharedMediaFormat: String) {
-    newCampaignImages(id: $id, image: $image, sharedMedia: $sharedMedia, sharedMediaFormat: $sharedMediaFormat) {
-      id
-      imagePath
-      sharedMedia
-      sharedMediaFormat
+export const UPDATE_CAMPAIGN = gql`
+  mutation updateCampaign(
+    $id: String
+    $name: String!
+    $beginDate: String!
+    $endDate: String!
+    $target: String!
+    $description: String
+    $instructions: String
+    $coiinTotal: Float!
+    $algorithm: String!
+    $company: String
+    $targetVideo: String
+    $imagePath: String
+    $tagline: String!
+    $requirements: JSON!
+    $suggestedPosts: [String]
+    $suggestedTags: [String]
+    $keywords: [String]
+    $type: String
+    $rafflePrize: JSON
+    $symbol: String
+    $campaignType: String
+    $socialMediaType: [String]
+    $campaignMedia: JSON
+    $campaignTemplates: JSON
+  ) {
+    updateCampaign(
+      id: $id
+      name: $name
+      beginDate: $beginDate
+      endDate: $endDate
+      target: $target
+      description: $description
+      instructions: $instructions
+      coiinTotal: $coiinTotal
+      algorithm: $algorithm
+      company: $company
+      targetVideo: $targetVideo
+      imagePath: $imagePath
+      tagline: $tagline
+      requirements: $requirements
+      suggestedPosts: $suggestedPosts
+      suggestedTags: $suggestedTags
+      keywords: $keywords
+      type: $type
+      rafflePrize: $rafflePrize
+      symbol: $symbol
+      campaignType: $campaignType
+      socialMediaType: $socialMediaType
+      campaignMedia: $campaignMedia
+      campaignTemplates: $campaignTemplates
+    ) {
+      campaignId
+      campaignImageSignedURL
+      raffleImageSignedURL
+      mediaUrls {
+        name
+        channel
+        signedUrl
+      }
     }
   }
 `;

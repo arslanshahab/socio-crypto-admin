@@ -4,7 +4,6 @@ export const GET_FUNDING_WALLET = gql`
   query getFundingWallet {
     getFundingWallet {
       currency {
-        id
         type
         balance
       }

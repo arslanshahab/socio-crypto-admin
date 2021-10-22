@@ -6,7 +6,9 @@ import { Button, CircularProgress, Grid, Typography } from '@material-ui/core';
 import { UPDATE_CAMPAIGN_STATUS } from '../operations/mutations/Admin';
 
 export const PendingCampaigns: React.FC = () => {
-  const { data, loading, refetch } = useQuery<ListPendingCampaignsAdminResults>(ADMIN_LIST_CAMPAIGNS);
+  const { data, loading, refetch } = useQuery<ListPendingCampaignsAdminResults>(ADMIN_LIST_CAMPAIGNS, {
+    fetchPolicy: 'network-only',
+  });
   const [updateStatus, { loading: actionLoading }] = useMutation(UPDATE_CAMPAIGN_STATUS);
   const [status, setStatus] = useState({ status: '', campaignId: '' });
 
@@ -43,7 +45,7 @@ export const PendingCampaigns: React.FC = () => {
                     <Typography>{`Type: ${campaign.type}`}</Typography>
                     <Typography>
                       {campaign.type == 'crypto'
-                        ? `Budget: ${campaign.coiinTotal} ${campaign.crypto.type.toUpperCase()}`
+                        ? `Budget: ${campaign.coiinTotal} ${campaign?.crypto?.type.toUpperCase() || ''}`
                         : ''}
                     </Typography>
                     <Typography>{`Begins: ${new Date(parseInt(campaign.beginDate)).toLocaleDateString()}`}</Typography>

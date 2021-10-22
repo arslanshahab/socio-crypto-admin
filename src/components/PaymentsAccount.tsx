@@ -19,7 +19,11 @@ export type RefetchWallet = (
 
 export const PaymentsAccount: React.FC = () => {
   const [value, setValue] = React.useState(0);
-  const { loading, data: fundingWallet, refetch } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
+  const {
+    loading,
+    data: fundingWallet,
+    refetch,
+  } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, { fetchPolicy: 'network-only' });
 
   const handleChange = (event: any, newValue: number) => {
     setValue(newValue);
