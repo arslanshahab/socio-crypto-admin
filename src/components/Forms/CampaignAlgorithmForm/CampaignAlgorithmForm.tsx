@@ -54,8 +54,8 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
       const initialTiers: AlgoTier = {};
       for (let i = 1; i <= numOfTiers; i++) {
         const dataObject: Tier = { threshold: '', totalCoiins: '' };
-        dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh, 0);
-        dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget, 0);
+        dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh);
+        dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget);
         initialTiers[i] = dataObject;
       }
       setTiers(initialTiers);

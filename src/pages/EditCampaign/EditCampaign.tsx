@@ -96,7 +96,7 @@ const EditCampaignPage: React.FC<Props> = ({ userData }) => {
           campaignType: getCampaign.campaignType,
           socialMediaType: getCampaign.socialMediaType,
           budgetType: getCampaign.type,
-          cryptoSymbol: getCampaign.crypto.type,
+          cryptoSymbol: getCampaign.currency,
           channelMedia: prepareChannelMediaFromResponse(
             { ...initialState.newCampaign.config.channelMedia },
             getCampaign.id,
@@ -134,7 +134,7 @@ const EditCampaignPage: React.FC<Props> = ({ userData }) => {
           targetVideo: data.targetVideo || '',
           beginDate: data.beginDate,
           endDate: data.endDate,
-          symbol: data.config.cryptoSymbol,
+          currency: data.config.cryptoSymbol,
           description: data.description,
           instructions: data.instructions,
           company: userData.company,

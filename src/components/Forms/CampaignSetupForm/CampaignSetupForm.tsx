@@ -65,7 +65,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
       );
       if (token) {
         let value = event.target.value;
-        if (parseInt(value) > token.balance) {
+        if (parseFloat(value) > token.balance) {
           value = token.balance.toString();
         }
         setCoiinBudget(value);
@@ -124,7 +124,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
         setErrors((prev) => ({ ...prev, cryptoSymbol: true }));
         return (validated = false);
       }
-      if (!parseInt(coiinBudget)) {
+      if (!parseFloat(coiinBudget)) {
         setErrors((prev) => ({ ...prev, coiinBudget: true }));
         return (validated = false);
       }
@@ -185,6 +185,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                           value={cryptoSymbol}
                           onChange={(event: React.ChangeEvent<any>) => {
                             setCryptoSymbol(event.target.value);
+                            setCoiinBudget('');
                             updateErrors('cryptoSymbol', event.target.value);
                           }}
                           label="Select Token"

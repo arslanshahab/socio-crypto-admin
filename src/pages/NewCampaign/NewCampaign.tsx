@@ -60,7 +60,7 @@ const NewCampaignPage: React.FC<Props> = ({ userData }) => {
           targetVideo: data.targetVideo || '',
           beginDate: data.beginDate,
           endDate: data.endDate,
-          symbol: data.config.cryptoSymbol,
+          currency: data.config.cryptoSymbol,
           description: data.description,
           instructions: data.instructions,
           company: userData.company,

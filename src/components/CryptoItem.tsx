@@ -39,7 +39,7 @@ export const CryptoItem: React.FC<Props> = ({ name, balance, id, refetchWallet }
         </Box>
       </Grid>
       <Grid item className="list-item">
-        <Typography>{formatFloat(balance, 8)}</Typography>
+        <Typography>{formatFloat(balance)}</Typography>
       </Grid>
       <Grid item xs />
       {/* <Grid item className="list-button-container">

@@ -253,7 +253,7 @@ export interface NewCampaignVars {
   endDate: string;
   description: string;
   instructions: string;
-  symbol: string;
+  currency: string;
   company: string;
   algorithm: string;
   imagePath: string;
@@ -349,6 +349,7 @@ export interface Campaign {
   type: string;
   totalParticipationScore: string;
   status: string;
+  currency: string;
   target: string;
   description: string;
   instructions: string;
@@ -455,7 +456,7 @@ export interface CampaignState {
   algorithm: AlgorithmSpecs;
   company: string;
   targetVideo: string;
-  symbol: string;
+  currency: string;
   campaignImage: FileObject;
   media: FileObject;
   tagline: string;
