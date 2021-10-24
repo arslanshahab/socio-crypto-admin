@@ -17,6 +17,7 @@ export const LIST_CAMPAIGNS = gql`
         company
         imagePath
         campaignType
+        currency
         socialMediaType
         campaignMedia {
           id

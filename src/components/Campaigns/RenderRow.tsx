@@ -47,7 +47,7 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
   return (
     <tr className="hover:bg-gray-100 border-b-2 border-solid border-gray-100">
       <td className="px-7 py-5 text-left capitalize">{campaign.name}</td>
-      <td className="px-7 py-5 text-left">{budget}</td>
+      <td className="px-7 py-5 text-left">{formatFloat(budget)}</td>
       <td className="px-7 py-5 text-left">
         {loadingStatus ? 'loading...' : `${statusData && statusData.getCurrentCampaignTier.currentTier}`}
       </td>
@@ -70,7 +70,9 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
           : 0}
       </td>
       <td className="px-7 py-5 text-left">
-        {loadingStatus ? 'loading...' : `$${formatFloat(statusData?.getCurrentCampaignTier?.currentTotal || 0)}`}
+        {loadingStatus
+          ? 'loading...'
+          : `${formatFloat(statusData?.getCurrentCampaignTier?.currentTotal || 0)} ${campaign.currency}`}
       </td>
       <td className="px-7 py-5 text-left">{getStatus()}</td>
       <td className="px-7 py-5 text-left">
