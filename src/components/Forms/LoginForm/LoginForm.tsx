@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { ChangePasswordDialog } from '../../ChangePasswordDialog';
 
 interface UserData {
+  [key: string]: string;
   email: string;
   password: string;
 }
@@ -24,11 +25,10 @@ const LoginForm: React.FC = () => {
     password: '',
   } as UserData);
 
-  const handleChange = (event: any) => {
-    setValues((values) => ({
-      ...values,
-      [event.target.name]: event.target.value,
-    }));
+  const handleChange = (event: React.ChangeEvent<any>) => {
+    const data = { ...values };
+    data[event.target.name] = event.target.value;
+    setValues(data);
   };
 
   const handleSubmit = async (event: any) => {
