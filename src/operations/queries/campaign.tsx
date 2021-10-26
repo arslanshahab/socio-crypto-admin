@@ -70,6 +70,7 @@ export const GET_CAMPAIGN = gql`
       company
       imagePath
       campaignType
+      currency
       socialMediaType
       suggestedTags
       keywords

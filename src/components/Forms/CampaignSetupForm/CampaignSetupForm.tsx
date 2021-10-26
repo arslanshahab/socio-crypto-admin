@@ -30,7 +30,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   finalStep,
 }) => {
   const dispatch = useDispatch();
-  const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET);
+  const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, { fetchPolicy: 'network-only' });
   const campaign = useStoreCampaignSelector();
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
   const [socialMediaType, setSocialMediaType] = useState(campaign.config.socialMediaType);
@@ -43,9 +43,10 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const [errors, setErrors] = useState<ErrorObject>({});
   const coiinOptions =
     !loading && data && data.getFundingWallet
-      ? data.getFundingWallet.currency.filter((token) => token.balance > 0).map((item) => item.type.toLowerCase())
+      ? data.getFundingWallet.currency.map((item) => item.type.toUpperCase())
       : [];
-
+  console.log(coiinOptions);
+  console.log(cryptoSymbol);
   const handleSocialMediaType = (type: string[]) => {
     setSocialMediaType(type);
   };
