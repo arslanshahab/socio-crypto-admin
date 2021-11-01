@@ -14,7 +14,7 @@ interface Props {
 }
 
 const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
-  const [currency, setCurrency] = useState('coiin');
+  const [currency, setCurrency] = useState('COIIN');
   const dispatch = useDispatch();
   const { data, loading } = useQuery<DepositAddressResult>(GET_DEPOSIT_ADDRESS, {
     variables: { currency: currency },
