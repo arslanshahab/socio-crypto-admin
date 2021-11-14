@@ -16,9 +16,9 @@ export const LIST_CURRENCIES = gql`
 `;
 
 export const GET_DEPOSIT_ADDRESS = gql`
-  query getDepositAddressForCurrency($currency: String!) {
-    getDepositAddressForCurrency(currency: $currency) {
-      currency
+  query getDepositAddressForSymbol($symbol: String!) {
+    getDepositAddressForSymbol(symbol: $symbol) {
+      symbol
       address
       fromTatum
       memo

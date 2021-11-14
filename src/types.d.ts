@@ -114,8 +114,8 @@ export interface ListCurrenciesResult {
 }
 
 export interface DepositAddressResult {
-  getDepositAddressForCurrency: {
-    currency: string;
+  getDepositAddressForSymbol: {
+    symbol: string;
     address: string;
     fromTatum: boolean;
     memo?: string;
@@ -253,7 +253,7 @@ export interface NewCampaignVars {
   endDate: string;
   description: string;
   instructions: string;
-  currency: string;
+  symbol: string;
   company: string;
   algorithm: string;
   imagePath: string;
@@ -349,7 +349,7 @@ export interface Campaign {
   type: string;
   totalParticipationScore: string;
   status: string;
-  currency: string;
+  symbol: string;
   target: string;
   description: string;
   instructions: string;

@@ -72,7 +72,7 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
       <td className="px-7 py-5 text-left">
         {loadingStatus
           ? 'loading...'
-          : `${formatFloat(statusData?.getCurrentCampaignTier?.currentTotal || 0)} ${campaign.currency}`}
+          : `${formatFloat(statusData?.getCurrentCampaignTier?.currentTotal || 0)} ${campaign.symbol}`}
       </td>
       <td className="px-7 py-5 text-left">{getStatus()}</td>
       <td className="px-7 py-5 text-left">
