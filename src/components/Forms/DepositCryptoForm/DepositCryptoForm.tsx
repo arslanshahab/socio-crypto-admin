@@ -14,15 +14,15 @@ interface Props {
 }
 
 const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
-  const [currency, setCurrency] = useState('coiin');
+  const [symbol, setSymbol] = useState('COIIN');
   const dispatch = useDispatch();
   const { data, loading } = useQuery<DepositAddressResult>(GET_DEPOSIT_ADDRESS, {
-    variables: { currency: currency },
+    variables: { symbol },
     fetchPolicy: 'network-only',
   });
 
   const copyAddress = () => {
-    copy(data?.getDepositAddressForCurrency?.address || '');
+    copy(data?.getDepositAddressForSymbol?.address || '');
     dispatch(showSuccessAlert('Address copied to Clipboard!'));
   };
 
@@ -32,8 +32,8 @@ const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
       <Box className="w-4/6 box-border pr-4">
         <CustomSelect
           required={true}
-          value={currency}
-          onChange={(event: React.ChangeEvent<any>) => setCurrency(event.target.value)}
+          value={symbol}
+          onChange={(event: React.ChangeEvent<any>) => setSymbol(event.target.value)}
           label="Select Token to Deposit"
           options={cryptoList || []}
           upperCaseOptions={true}
@@ -41,7 +41,7 @@ const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
       </Box>
 
       <Box className="w-full box-border pr-4 flex flex-col justify-center items-center">
-        {data?.getDepositAddressForCurrency.fromTatum ? (
+        {data?.getDepositAddressForSymbol.fromTatum ? (
           <p className="text-md text-center text-gray-800 mt-10">Please send selected token to this address:</p>
         ) : (
           <p className="text-md text-center text-gray-800 mt-10">
@@ -52,22 +52,22 @@ const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
           <CircularProgress size={30} color="primary" className="mt-3" />
         ) : (
           <>
-            {data?.getDepositAddressForCurrency.memo && (
-              <p className="text-md text-center text-gray-800 mt-5">Memo: {data.getDepositAddressForCurrency.memo}</p>
+            {data?.getDepositAddressForSymbol.memo && (
+              <p className="text-md text-center text-gray-800 mt-5">Memo: {data.getDepositAddressForSymbol.memo}</p>
             )}
-            {data?.getDepositAddressForCurrency.message && (
+            {data?.getDepositAddressForSymbol.message && (
               <p className="text-md text-center text-gray-800 mt-5">
-                Message: {data.getDepositAddressForCurrency.message}
+                Message: {data.getDepositAddressForSymbol.message}
               </p>
             )}
-            {data?.getDepositAddressForCurrency.destinationTag && (
+            {data?.getDepositAddressForSymbol.destinationTag && (
               <p className="text-md text-center text-gray-800 mt-5">
-                DestinationTag: {data.getDepositAddressForCurrency.destinationTag}
+                DestinationTag: {data.getDepositAddressForSymbol.destinationTag}
               </p>
             )}
             <Box className="flex flex-row justify-center items-center w-full text-md p-3 bg-gray-100 mt-2">
               <p className="w-5/6 overflow-ellipsis overflow-hidden text-center text-gray-800">
-                {data?.getDepositAddressForCurrency?.address || ''}
+                {data?.getDepositAddressForSymbol?.address || ''}
               </p>
               <Tooltip title="Copy Address" placement="top">
                 <span onClick={copyAddress}>

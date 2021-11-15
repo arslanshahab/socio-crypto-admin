@@ -22,7 +22,7 @@ const campaignInitState: CampaignState = {
   company: '',
   target: '',
   targetVideo: '',
-  symbol: '',
+  currency: '',
   campaignImage: { filename: '', file: '', format: '' },
   media: { filename: '', file: '', format: '' },
   tagline: '',

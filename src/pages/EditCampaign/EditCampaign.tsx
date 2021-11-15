@@ -96,7 +96,7 @@ const EditCampaignPage: React.FC<Props> = ({ userData }) => {
           campaignType: getCampaign.campaignType,
           socialMediaType: getCampaign.socialMediaType,
           budgetType: getCampaign.type,
-          cryptoSymbol: getCampaign.crypto.type,
+          cryptoSymbol: getCampaign.symbol,
           channelMedia: prepareChannelMediaFromResponse(
             { ...initialState.newCampaign.config.channelMedia },
             getCampaign.id,
