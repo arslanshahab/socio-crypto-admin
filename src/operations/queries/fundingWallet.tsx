@@ -7,14 +7,6 @@ export const GET_FUNDING_WALLET = gql`
         type
         balance
       }
-      transfers {
-        amount
-        action
-        ethAddress
-        currency
-        withdrawStatus
-        createdAt
-      }
     }
   }
 `;
