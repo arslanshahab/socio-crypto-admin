@@ -47,19 +47,11 @@
     "web3modal": "^1.9.3"
   },
   "scripts": {
-<<<<<<< HEAD
-    "start": "set PORT=3000 && set BROWSER='firefox developer edition' && react-scripts start",
-    "build:production": "NODE_ENV=production REACT_APP_STAGE=production GENERATE_SOURCEMAP=false react-scripts build",
-    "build:staging": "NODE_ENV=development REACT_APP_STAGE=development react-scripts build",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-=======
-    "start": "PORT=3000 BROWSER='firefox developer edition' craco start",
+    "start": "set PORT=3000 && set BROWSER='firefox developer edition' && craco start",
     "build:production": "NODE_ENV=production REACT_APP_STAGE=production GENERATE_SOURCEMAP=false craco build",
     "build:staging": "NODE_ENV=development REACT_APP_STAGE=development craco build",
     "build": "craco build",
     "test": "craco test",
->>>>>>> 427145de8d7c3f705d290dcc581a673eedb55460
     "eject": "react-scripts eject",
     "css": "postcss ./src/assets/styles/tailwind.css -o ./src/assets/styles/tailwind.generated.css",
     "lint": "eslint --ext .ts --format unix src/ && prettier --check 'src/**/*.ts'",
