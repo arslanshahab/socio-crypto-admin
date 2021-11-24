@@ -31,7 +31,7 @@
     "react": "^16.13.1",
     "react-awesome-reveal": "^3.5.1",
     "react-dom": "^16.13.1",
-    "react-icons": "^4.1.0",
+    "react-icons": "^4.3.1",
     "react-modal": "^3.11.2",
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
@@ -46,7 +46,7 @@
     "web3modal": "^1.9.3"
   },
   "scripts": {
-    "start": "PORT=3000 BROWSER='firefox developer edition' react-scripts start",
+    "start": "set PORT=3000 && set BROWSER='firefox developer edition' && react-scripts start",
     "build:production": "NODE_ENV=production REACT_APP_STAGE=production GENERATE_SOURCEMAP=false react-scripts build",
     "build:staging": "NODE_ENV=development REACT_APP_STAGE=development react-scripts build",
     "build": "react-scripts build",

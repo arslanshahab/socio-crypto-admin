@@ -1,6 +1,10 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import StatCard from './StatCard';
 
 export const DashboardHome: React.FC = () => {
-  return <Typography component="div">Welcome home!</Typography>;
+  return (
+    <div className="flex justify-between w-1/4">
+      <StatCard />
+    </div>
+  );
 };
