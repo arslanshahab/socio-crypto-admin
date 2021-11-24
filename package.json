@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.2.2",
-    "@craco/craco": "^6.2.0",
+    "@craco/craco": "^6.4.1",
     "@date-io/dayjs": "1.x",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
@@ -28,6 +28,7 @@
     "lodash": "^4.17.21",
     "postcss": "^8.3.6",
     "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.2",
     "react": "^16.13.1",
     "react-awesome-reveal": "^3.5.1",
     "react-dom": "^16.13.1",
@@ -46,15 +47,21 @@
     "web3modal": "^1.9.3"
   },
   "scripts": {
+<<<<<<< HEAD
     "start": "set PORT=3000 && set BROWSER='firefox developer edition' && react-scripts start",
     "build:production": "NODE_ENV=production REACT_APP_STAGE=production GENERATE_SOURCEMAP=false react-scripts build",
     "build:staging": "NODE_ENV=development REACT_APP_STAGE=development react-scripts build",
     "build": "react-scripts build",
     "test": "react-scripts test",
+=======
+    "start": "PORT=3000 BROWSER='firefox developer edition' craco start",
+    "build:production": "NODE_ENV=production REACT_APP_STAGE=production GENERATE_SOURCEMAP=false craco build",
+    "build:staging": "NODE_ENV=development REACT_APP_STAGE=development craco build",
+    "build": "craco build",
+    "test": "craco test",
+>>>>>>> 427145de8d7c3f705d290dcc581a673eedb55460
     "eject": "react-scripts eject",
     "css": "postcss ./src/assets/styles/tailwind.css -o ./src/assets/styles/tailwind.generated.css",
-    "prestart": "npm run css",
-    "prebuild": "npm run css",
     "lint": "eslint --ext .ts --format unix src/ && prettier --check 'src/**/*.ts'",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "cicd:update": "aws cloudformation deploy --profile raiinmaker --stack-name raiinmaker-admin-cicd --template-file ./templates/CICD.cft.yml --region us-west-1 --capabilities CAPABILITY_NAMED_IAM --no-fail-on-empty-changeset"
