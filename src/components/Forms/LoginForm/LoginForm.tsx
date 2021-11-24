@@ -6,6 +6,7 @@ import { fireClient, getAuthPersistence } from '../../../clients/firebase';
 import { sessionLogin } from '../../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import { ChangePasswordDialog } from '../../ChangePasswordDialog';
+import styles from './login.module.css';
 
 interface UserData {
   [key: string]: string;
@@ -53,7 +54,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <Box className="p-10 w-3/6 flex flex-col justify-center items-start login-form">
+    <Box className={styles.loginForm}>
       <ChangePasswordDialog open={changePassword} setOpen={setChangePassword} email={values.email} />
       <Box className="w-full">
         {error.code !== '' ? (
