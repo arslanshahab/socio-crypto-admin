@@ -17,17 +17,17 @@
 }
 
 .clicksCard {
-  @apply bg-gradient-to-r from-pink-300 to-blue-600 flex;
+  @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }
 .viewsCard {
-  @apply bg-gradient-to-r from-green-300 to-blue-600 flex;
+  @apply bg-gradient-to-r from-green-300 to-blue-600;
 }
 .sharesCard {
-  @apply bg-gradient-to-r from-pink-300 to-blue-600 flex;
+  @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }
 .participationsCard {
-  @apply bg-gradient-to-r from-green-300 to-blue-600 flex;
+  @apply bg-gradient-to-r from-green-300 to-blue-600;
 }
 .rewardsCard {
-  @apply bg-gradient-to-r from-pink-300 to-blue-600 flex;
+  @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }

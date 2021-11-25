@@ -3,6 +3,7 @@ import StatCard from './StatCard';
 import { BsHandIndexThumbFill, BsFillShareFill, BsFillFileBarGraphFill } from 'react-icons/bs';
 import { FaEye } from 'react-icons/fa';
 import { SiCashapp } from 'react-icons/si';
+import LineChart from './Charts/LineChart';
 
 const statCardData: StateCardDataType[] = [
   {
@@ -42,10 +43,15 @@ const bgColor: { [key: number]: string } = {
 
 export const DashboardHome: React.FC = () => {
   return (
-    <div className="flex justify-between gap-4 pt-4 px-4 xs:flex-wrap">
-      {statCardData?.map((x, index) => (
-        <StatCard key={index} data={x} cardType={bgColor[index]} />
-      ))}
+    <div>
+      <div className="flex justify-between gap-4 pt-4 px-4 xs:flex-wrap">
+        {statCardData?.map((x, index) => (
+          <StatCard key={index} data={x} cardType={bgColor[index]} />
+        ))}
+      </div>
+      <div>
+        <LineChart />
+      </div>
     </div>
   );
 };

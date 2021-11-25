@@ -1,0 +1,6 @@
+.lineChartWrapper {
+  @apply w-4/5 mx-auto my-12 p-4 rounded-lg bg-blue-900 shadow;
+}
+.graphTitle {
+  @apply text-white;
+}
