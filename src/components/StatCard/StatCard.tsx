@@ -1,24 +1,23 @@
 import React from 'react';
-import './StatCard.scss';
-import { BiUpArrowAlt } from 'react-icons/bi';
+import styles from './statCard.module.css';
+import { StateCardDataType } from '../DashboardHome';
 
-function StatCard() {
+interface IProps {
+  data: StateCardDataType;
+  cardType: string;
+}
+
+const StatCard = (props: IProps) => {
+  const { data, cardType } = props;
   return (
-    <div className="bg-red stat-card-wrapper">
-      <div className="text-circle-wrapper">
-        <div>
-          <p>Statistic Card</p>
-          <h2>350,897</h2>
-        </div>
-        <div className="circle"></div>
-      </div>
-      <div className="percentage">
-        <BiUpArrowAlt />
-        <span>3.48%</span>
-        <p>Since last month</p>
+    <div className={styles.statCardWrapper}>
+      <p className={styles.textSm}>{data.title}</p>
+      <div className={styles.contentCircle}>
+        <h2 className={styles.textLg}>{data.numbers}</h2>
+        <div className={`${styles.circle} ${styles[cardType]}`}>{data.icon}</div>
       </div>
     </div>
   );
-}
+};
 
 export default StatCard;

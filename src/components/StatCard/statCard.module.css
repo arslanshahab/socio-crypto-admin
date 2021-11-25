@@ -1,0 +1,33 @@
+/* @import './../../assets/styles/vars.scss'; */
+
+.statCardWrapper {
+  @apply shadow p-4 rounded-lg w-1/5;
+}
+.textSm {
+  @apply text-blue-600;
+}
+.contentCircle {
+  @apply flex justify-between items-center pt-2;
+}
+.textLg {
+  @apply text-2xl;
+}
+.circle {
+  @apply h-10 w-10 rounded-full  flex justify-center items-center text-white text-xl;
+}
+
+.clicksCard {
+  @apply bg-gradient-to-r from-pink-300 to-blue-600 flex;
+}
+.viewsCard {
+  @apply bg-gradient-to-r from-green-300 to-blue-600 flex;
+}
+.sharesCard {
+  @apply bg-gradient-to-r from-pink-300 to-blue-600 flex;
+}
+.participationsCard {
+  @apply bg-gradient-to-r from-green-300 to-blue-600 flex;
+}
+.rewardsCard {
+  @apply bg-gradient-to-r from-pink-300 to-blue-600 flex;
+}
