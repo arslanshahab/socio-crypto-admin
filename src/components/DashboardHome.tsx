@@ -7,12 +7,12 @@ import LineChart from './Charts/LineChart';
 
 const statCardData: StateCardDataType[] = [
   {
-    title: 'Click',
+    title: 'Clicks',
     numbers: '350,897',
     icon: <BsHandIndexThumbFill />,
   },
   {
-    title: 'View',
+    title: 'Views',
     numbers: '450,897',
     icon: <FaEye />,
   },
@@ -44,12 +44,14 @@ const bgColor: { [key: number]: string } = {
 export const DashboardHome: React.FC = () => {
   return (
     <div>
-      <div className="flex justify-between gap-4 pt-4 px-4 xs:flex-wrap">
+      {/* make a heading with text Campaign Analytics */}
+      <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
+      <div className="flex justify-between gap-4 px-4 xs:flex-wrap">
         {statCardData?.map((x, index) => (
           <StatCard key={index} data={x} cardType={bgColor[index]} />
         ))}
       </div>
-      <div>
+      <div className="py-12">
         <LineChart />
       </div>
     </div>
