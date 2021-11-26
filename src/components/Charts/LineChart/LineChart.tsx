@@ -9,7 +9,12 @@ const LineChart = () => {
       <Line
         options={{
           scales: {
+            x: {
+              ticks: { color: '#fff' },
+            },
+
             y: {
+              ticks: { color: '#fff' },
               beginAtZero: true,
             },
           },

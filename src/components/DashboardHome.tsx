@@ -46,7 +46,7 @@ export const DashboardHome: React.FC = () => {
     <div>
       <div className="flex justify-between gap-4 pt-4 px-4 xs:flex-wrap">
         {statCardData?.map((x, index) => (
-          <StatCard key={index} data={x} cardType={bgColor[index]} />
+          <StatCard key={index} compaignData={x} cardType={bgColor[index]} />
         ))}
       </div>
       <div>
