@@ -48,7 +48,7 @@ export const DashboardHome: React.FC = () => {
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="flex justify-between gap-4 px-4 xs:flex-wrap">
         {statCardData?.map((x, index) => (
-          <StatCard key={index} data={x} cardType={bgColor[index]} />
+          <StatCard key={index} compaignData={x} cardType={bgColor[index]} />
         ))}
       </div>
       <div className="py-12">
