@@ -10,11 +10,11 @@ const LineChart = () => {
         options={{
           scales: {
             x: {
-              ticks: { color: '#fff' },
+              ticks: { color: '#1d40ad' },
             },
 
             y: {
-              ticks: { color: '#fff' },
+              ticks: { color: '#1d40ad' },
               beginAtZero: true,
             },
           },

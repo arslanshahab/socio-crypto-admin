@@ -33,7 +33,7 @@ const statCardData: StateCardDataType[] = [
   },
 ];
 
-const bgColor: { [key: number]: string } = {
+const cardType: { [key: number]: string } = {
   0: 'clicksCard',
   1: 'viewsCard',
   2: 'sharesCard',
@@ -44,11 +44,10 @@ const bgColor: { [key: number]: string } = {
 export const DashboardHome: React.FC = () => {
   return (
     <div>
-      {/* make a heading with text Campaign Analytics */}
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="flex justify-between gap-4 px-4 xs:flex-wrap">
         {statCardData?.map((x, index) => (
-          <StatCard key={index} compaignData={x} cardType={bgColor[index]} />
+          <StatCard key={index} compaignData={x} cardType={cardType[index]} />
         ))}
       </div>
       <div className="py-12">
