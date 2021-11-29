@@ -8,6 +8,9 @@ import SelectField from './SelectField/SelectField';
 import DatePicker from './DatePicker';
 import { Button } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
+import { useQuery } from '@apollo/client';
+import { CampaignListVars, PaginatedCampaignResults } from '../types';
+import { LIST_CAMPAIGNS } from '../operations/queries/campaign';
 
 const statCardData: StateCardDataType[] = [
   {
@@ -63,12 +66,23 @@ export const DashboardHome: React.FC = () => {
   //! Use State Hook
   const [expanded, setExpanded] = useState(false);
   const [currentDate, setCurrentDate] = useState<string | undefined>();
+  const [campaignNames, setCampaignNames] = useState<string[] | undefined>();
+
+  //! ApolloClient Query Hook
+  const { data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
+    variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
+    fetchPolicy: 'cache-and-network',
+  });
+
   //! Use Effect Hook
   useEffect(() => {
     const date = new Date();
     const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
     setCurrentDate(`${year}-${month}-${day}`);
-  }, []);
+    // Get Campaign Names
+    const names = data?.listCampaigns?.results?.map((x) => x.name);
+    setCampaignNames(names);
+  }, [data]);
   //! Handlers
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -83,7 +97,7 @@ export const DashboardHome: React.FC = () => {
       </div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex gap-14 flex-wrap mt-12">
-          <SelectField searchFieldData={names} />
+          <SelectField searchFieldData={campaignNames} />
           <SelectField searchFieldData={searchWithDate} />
           <Button variant="outlined" color="primary" onClick={handleExpandClick}>
             Custom Date Search
@@ -91,12 +105,10 @@ export const DashboardHome: React.FC = () => {
         </div>
         <div>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            {/* {currentDate && ( */}
-            <div className="flex gap-8 pt-4">
+            <div className="flex gap-12 pt-8">
               <DatePicker title="Start" date={currentDate} />
               <DatePicker title="End" date={currentDate} />
             </div>
-            {/* )} */}
           </Collapse>
         </div>
       </div>
