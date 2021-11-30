@@ -3,6 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import styles from './selectField.module.css';
 
 interface IProps {
   title: string;
@@ -24,7 +25,9 @@ const SelectField = (props: IProps) => {
   return (
     <div>
       <FormControl sx={{ width: 280 }}>
-        <InputLabel id="demo-simple-select-helper-label">{props.title}</InputLabel>
+        <InputLabel id="demo-simple-select-helper-label" className={styles.labelSelect}>
+          {props.title}
+        </InputLabel>
         <Select
           labelId="demo-simple-select-helper-label3"
           id="demo-simple-select-helper2"

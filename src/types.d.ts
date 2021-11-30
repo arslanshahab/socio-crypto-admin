@@ -4,6 +4,17 @@ export interface PaginatedCampaignResults {
     total: number;
   };
 }
+//!----
+export interface GetUserAllCampaigns {
+  getUserAllCampaign: [UserCampaignSingle];
+}
+
+export interface UserCampaignSingle {
+  id: string;
+  name: string;
+}
+
+//!----
 
 export interface GetCampaignResult {
   getCampaign: Campaign;

@@ -9,8 +9,8 @@ interface IProps {
 }
 
 const PARTICIPANTS_DATA = gql`
-  query getParticipantsCompaign {
-    getParticipantsCompaign {
+  query getCampaignAnalytics {
+    getCampaignAnalytics {
       clickCount
       viewCount
     }
@@ -20,7 +20,6 @@ const PARTICIPANTS_DATA = gql`
 const StatCard = (props: IProps) => {
   const { compaignData, cardType } = props;
   const { data, error } = useQuery(PARTICIPANTS_DATA);
-  console.log(data, error);
 
   return (
     <div className={styles.statCardWrapper}>

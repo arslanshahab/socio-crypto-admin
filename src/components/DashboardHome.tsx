@@ -10,8 +10,9 @@ import { Button } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
 import { useQuery } from '@apollo/client';
-import { CampaignListVars, PaginatedCampaignResults } from '../types';
-import { LIST_CAMPAIGNS } from '../operations/queries/campaign';
+import { CampaignListVars, PaginatedCampaignResults, UserCampaignSingle } from '../types';
+import { GET_ALL_USER_CAMPAIGNS } from '../operations/queries/campaign';
+import { GetUserAllCampaigns } from './../types';
 
 const statCardData: StateCardDataType[] = [
   {
@@ -55,10 +56,10 @@ export const DashboardHome: React.FC = () => {
   //! Use State Hook
   const [expanded, setExpanded] = useState(false);
   const [currentDate, setCurrentDate] = useState<string | undefined>();
-  const [campaignNames, setCampaignNames] = useState<string[]>([]);
+  const [campaignsData, setCampaignData] = useState<GetUserAllCampaigns>();
 
   //! ApolloClient Query Hook
-  const { data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
+  const { data } = useQuery<GetUserAllCampaigns>(GET_ALL_USER_CAMPAIGNS, {
     variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
     fetchPolicy: 'cache-and-network',
   });
@@ -68,17 +69,14 @@ export const DashboardHome: React.FC = () => {
     const date = new Date();
     const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
     setCurrentDate(`${year}-${month}-${day}`);
-    // Get Campaign Names
-    const names = data?.listCampaigns?.results?.map((x) => x.name) || [];
-    setCampaignNames(names);
-  }, [data]);
+  }, []);
   //! Handlers
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const getCampaingData = () => {
-    return ['Select Campaign', ...campaignNames];
+    return [{ name: 'All', id: '-1' }, ...(data?.getUserAllCampaign || [])];
   };
 
   return (
@@ -91,7 +89,7 @@ export const DashboardHome: React.FC = () => {
       </div>
       <div className="px-4">
         <div className="flex gap-14 flex-wrap mt-12 justify-start">
-          <AutoCompleteDropDown options={getCampaingData()} label="Campaign" />
+          {getCampaingData().length > 1 && <AutoCompleteDropDown options={getCampaingData()} label="Campaign" />}
           <SelectField searchFieldData={searchWithDate} title="Select Timeline" />
           <Button variant="contained" color="primary" onClick={handleExpandClick}>
             Custom Date Search
