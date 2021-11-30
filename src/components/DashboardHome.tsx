@@ -67,7 +67,7 @@ export const DashboardHome: React.FC = () => {
   //! Use State Hook
   const [expanded, setExpanded] = useState(false);
   const [currentDate, setCurrentDate] = useState<string | undefined>();
-  const [campaignNames, setCampaignNames] = useState<string[] | undefined>();
+  const [campaignNames, setCampaignNames] = useState<string[]>([]);
 
   //! ApolloClient Query Hook
   const { data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
@@ -81,7 +81,7 @@ export const DashboardHome: React.FC = () => {
     const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
     setCurrentDate(`${year}-${month}-${day}`);
     // Get Campaign Names
-    const names = data?.listCampaigns?.results?.map((x) => x.name);
+    const names = data?.listCampaigns?.results?.map((x) => x.name) || [];
     setCampaignNames(names);
   }, [data]);
   //! Handlers
