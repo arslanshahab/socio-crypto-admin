@@ -10,11 +10,11 @@ const LineChart = () => {
         options={{
           scales: {
             x: {
-              ticks: { color: '#fff' },
+              ticks: { color: '#1d40ad' },
             },
 
             y: {
-              ticks: { color: '#fff' },
+              ticks: { color: '#1d40ad' },
               beginAtZero: true,
             },
           },
@@ -25,8 +25,8 @@ const LineChart = () => {
             {
               label: '250,897',
               data: [250879, 50870, 150679, 100800],
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: '#fff',
+              backgroundColor: '#1d40ad',
+              borderColor: '#1d40ad',
               borderWidth: 2,
               hoverBackgroundColor: '#f00',
             },
