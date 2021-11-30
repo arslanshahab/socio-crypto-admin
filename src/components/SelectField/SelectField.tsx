@@ -6,6 +6,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 interface IProps {
   searchFieldData: string[];
+  title: string;
 }
 
 const SelectField = (props: IProps) => {
@@ -22,13 +23,14 @@ const SelectField = (props: IProps) => {
   return (
     <div>
       <FormControl sx={{ width: 280 }}>
-        <InputLabel id="demo-simple-select-helper-label">Search</InputLabel>
+        <InputLabel id="demo-simple-select-helper-label">{props.title}</InputLabel>
         <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
+          labelId="demo-simple-select-helper-label3"
+          id="demo-simple-select-helper2"
           value={search}
           label="Age"
           onChange={handleChange}
+          size="small"
         >
           <MenuItem value="">
             <em>None</em>

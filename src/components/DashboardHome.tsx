@@ -8,6 +8,7 @@ import SelectField from './SelectField/SelectField';
 import DatePicker from './DatePicker';
 import { Button } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
+import AutoCompleteDropDown from './AutoCompleteDropDown';
 
 const statCardData: StateCardDataType[] = [
   {
@@ -74,6 +75,10 @@ export const DashboardHome: React.FC = () => {
     setExpanded(!expanded);
   };
 
+  const getCampaingData = () => {
+    return ['Select Campaign', ...names];
+  };
+
   return (
     <div>
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
@@ -82,11 +87,11 @@ export const DashboardHome: React.FC = () => {
           <StatCard key={index} compaignData={x} cardType={cardType[index]} />
         ))}
       </div>
-      <div className="flex flex-col items-center justify-center">
-        <div className="flex gap-14 flex-wrap mt-12">
-          <SelectField searchFieldData={names} />
-          <SelectField searchFieldData={searchWithDate} />
-          <Button variant="outlined" color="primary" onClick={handleExpandClick}>
+      <div className="px-4">
+        <div className="flex gap-14 flex-wrap mt-12 justify-start">
+          <AutoCompleteDropDown options={getCampaingData()} label="Campaign" />
+          <SelectField searchFieldData={searchWithDate} title="Select Timeline" />
+          <Button variant="contained" color="primary" onClick={handleExpandClick}>
             Custom Date Search
           </Button>
         </div>
