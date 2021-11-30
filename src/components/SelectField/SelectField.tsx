@@ -5,8 +5,8 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 interface IProps {
-  searchFieldData: string[];
   title: string;
+  searchFieldData: string[] | undefined;
 }
 
 const SelectField = (props: IProps) => {
@@ -20,6 +20,7 @@ const SelectField = (props: IProps) => {
 
   //! Destructuring
   const { searchFieldData } = props;
+
   return (
     <div>
       <FormControl sx={{ width: 280 }}>
