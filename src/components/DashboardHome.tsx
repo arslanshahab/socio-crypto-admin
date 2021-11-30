@@ -48,18 +48,6 @@ const bgColor: { [key: number]: string } = {
   4: 'rewardsCard',
 };
 //! Select Fields Data
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
 const searchWithDate = ['7 Days', '15 Days', '30 Days', '60 Days', '90 Days', 'One Year'];
 
 export const DashboardHome: React.FC = () => {
