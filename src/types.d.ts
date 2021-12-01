@@ -8,6 +8,9 @@ export interface PaginatedCampaignResults {
 export interface GetUserAllCampaigns {
   getUserAllCampaign: [UserCampaignSingle];
 }
+export interface UserCampaignTypes {
+  clickCount: string | number | undefined;
+}
 
 export interface UserCampaignSingle {
   id: string;

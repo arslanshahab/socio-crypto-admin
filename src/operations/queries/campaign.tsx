@@ -186,3 +186,18 @@ export const GET_ALL_USER_CAMPAIGNS = gql`
     }
   }
 `;
+export const GET_USER_CAMPAIGN_ANALYTICS = gql`
+  query getUserCampaign($id: String) {
+    getUserCampaign(id: $id) {
+      id
+      name
+      hourlyMetrics {
+        clickCount
+        viewCount
+        shareCount
+        totalParticipationScore
+        rewards
+      }
+    }
+  }
+`;

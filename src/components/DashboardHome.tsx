@@ -11,36 +11,8 @@ import Collapse from '@mui/material/Collapse';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
 import { useQuery } from '@apollo/client';
 import { CampaignListVars, PaginatedCampaignResults, UserCampaignSingle } from '../types';
-import { GET_ALL_USER_CAMPAIGNS } from '../operations/queries/campaign';
+import { GET_ALL_USER_CAMPAIGNS, GET_USER_CAMPAIGN_ANALYTICS } from '../operations/queries/campaign';
 import { GetUserAllCampaigns } from './../types';
-
-const statCardData: StateCardDataType[] = [
-  {
-    title: 'Clicks',
-    numbers: '350,897',
-    icon: <BsHandIndexThumbFill />,
-  },
-  {
-    title: 'Views',
-    numbers: '450,897',
-    icon: <FaEye />,
-  },
-  {
-    title: 'Shares',
-    numbers: '150,897',
-    icon: <BsFillShareFill />,
-  },
-  {
-    title: 'Participation Score',
-    numbers: '250,897',
-    icon: <BsFillFileBarGraphFill />,
-  },
-  {
-    title: 'Rewards',
-    numbers: '250,897',
-    icon: <SiCashapp />,
-  },
-];
 
 const cardType: { [key: number]: string } = {
   0: 'clicksCard',
@@ -56,13 +28,18 @@ export const DashboardHome: React.FC = () => {
   //! Use State Hook
   const [expanded, setExpanded] = useState(false);
   const [currentDate, setCurrentDate] = useState<string | undefined>();
-  const [campaignsData, setCampaignData] = useState<GetUserAllCampaigns>();
+  const [campaignId, setCamapignId] = useState();
+  // const [campaignsData, setCampaignData] = useState<GetUserAllCampaigns>();
 
   //! ApolloClient Query Hook
   const { data } = useQuery<GetUserAllCampaigns>(GET_ALL_USER_CAMPAIGNS, {
     variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
     fetchPolicy: 'cache-and-network',
   });
+  const { data: userCamapign } = useQuery(GET_USER_CAMPAIGN_ANALYTICS, {
+    variables: { id: campaignId },
+  });
+  console.log('User campaign data', userCamapign?.getUserCampaign);
 
   //! Use Effect Hook
   useEffect(() => {
@@ -78,7 +55,37 @@ export const DashboardHome: React.FC = () => {
   const getCampaingData = () => {
     return [{ name: 'All', id: '-1' }, ...(data?.getUserAllCampaign || [])];
   };
-
+  const getCampaignId = (id: any) => {
+    setCamapignId(id);
+  };
+  //! Card Data
+  const statCardData: StateCardDataType[] = [
+    {
+      title: 'Clicks',
+      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.clickCount}`,
+      icon: <BsHandIndexThumbFill />,
+    },
+    {
+      title: 'Views',
+      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.viewCount}`,
+      icon: <FaEye />,
+    },
+    {
+      title: 'Shares',
+      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.shareCount}`,
+      icon: <BsFillShareFill />,
+    },
+    {
+      title: 'Participation Score',
+      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.totalParticipationScore}`,
+      icon: <BsFillFileBarGraphFill />,
+    },
+    {
+      title: 'Rewards',
+      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.rewards}`,
+      icon: <SiCashapp />,
+    },
+  ];
   return (
     <div>
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
@@ -89,7 +96,13 @@ export const DashboardHome: React.FC = () => {
       </div>
       <div className="px-4">
         <div className="flex gap-14 flex-wrap mt-12 justify-start">
-          {getCampaingData().length > 1 && <AutoCompleteDropDown options={getCampaingData()} label="Campaign" />}
+          {getCampaingData().length > 1 && (
+            <AutoCompleteDropDown
+              options={getCampaingData()}
+              label="Campaign"
+              getCampaignId={(id) => getCampaignId(id)}
+            />
+          )}
           <SelectField searchFieldData={searchWithDate} title="Select Timeline" />
           <Button variant="contained" color="primary" onClick={handleExpandClick}>
             Custom Date Search
