@@ -197,6 +197,7 @@ export const GET_USER_CAMPAIGN_ANALYTICS = gql`
         shareCount
         totalParticipationScore
         rewards
+        participationScore
       }
     }
   }

@@ -13,6 +13,7 @@ import { useQuery } from '@apollo/client';
 import { CampaignListVars, PaginatedCampaignResults, UserCampaignSingle } from '../types';
 import { GET_ALL_USER_CAMPAIGNS, GET_USER_CAMPAIGN_ANALYTICS } from '../operations/queries/campaign';
 import { GetUserAllCampaigns } from './../types';
+import BarChart from './BarChart';
 
 const cardType: { [key: number]: string } = {
   0: 'clicksCard',
@@ -28,8 +29,7 @@ export const DashboardHome: React.FC = () => {
   //! Use State Hook
   const [expanded, setExpanded] = useState(false);
   const [currentDate, setCurrentDate] = useState<string | undefined>();
-  const [campaignId, setCamapignId] = useState();
-  // const [campaignsData, setCampaignData] = useState<GetUserAllCampaigns>();
+  const [campaignId, setCamapignId] = useState('-1');
 
   //! ApolloClient Query Hook
   const { data } = useQuery<GetUserAllCampaigns>(GET_ALL_USER_CAMPAIGNS, {
@@ -39,7 +39,6 @@ export const DashboardHome: React.FC = () => {
   const { data: userCamapign } = useQuery(GET_USER_CAMPAIGN_ANALYTICS, {
     variables: { id: campaignId },
   });
-  console.log('User campaign data', userCamapign?.getUserCampaign);
 
   //! Use Effect Hook
   useEffect(() => {
@@ -58,6 +57,7 @@ export const DashboardHome: React.FC = () => {
   const getCampaignId = (id: any) => {
     setCamapignId(id);
   };
+
   //! Card Data
   const statCardData: StateCardDataType[] = [
     {
@@ -117,9 +117,18 @@ export const DashboardHome: React.FC = () => {
           </Collapse>
         </div>
       </div>
-      <div>
-        <LineChart />
-      </div>
+      {campaignId == '-1' ? (
+        <div>
+          <BarChart
+            participationScore={userCamapign?.getUserCampaign?.hourlyMetrics?.participationScore}
+            rewards={userCamapign?.getUserCampaign?.hourlyMetrics?.rewards}
+          />
+        </div>
+      ) : (
+        <div>
+          <LineChart participationScore={userCamapign?.getUserCampaign?.hourlyMetrics?.participationScore} />
+        </div>
+      )}
     </div>
   );
 };
