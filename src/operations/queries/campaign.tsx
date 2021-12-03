@@ -17,6 +17,7 @@ export const LIST_CAMPAIGNS = gql`
         company
         imagePath
         campaignType
+        symbol
         socialMediaType
         campaignMedia {
           id
@@ -69,6 +70,7 @@ export const GET_CAMPAIGN = gql`
       company
       imagePath
       campaignType
+      symbol
       socialMediaType
       suggestedTags
       keywords

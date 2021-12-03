@@ -30,7 +30,7 @@ const CustomSelect: React.FC<Props & FormControlProps & SelectProps> = ({
       {label && <InputLabel id="select-label">{label}</InputLabel>}
       <Select value={value} onChange={onChange} labelId="select-label" label={label || ''}>
         {options.map((item, index) => (
-          <MenuItem alignItems="flex-start" value={item.toLowerCase()} key={index}>
+          <MenuItem alignItems="flex-start" value={item} key={index}>
             {upperCaseOptions ? item.toUpperCase() : capitalize(item)}
           </MenuItem>
         ))}
