@@ -6,7 +6,7 @@ import { SiCashapp } from 'react-icons/si';
 import LineChart from './Charts/LineChart';
 import SelectField from './SelectField/SelectField';
 import DatePicker from './DatePicker';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
 import { useQuery } from '@apollo/client';
@@ -14,6 +14,7 @@ import { CampaignListVars, PaginatedCampaignResults, UserCampaignSingle } from '
 import { GET_ALL_USER_CAMPAIGNS, GET_USER_CAMPAIGN_ANALYTICS } from '../operations/queries/campaign';
 import { GetUserAllCampaigns } from './../types';
 import BarChart from './BarChart';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 const cardType: { [key: number]: string } = {
   0: 'clicksCard',
@@ -30,6 +31,8 @@ export const DashboardHome: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const [currentDate, setCurrentDate] = useState<string | undefined>();
   const [campaignId, setCamapignId] = useState('-1');
+  const [campaignsAnalytics, setCampaignsAnalytics] = useState<any>();
+  const [campaignsClicks, setCampaignsClicks] = useState<any>();
 
   //! ApolloClient Query Hook
   const { data } = useQuery<GetUserAllCampaigns>(GET_ALL_USER_CAMPAIGNS, {
@@ -46,6 +49,14 @@ export const DashboardHome: React.FC = () => {
     const [month, day, year] = [date.getMonth(), date.getDate(), date.getFullYear()];
     setCurrentDate(`${year}-${month}-${day}`);
   }, []);
+  useEffect(() => {
+    const campaignsParticipationScore = userCamapign?.getUserCampaign?.dailyMetrics?.participationScore;
+    const campaignsClicks = userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount;
+    const updated = campaignsParticipationScore?.slice(0, 30);
+    const updatedClicks = campaignsClicks?.slice(0, 30);
+    setCampaignsAnalytics(updated);
+    setCampaignsClicks(updatedClicks);
+  }, [userCamapign]);
   //! Handlers
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -86,7 +97,24 @@ export const DashboardHome: React.FC = () => {
       icon: <SiCashapp />,
     },
   ];
-  console.log('Campaigns', userCamapign);
+
+  const hanldePrevious = () => {
+    const updated = userCamapign?.getUserCampaign?.dailyMetrics?.participationScore;
+    const preCampaigns = updated.slice(0, 30);
+    const campaignsClicks = userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount;
+    const updatedClicks = campaignsClicks?.slice(0, 30);
+    setCampaignsAnalytics(preCampaigns);
+    setCampaignsClicks(updatedClicks);
+  };
+  const handleNext = () => {
+    const updated = userCamapign?.getUserCampaign?.dailyMetrics?.participationScore;
+    const nextCampaigns = updated.slice(30, updated?.length);
+    const campaignsClicks = userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount;
+    const updatedClicks = campaignsClicks?.slice(30, campaignsClicks?.length);
+    setCampaignsAnalytics(nextCampaigns);
+    setCampaignsClicks(updatedClicks);
+  };
+  console.log('Campaigns', campaignsAnalytics);
   return (
     <div>
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
@@ -95,7 +123,7 @@ export const DashboardHome: React.FC = () => {
           <StatCard key={index} compaignData={x} cardType={cardType[index]} />
         ))}
       </div>
-      <div className="w-4/5 mt-12 mx-auto">
+      <div className="w-4/5 mt-12 mx-auto flex gap-4">
         {getCampaingData().length > 1 && (
           <AutoCompleteDropDown
             options={getCampaingData()}
@@ -103,6 +131,12 @@ export const DashboardHome: React.FC = () => {
             getCampaignId={(id) => getCampaignId(id)}
           />
         )}
+        <IconButton size="medium" onClick={hanldePrevious}>
+          <IoIosArrowBack />
+        </IconButton>
+        <IconButton size="medium" onClick={handleNext}>
+          <IoIosArrowForward />
+        </IconButton>
       </div>
       {/* <div className="px-4">
         <div className="flex gap-14 flex-wrap mt-12 justify-start">
@@ -131,8 +165,10 @@ export const DashboardHome: React.FC = () => {
         <div>
           <BarChart
             name={userCamapign?.getUserCampaign?.name}
-            participationScore={userCamapign?.getUserCampaign?.dailyMetrics?.participationScore}
-            allCampaignsClicks={userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount}
+            // participationScore={userCamapign?.getUserCampaign?.dailyMetrics?.participationScore}
+            // allCampaignsClicks={userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount}
+            participationScore={campaignsAnalytics}
+            allCampaignsClicks={campaignsClicks}
             rewards={userCamapign?.getUserCampaign?.dailyMetrics?.rewards}
           />
         </div>
