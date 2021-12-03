@@ -4,16 +4,51 @@ import styles from './lineChart.module.css';
 
 interface ILineChart {
   participationScore: number[];
+  name: string;
+  singleDailyMetrics: {
+    clickCount: number[];
+    viewCount: number[];
+    shareCount: number[];
+  };
 }
 
 const LineChart = (props: ILineChart) => {
-  const { participationScore } = props;
-  console.log('Line Chart Participation Score', participationScore);
-  const updatedRewards = new Array(participationScore?.length).fill(1).map(() => Math.round(Math.random() * 10));
+  const { participationScore, singleDailyMetrics, name } = props;
+  console.log(
+    'Line Chart Data',
+    participationScore,
+    singleDailyMetrics?.clickCount,
+    singleDailyMetrics?.viewCount,
+    singleDailyMetrics?.shareCount,
+  );
 
   const data = {
     labels: participationScore?.map((x) => ''),
     datasets: [
+      {
+        label: 'Clicks',
+        data: singleDailyMetrics?.clickCount,
+        backgroundColor: '#e4485c',
+        borderColor: '#e4485c',
+        borderWidth: 1,
+        hoverBackgroundColor: '#f00',
+      },
+      {
+        label: 'Views',
+        data: singleDailyMetrics?.viewCount,
+        backgroundColor: '#f80aec',
+        borderColor: '#e4485c',
+        borderWidth: 1,
+        hoverBackgroundColor: '#f020bc',
+      },
+      {
+        label: 'Shares',
+        data: singleDailyMetrics?.shareCount,
+        backgroundColor: '#f8e80a',
+        borderColor: '#f4f80f',
+        borderWidth: 1,
+        hoverBackgroundColor: '#d2e714',
+      },
       {
         label: 'Participation Score',
         data: participationScore,
@@ -22,20 +57,12 @@ const LineChart = (props: ILineChart) => {
         borderWidth: 1,
         hoverBackgroundColor: '#f00',
       },
-      {
-        label: 'Rewards',
-        data: updatedRewards,
-        backgroundColor: '#e4485c',
-        borderColor: '#e4485c',
-        borderWidth: 1,
-        hoverBackgroundColor: '#f00',
-      },
     ],
   };
 
   return (
     <div className={styles.lineChartWrapper}>
-      <h1 className={styles.graphTitle}>Participation Score</h1>
+      <h1 className={styles.graphTitle}>{name} Analytics</h1>
       <Line
         options={{
           scales: {

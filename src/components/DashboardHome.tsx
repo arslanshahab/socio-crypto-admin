@@ -62,30 +62,31 @@ export const DashboardHome: React.FC = () => {
   const statCardData: StateCardDataType[] = [
     {
       title: 'Clicks',
-      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.clickCount}`,
+      numbers: `${userCamapign?.getUserCampaign?.dailyMetrics?.clickCount}`,
       icon: <BsHandIndexThumbFill />,
     },
     {
       title: 'Views',
-      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.viewCount}`,
+      numbers: `${userCamapign?.getUserCampaign?.dailyMetrics?.viewCount}`,
       icon: <FaEye />,
     },
     {
       title: 'Shares',
-      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.shareCount}`,
+      numbers: `${userCamapign?.getUserCampaign?.dailyMetrics?.shareCount}`,
       icon: <BsFillShareFill />,
     },
     {
       title: 'Participation Score',
-      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.totalParticipationScore}`,
+      numbers: `${userCamapign?.getUserCampaign?.dailyMetrics?.totalParticipationScore}`,
       icon: <BsFillFileBarGraphFill />,
     },
     {
       title: 'Rewards',
-      numbers: `${userCamapign?.getUserCampaign?.hourlyMetrics?.rewards}`,
+      numbers: `${userCamapign?.getUserCampaign?.dailyMetrics?.rewards}`,
       icon: <SiCashapp />,
     },
   ];
+  console.log('Campaigns', userCamapign);
   return (
     <div>
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
@@ -94,7 +95,16 @@ export const DashboardHome: React.FC = () => {
           <StatCard key={index} compaignData={x} cardType={cardType[index]} />
         ))}
       </div>
-      <div className="px-4">
+      <div className="w-4/5 mt-12 mx-auto">
+        {getCampaingData().length > 1 && (
+          <AutoCompleteDropDown
+            options={getCampaingData()}
+            label="Campaign"
+            getCampaignId={(id) => getCampaignId(id)}
+          />
+        )}
+      </div>
+      {/* <div className="px-4">
         <div className="flex gap-14 flex-wrap mt-12 justify-start">
           {getCampaingData().length > 1 && (
             <AutoCompleteDropDown
@@ -116,17 +126,23 @@ export const DashboardHome: React.FC = () => {
             </div>
           </Collapse>
         </div>
-      </div>
+      </div> */}
       {campaignId == '-1' ? (
         <div>
           <BarChart
-            participationScore={userCamapign?.getUserCampaign?.hourlyMetrics?.participationScore}
-            rewards={userCamapign?.getUserCampaign?.hourlyMetrics?.rewards}
+            name={userCamapign?.getUserCampaign?.name}
+            participationScore={userCamapign?.getUserCampaign?.dailyMetrics?.participationScore}
+            allCampaignsClicks={userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount}
+            rewards={userCamapign?.getUserCampaign?.dailyMetrics?.rewards}
           />
         </div>
       ) : (
         <div>
-          <LineChart participationScore={userCamapign?.getUserCampaign?.hourlyMetrics?.participationScore} />
+          <LineChart
+            name={userCamapign?.getUserCampaign?.name}
+            singleDailyMetrics={userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric}
+            participationScore={userCamapign?.getUserCampaign?.dailyMetrics?.participationScore}
+          />
         </div>
       )}
     </div>

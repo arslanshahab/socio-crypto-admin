@@ -34,7 +34,7 @@ export default function AutoCompleteDropDown(props: IProps): JSX.Element {
         // }}
         id="controllable-states-demo"
         options={props.options}
-        getOptionLabel={(option) => option.name.concat(option.id.substring(option.id.length, option.id.length - 2))}
+        getOptionLabel={(option) => `${option.name} (${option.id.substring(option.id.length, option.id.length - 2)})`}
         sx={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label={props.label} />}
         size="small"

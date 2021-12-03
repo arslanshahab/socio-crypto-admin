@@ -4,21 +4,31 @@ import { Bar } from 'react-chartjs-2';
 import { slice } from 'lodash';
 
 interface IBarChart {
+  name: string;
   participationScore: number[];
   rewards: number;
+  allCampaignsClicks: number[];
 }
 
 const BarChart = (props: IBarChart) => {
-  const { participationScore, rewards } = props;
-  const updatedParticipations = participationScore?.slice(0, 10);
-  console.log('Updated Participations Length', updatedParticipations?.length);
+  const { participationScore, allCampaignsClicks, name, rewards } = props;
+  const updatedParticipations = participationScore?.slice(0, 30);
+  console.log('Updated Participations Length', name);
 
-  const updatedRewards = new Array(updatedParticipations?.length).fill(1).map(() => Math.round(Math.random() * 50));
+  // const updatedRewards = new Array(updatedParticipations?.length).fill(1).map(() => Math.round(Math.random() * 50));
 
   //! Graph Data
   const data = {
     labels: updatedParticipations?.map((x) => ''),
     datasets: [
+      {
+        label: 'Clicks',
+        data: allCampaignsClicks,
+        backgroundColor: '#e4485c',
+        borderColor: '#e4485c',
+        borderWidth: 1,
+        hoverBackgroundColor: '#f00',
+      },
       {
         label: 'Participation Score',
         data: updatedParticipations,
@@ -27,20 +37,12 @@ const BarChart = (props: IBarChart) => {
         borderWidth: 1,
         hoverBackgroundColor: '#f00',
       },
-      {
-        label: 'Rewards',
-        data: updatedRewards,
-        backgroundColor: '#e4485c',
-        borderColor: '#e4485c',
-        borderWidth: 1,
-        hoverBackgroundColor: '#f00',
-      },
     ],
   };
 
   return (
     <div className={styles.barChartWrapper}>
-      <h1 className={styles.graphTitle}>Participation Score</h1>
+      <h1 className={styles.graphTitle}>{name} Analytics</h1>
       <Bar data={data} />
     </div>
   );

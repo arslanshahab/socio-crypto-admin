@@ -191,13 +191,18 @@ export const GET_USER_CAMPAIGN_ANALYTICS = gql`
     getUserCampaign(id: $id) {
       id
       name
-      hourlyMetrics {
+      dailyMetrics {
         clickCount
         viewCount
         shareCount
         totalParticipationScore
         rewards
         participationScore
+        singleDailyMetric {
+          clickCount
+          viewCount
+          shareCount
+        }
       }
     }
   }
