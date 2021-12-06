@@ -74,8 +74,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
       >
         <CampaignAudit auditDetails={auditDetails} />
       </GenericModal>
-      <h1 className="text-blue-900 font-semibold text-2xl pb-3">Campaigns Pending to be Audited.</h1>
-      {skip != 0 ? (
+      {/* {skip != 0 ? (
         <Button
           variant="outlined"
           onClick={async () => {
@@ -83,9 +82,9 @@ export const CampaignAuditList: React.FC<Props> = () => {
           }}
         >
           <p>Previous</p>
-        </Button>
-      ) : (
-        <></>
+          </Button>
+          ) : (
+            <></>
       )}
       {skip + data?.listCampaigns?.results?.length != data?.listCampaigns?.total ? (
         <Button
@@ -93,37 +92,44 @@ export const CampaignAuditList: React.FC<Props> = () => {
           onClick={async () => {
             await loadData(skip + 10);
           }}
-        >
+          >
           <p>Next</p>
-        </Button>
+          </Button>
+          ) : (
+            <></>
+          )} */}
+      {data.listCampaigns.results?.length <= 0 ? (
+        'There is no campaign for auditing'
       ) : (
-        <></>
-      )}
-      <Box className="w-full pb-10 overflow-scroll">
-        <table className="w-full table-auto bg-gray-50">
-          <thead>
-            <tr className="font-semibold bg-gray-100">
-              <th className="px-7 py-5 text-left">Campaign Name</th>
-              <th className="px-7 py-5 text-left">Audited</th>
-              <th className="px-7 py-5 text-left">Campaign Ended</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data &&
-              data.listCampaigns.results.map((x: Campaign, index: number) => (
-                <tr
-                  className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
-                  key={x.id}
-                  onClick={() => handleClick(x)}
-                >
-                  <td className="px-7 py-5 text-left capitalize">{x.name}</td>
-                  <td className="px-7 py-5 text-left">{x.audited.toString()}</td>
-                  <td className="px-7 py-5 text-left">{new Date(parseInt(x.endDate)).toDateString()}</td>
+        <>
+          <h1 className="text-blue-900 font-semibold text-2xl pb-3">Campaigns Pending to be Audited.</h1>
+          <Box className="w-full pb-10 overflow-scroll">
+            <table className="w-full table-auto bg-gray-50">
+              <thead>
+                <tr className="font-semibold bg-gray-100">
+                  <th className="px-7 py-5 text-left">Campaign Name</th>
+                  <th className="px-7 py-5 text-left">Audited</th>
+                  <th className="px-7 py-5 text-left">Campaign Ended</th>
                 </tr>
-              ))}
-          </tbody>
-        </table>
-      </Box>
+              </thead>
+              <tbody>
+                {data &&
+                  data.listCampaigns.results.map((x: Campaign, index: number) => (
+                    <tr
+                      className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
+                      key={x.id}
+                      onClick={() => handleClick(x)}
+                    >
+                      <td className="px-7 py-5 text-left capitalize">{x.name}</td>
+                      <td className="px-7 py-5 text-left">{x.audited.toString()}</td>
+                      <td className="px-7 py-5 text-left">{new Date(parseInt(x.endDate)).toDateString()}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </Box>
+        </>
+      )}
     </div>
   );
 };
