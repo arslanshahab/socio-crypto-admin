@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
 import { useHistory } from 'react-router';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Campaign } from '../../types';
 
 interface Props {
   location?: {
@@ -28,6 +29,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
     },
     fetchPolicy: 'cache-and-network',
   });
+  // console.log('Campaign Audit List', skip);
 
   const loadData = async (skip: number) => {
     try {
@@ -48,7 +50,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
     if (!loaded) loadData(skip);
     if (loading)
       return (
-        <div>
+        <div className="flex justify-center items-center">
           <CircularProgress></CircularProgress>
         </div>
       );
@@ -60,30 +62,11 @@ export const CampaignAuditList: React.FC<Props> = () => {
           </div>
         );
       return (
-        <div>
-          {data.listCampaigns.results.map((campaign: any) => {
-            if (campaign.audited) return <div />;
-            return (
-              <div className="pending-withdraw" key={campaign.id} onClick={() => handleClick(campaign)}>
-                <div>
-                  <div className="flex-display">
-                    <p>Campaign Name</p>
-                    <p className="flex-item right">{campaign.name}</p>
-                  </div>
-                  <div className="flex-display">
-                    <p>Audited</p>
-                    <p className="flex-item right">{campaign.audited.toString()}</p>
-                  </div>
-                  <div className="flex-display">
-                    <p>Campaign Ended</p>
-                    <p className="flex-item right">{new Date(parseInt(campaign.endDate)).toString()}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="p-8">
+          <h1>Campaigns Pending to be Audited.</h1>
           {skip != 0 ? (
             <Button
+              variant="outlined"
               onClick={async () => {
                 await loadData(skip - 10);
               }}
@@ -95,6 +78,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
           )}
           {skip + data.listCampaigns.results.length != data.listCampaigns.total ? (
             <Button
+              variant="outlined"
               onClick={async () => {
                 await loadData(skip + 10);
               }}
@@ -104,6 +88,31 @@ export const CampaignAuditList: React.FC<Props> = () => {
           ) : (
             <></>
           )}
+          <Box className="w-full pb-10 overflow-scroll">
+            <table className="w-full table-auto bg-gray-50">
+              <thead>
+                <tr className="font-semibold bg-gray-100">
+                  <th className="px-7 py-5 text-left">Campaign Name</th>
+                  <th className="px-7 py-5 text-left">Audited</th>
+                  <th className="px-7 py-5 text-left">Campaign Ended</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data &&
+                  data.listCampaigns.results.map((x: Campaign, index: number) => (
+                    <tr
+                      className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
+                      key={x.id}
+                      onClick={() => handleClick(x)}
+                    >
+                      <td className="px-7 py-5 text-left capitalize">{x.name}</td>
+                      <td className="px-7 py-5 text-left">{x.audited.toString()}</td>
+                      <td className="px-7 py-5 text-left">{new Date(parseInt(x.endDate)).toString()}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </Box>
         </div>
       );
     }
