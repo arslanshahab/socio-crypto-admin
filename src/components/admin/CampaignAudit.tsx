@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { CREATE_CAMPAIGN_REPORT, DELETE_CAMPAIGN, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
+import { DELETE_CAMPAIGN, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
 import { Button, CircularProgress } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
@@ -28,15 +28,10 @@ export const CampaignAudit: React.FC<Props> = ({ location, auditDetails }) => {
   const history = useHistory();
   console.log('Audit Details', auditDetails);
 
-  const [generateReport, { data }] = useMutation(CREATE_CAMPAIGN_REPORT, {
-    variables: {
-      campaignId: location ? location.state.data.id : '',
-    },
-  });
-
   const [submitReport] = useMutation(SUBMIT_AUDIT_REPORT, {
     variables: {
-      campaignId: location ? location.state.data.id : '',
+      campaignId: auditDetails?.id,
+      // campaignId: location ? location.state.data.id : '',
       rejected: state.rejected,
     },
   });

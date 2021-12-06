@@ -36,7 +36,6 @@ export const CampaignAuditList: React.FC<Props> = () => {
 
   const loadData = async (skip: number) => {
     try {
-      debugger;
       // await getCampaigns();
       await setSkip(skip);
     } catch (e) {
