@@ -4,6 +4,7 @@ import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
 import { Box, Button, CircularProgress } from '@material-ui/core';
 import { Campaign } from '../../types';
 import GenericModal from './../GenericModal';
+import { CampaignAudit } from './CampaignAudit';
 
 interface Props {
   location?: {
@@ -18,6 +19,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
   const [loaded, setLoaded] = useState(false);
   const [skip, setSkip] = useState(0);
   const [progressModal, showProgressModal] = useState(false);
+  const [auditDetails, setAuditDetails] = useState<any>();
 
   const { loading, data } = useQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
@@ -45,8 +47,10 @@ export const CampaignAuditList: React.FC<Props> = () => {
   };
 
   const handleClick = (data: any) => {
+    debugger;
     try {
       showProgressModal(true);
+      setAuditDetails(data);
     } catch (e) {
       showProgressModal(false);
     }
@@ -66,10 +70,10 @@ export const CampaignAuditList: React.FC<Props> = () => {
         open={progressModal}
         onClose={() => showProgressModal(false)}
         persist={false}
-        size="mini"
+        size="small"
         showCloseIcon={true}
       >
-        Hello
+        <CampaignAudit auditDetails={auditDetails} />
       </GenericModal>
       <h1 className="text-blue-900 font-semibold text-2xl pb-3">Campaigns Pending to be Audited.</h1>
       {skip != 0 ? (

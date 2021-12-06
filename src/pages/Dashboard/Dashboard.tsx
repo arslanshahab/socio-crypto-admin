@@ -91,11 +91,11 @@ const Dashboard: React.FC = (props) => {
                       <ManageWithdrawRequests {...props} />
                     </ProtectedRoute>
                   )}
-                  {value['role'] === 'admin' && (
+                  {/* {value['role'] === 'admin' && (
                     <ProtectedRoute exact path={'/dashboard/admin/campaign-audit'}>
                       <CampaignAudit {...props} />
                     </ProtectedRoute>
-                  )}
+                  )} */}
                   {value['role'] === 'admin' && (
                     <ProtectedRoute exact path={'/dashboard/admin/audit-campaigns'}>
                       <CampaignAuditList {...props} />

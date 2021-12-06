@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_CAMPAIGN_REPORT, DELETE_CAMPAIGN, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
-import { Box, Button, CircularProgress } from '@material-ui/core';
-import { FlaggedParticipant } from './FlaggedParticipant';
+import { Button, CircularProgress } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
 interface Props {
+  auditDetails?: any;
   location?: {
     state: {
       data: any;
@@ -15,17 +15,18 @@ interface Props {
     data: any;
   };
 }
+interface StateInterface {
+  loaded: boolean;
+  rejected: string[];
+}
 
-export const CampaignAudit: React.FC<Props> = ({ location }) => {
-  interface StateInterface {
-    loaded: boolean;
-    rejected: string[];
-  }
+export const CampaignAudit: React.FC<Props> = ({ location, auditDetails }) => {
   const [state, setState] = useState<StateInterface>({
     loaded: false,
     rejected: [],
   });
   const history = useHistory();
+  console.log('Audit Details', auditDetails);
 
   const [generateReport, { data }] = useMutation(CREATE_CAMPAIGN_REPORT, {
     variables: {
@@ -50,10 +51,10 @@ export const CampaignAudit: React.FC<Props> = ({ location }) => {
     await submitReport();
   };
 
-  const loadData = async () => {
-    await generateReport();
-    setState({ ...state, loaded: true });
-  };
+  // const loadData = async () => {
+  //   await generateReport();
+  //   setState({ ...state, loaded: true });
+  // };
 
   const toggleRejected = (id: string) => {
     let temp = [];
@@ -73,65 +74,62 @@ export const CampaignAudit: React.FC<Props> = ({ location }) => {
     }
   }, [deletedCampaign]);
 
-  const renderAudit = () => {
-    if (!state.loaded) {
-      loadData();
-      return <CircularProgress />;
-    }
+  // if (true) {
+  //   return;
+  //   <div className="flex justify-center items-center">
+  //     <CircularProgress />;
+  //   </div>;
+  // }
 
-    if (data) {
-      return (
-        <div>
-          <div className="card">
-            <p>Metrics</p>
-            <div className="flex-display">
-              <p>Total Clicks</p>
-              <p className="flex-item right">{data.generateCampaignAuditReport.totalClicks}</p>
-            </div>
-            <div className="flex-display">
-              <p>Total Views</p>
-              <p className="flex-item right">{data.generateCampaignAuditReport.totalViews}</p>
-            </div>
-            <div className="flex-display">
-              <p>Total Submmissions</p>
-              <p className="flex-item right">{data.generateCampaignAuditReport.totalSubmissions}</p>
-            </div>
-            <div className="flex-display">
-              <p>Total Reward Payout</p>
-              <p className="flex-item right">{data.generateCampaignAuditReport.totalRewardPayout}</p>
-            </div>
-          </div>
-          <div className="card">
-            <p>Flagged Participants</p>
-            {data.generateCampaignAuditReport.flaggedParticipants.map((flagged: any) => {
-              return (
-                <FlaggedParticipant
-                  key={flagged.particpantId}
-                  flagged={flagged}
-                  total={data.generateCampaignAuditReport.totalRewardPayout}
-                  toggleRejected={toggleRejected}
-                />
-              );
-            })}
-          </div>
-          <Box
-            marginTop={2}
-            minWidth="100%"
-            display="flex"
-            flexDirection="row"
-            justifyContent="flex-start"
-            alignItems="center"
-          >
-            <Button className="customButton submitButton" onClick={handleSubmit}>{`${
-              state.rejected.length ? `Submit Audit, Rejecting ${state.rejected.length} Participants ` : 'Submit Audit'
-            } `}</Button>
-            <Button className="customButton deleteButton" onClick={() => deleteCampaign()}>
-              Reject Campaign
-            </Button>
-          </Box>
+  return (
+    <div className="p-4">
+      <h3 className="text-blue-900 font-semibold text-2xl pb-3">Audit Detials:</h3>
+      <div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Name:</h6>
+          <p className="w-3/5 text-sm">{auditDetails?.name}</p>
         </div>
-      );
-    }
-  };
-  return <div>{renderAudit()}</div>;
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Total Coin:</h6>
+          <p className="w-3/5 text-sm">{auditDetails?.coiinTotal}</p>
+        </div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Symbol:</h6>
+          <p className="w-3/5 text-sm">{auditDetails?.symbol}</p>
+        </div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Audit Status:</h6>
+
+          <p
+            className={`${
+              auditDetails?.audited == false ? 'text-red-600' : 'text-green-600'
+            }  text-sm shadow p-1 rounded inline`}
+          >
+            {auditDetails?.audited.toString()}
+          </p>
+        </div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Description:</h6>
+          <p className="w-3/5 text-sm">{auditDetails?.description}</p>
+        </div>
+        {auditDetails?.participants.length >= 0 && (
+          <div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Total Participants:</h6>
+              <p className="w-3/5 text-sm">{auditDetails?.participants?.length}</p>
+            </div>
+          </div>
+        )}
+
+        <div className="flex justify-evenly items-center pt-6">
+          <Button variant="contained" color="primary" size="small" onClick={handleSubmit}>{`${
+            state.rejected.length ? `Submit Audit, Rejecting ${state.rejected.length} Participants ` : 'Submit Audit'
+          } `}</Button>
+          <Button variant="contained" color="secondary" size="small" onClick={() => deleteCampaign()}>
+            Reject Campaign
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 };

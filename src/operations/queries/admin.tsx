@@ -125,6 +125,7 @@ export const ADMIN_LIST_CAMPAIGN_QUERY = gql`
         coiinTotal
         description
         audited
+        symbol
         participants {
           id
           participationScore
