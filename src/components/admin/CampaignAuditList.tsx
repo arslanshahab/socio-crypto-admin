@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
-import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress } from '@material-ui/core';
 import { Campaign } from '../../types';
 import GenericModal from './../GenericModal';
 import { CampaignAudit } from './CampaignAudit';
@@ -16,8 +16,8 @@ interface Props {
 }
 
 export const CampaignAuditList: React.FC<Props> = () => {
-  const [loaded, setLoaded] = useState(false);
-  const [skip, setSkip] = useState(0);
+  // const [loaded, setLoaded] = useState(false);
+  // const [skip, setSkip] = useState(0);
   const [progressModal, showProgressModal] = useState(false);
   const [auditDetails, setAuditDetails] = useState<any>();
 
@@ -26,24 +26,21 @@ export const CampaignAuditList: React.FC<Props> = () => {
       open: false,
       scoped: true,
       approved: true,
-      skip: skip,
       take: 10,
       pendingAudit: true,
     },
     fetchPolicy: 'cache-and-network',
   });
-  console.log('Campaign Audit List', skip);
 
-  const loadData = async (skip: number) => {
-    try {
-      // await getCampaigns();
-      await setSkip(skip);
-    } catch (e) {
-      console.log('Error: Load Data Error');
-      console.log(e);
-    }
-    await setLoaded(true);
-  };
+  // const loadData = async (skip: number) => {
+  //   try {
+  //     await setSkip(skip);
+  //   } catch (e) {
+  //     console.log('Error: Load Data Error');
+  //     console.log(e);
+  //   }
+  //   await setLoaded(true);
+  // };
 
   const handleClick = (data: any) => {
     debugger;
@@ -53,7 +50,6 @@ export const CampaignAuditList: React.FC<Props> = () => {
     } catch (e) {
       showProgressModal(false);
     }
-    // history.push('/dashboard/admin/campaign-audit', { data: data });
   };
 
   if (loading)
