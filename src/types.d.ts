@@ -42,8 +42,12 @@ export interface ListOrgs {
 
 export interface ListEmployees {
   listEmployees: {
-    name: string;
-  }[];
+    orgName: string;
+    adminsDetails: {
+      name: string;
+      createdAt: string;
+    }[];
+  };
 }
 
 export interface CampaignListVars {
