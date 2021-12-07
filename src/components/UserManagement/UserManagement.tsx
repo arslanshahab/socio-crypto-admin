@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { useQuery } from '@apollo/client';
-import { ListEmployees } from '../types';
-import { LIST_EMPLOYEES } from '../operations/queries/admin';
-import { RegisterUser } from './RegisterUser';
+import { ListEmployees } from '../../types';
+import { LIST_EMPLOYEES } from '../../operations/queries/admin';
+import { RegisterUser } from '../RegisterUser';
+import styles from './userManagement.module.css';
 
 export const UserManagement: React.FC = () => {
   const { data, loading } = useQuery<ListEmployees>(LIST_EMPLOYEES);
   const [openUserDialog, setUserDialog] = useState(false);
+  console.log('Manage Users Record', data);
+
   return (
     <div>
       <RegisterUser open={openUserDialog} setOpen={setUserDialog} />
