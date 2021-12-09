@@ -19,7 +19,7 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <Switch>
           <Route exact path={'/'} component={LoginPage} />
-          <Route path={'/dashboard'} component={Dashboard} />
+          <ProtectedRoute path={'/dashboard'} component={Dashboard} />
         </Switch>
       </BrowserRouter>
     </div>

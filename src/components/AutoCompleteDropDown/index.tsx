@@ -3,14 +3,14 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { GetUserAllCampaigns, UserCampaignSingle } from '../../types';
 
-interface IProps {
+interface AutoCompleteDropdownProps {
   options: UserCampaignSingle[];
   label: string;
   campaignsData?: GetUserAllCampaigns | undefined;
   getCampaignId: (campaignId: string | undefined) => void;
 }
 
-export default function AutoCompleteDropDown(props: IProps): JSX.Element {
+export default function AutoCompleteDropDown(props: AutoCompleteDropdownProps): JSX.Element {
   const [value, setValue] = React.useState<UserCampaignSingle | null>(props.options[0]);
   const [inputValue, setInputValue] = React.useState<string>();
   const { getCampaignId } = props;
@@ -29,9 +29,6 @@ export default function AutoCompleteDropDown(props: IProps): JSX.Element {
         value={value}
         onChange={(event, newValue) => handleChange(event, newValue)}
         inputValue={inputValue}
-        // onInputChange={(event, newInputValue) => {
-        //   setInputValue(newInputValue);
-        // }}
         id="controllable-states-demo"
         options={props.options}
         getOptionLabel={(option) => `${option.name} (${option.id.substring(option.id.length, option.id.length - 2)})`}

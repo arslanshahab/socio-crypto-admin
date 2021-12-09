@@ -5,8 +5,7 @@ import { urls } from '../apiConfig.json';
 const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
 const baseUrl = (urls as { [key: string]: string })[env] as any;
 
-// const apiURI = process.env.REACT_APP_LOCAL_URL || baseUrl;
-const apiURI = 'http://localhost:4000';
+const apiURI = process.env.REACT_APP_LOCAL_URL || baseUrl;
 
 const httpLink = createHttpLink({
   uri: `${apiURI}/v1/admin/graphql`,

@@ -1,22 +1,21 @@
 /* @import './../../assets/styles/vars.scss'; */
 
 .statCardWrapper {
-  @apply shadow-md p-4 rounded-lg w-1/5 bg-gray-50;
-  cursor: pointer;
+  @apply shadow-md p-4 rounded-lg bg-gray-50 cursor-pointer w-11/12 mb-4;
 }
 .statCardWrapper:hover {
   @apply bg-white shadow-lg;
 }
-.textSm {
+.analyticsName {
   @apply text-blue-800;
 }
-.contentCircle {
+.analyticsNumberIcon {
   @apply flex justify-between items-center pt-2;
 }
-.textLg {
+.analyticsNumber {
   @apply text-2xl;
 }
-.circle {
+.campaignIcon {
   @apply h-10 w-10 rounded-full  flex justify-center items-center text-white text-xl;
 }
 
