@@ -7,8 +7,8 @@ import LineChart from './Charts/LineChart';
 import { IconButton } from '@mui/material';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_USER_CAMPAIGNS, GET_USER_CAMPAIGN_ANALYTICS } from '../operations/queries/campaign';
-import { GetUserAllCampaigns } from './../types';
+import { GET_USER_CAMPAIGNS, GET_USER_CAMPAIGN_ANALYTICS } from '../operations/queries/campaign';
+import { GetUserCampaigns } from './../types';
 import BarChart from './BarChart';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
@@ -25,7 +25,7 @@ export const DashboardHome: React.FC = () => {
   const [campaignId, setCamapignId] = useState('-1');
 
   //! ApolloClient Query Hook
-  const { data } = useQuery<GetUserAllCampaigns>(GET_ALL_USER_CAMPAIGNS, {
+  const { data } = useQuery<GetUserCampaigns>(GET_USER_CAMPAIGNS, {
     variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
     fetchPolicy: 'cache-and-network',
   });
@@ -92,6 +92,7 @@ export const DashboardHome: React.FC = () => {
   //     },
   //   ],
   // };
+  //!------------
 
   return (
     <div>

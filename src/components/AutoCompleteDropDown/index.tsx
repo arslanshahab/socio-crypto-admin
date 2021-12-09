@@ -1,12 +1,12 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { GetUserAllCampaigns, UserCampaignSingle } from '../../types';
+import { GetUserCampaigns, UserCampaignSingle } from '../../types';
 
 interface AutoCompleteDropdownProps {
   options: UserCampaignSingle[];
   label: string;
-  campaignsData?: GetUserAllCampaigns | undefined;
+  campaignsData?: GetUserCampaigns | undefined;
   getCampaignId: (campaignId: string | undefined) => void;
 }
 

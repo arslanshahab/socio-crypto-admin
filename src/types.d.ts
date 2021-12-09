@@ -5,7 +5,7 @@ export interface PaginatedCampaignResults {
   };
 }
 //!----
-export interface GetUserAllCampaigns {
+export interface GetUserCampaigns {
   getUserAllCampaign: [UserCampaignSingle];
 }
 export interface UserCampaignTypes {
