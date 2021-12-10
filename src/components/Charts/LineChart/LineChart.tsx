@@ -3,62 +3,22 @@ import { Line } from 'react-chartjs-2';
 import styles from './lineChart.module.css';
 
 interface ILineChart {
-  participationScore: number[];
   name: string;
-  singleDailyMetrics: {
-    clickCount: number[];
-    viewCount: number[];
-    shareCount: number[];
+  campaignAnalytics: {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: any;
+      backgroundColor: string;
+      borderColor: string;
+      borderWidth: number;
+      hoverBackgroundColor: string;
+    }[];
   };
 }
 
 const LineChart = (props: ILineChart) => {
-  const { participationScore, singleDailyMetrics, name } = props;
-  console.log(
-    'Line Chart Data',
-    participationScore,
-    singleDailyMetrics?.clickCount,
-    singleDailyMetrics?.viewCount,
-    singleDailyMetrics?.shareCount,
-  );
-
-  const data = {
-    labels: participationScore?.map((x) => ''),
-    datasets: [
-      {
-        label: 'Clicks',
-        data: singleDailyMetrics?.clickCount,
-        backgroundColor: '#e4485c',
-        borderColor: '#e4485c',
-        borderWidth: 1,
-        hoverBackgroundColor: '#f00',
-      },
-      {
-        label: 'Views',
-        data: singleDailyMetrics?.viewCount,
-        backgroundColor: '#f80aec',
-        borderColor: '#e4485c',
-        borderWidth: 1,
-        hoverBackgroundColor: '#f020bc',
-      },
-      {
-        label: 'Shares',
-        data: singleDailyMetrics?.shareCount,
-        backgroundColor: '#f8e80a',
-        borderColor: '#f4f80f',
-        borderWidth: 1,
-        hoverBackgroundColor: '#d2e714',
-      },
-      {
-        label: 'Participation Score',
-        data: participationScore,
-        backgroundColor: '#1d40ad',
-        borderColor: '#1d40ad',
-        borderWidth: 1,
-        hoverBackgroundColor: '#f00',
-      },
-    ],
-  };
+  const { campaignAnalytics, name } = props;
 
   return (
     <div className={styles.lineChartWrapper}>
@@ -75,18 +35,8 @@ const LineChart = (props: ILineChart) => {
               beginAtZero: true,
             },
           },
-          // plugins: {
-          //   tooltip: {
-          //     callbacks: {
-          //       label: (ctx) => {
-          //         console.log(ctx);
-          //         return 'abc';
-          //       },
-          //     },
-          //   },
-          // },
         }}
-        data={data}
+        data={campaignAnalytics}
       />
     </div>
   );

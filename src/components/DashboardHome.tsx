@@ -71,27 +71,66 @@ export const DashboardHome: React.FC = () => {
   ];
 
   //!----------------------------------------------------------
-  // const data1 = {
-  //   labels: ?.map((x) => ''),
-  //   datasets: [
-  //     {
-  //       label: 'Clicks',
-  //       data: clicks,
-  //       backgroundColor: '#e4485c',
-  //       borderColor: '#e4485c',
-  //       borderWidth: 1,
-  //       hoverBackgroundColor: '#f00',
-  //     },
-  //     {
-  //       label: 'Participation Score',
-  //       data: updatedParticipations,
-  //       backgroundColor: '#1d40ad',
-  //       borderColor: '#1d40ad',
-  //       borderWidth: 1,
-  //       hoverBackgroundColor: '#f00',
-  //     },
-  //   ],
-  // };
+  // Bar Chart Data
+  const data1 = {
+    labels: userCamapign?.getUserCampaign?.dailyMetrics?.participationScore?.map((x: string[]) => '').slice(0, 30),
+    datasets: [
+      {
+        label: 'Clicks',
+        data: userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount,
+        backgroundColor: '#e4485c',
+        borderColor: '#e4485c',
+        borderWidth: 1,
+        hoverBackgroundColor: '#f00',
+      },
+      {
+        label: 'Participation Score',
+        data: userCamapign?.getUserCampaign?.dailyMetrics?.participationScore,
+        backgroundColor: '#1d40ad',
+        borderColor: '#1d40ad',
+        borderWidth: 1,
+        hoverBackgroundColor: '#f00',
+      },
+    ],
+  };
+  // Line Chat Data
+  const data2 = {
+    labels: userCamapign?.getUserCampaign?.dailyMetrics?.participationScore?.map((x: string[]) => ''),
+    datasets: [
+      {
+        label: 'Clicks',
+        data: userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount,
+        backgroundColor: '#e4485c',
+        borderColor: '#e4485c',
+        borderWidth: 1,
+        hoverBackgroundColor: '#f00',
+      },
+      {
+        label: 'Views',
+        data: userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.viewCount,
+        backgroundColor: '#f80aec',
+        borderColor: '#e4485c',
+        borderWidth: 1,
+        hoverBackgroundColor: '#f020bc',
+      },
+      {
+        label: 'Shares',
+        data: userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.shareCount,
+        backgroundColor: '#f8e80a',
+        borderColor: '#f4f80f',
+        borderWidth: 1,
+        hoverBackgroundColor: '#d2e714',
+      },
+      {
+        label: 'Participation Score',
+        data: userCamapign?.getUserCampaign?.dailyMetrics?.participationScore,
+        backgroundColor: '#1d40ad',
+        borderColor: '#1d40ad',
+        borderWidth: 1,
+        hoverBackgroundColor: '#f00',
+      },
+    ],
+  };
   //!------------
 
   return (
@@ -120,20 +159,11 @@ export const DashboardHome: React.FC = () => {
 
       {campaignId == '-1' ? (
         <div>
-          <BarChart
-            name={userCamapign?.getUserCampaign?.name}
-            participationScore={userCamapign?.getUserCampaign?.dailyMetrics?.participationScore}
-            clicks={userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount}
-            rewards={userCamapign?.getUserCampaign?.dailyMetrics?.rewards}
-          />
+          <BarChart name={userCamapign?.getUserCampaign?.name} participationAnalytics={data1} />
         </div>
       ) : (
         <div>
-          <LineChart
-            name={userCamapign?.getUserCampaign?.name}
-            singleDailyMetrics={userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric}
-            participationScore={userCamapign?.getUserCampaign?.dailyMetrics?.participationScore}
-          />
+          <LineChart name={userCamapign?.getUserCampaign?.name} campaignAnalytics={data2} />
         </div>
       )}
     </div>
