@@ -13,9 +13,7 @@ interface IBarChart {
       label: string;
       data: any;
       backgroundColor: string;
-      borderColor: string;
       borderWidth: number;
-      hoverBackgroundColor: string;
     }[];
   };
 }

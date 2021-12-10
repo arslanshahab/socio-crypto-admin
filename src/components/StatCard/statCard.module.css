@@ -19,18 +19,18 @@
   @apply h-10 w-10 rounded-full  flex justify-center items-center text-white text-xl;
 }
 
-.clicksCard {
+.clickCount {
   @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }
-.viewsCard {
+.viewCount {
   @apply bg-gradient-to-r from-green-300 to-blue-600;
 }
-.sharesCard {
+.shareCount {
   @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }
-.participationsCard {
+.totalParticipationScore {
   @apply bg-gradient-to-r from-green-300 to-blue-600;
 }
-.rewardsCard {
+.rewards {
   @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }

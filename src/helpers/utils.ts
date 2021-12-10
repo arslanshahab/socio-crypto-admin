@@ -124,3 +124,5 @@ export const prepareChannelTemplatesFromResponse = (
   }
   return initData;
 };
+
+export const chartColors = ['#e4485c', '#1d40ad', '#f80aec', '#f8e80a', '#026b14'];

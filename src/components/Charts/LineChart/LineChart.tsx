@@ -4,6 +4,8 @@ import styles from './lineChart.module.css';
 
 interface ILineChart {
   name: string;
+  scaleColorX?: string;
+  scaleColorY?: string;
   campaignAnalytics: {
     labels: string[];
     datasets: {
@@ -12,13 +14,12 @@ interface ILineChart {
       backgroundColor: string;
       borderColor: string;
       borderWidth: number;
-      hoverBackgroundColor: string;
     }[];
   };
 }
 
 const LineChart = (props: ILineChart) => {
-  const { campaignAnalytics, name } = props;
+  const { campaignAnalytics, name, scaleColorX, scaleColorY } = props;
 
   return (
     <div className={styles.lineChartWrapper}>
@@ -27,11 +28,11 @@ const LineChart = (props: ILineChart) => {
         options={{
           scales: {
             x: {
-              ticks: { color: '#1d40ad' },
+              ticks: { color: scaleColorX },
             },
 
             y: {
-              ticks: { color: '#1d40ad' },
+              ticks: { color: scaleColorY },
               beginAtZero: true,
             },
           },
