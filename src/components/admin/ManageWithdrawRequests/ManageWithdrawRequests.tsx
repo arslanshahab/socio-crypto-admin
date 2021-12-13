@@ -98,7 +98,6 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
     setState({ ...state, selected: temp });
   };
 
-  // const renderManageWithdrawals = () => {
   return (
     <div className={styles.manageWithdrawRequestWrapper}>
       <h1 className={styles.heading}>Manage Withdrawals</h1>
@@ -110,7 +109,6 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
       </AppBar>
       <TabPanel value={value} index={0}>
         <div>
-          {/* //! <<<<<<<<<***************************>>>>>>>>>>>>> */}
           <div className={styles.withdrawDetailsCard}>
             <div className={styles.withdrawRow}>
               <h6 className={styles.title}>User KYC Status</h6>
@@ -162,7 +160,6 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
               <h6 className={styles.title}>Total Annual Withdrawn </h6>
               <p className={styles.details}>${withdrawData?.totalAnnualWithdrawn.toFixed(2)}</p>
             </div>
-            {/* //!---------------- */}
 
             <div className={styles.checkboxAndButtonWrapper}>
               <div>
@@ -193,7 +190,6 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
               </div>
             </div>
           </div>
-          {/* //!----------**************---------------- */}
           {/* {state.error.length ? <ErrorCard close={closeError} data={state.error}></ErrorCard> : <div />} */}
         </div>
       </TabPanel>
@@ -275,10 +271,3 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
     </div>
   );
 };
-// return (
-//   <div>
-//     <p>Manage Withdrawals</p>
-//     {renderManageWithdrawals()}
-//   </div>
-// );
-// };

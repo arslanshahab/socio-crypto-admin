@@ -3,7 +3,7 @@ import { AppBar, Tabs, Tab, Typography, Grid, Button } from '@material-ui/core';
 import { TabPanel } from './TabPanel';
 import { WithdrawHistory } from './admin/WithdrawHistory';
 import { PendingWithdrawList } from './admin/PendingWithdrawList/PendingWithdrawList';
-import { BrandList } from './BrandList';
+import { BrandList } from './BrandList/BrandList';
 import { RegisterBrand } from '../pages/RegisterBrand';
 import { PendingCampaigns } from './PendingCampaigns';
 
