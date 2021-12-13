@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar, Tabs, Tab, Typography, Grid, Button } from '@material-ui/core';
 import { TabPanel } from './TabPanel';
 import { WithdrawHistory } from './admin/WithdrawHistory';
-import { PendingWithdrawList } from './admin/PendingWithdrawList';
+import { PendingWithdrawList } from './admin/PendingWithdrawList/PendingWithdrawList';
 import { BrandList } from './BrandList';
 import { RegisterBrand } from '../pages/RegisterBrand';
 import { PendingCampaigns } from './PendingCampaigns';

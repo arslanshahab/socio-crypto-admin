@@ -80,7 +80,7 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
       await setState({ ...state, selectedWithdrawStatus: status });
       await updateWithdraw();
       history.push('/dashboard/admin');
-    } catch (e) {
+    } catch (e: any) {
       displayError(e.message);
     }
   };
@@ -120,13 +120,13 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
                     return (
                       <div key={i}>
                         {withdraw.currency == 'usd' ? (
-                          <p className="right">{`$${parseFloat(withdraw.usdbalance).toFixed(
+                          <p className="right">{`$${parseFloat(withdraw?.usdbalance).toFixed(
                             2,
-                          )} ${withdraw.currency.toUpperCase()}`}</p>
+                          )} ${withdraw?.currency?.toUpperCase()}`}</p>
                         ) : (
-                          <p className="right">{`${parseFloat(withdraw.balance).toFixed(
+                          <p className="right">{`${parseFloat(withdraw?.balance).toFixed(
                             2,
-                          )} ${withdraw.currency.toUpperCase()}`}</p>
+                          )} ${withdraw?.currency?.toUpperCase()}`}</p>
                         )}
                       </div>
                     );
