@@ -1,3 +1,24 @@
 .pendingWithdrawListWrapper {
   /* @apply my-8; */
 }
+.loading {
+  @apply flex justify-center items-center;
+}
+.withdrawalHeading {
+  @apply text-blue-900 font-semibold text-xl pb-4;
+}
+.tableWrapper {
+  @apply w-full pb-10 overflow-scroll;
+}
+.table {
+  @apply w-full table-auto bg-gray-50;
+}
+.tableHeadRow {
+  @apply font-semibold bg-gray-100;
+}
+.tableBodyRow {
+  @apply hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer;
+}
+.withdrawColumn {
+  @apply px-7 py-5 text-left capitalize;
+}

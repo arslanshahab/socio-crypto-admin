@@ -24,19 +24,14 @@ export const Admin: React.FC = (props) => {
   };
 
   return (
-    <div>
+    <div className="p-4">
       <RegisterBrand open={open} setOpen={setOpen} />
-      <Grid container>
-        <Grid item xs>
-          <Typography variant={'h4'}>Admin</Typography>
-        </Grid>
-        <Grid item xs={6} />
-        <Grid item xs>
-          <Button variant={'contained'} color={'primary'} onClick={() => setOpen(true)}>
-            Register New Brand
-          </Button>
-        </Grid>
-      </Grid>
+      <div className="flex justify-between items-center pb-4">
+        <h1 className="text-blue-900 font-semibold text-2xl">Admin</h1>
+        <Button variant={'contained'} color={'primary'} onClick={() => setOpen(true)}>
+          Register New Brand
+        </Button>
+      </div>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
           <Tab label="Payments / KYC" {...a11yProps(0)} />
