@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Tabs, Tab, Typography, Grid, Button } from '@material-ui/core';
 import { TabPanel } from './TabPanel';
-import { WithdrawHistory } from './admin/WithdrawHistory';
+import { WithdrawHistory } from './admin/WithdrawHistory/WithdrawHistory';
 import { PendingWithdrawList } from './admin/PendingWithdrawList/PendingWithdrawList';
 import { BrandList } from './BrandList/BrandList';
 import { RegisterBrand } from '../pages/RegisterBrand';
