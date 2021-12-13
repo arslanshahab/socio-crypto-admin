@@ -147,6 +147,9 @@ export const LIST_ORGS = gql`
   query listOrgs($skip: Int, $take: Int) {
     listOrgs(skip: $skip, take: $take) {
       name
+      createdAt
+      campaignCount
+      adminCount
     }
   }
 `;
