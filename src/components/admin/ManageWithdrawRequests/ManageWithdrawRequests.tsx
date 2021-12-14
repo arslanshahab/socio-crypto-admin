@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import { ADMIN_GET_KYC_BY_USER, UPDATE_KYC_STATUS, UPDATE_WITHDRAWAL_STATUS } from '../../../operations/queries/admin';
-import { ErrorCard } from '../../Error';
 import { TabPanel } from '../../TabPanel';
 import { AppBar, Button, CircularProgress, Tab, Tabs } from '@material-ui/core';
 import { FaRegCheckSquare, FaCheckSquare } from 'react-icons/fa';
@@ -72,10 +71,6 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
     setState({ ...state, error: data });
   };
 
-  const closeError = () => {
-    setState({ ...state, error: '' });
-  };
-
   const handleSubmitWithdraw = async (status: string) => {
     try {
       await setState({ ...state, selectedWithdrawStatus: status });
@@ -112,53 +107,61 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
           <div className={styles.withdrawDetailsCard}>
             <div className={styles.withdrawRow}>
               <h6 className={styles.title}>User KYC Status</h6>
-              <p className={withdrawData?.user?.kycStatus === 'pending' ? 'text-red-600' : 'text-green-700'}>
+              <p
+                className={`${withdrawData?.user?.kycStatus === 'pending' ? 'text-red-600' : 'text-green-700'} ${
+                  styles.withdrawCol
+                }`}
+              >
                 {withdrawData?.user?.kycStatus}
               </p>
             </div>
             <div className={styles.withdrawRow}>
               <h6 className={styles.title}>Pending Withdrawal Amount</h6>
-              {withdrawData?.totalPendingWithdrawal?.map(
-                (withdraw: { balance: string; currency: string; usdbalance: string }, index: number) => (
-                  <div key={index}>
-                    <div className={styles.detailsWrap}>
-                      <h6 className={styles.detailsWrapTitle}>Balance:</h6>
-                      <p>{parseFloat(withdraw.balance).toFixed(2)}</p>
+              <div className={styles.withdrawCol}>
+                {withdrawData?.totalPendingWithdrawal?.map(
+                  (withdraw: { balance: string; currency: string; usdbalance: string }, index: number) => (
+                    <div key={index} className="shadow rounded mb-4 p-2">
+                      <div className={styles.detailsWrap}>
+                        <h6 className={styles.detailsWrapTitle}>Balance:</h6>
+                        <p>{parseFloat(withdraw.balance).toFixed(2)}</p>
+                      </div>
+                      <div className={styles.detailsWrap}>
+                        <h6 className={styles.detailsWrapTitle}>USD Balance:</h6>
+                        <p>${parseFloat(withdraw.usdbalance).toFixed(2)}</p>
+                      </div>
+                      <div className={styles.detailsWrap}>
+                        <h6 className={styles.detailsWrapTitle}>Currency:</h6>
+                        <p>{withdraw.currency || 'Not Defined'}</p>
+                      </div>
                     </div>
-                    <div className={styles.detailsWrap}>
-                      <h6 className={styles.detailsWrapTitle}>USD Balance:</h6>
-                      <p>${parseFloat(withdraw.usdbalance).toFixed(2)}</p>
-                    </div>
-                    <div className={styles.detailsWrap}>
-                      <h6 className={styles.detailsWrapTitle}>Currency:</h6>
-                      <p>{withdraw.currency || 'Not Defined'}</p>
-                    </div>
-                  </div>
-                ),
-              )}
+                  ),
+                )}
+              </div>
             </div>
             <div className={styles.withdrawRow}>
               <h6 className={styles.title}>Transferred Amount</h6>
-              {withdrawData?.transfers?.map(
-                (withdraw: { action: string; amount: number; createdAt: string }, index: number) => (
-                  <div key={index}>
-                    <div className={styles.detailsWrap}>
-                      <h6 className={styles.detailsWrapTitle}>Action:</h6> <p>{withdraw.action}</p>{' '}
+              <div className={styles.withdrawCol}>
+                {withdrawData?.transfers?.map(
+                  (withdraw: { action: string; amount: number; createdAt: string }, index: number) => (
+                    <div key={index} className="shadow rounded mb-4 p-2">
+                      <div className={styles.detailsWrap}>
+                        <h6 className={styles.detailsWrapTitle}>Action:</h6> <p>{withdraw.action}</p>{' '}
+                      </div>
+                      <div className={styles.detailsWrap}>
+                        <h6 className={styles.detailsWrapTitle}>Amount:</h6> <p>${withdraw.amount.toFixed(2)}</p>
+                      </div>
+                      <div className={styles.detailsWrap}>
+                        <h6 className={styles.detailsWrapTitle}>Date:</h6>
+                        <p>{new Date(parseInt(withdraw.createdAt)).toLocaleString()}</p>
+                      </div>
                     </div>
-                    <div className={styles.detailsWrap}>
-                      <h6 className={styles.detailsWrapTitle}>Amount:</h6> <p>${withdraw.amount.toFixed(2)}</p>
-                    </div>
-                    <div className={styles.detailsWrap}>
-                      <h6 className={styles.detailsWrapTitle}>Date:</h6>
-                      <p>{new Date(parseInt(withdraw.createdAt)).toLocaleString()}</p>
-                    </div>
-                  </div>
-                ),
-              )}
+                  ),
+                )}
+              </div>
             </div>
             <div className={styles.withdrawRow}>
               <h6 className={styles.title}>Total Annual Withdrawn </h6>
-              <p className={styles.details}>${withdrawData?.totalAnnualWithdrawn.toFixed(2)}</p>
+              <p className={styles.withdrawCol}>${withdrawData?.totalAnnualWithdrawn.toFixed(2)}</p>
             </div>
 
             <div className={styles.checkboxAndButtonWrapper}>

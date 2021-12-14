@@ -8,10 +8,17 @@
   @apply shadow p-4 rounded-md;
 }
 .withdrawRow {
-  @apply grid grid-cols-2 mb-4 shadow-sm p-2;
+  /* @apply grid grid-cols-2 mb-4 shadow-sm p-2; */
+  /* @apply  */
+}
+.withdrawRow {
+  @apply grid grid-cols-12 mb-4 shadow-sm p-2;
+}
+.withdrawCol {
+  @apply col-start-5 col-end-12;
 }
 .title {
-  @apply capitalize;
+  @apply capitalize col-start-1 col-end-4;
 }
 .detailsWrap {
   @apply flex pb-2;
