@@ -47,7 +47,7 @@
     "web3modal": "^1.9.3"
   },
   "scripts": {
-    "start": "PORT=3000 BROWSER='firefox developer edition' craco start",
+    "start": "set PORT=3000 && set BROWSER='firefox developer edition' && craco start",
     "build:production": "NODE_ENV=production REACT_APP_STAGE=production GENERATE_SOURCEMAP=false craco build",
     "build:staging": "NODE_ENV=development REACT_APP_STAGE=development craco build",
     "build": "craco build",

@@ -5,7 +5,7 @@ import { WithdrawHistory } from './admin/WithdrawHistory/WithdrawHistory';
 import { PendingWithdrawList } from './admin/PendingWithdrawList/PendingWithdrawList';
 import { BrandList } from './BrandList/BrandList';
 import { RegisterBrand } from '../pages/RegisterBrand';
-import { PendingCampaigns } from './PendingCampaigns';
+import { PendingCampaigns } from './PendingCampaigns/PendingCampaigns';
 
 export const Admin: React.FC = (props) => {
   const [value, setValue] = React.useState(0);
