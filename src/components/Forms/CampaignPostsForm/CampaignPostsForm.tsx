@@ -74,6 +74,10 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       for (let index2 = 0; index2 < channelTemplates[channel].length; index2++) {
         const template = channelTemplates[channel][index2];
         if (!template.post) {
+          dispatch(showErrorAlert(`Template posts are required`));
+          return (validated = false);
+        }
+        if (template.post.length > MAX_POST_LENGTH) {
           dispatch(showErrorAlert(`Post exceeded maximum length of characters.`));
           return (validated = false);
         }
