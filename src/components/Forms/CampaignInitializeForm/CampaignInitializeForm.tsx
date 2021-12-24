@@ -20,6 +20,8 @@ interface Props {
   campaignType: string;
 }
 
+const MAX_TAGS_LENGTH = 50;
+
 const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   campaignType,
   activeStep,
@@ -65,14 +67,19 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
     updateErrors('endDate', dateIsoString);
   };
 
-  const updateErrors = (name: string, data: any) => {
-    const key = name;
+  const updateErrors = (key: string, data: any) => {
     const value = data;
     const newErrors = { ...errors };
     if (!value || value.length === 0) {
       newErrors[key] = true;
     } else {
-      newErrors[key] = false;
+      if (key === 'tags') {
+        if (data.length > MAX_TAGS_LENGTH) {
+          newErrors[key] = true;
+        } else {
+          newErrors[key] = false;
+        }
+      }
     }
     setErrors(newErrors);
   };
@@ -132,6 +139,10 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       return (validated = false);
     }
     if (!tags) {
+      setErrors((prev) => ({ ...prev, tags: true }));
+      return (validated = false);
+    }
+    if (tags.length > MAX_TAGS_LENGTH) {
       setErrors((prev) => ({ ...prev, tags: true }));
       return (validated = false);
     }
@@ -259,6 +270,13 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
                 updateErrors('tags', e.target.value);
               }}
             />
+            <span
+              className={`w-full text-xs flex flex-row justify-end ${
+                errors['tags'] ? 'text-red-500' : 'text-gray-500'
+              }`}
+            >
+              Characters added {`${tags.length}/${MAX_TAGS_LENGTH}`}
+            </span>
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
