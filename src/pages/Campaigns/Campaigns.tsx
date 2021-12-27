@@ -24,6 +24,18 @@ const CampaignsPage: React.FC = () => {
         </Box>
       )}
       {!loading && (!data?.listCampaigns.results.length ? <EmptyCampaigns /> : <CampaignTable data={data} />)}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100px' }}>
+        <button
+          type="button"
+          style={{ backgroundColor: '#333333', border: 'none', borderRadius: 4, color: 'white', padding: '10px' }}
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = 'http://localhost:4000/oauth';
+          }}
+        >
+          Continue with TikTok
+        </button>
+      </div>
     </Box>
   );
 };
