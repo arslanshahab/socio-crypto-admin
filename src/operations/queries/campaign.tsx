@@ -186,23 +186,22 @@ export const GET_USER_CAMPAIGNS = gql`
     }
   }
 `;
-export const GET_USER_CAMPAIGN_ANALYTICS = gql`
-  query getUserCampaign($id: String) {
-    getUserCampaign(id: $id) {
-      id
-      name
-      dailyMetrics {
+//!------------------
+export const DASHBOARD_METRICS = gql`
+  query getDashboardMetrics($campaignId: String) {
+    getDashboardMetrics(campaignId: $campaignId) {
+      aggregatedCampaignMetrics {
         clickCount
         viewCount
         shareCount
-        totalParticipationScore
-        rewards
         participationScore
-        singleDailyMetric {
-          clickCount
-          viewCount
-          shareCount
-        }
+        campaign_name
+      }
+      campaignMetrics {
+        clickCount
+        viewCount
+        shareCount
+        participationScore
       }
     }
   }

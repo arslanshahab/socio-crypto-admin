@@ -4,7 +4,7 @@ import LineChart from './Charts/LineChart';
 import { IconButton } from '@mui/material';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
 import { useQuery } from '@apollo/client';
-import { GET_USER_CAMPAIGNS, GET_USER_CAMPAIGN_ANALYTICS } from '../operations/queries/campaign';
+import { GET_USER_CAMPAIGNS, DASHBOARD_METRICS } from '../operations/queries/campaign';
 import { GetUserCampaigns } from './../types';
 import BarChart from './BarChart';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
@@ -13,13 +13,16 @@ import { chartColors } from './../helpers/utils';
 export const DashboardHome: React.FC = () => {
   //! Use State Hook
   const [campaignId, setCamapignId] = useState('-1');
+
   //! ApolloClient Query Hook
   const { data } = useQuery<GetUserCampaigns>(GET_USER_CAMPAIGNS, {
     variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
     fetchPolicy: 'cache-and-network',
   });
-  const { data: userCamapign } = useQuery(GET_USER_CAMPAIGN_ANALYTICS, {
-    variables: { id: campaignId },
+
+  //! Dashboard Metrics
+  const { data: dashboardMetrics } = useQuery(DASHBOARD_METRICS, {
+    variables: { campaignId: campaignId },
   });
 
   //! Handlers
@@ -29,54 +32,58 @@ export const DashboardHome: React.FC = () => {
   const getCampaignId = (id: string) => {
     setCamapignId(id);
   };
+
   //! Stat Card Keys
-  const countsKey = ['clickCount', 'viewCount', 'shareCount', 'totalParticipationScore', 'rewards'];
+  const countsKey = ['clickCount', 'viewCount', 'shareCount', 'participationScore', 'rewards'];
+
   //! Bar Chart Data
   const barChartData = {
-    labels: userCamapign?.getUserCampaign?.dailyMetrics?.participationScore?.map((x: string[]) => '').slice(0, 30),
+    labels: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: string[]) => ''),
     datasets: [
       {
         label: 'Clicks',
-        data: userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount,
+        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.clickCount),
         backgroundColor: chartColors[0],
         borderWidth: 1,
       },
       {
         label: 'Participation Score',
-        data: userCamapign?.getUserCampaign?.dailyMetrics?.participationScore,
+        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.participationScore),
+
         backgroundColor: chartColors[1],
         borderWidth: 1,
       },
     ],
   };
+
   //! Line Chart Data
   const lineChartData = {
-    labels: userCamapign?.getUserCampaign?.dailyMetrics?.participationScore?.map((x: string[]) => ''),
+    labels: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: string[]) => ''),
     datasets: [
       {
         label: 'Clicks',
-        data: userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.clickCount,
+        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.clickCount),
         backgroundColor: chartColors[0],
         borderColor: chartColors[0],
         borderWidth: 1,
       },
       {
         label: 'Views',
-        data: userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.viewCount,
+        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.viewCount),
         backgroundColor: chartColors[1],
         borderColor: chartColors[1],
         borderWidth: 1,
       },
       {
         label: 'Shares',
-        data: userCamapign?.getUserCampaign?.dailyMetrics?.singleDailyMetric?.shareCount,
+        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.shareCount),
         backgroundColor: chartColors[2],
         borderColor: chartColors[2],
         borderWidth: 1,
       },
       {
         label: 'Participation Score',
-        data: userCamapign?.getUserCampaign?.dailyMetrics?.participationScore,
+        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.participationScore),
         backgroundColor: chartColors[3],
         borderColor: chartColors[3],
         borderWidth: 1,
@@ -89,7 +96,11 @@ export const DashboardHome: React.FC = () => {
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="grid grid-cols-5 px-8 sm:grid-cols-1 md:grid-cols-2">
         {countsKey?.map((x: any) => (
-          <StatCard key={x} count={userCamapign?.getUserCampaign?.dailyMetrics[x] || ''} type={x} />
+          <StatCard
+            key={x}
+            count={dashboardMetrics?.getDashboardMetrics?.aggregatedCampaignMetrics?.[x] || 0}
+            type={x}
+          />
         ))}
       </div>
       <div className="w-4/5 mt-12 mx-auto flex gap-4">
@@ -110,12 +121,12 @@ export const DashboardHome: React.FC = () => {
 
       {campaignId === '-1' ? (
         <div>
-          <BarChart name={userCamapign?.getUserCampaign?.name} participationAnalytics={barChartData} />
+          <BarChart name="All" participationAnalytics={barChartData} />
         </div>
       ) : (
         <div>
           <LineChart
-            name={userCamapign?.getUserCampaign?.name}
+            name={dashboardMetrics?.getDashboardMetrics?.aggregatedCampaignMetrics?.campaign_name || ''}
             campaignAnalytics={lineChartData}
             scaleColorX={chartColors[0]}
             scaleColorY={chartColors[1]}
