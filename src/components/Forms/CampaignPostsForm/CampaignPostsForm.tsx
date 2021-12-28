@@ -5,7 +5,6 @@ import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { Box } from '@material-ui/core';
 import Actions from '../../NewCampaign/Actions';
 import { updateCampaign } from '../../../store/actions/campaign';
-import { ErrorObject } from '../../../types';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import CustomButton from '../../CustomButton/CustomButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -13,23 +12,26 @@ import { showErrorAlert } from '../../../store/actions/alerts';
 import CustomInput from '../../CustomInput/CustomInput';
 import CloseIcon from '@material-ui/icons/Close';
 
+const MAX_POST_LENGTH = 120;
+
 const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const campaign = useStoreCampaignSelector();
   const socialMediaType = campaign.config.socialMediaType;
   const dispatch = useDispatch();
   const [channelTemplates, setChannelTemplates] = useState(campaign.config.channelTemplates);
-  const [errors, setErrors] = useState<ErrorObject>({});
 
   const next = () => {
-    const augmentedCampaign = {
-      ...campaign,
-      config: {
-        ...campaign.config,
-        channelTemplates,
-      },
-    };
-    dispatch(updateCampaign(augmentedCampaign));
-    handleNext();
+    if (validateInputs()) {
+      const augmentedCampaign = {
+        ...campaign,
+        config: {
+          ...campaign.config,
+          channelTemplates,
+        },
+      };
+      dispatch(updateCampaign(augmentedCampaign));
+      handleNext();
+    }
   };
 
   const addPost = (channel: string) => {
@@ -64,6 +66,26 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     setChannelTemplates(templates);
   };
 
+  const validateInputs = (): boolean => {
+    let validated = true;
+    const { socialMediaType } = campaign.config;
+    for (let index = 0; index < socialMediaType.length; index++) {
+      const channel = socialMediaType[index];
+      for (let index2 = 0; index2 < channelTemplates[channel].length; index2++) {
+        const template = channelTemplates[channel][index2];
+        if (!template.post) {
+          dispatch(showErrorAlert(`Template posts are required`));
+          return (validated = false);
+        }
+        if (template.post.length > MAX_POST_LENGTH) {
+          dispatch(showErrorAlert(`Post exceeded maximum length of characters.`));
+          return (validated = false);
+        }
+      }
+    }
+    return validated;
+  };
+
   return (
     <Box className="w-full mt-10 px-28">
       <Fade>
@@ -92,16 +114,21 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
                       handlePostChange(channel, index, e.target.value);
                     }}
                   />
-                  {index < 2 && <p className="text-sm text-gray-400 mt-1">Default Template</p>}
-                  {index >= 2 && (
-                    <CustomButton
-                      className="w-32 mt-1 rounded-md text-red-600 text-sm bg-transparent"
-                      onClick={() => removePost(channel, index)}
-                    >
-                      <CloseIcon className="mr-1" style={{ fontSize: '18px' }} />
-                      <span>Remove Post</span>
-                    </CustomButton>
-                  )}
+                  <div className="w-full flex flex-row justify-between items-center">
+                    {index < 2 && <p className="text-sm text-gray-400 mt-1">Default Template</p>}
+                    {index >= 2 && (
+                      <CustomButton
+                        className="w-32 mt-1 rounded-md text-red-600 text-sm bg-transparent"
+                        onClick={() => removePost(channel, index)}
+                      >
+                        <CloseIcon className="mr-1" style={{ fontSize: '18px' }} />
+                        <span>Remove Post</span>
+                      </CustomButton>
+                    )}
+                    <span className="text-xs flex flex-row justify-end text-gray-500">
+                      Characters added {`${item.post.length}/${MAX_POST_LENGTH}`}
+                    </span>
+                  </div>
                 </Box>
               ))}
             </Box>
