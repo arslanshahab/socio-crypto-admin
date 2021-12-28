@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import StatCard from './StatCard';
 import LineChart from './Charts/LineChart';
-import { IconButton } from '@mui/material';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
 import { useQuery } from '@apollo/client';
 import { GET_USER_CAMPAIGNS, DASHBOARD_METRICS } from '../operations/queries/campaign';
 import { GetUserCampaigns } from './../types';
 import BarChart from './BarChart';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { chartColors } from './../helpers/utils';
 
 export const DashboardHome: React.FC = () => {
@@ -22,7 +20,8 @@ export const DashboardHome: React.FC = () => {
 
   //! Dashboard Metrics
   const { data: dashboardMetrics } = useQuery(DASHBOARD_METRICS, {
-    variables: { campaignId: campaignId },
+    variables: { campaignId },
+    fetchPolicy: 'cache-and-network',
   });
 
   //! Handlers
@@ -34,7 +33,7 @@ export const DashboardHome: React.FC = () => {
   };
 
   //! Stat Card Keys
-  const countsKey = ['clickCount', 'viewCount', 'shareCount', 'participationScore', 'rewards'];
+  const countsKey = ['clickCount', 'viewCount', 'shareCount', 'totalParticipants', 'participationScore'];
 
   //! Bar Chart Data
   const barChartData = {
@@ -111,12 +110,6 @@ export const DashboardHome: React.FC = () => {
             getCampaignId={(id) => getCampaignId(id || '')}
           />
         )}
-        <IconButton size="medium">
-          <IoIosArrowBack />
-        </IconButton>
-        <IconButton size="medium">
-          <IoIosArrowForward />
-        </IconButton>
       </div>
 
       {campaignId === '-1' ? (

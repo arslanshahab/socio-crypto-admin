@@ -188,14 +188,15 @@ export const GET_USER_CAMPAIGNS = gql`
 `;
 //!------------------
 export const DASHBOARD_METRICS = gql`
-  query getDashboardMetrics($campaignId: String) {
-    getDashboardMetrics(campaignId: $campaignId) {
+  query getDashboardMetrics($campaignId: String, $skip: Int, $take: Int) {
+    getDashboardMetrics(campaignId: $campaignId, skip: $skip, take: $take) {
       aggregatedCampaignMetrics {
         clickCount
         viewCount
         shareCount
         participationScore
         campaign_name
+        totalParticipants
       }
       campaignMetrics {
         clickCount

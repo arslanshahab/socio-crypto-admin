@@ -13,8 +13,8 @@ const countTitleMap: { [key: string]: string } = {
   clickCount: 'Clicks',
   viewCount: 'Views',
   shareCount: 'Shares',
+  totalParticipants: 'Participants',
   participationScore: 'Participation Score',
-  rewards: 'Rewards',
 };
 
 const countIconMap: { [key: string]: React.ReactNode } = {
@@ -27,8 +27,6 @@ const countIconMap: { [key: string]: React.ReactNode } = {
 
 const StatCard = (props: IProps) => {
   const { type, count } = props;
-  console.log('StatCard', count);
-
   return (
     <div className={styles.statCardWrapper}>
       <p className={styles.analyticsName}>{countTitleMap[type]}</p>
