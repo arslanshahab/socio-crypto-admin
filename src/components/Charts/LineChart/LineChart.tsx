@@ -2,10 +2,9 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 import styles from './lineChart.module.css';
 
-interface ILineChart {
+interface ILineChartInputs {
   name: string;
-  scaleColorX?: string;
-  scaleColorY?: string;
+  options?: any;
   campaignAnalytics: {
     labels: string[];
     datasets: {
@@ -18,27 +17,25 @@ interface ILineChart {
   };
 }
 
-const LineChart = (props: ILineChart) => {
-  const { campaignAnalytics, name, scaleColorX, scaleColorY } = props;
+const LineChart = (props: ILineChartInputs) => {
+  const { campaignAnalytics, name } = props;
+  const defaultOptions = {
+    scales: {
+      x: {
+        ticks: { color: '#000' },
+      },
+      y: {
+        ticks: { color: '#000' },
+        beginAtZero: true,
+      },
+    },
+  };
+  const chartOptions = { ...defaultOptions, ...(props.options && props.options) };
 
   return (
     <div className={styles.lineChartWrapper}>
       <h1 className={styles.graphTitle}>{name} Analytics</h1>
-      <Line
-        options={{
-          scales: {
-            x: {
-              ticks: { color: scaleColorX },
-            },
-
-            y: {
-              ticks: { color: scaleColorY },
-              beginAtZero: true,
-            },
-          },
-        }}
-        data={campaignAnalytics}
-      />
+      <Line options={chartOptions} data={campaignAnalytics} />
     </div>
   );
 };

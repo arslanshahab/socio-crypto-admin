@@ -24,10 +24,8 @@ export const DashboardHome: React.FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  //! Handlers
-  const getCampaingData = () => {
-    return [{ name: 'All', id: '-1' }, ...(data?.getUserAllCampaign || [])];
-  };
+  const allCampaignsList = [{ name: 'All', id: '-1' }, ...(data?.listAllCampaignsForOrg || [])];
+
   const getCampaignId = (id: string) => {
     setCamapignId(id);
   };
@@ -90,6 +88,18 @@ export const DashboardHome: React.FC = () => {
     ],
   };
 
+  const lineChartOptions = {
+    scales: {
+      x: {
+        ticks: { color: chartColors[0] },
+      },
+      y: {
+        ticks: { color: chartColors[1] },
+        beginAtZero: true,
+      },
+    },
+  };
+
   return (
     <div>
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
@@ -103,13 +113,11 @@ export const DashboardHome: React.FC = () => {
         ))}
       </div>
       <div className="w-4/5 mt-12 mx-auto flex gap-4">
-        {getCampaingData().length > 1 && (
-          <AutoCompleteDropDown
-            options={getCampaingData()}
-            label="Campaign"
-            getCampaignId={(id) => getCampaignId(id || '')}
-          />
-        )}
+        <AutoCompleteDropDown
+          options={allCampaignsList}
+          label="Campaign"
+          getCampaignId={(id) => getCampaignId(id || '')}
+        />
       </div>
 
       {campaignId === '-1' ? (
@@ -121,8 +129,7 @@ export const DashboardHome: React.FC = () => {
           <LineChart
             name={dashboardMetrics?.getDashboardMetrics?.aggregatedCampaignMetrics?.campaign_name || ''}
             campaignAnalytics={lineChartData}
-            scaleColorX={chartColors[0]}
-            scaleColorY={chartColors[1]}
+            options={lineChartOptions}
           />
         </div>
       )}

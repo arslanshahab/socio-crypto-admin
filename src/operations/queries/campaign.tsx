@@ -179,8 +179,8 @@ export const GET_HOURLY_CAMPAIGN_METRICS = gql`
   }
 `;
 export const GET_USER_CAMPAIGNS = gql`
-  query getUserAllCampaign {
-    getUserAllCampaign {
+  query listAllCampaignsForOrg {
+    listAllCampaignsForOrg {
       id
       name
     }

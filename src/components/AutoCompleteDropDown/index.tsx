@@ -1,6 +1,6 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import { TextField } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { GetUserCampaigns, UserCampaignSingle } from '../../types';
 
 interface AutoCompleteDropdownProps {
@@ -16,7 +16,7 @@ export default function AutoCompleteDropDown(props: AutoCompleteDropdownProps): 
   const { getCampaignId } = props;
 
   // Handle OnChange
-  const handleChange = (event: React.SyntheticEvent<Element, Event>, newValue: UserCampaignSingle | null) => {
+  const handleChange = (event: any, newValue: UserCampaignSingle | null) => {
     setValue(newValue);
     setInputValue(newValue?.id || '-1');
     const campaignId = newValue?.id;
@@ -32,9 +32,9 @@ export default function AutoCompleteDropDown(props: AutoCompleteDropdownProps): 
         id="controllable-states-demo"
         options={props.options}
         getOptionLabel={(option) => `${option.name} (${option.id.substring(option.id.length, option.id.length - 2)})`}
-        sx={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label={props.label} />}
         size="small"
+        className="w-60"
       />
     </div>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './BarChart.module.css';
 import { Bar } from 'react-chartjs-2';
 
-interface IBarChart {
+interface IBarChartInputs {
   name?: string;
   participationScore?: number[];
   rewards?: number;
@@ -18,7 +18,7 @@ interface IBarChart {
   };
 }
 
-const BarChart = (props: IBarChart) => {
+const BarChart = (props: IBarChartInputs) => {
   const { participationAnalytics, name } = props;
 
   return (

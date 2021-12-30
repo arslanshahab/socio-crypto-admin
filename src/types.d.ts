@@ -6,7 +6,7 @@ export interface PaginatedCampaignResults {
 }
 //!----
 export interface GetUserCampaigns {
-  getUserAllCampaign: [UserCampaignSingle];
+  listAllCampaignsForOrg: [UserCampaignSingle];
 }
 export interface UserCampaignTypes {
   clickCount: string | number | undefined;
