@@ -153,6 +153,16 @@ export const LIST_ORGS = gql`
     }
   }
 `;
+export const ORG_DETAILS = gql`
+  query getOrgDetails($skip: Int, $take: Int) {
+    listOrgs(skip: $skip, take: $take) {
+      name
+      createdAt
+      campaignCount
+      adminCount
+    }
+  }
+`;
 
 export const UPDATE_PASSWORD = gql`
   mutation updatePassword($password: String!) {

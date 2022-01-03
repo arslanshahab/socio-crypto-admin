@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { LIST_ORGS } from '../../operations/queries/admin';
+import { ORG_DETAILS } from '../../operations/queries/admin';
 import { ListOrgs } from '../../types';
 import styles from './brandList.module.css';
 import { CircularProgress } from '@material-ui/core';
 
 export const BrandList: React.FC = () => {
-  const { data, loading } = useQuery<ListOrgs>(LIST_ORGS);
+  const { data, loading } = useQuery<ListOrgs>(ORG_DETAILS);
   if (loading) {
     return (
       <div className={styles.loading}>
