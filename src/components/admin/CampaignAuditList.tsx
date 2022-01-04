@@ -43,7 +43,6 @@ export const CampaignAuditList: React.FC<Props> = () => {
   // };
 
   const handleClick = (data: any) => {
-    debugger;
     try {
       showProgressModal(true);
       setAuditDetails(data);

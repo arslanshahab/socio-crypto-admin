@@ -26,7 +26,6 @@ export const CampaignAudit: React.FC<Props> = ({ location, auditDetails }) => {
     rejected: [],
   });
   const history = useHistory();
-  console.log('Audit Details', auditDetails);
 
   const [submitReport] = useMutation(SUBMIT_AUDIT_REPORT, {
     variables: {
