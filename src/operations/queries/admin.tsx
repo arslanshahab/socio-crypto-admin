@@ -143,6 +143,48 @@ export const ADMIN_LIST_CAMPAIGN_QUERY = gql`
     }
   }
 `;
+export const LIST_AUDIT_CAMPAIGN = gql`
+  query ListAuditCampaigns(
+    $open: Boolean
+    $skip: Int
+    $take: Int
+    $scoped: Boolean
+    $approved: Boolean
+    $pendingAudit: Boolean
+  ) {
+    listAuditCampaigns(
+      open: $open
+      skip: $skip
+      take: $take
+      scoped: $scoped
+      approved: $approved
+      pendingAudit: $pendingAudit
+    ) {
+      results {
+        id
+        name
+        endDate
+        coiinTotal
+        description
+        audited
+        symbol
+        participants {
+          id
+          participationScore
+          metrics {
+            clickCount
+            viewCount
+            submissionCount
+          }
+          user {
+            id
+          }
+        }
+      }
+      total
+    }
+  }
+`;
 
 export const LIST_ORGS = gql`
   query listOrgs($skip: Int, $take: Int) {

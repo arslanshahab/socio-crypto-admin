@@ -37,7 +37,8 @@ export const CampaignAudit: React.FC<Props> = ({ location, auditDetails }) => {
 
   const [deleteCampaign, { data: deletedCampaign }] = useMutation(DELETE_CAMPAIGN, {
     variables: {
-      id: location ? location.state.data.id : '',
+      // id: location ? location.state.data.id : '',
+      id: auditDetails?.id,
     },
   });
 
