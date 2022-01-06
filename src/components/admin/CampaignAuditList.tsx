@@ -31,17 +31,6 @@ export const CampaignAuditList: React.FC<Props> = () => {
     },
     fetchPolicy: 'cache-and-network',
   });
-  console.log('List Audit Campaigns', data);
-
-  // const loadData = async (skip: number) => {
-  //   try {
-  //     await setSkip(skip);
-  //   } catch (e) {
-  //     console.log('Error: Load Data Error');
-  //     console.log(e);
-  //   }
-  //   await setLoaded(true);
-  // };
 
   const handleClick = (data: any) => {
     try {
@@ -50,6 +39,9 @@ export const CampaignAuditList: React.FC<Props> = () => {
     } catch (e) {
       showProgressModal(false);
     }
+  };
+  const handleCampaignAuditModal = (value: any) => {
+    showProgressModal(value);
   };
 
   if (loading)
@@ -68,32 +60,9 @@ export const CampaignAuditList: React.FC<Props> = () => {
         size="small"
         showCloseIcon={true}
       >
-        <CampaignAudit auditDetails={auditDetails} />
+        <CampaignAudit auditDetails={auditDetails} handleCampaignAuditModal={handleCampaignAuditModal} />
       </GenericModal>
-      {/* {skip != 0 ? (
-        <Button
-          variant="outlined"
-          onClick={async () => {
-            await loadData(skip - 10);
-          }}
-        >
-          <p>Previous</p>
-          </Button>
-          ) : (
-            <></>
-      )}
-      {skip + data?.listCampaigns?.results?.length != data?.listCampaigns?.total ? (
-        <Button
-          variant="outlined"
-          onClick={async () => {
-            await loadData(skip + 10);
-          }}
-          >
-          <p>Next</p>
-          </Button>
-          ) : (
-            <></>
-          )} */}
+
       {data.listAuditCampaigns.results?.length <= 0 ? (
         'There is no campaign for auditing'
       ) : (

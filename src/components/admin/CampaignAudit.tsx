@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { DELETE_CAMPAIGN, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
 interface Props {
   auditDetails?: any;
-  location?: {
-    state: {
-      data: any;
-    };
-  };
-  routeState?: {
-    data: any;
-  };
+  handleCampaignAuditModal?: any;
 }
 interface StateInterface {
   loaded: boolean;
   rejected: string[];
 }
 
-export const CampaignAudit: React.FC<Props> = ({ location, auditDetails }) => {
+export const CampaignAudit: React.FC<Props> = ({ auditDetails, handleCampaignAuditModal }) => {
   const [state, setState] = useState<StateInterface>({
     loaded: false,
     rejected: [],
@@ -30,51 +23,29 @@ export const CampaignAudit: React.FC<Props> = ({ location, auditDetails }) => {
   const [submitReport] = useMutation(SUBMIT_AUDIT_REPORT, {
     variables: {
       campaignId: auditDetails?.id,
-      // campaignId: location ? location.state.data.id : '',
       rejected: state.rejected,
     },
   });
-
   const [deleteCampaign, { data: deletedCampaign }] = useMutation(DELETE_CAMPAIGN, {
     variables: {
-      // id: location ? location.state.data.id : '',
       id: auditDetails?.id,
     },
   });
-
-  const handleSubmit = async () => {
-    await submitReport();
-  };
-
-  // const loadData = async () => {
-  //   await generateReport();
-  //   setState({ ...state, loaded: true });
-  // };
-
-  const toggleRejected = (id: string) => {
-    let temp = [];
-    temp = state.rejected;
-    const index = temp.indexOf(id);
-    if (index >= 0) {
-      temp.splice(index, 1);
-    } else {
-      temp.push(id);
-    }
-    setState({ ...state, rejected: temp });
-  };
-
   useEffect(() => {
     if (deletedCampaign) {
       history.push('/dashboard/admin/audit-campaigns');
     }
   }, [deletedCampaign]);
 
-  // if (true) {
-  //   return;
-  //   <div className="flex justify-center items-center">
-  //     <CircularProgress />;
-  //   </div>;
-  // }
+  const handleSubmit = async () => {
+    await submitReport();
+    handleCampaignAuditModal(false);
+  };
+  const handleDelete = async () => {
+    window.confirm('Are you sure to reject this campaign?');
+    await deleteCampaign();
+    handleCampaignAuditModal(false);
+  };
 
   return (
     <div className="p-4">
@@ -120,7 +91,7 @@ export const CampaignAudit: React.FC<Props> = ({ location, auditDetails }) => {
           <Button variant="contained" color="primary" size="small" onClick={handleSubmit}>{`${
             state.rejected.length ? `Submit Audit, Rejecting ${state.rejected.length} Participants ` : 'Submit Audit'
           } `}</Button>
-          <Button variant="contained" color="secondary" size="small" onClick={() => deleteCampaign()}>
+          <Button variant="contained" color="secondary" size="small" onClick={handleDelete}>
             Reject Campaign
           </Button>
         </div>
