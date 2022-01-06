@@ -16,12 +16,10 @@ interface Props {
 }
 
 export const CampaignAuditList: React.FC<Props> = () => {
-  // const [loaded, setLoaded] = useState(false);
-  // const [skip, setSkip] = useState(0);
   const [progressModal, showProgressModal] = useState(false);
   const [auditDetails, setAuditDetails] = useState<any>();
 
-  const { loading, data } = useQuery(LIST_AUDIT_CAMPAIGN, {
+  const { loading, data, refetch } = useQuery(LIST_AUDIT_CAMPAIGN, {
     variables: {
       open: false,
       scoped: true,
@@ -42,6 +40,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
   };
   const handleCampaignAuditModal = (value: any) => {
     showProgressModal(value);
+    refetch();
   };
 
   if (loading)
