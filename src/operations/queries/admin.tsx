@@ -160,7 +160,11 @@ export const UPDATE_PASSWORD = gql`
 export const LIST_EMPLOYEES = gql`
   query listEmployees {
     listEmployees {
-      name
+      orgName
+      adminsDetails {
+        name
+        createdAt
+      }
     }
   }
 `;

@@ -13,7 +13,7 @@ import { graphqlClient, sessionLogout } from '../../clients/raiinmaker-api';
 import { Admin } from '../../components/Admin';
 import { ManageWithdrawRequests } from '../../components/admin/ManageWithdrawRequests';
 import { CampaignAudit } from '../../components/admin/CampaignAudit';
-import { UserManagement } from '../../components/UserManagement';
+import { UserManagement } from '../../components/UserManagement/UserManagement';
 import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
 import Sidebar from '../../components/Sidebar';
 import styles from './Dashboard.module.scss';
