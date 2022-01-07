@@ -11,6 +11,7 @@ import { NavLink } from 'react-router-dom';
 import { getRoutesMapping } from '../../helpers/routesMapping';
 import RaiinmakerLogo from '../../assets/svg/logo.svg';
 import styles from './Sidebar.module.scss';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   value: any;
@@ -18,6 +19,8 @@ interface Props {
 
 const Sidebar: React.FC<Props> = (props) => {
   const menuList = getRoutesMapping(props.value);
+  const history = useHistory();
+  const pathname = history.location.pathname;
 
   const getIcon = (icon: string) => {
     switch (icon) {
@@ -58,7 +61,7 @@ const Sidebar: React.FC<Props> = (props) => {
                 key={index}
                 to={item.to}
                 className="flex flex-row justify-start items-center px-10 py-3 text-md text-gray-200 w-full"
-                activeClassName={styles.active}
+                activeClassName={item.to === pathname ? styles.active : ''}
               >
                 {getIcon(item.icon)}
                 <span className="ml-3 capitalize">{item.name}</span>

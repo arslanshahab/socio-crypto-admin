@@ -178,3 +178,32 @@ export const GET_HOURLY_CAMPAIGN_METRICS = gql`
     }
   }
 `;
+export const GET_USER_CAMPAIGNS = gql`
+  query listAllCampaignsForOrg {
+    listAllCampaignsForOrg {
+      id
+      name
+    }
+  }
+`;
+//!------------------
+export const DASHBOARD_METRICS = gql`
+  query getDashboardMetrics($campaignId: String, $skip: Int, $take: Int) {
+    getDashboardMetrics(campaignId: $campaignId, skip: $skip, take: $take) {
+      aggregatedCampaignMetrics {
+        clickCount
+        viewCount
+        shareCount
+        participationScore
+        campaign_name
+        totalParticipants
+      }
+      campaignMetrics {
+        clickCount
+        viewCount
+        shareCount
+        participationScore
+      }
+    }
+  }
+`;
