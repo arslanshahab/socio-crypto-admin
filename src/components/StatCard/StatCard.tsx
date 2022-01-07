@@ -21,8 +21,8 @@ const countIconMap: { [key: string]: React.ReactNode } = {
   clickCount: <BsHandIndexThumbFill />,
   viewCount: <FaEye />,
   shareCount: <BsFillShareFill />,
-  totalParticipationScore: <BsFillShareFill />,
-  rewards: <SiCashapp />,
+  totalParticipants: <BsFillShareFill />,
+  participationScore: <SiCashapp />,
 };
 
 const StatCard = (props: IProps) => {

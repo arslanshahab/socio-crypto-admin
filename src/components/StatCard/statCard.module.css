@@ -28,9 +28,9 @@
 .shareCount {
   @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }
-.totalParticipationScore {
+.totalParticipants {
   @apply bg-gradient-to-r from-green-300 to-blue-600;
 }
-.rewards {
+.participationScore {
   @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }
