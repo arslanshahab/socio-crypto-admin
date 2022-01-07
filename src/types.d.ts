@@ -4,6 +4,20 @@ export interface PaginatedCampaignResults {
     total: number;
   };
 }
+//!----
+export interface GetUserCampaigns {
+  listAllCampaignsForOrg: [UserCampaignSingle];
+}
+export interface UserCampaignTypes {
+  clickCount: string | number | undefined;
+}
+
+export interface UserCampaignSingle {
+  id: string;
+  name: string;
+}
+
+//!----
 
 export interface GetCampaignResult {
   getCampaign: Campaign;
@@ -37,13 +51,20 @@ export interface ListPaymentMethodsResults {
 export interface ListOrgs {
   listOrgs: {
     name: string;
+    createdAt: string;
+    campaignCount: number;
+    adminCount: number;
   }[];
 }
 
 export interface ListEmployees {
   listEmployees: {
-    name: string;
-  }[];
+    orgName: string;
+    adminsDetails: {
+      name: string;
+      createdAt: string;
+    }[];
+  };
 }
 
 export interface CampaignListVars {

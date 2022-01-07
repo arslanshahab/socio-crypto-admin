@@ -147,6 +147,19 @@ export const LIST_ORGS = gql`
   query listOrgs($skip: Int, $take: Int) {
     listOrgs(skip: $skip, take: $take) {
       name
+      createdAt
+      campaignCount
+      adminCount
+    }
+  }
+`;
+export const ORG_DETAILS = gql`
+  query getOrgDetails($skip: Int, $take: Int) {
+    listOrgs(skip: $skip, take: $take) {
+      name
+      createdAt
+      campaignCount
+      adminCount
     }
   }
 `;
@@ -160,7 +173,11 @@ export const UPDATE_PASSWORD = gql`
 export const LIST_EMPLOYEES = gql`
   query listEmployees {
     listEmployees {
-      name
+      orgName
+      adminsDetails {
+        name
+        createdAt
+      }
     }
   }
 `;
