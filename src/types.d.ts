@@ -4,6 +4,20 @@ export interface PaginatedCampaignResults {
     total: number;
   };
 }
+//!----
+export interface GetUserCampaigns {
+  listAllCampaignsForOrg: [UserCampaignSingle];
+}
+export interface UserCampaignTypes {
+  clickCount: string | number | undefined;
+}
+
+export interface UserCampaignSingle {
+  id: string;
+  name: string;
+}
+
+//!----
 
 export interface GetCampaignResult {
   getCampaign: Campaign;
