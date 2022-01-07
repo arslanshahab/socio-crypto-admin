@@ -51,6 +51,9 @@ export interface ListPaymentMethodsResults {
 export interface ListOrgs {
   listOrgs: {
     name: string;
+    createdAt: string;
+    campaignCount: number;
+    adminCount: number;
   }[];
 }
 

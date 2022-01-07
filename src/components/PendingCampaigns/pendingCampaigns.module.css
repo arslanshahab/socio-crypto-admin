@@ -1,0 +1,21 @@
+.loading {
+  @apply flex justify-center;
+}
+.heading {
+  @apply text-blue-900 text-2xl font-semibold pb-4;
+}
+.campaignBox {
+  @apply mb-8 shadow-md rounded-md p-4;
+}
+.contentWrapper {
+  @apply grid grid-cols-12 shadow-sm rounded p-1 mb-2;
+}
+.buttonWrapper {
+  @apply flex items-center justify-end gap-4;
+}
+h6 {
+  @apply font-bold col-start-1 col-end-6 md:col-end-2;
+}
+p {
+  @apply capitalize col-start-6 col-end-12 md:col-start-3;
+}

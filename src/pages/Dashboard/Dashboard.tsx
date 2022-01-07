@@ -11,7 +11,7 @@ import { Route as ProtectedRoute } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { graphqlClient, sessionLogout } from '../../clients/raiinmaker-api';
 import { Admin } from '../../components/Admin';
-import { ManageWithdrawRequests } from '../../components/admin/ManageWithdrawRequests';
+import { ManageWithdrawRequests } from '../../components/admin/ManageWithdrawRequests/ManageWithdrawRequests';
 import { CampaignAudit } from '../../components/admin/CampaignAudit';
 import { UserManagement } from '../../components/UserManagement/UserManagement';
 import { CampaignAuditList } from '../../components/admin/CampaignAuditList';

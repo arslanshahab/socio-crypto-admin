@@ -1,0 +1,38 @@
+.manageWithdrawRequestWrapper {
+  @apply m-4;
+}
+.heading {
+  @apply text-blue-900 text-2xl font-semibold pb-2;
+}
+.withdrawDetailsCard {
+  @apply shadow p-4 rounded-md;
+}
+.withdrawRow {
+  /* @apply grid grid-cols-2 mb-4 shadow-sm p-2; */
+  /* @apply  */
+}
+.withdrawRow {
+  @apply grid grid-cols-12 mb-4 shadow-sm p-2;
+}
+.withdrawCol {
+  @apply col-start-5 col-end-12;
+}
+.title {
+  @apply capitalize col-start-1 col-end-4;
+}
+.detailsWrap {
+  @apply flex pb-2;
+}
+.detailsWrapTitle {
+  @apply w-1/3;
+}
+
+p {
+  @apply capitalize;
+}
+.checkboxAndButtonWrapper {
+  @apply flex justify-between items-center;
+}
+.buttonWrapper {
+  @apply flex gap-4;
+}
