@@ -20,7 +20,10 @@ export const CREATE_CAMPAIGN_REPORT = gql`
 
 export const SUBMIT_AUDIT_REPORT = gql`
   mutation SubmitAuditReport($campaignId: String!, $rejected: [String]) {
-    payoutCampaignRewards(campaignId: $campaignId, rejected: $rejected)
+    payoutCampaignRewards(campaignId: $campaignId, rejected: $rejected) {
+      success
+      message
+    }
   }
 `;
 
