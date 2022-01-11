@@ -42,9 +42,10 @@ export const CampaignAudit: React.FC<Props> = ({ auditDetails, handleCampaignAud
     handleCampaignAuditModal(false);
   };
   const handleDelete = async () => {
-    window.confirm('Are you sure to reject this campaign?');
-    await deleteCampaign();
-    handleCampaignAuditModal(false);
+    if (window.confirm('Are you sure you want to reject this campaign?')) {
+      await deleteCampaign();
+      handleCampaignAuditModal(false);
+    }
   };
 
   return (
