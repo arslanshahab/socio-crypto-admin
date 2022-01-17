@@ -13,12 +13,10 @@ import CircularProgressWithLabel from '../../components/CircularProgressWithLabe
 import { resetCampaign } from '../../store/actions/campaign';
 import { flatten } from 'lodash';
 import { prepareMediaRequest, prepareTemplateRequest, uploadMedia } from '../../helpers/utils';
+import useStoreUserSelector from '../../hooks/useStoreUserSelector';
 
-interface Props {
-  userData: any;
-}
-
-const NewCampaignPage: React.FC<Props> = ({ userData }) => {
+const NewCampaignPage: React.FC = () => {
+  const userData = useStoreUserSelector();
   const history = useHistory();
   const dispatch = useDispatch();
   const [progressModal, showProgressModal] = useState(false);

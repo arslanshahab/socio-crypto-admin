@@ -1,4 +1,4 @@
-import { Alert, AlgorithmSpecs, CampaignState, StoreAlerts, StoreSettings } from '../types.d';
+import { Alert, AlgorithmSpecs, CampaignState, StoreAlerts, StoreSettings, UserData } from '../types.d';
 
 const initialAlgorithmState: AlgorithmSpecs = {
   pointValues: {
@@ -88,6 +88,7 @@ const campaignInitState: CampaignState = {
         { channel: 'Facebook', post: '' },
       ],
     },
+    isGlobal: false,
   },
   instructions: '',
 };
@@ -113,10 +114,19 @@ const settings: StoreSettings = {
   languageCode: '',
 };
 
+const user: UserData = {
+  tempPass: false,
+  id: '',
+  role: '',
+  company: '',
+  isLoggedIn: false,
+};
+
 const initialState = {
   alerts: alerts,
   newCampaign: campaignInitState,
   settings: settings,
+  user: user,
 };
 
 export default initialState;

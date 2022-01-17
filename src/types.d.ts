@@ -344,6 +344,7 @@ export interface CampaignConfig {
   success: boolean;
   channelMedia: ChannelMediaStructure;
   channelTemplates: ChannelTemplateStructure;
+  isGlobal: boolean;
 }
 
 export interface CampaignMediaResponse {
@@ -440,6 +441,14 @@ export interface StoreSettings {
   appLoader: boolean;
   languageCode: string;
   loadingMessage: string;
+}
+
+export interface UserData {
+  id: string;
+  role: string;
+  company: string;
+  tempPass: boolean;
+  isLoggedIn: boolean;
 }
 
 export interface Alert {

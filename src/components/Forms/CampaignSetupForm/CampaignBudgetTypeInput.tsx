@@ -11,10 +11,10 @@ interface MenuItem {
   value: string;
   enabled: boolean;
 }
-const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange, company }) => {
+const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange }) => {
   const menu: Array<MenuItem> = [
     { name: 'Crypto', value: 'crypto', enabled: true },
-    { name: 'Raffle (Coming Soon)', value: 'raffle', enabled: company === 'raiinmaker' },
+    { name: 'Raffle (Coming Soon)', value: 'raffle', enabled: false },
     { name: 'Social Engagement', value: 'social-engagement', enabled: false },
   ];
 

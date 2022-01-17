@@ -29,15 +29,14 @@ import {
   prepareChannelTemplatesFromResponse,
   prepareTemplateRequest,
 } from '../../helpers/utils';
+import useStoreUserSelector from '../../hooks/useStoreUserSelector';
 
-interface Props {
-  userData: any;
-}
 interface PageParams {
   campaignId?: string;
 }
 
-const EditCampaignPage: React.FC<Props> = ({ userData }) => {
+const EditCampaignPage: React.FC = () => {
+  const userData = useStoreUserSelector();
   const history = useHistory();
   const { campaignId } = useParams<PageParams>();
   const dispatch = useDispatch();
