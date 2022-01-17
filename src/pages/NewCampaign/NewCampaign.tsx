@@ -62,6 +62,7 @@ const NewCampaignPage: React.FC = () => {
           description: data.description,
           instructions: data.instructions,
           company: userData.company,
+          isGlobal: campaign.config.isGlobal,
           algorithm: JSON.stringify(data.algorithm),
           requirements:
             data.config.budgetType === 'raffle' ? { ...data.requirements, email: true } : { ...data.requirements },

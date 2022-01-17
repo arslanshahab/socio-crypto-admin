@@ -276,6 +276,7 @@ export interface NewCampaignVars {
   instructions: string;
   symbol: string;
   company: string;
+  isGlobal: boolean;
   algorithm: string;
   imagePath: string;
   campaignType: string;
@@ -378,6 +379,7 @@ export interface Campaign {
   keywords: string[];
   algorithm: AlgorithmSpecs;
   company: string;
+  isGlobal: boolean;
   audited: boolean;
   targetVideo: string;
   imagePath: string;
