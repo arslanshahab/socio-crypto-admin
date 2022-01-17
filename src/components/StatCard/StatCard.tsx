@@ -1,9 +1,8 @@
 import React from 'react';
 import styles from './statCard.module.css';
-import { BsHandIndexThumbFill, BsFillShareFill } from 'react-icons/bs';
+import { BsHandIndexThumbFill, BsFillShareFill, BsPeopleFill } from 'react-icons/bs';
 import { FaEye } from 'react-icons/fa';
-import { SiCashapp } from 'react-icons/si';
-
+import { IoSpeedometer } from 'react-icons/io5';
 interface IProps {
   type: string;
   count: string[];
@@ -21,8 +20,8 @@ const countIconMap: { [key: string]: React.ReactNode } = {
   clickCount: <BsHandIndexThumbFill />,
   viewCount: <FaEye />,
   shareCount: <BsFillShareFill />,
-  totalParticipationScore: <BsFillShareFill />,
-  rewards: <SiCashapp />,
+  totalParticipants: <BsPeopleFill />,
+  participationScore: <IoSpeedometer />,
 };
 
 const StatCard = (props: IProps) => {
