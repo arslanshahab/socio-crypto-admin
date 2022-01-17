@@ -35,13 +35,27 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   const [name, setName] = useState(campaign.name);
   const [target, setTarget] = useState(campaign.target);
   const [targetVideo, setTargetVideo] = useState(campaign.targetVideo);
-  const [numOfTiers, setTiers] = useState(campaign.config.numOfTiers);
+  const [numOfTiers, setTiers] = useState(!campaign.config.isGlobal ? campaign.config.numOfTiers : '1');
   const [tagline, setTagline] = useState(campaign.tagline);
   const [keywords, setKeywords] = useState(campaign.keywords);
   const [description, setDescription] = useState(campaign.description);
   const [instructions, setInstructions] = useState(campaign.instructions);
-  const [beginDate, setBeginDate] = useState(campaign.beginDate);
-  const [endDate, setEndDate] = useState(campaign.endDate);
+  const [beginDate, setBeginDate] = useState(
+    campaign.beginDate ||
+      new Date().toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+  );
+  const [endDate, setEndDate] = useState(
+    campaign.endDate ||
+      new Date().toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+  );
   const [tags, setTags] = useState(campaign.suggestedTags.join(','));
   const [errors, setErrors] = useState<ErrorObject>({});
 
@@ -317,6 +331,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               showTodayButton
               className="customInput"
               error={errors['beginDate']}
+              disabled={campaign.config.isGlobal}
               onChange={handleBeginDateChange}
             />
           </Box>
@@ -331,6 +346,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               showTodayButton
               className="customInput"
               error={errors['endDate']}
+              disabled={campaign.config.isGlobal}
               onChange={handleEndDateChange}
             />
           </Box>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ErrorCard } from '../../Error';
 import CustomButton from '../../CustomButton';
 import { Box, TextField } from '@material-ui/core';
@@ -7,6 +7,11 @@ import { sessionLogin } from '../../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import { ChangePasswordDialog } from '../../ChangePasswordDialog';
 import styles from './login.module.css';
+import { useQuery } from '@apollo/client';
+import { VERIFY_SESSION } from '../../../operations/queries/firebase';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../../../store/actions/user';
+import AppLoader from '../../AppLoader';
 
 interface UserData {
   [key: string]: string;
@@ -16,7 +21,9 @@ interface UserData {
 
 const LoginForm: React.FC = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [hasLoggedIn, setHasLoggedIn] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const [error, setError] = useState({
     code: '',
@@ -25,6 +32,19 @@ const LoginForm: React.FC = () => {
     email: '',
     password: '',
   } as UserData);
+  const { data, loading: userDataLoading } = useQuery(VERIFY_SESSION, { skip: !hasLoggedIn });
+
+  useEffect(() => {
+    if (data?.verifySession) {
+      dispatch(
+        setUserData({
+          ...data.verifySession,
+          isLoggedIn: true,
+        }),
+      );
+      history.push('/dashboard/campaigns');
+    }
+  }, [data?.verifySession]);
 
   const handleChange = (event: React.ChangeEvent<any>) => {
     const data = { ...values };
@@ -41,8 +61,8 @@ const LoginForm: React.FC = () => {
       await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
       const { status, body } = await sessionLogin();
       if (status === 200) {
+        setHasLoggedIn(true);
         if (body.resetPass) setChangePassword(true);
-        else history.push('/dashboard/campaigns');
       } else {
         throw Error('invalid login');
       }
@@ -52,6 +72,8 @@ const LoginForm: React.FC = () => {
       setLoading(false);
     }
   };
+
+  if (userDataLoading) return <AppLoader message="Setting up everything. Please wait!" />;
 
   return (
     <Box className={styles.loginForm}>

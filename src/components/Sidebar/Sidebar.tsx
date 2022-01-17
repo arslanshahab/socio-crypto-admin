@@ -12,13 +12,11 @@ import { getRoutesMapping } from '../../helpers/routesMapping';
 import RaiinmakerLogo from '../../assets/svg/logo.svg';
 import styles from './Sidebar.module.scss';
 import { useHistory } from 'react-router-dom';
+import useStoreUserSelector from '../../hooks/useStoreUserSelector';
 
-interface Props {
-  value: any;
-}
-
-const Sidebar: React.FC<Props> = (props) => {
-  const menuList = getRoutesMapping(props.value);
+const Sidebar: React.FC = () => {
+  const userData = useStoreUserSelector();
+  const menuList = getRoutesMapping(userData);
   const history = useHistory();
   const pathname = history.location.pathname;
 

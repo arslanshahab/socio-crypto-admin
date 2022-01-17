@@ -276,6 +276,7 @@ export interface NewCampaignVars {
   instructions: string;
   symbol: string;
   company: string;
+  isGlobal: boolean;
   algorithm: string;
   imagePath: string;
   campaignType: string;
@@ -344,6 +345,7 @@ export interface CampaignConfig {
   success: boolean;
   channelMedia: ChannelMediaStructure;
   channelTemplates: ChannelTemplateStructure;
+  isGlobal: boolean;
 }
 
 export interface CampaignMediaResponse {
@@ -377,6 +379,7 @@ export interface Campaign {
   keywords: string[];
   algorithm: AlgorithmSpecs;
   company: string;
+  isGlobal: boolean;
   audited: boolean;
   targetVideo: string;
   imagePath: string;
@@ -440,6 +443,14 @@ export interface StoreSettings {
   appLoader: boolean;
   languageCode: string;
   loadingMessage: string;
+}
+
+export interface UserData {
+  id: string;
+  role: string;
+  company: string;
+  tempPass: boolean;
+  isLoggedIn: boolean;
 }
 
 export interface Alert {

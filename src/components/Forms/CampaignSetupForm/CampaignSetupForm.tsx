@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@material-ui/core';
+import { Box, CircularProgress, FormControlLabel, Checkbox } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
 import { useQuery } from '@apollo/client';
@@ -8,7 +8,7 @@ import { GET_FUNDING_WALLET } from '../../../operations/queries/fundingWallet';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
 import Actions from '../../NewCampaign/Actions';
-import { updateCampaign } from '../../../store/actions/campaign';
+import { resetCampaign, updateCampaign } from '../../../store/actions/campaign';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import CustomSelect from '../../CustomSelect/CustomSelect';
 import CustomInput from '../../CustomInput';
@@ -16,6 +16,7 @@ import { showErrorAlert } from '../../../store/actions/alerts';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import SocialMediaTypeInput from './SocialMediaTypeInput';
 import FileUpload from '../../FileUpload';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
   company: string;
@@ -30,7 +31,8 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   finalStep,
 }) => {
   const dispatch = useDispatch();
-  const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, { fetchPolicy: 'network-only' });
+  const history = useHistory();
+  const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, { fetchPolicy: 'cache-first' });
   const campaign = useStoreCampaignSelector();
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
   const [socialMediaType, setSocialMediaType] = useState(campaign.config.socialMediaType);
@@ -40,13 +42,12 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const [rafflePrizeName, setRafflePrizeName] = useState(campaign.config.rafflePrizeName);
   const [rafflePrizeLink, setRafflePrizeLink] = useState(campaign.config.rafflePrizeAffiliateLink);
   const [raffleImage, setRaffleImage] = useState(campaign.config.raffleImage);
+  const [isGlobal, setIsGlobal] = useState(campaign.config.isGlobal);
   const [errors, setErrors] = useState<ErrorObject>({});
   const coiinOptions =
     !loading && data && data.getFundingWallet
       ? data.getFundingWallet.currency.map((item) => item.type.toUpperCase())
       : [];
-  console.log(coiinOptions);
-  console.log(cryptoSymbol);
   const handleSocialMediaType = (type: string[]) => {
     setSocialMediaType(type);
   };
@@ -86,6 +87,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
           socialMediaType,
           budgetType,
           cryptoSymbol,
+          isGlobal,
           ...(budgetType === 'raffle' && {
             rafflePrizeName,
             rafflePrizeAffiliateLink: rafflePrizeLink,
@@ -154,18 +156,41 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     setErrors(newErrors);
   };
 
+  if (!data || loading) {
+    return (
+      <Box className="p-10 w-full flex flex-col justify-center items-center">
+        <CircularProgress size={30} color="primary" className="mt-3" />
+      </Box>
+    );
+  }
+
+  if (!data?.getFundingWallet?.currency?.length) {
+    return (
+      <Box className="p-10 w-full flex flex-col justify-center items-center">
+        <p>
+          No Crypto-Currency found - Please register Crypto{' '}
+          <span
+            className="cursor-pointer underline text-blue-800 font-semibold	"
+            onClick={() => {
+              dispatch(resetCampaign());
+              history.push('/dashboard/paymentsAccount');
+            }}
+          >
+            here
+          </span>
+        </p>
+      </Box>
+    );
+  }
+
   return (
     <Box className="w-full px-28">
-      {/* <Box
-        onClick={() => {
-          dispatch(resetCampaign());
-          history.push('/dashboard/paymentsAccount');
-        }}
-      >
-        No Crypto Currency Found - Register Crypto
-      </Box> */}
       <Fade triggerOnce>
-        <SocialMediaTypeInput socialMediaType={socialMediaType} handleChange={handleSocialMediaType} />
+        <SocialMediaTypeInput
+          selectAllByDefault={isGlobal}
+          socialMediaType={socialMediaType}
+          handleChange={handleSocialMediaType}
+        />
       </Fade>
       <Fade triggerOnce>
         <CampaignTypeInput campaignType={campaignType} handleChange={handleCampaignType} />
@@ -208,6 +233,21 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                           disabled={Boolean(campaign.id)}
                         />
                       </Box>
+                      <Box className="w-2/6 flex flex-row justify-center box-border pr-4">
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={isGlobal}
+                              style={{ color: '#3f51b5' }}
+                              name="Brand Agreement"
+                              onChange={(e, checked) => {
+                                setIsGlobal(checked);
+                              }}
+                            />
+                          }
+                          label="Is Global Campaign"
+                        />
+                      </Box>
                     </Box>
                   </Fade>
                 )}
@@ -241,6 +281,21 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                             updateErrors('rafflePrizeLink', event.target.value);
                           }}
                           error={errors['rafflePrizeLink']}
+                        />
+                      </Box>
+                      <Box className="w-full box-border mt-5">
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={isGlobal}
+                              style={{ color: '#3f51b5' }}
+                              name="Brand Agreement"
+                              onChange={(e, checked) => {
+                                setIsGlobal(checked);
+                              }}
+                            />
+                          }
+                          label="Is Global Campaign"
                         />
                       </Box>
                     </Box>
