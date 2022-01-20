@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { LIST_AUDIT_CAMPAIGN } from '../../operations/queries/admin';
+import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
 import { Box, CircularProgress } from '@material-ui/core';
 import { Campaign } from '../../types';
 import GenericModal from './../GenericModal';
@@ -19,7 +19,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
   const [progressModal, showProgressModal] = useState(false);
   const [auditDetails, setAuditDetails] = useState<any>();
 
-  const { loading, data, refetch } = useQuery(LIST_AUDIT_CAMPAIGN, {
+  const { loading, data, refetch } = useQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
       open: false,
       scoped: true,
@@ -62,7 +62,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
         <CampaignAudit auditDetails={auditDetails} handleCampaignAuditModal={handleCampaignAuditModal} />
       </GenericModal>
 
-      {data.listAuditCampaigns.results?.length <= 0 ? (
+      {data.listCampaigns.results?.length <= 0 ? (
         'There is no campaign for auditing'
       ) : (
         <>
@@ -78,7 +78,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
               </thead>
               <tbody>
                 {data &&
-                  data.listAuditCampaigns.results.map((x: Campaign, index: number) => (
+                  data.listCampaigns.results.map((x: Campaign, index: number) => (
                     <tr
                       className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
                       key={x.id}

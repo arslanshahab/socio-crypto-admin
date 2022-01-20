@@ -4,13 +4,6 @@ export interface PaginatedCampaignResults {
     total: number;
   };
 }
-export interface PaginatedCampaignResults {
-  listAuditCampaigns: {
-    results: [Campaign];
-    total: number;
-  };
-}
-
 export interface GetCampaignResult {
   getCampaign: Campaign;
 }
