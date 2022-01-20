@@ -17,7 +17,7 @@ interface Props {
 
 export const CampaignAuditList: React.FC<Props> = () => {
   const [progressModal, showProgressModal] = useState(false);
-  const [auditDetails, setAuditDetails] = useState<any>();
+  const [auditDetails, setAuditDetails] = useState();
 
   const { loading, data, refetch } = useQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
