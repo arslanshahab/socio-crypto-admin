@@ -51,6 +51,11 @@ export interface ListPaymentMethodsResults {
 export interface ListOrgs {
   listOrgs: {
     name: string;
+  }[];
+}
+export interface OrgDetails {
+  getOrgDetails: {
+    name: string;
     createdAt: string;
     campaignCount: number;
     adminCount: number;
