@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { ORG_DETAILS } from '../../operations/queries/admin';
-import { ListOrgs } from '../../types';
+import { OrgDetails } from '../../types';
 import styles from './brandList.module.css';
 import { CircularProgress } from '@material-ui/core';
 
 export const BrandList: React.FC = () => {
-  const { data, loading } = useQuery<ListOrgs>(ORG_DETAILS);
+  const { data, loading } = useQuery<OrgDetails>(ORG_DETAILS);
   if (loading) {
     return (
       <div className={styles.loading}>
@@ -28,7 +28,7 @@ export const BrandList: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.listOrgs?.map(
+            {data?.getOrgDetails?.map(
               (
                 brand: { name: string; createdAt: string; campaignCount: number; adminCount: number },
                 index: number,
