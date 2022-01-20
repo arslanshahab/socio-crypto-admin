@@ -29,15 +29,14 @@ import {
   prepareChannelTemplatesFromResponse,
   prepareTemplateRequest,
 } from '../../helpers/utils';
+import useStoreUserSelector from '../../hooks/useStoreUserSelector';
 
-interface Props {
-  userData: any;
-}
 interface PageParams {
   campaignId?: string;
 }
 
-const EditCampaignPage: React.FC<Props> = ({ userData }) => {
+const EditCampaignPage: React.FC = () => {
+  const userData = useStoreUserSelector();
   const history = useHistory();
   const { campaignId } = useParams<PageParams>();
   const dispatch = useDispatch();
@@ -97,6 +96,7 @@ const EditCampaignPage: React.FC<Props> = ({ userData }) => {
           socialMediaType: getCampaign.socialMediaType,
           budgetType: getCampaign.type,
           cryptoSymbol: getCampaign.symbol,
+          isGlobal: getCampaign.isGlobal,
           channelMedia: prepareChannelMediaFromResponse(
             { ...initialState.newCampaign.config.channelMedia },
             getCampaign.id,
@@ -138,6 +138,7 @@ const EditCampaignPage: React.FC<Props> = ({ userData }) => {
           description: data.description,
           instructions: data.instructions,
           company: userData.company,
+          isGlobal: campaign.config.isGlobal,
           algorithm: JSON.stringify(data.algorithm),
           requirements:
             data.config.budgetType === 'raffle' ? { ...data.requirements, email: true } : { ...data.requirements },

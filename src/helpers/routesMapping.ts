@@ -10,6 +10,7 @@ interface MenuObject {
 
 export const getRoutesMapping = (data: any): Array<MenuObject> => {
   return [
+    { name: 'dashboard', to: '/dashboard', icon: 'fas fa-tachometer-alt', enabled: true },
     { name: 'campaigns', to: '/dashboard/campaigns', icon: 'store', enabled: true },
     { name: 'market data', to: '/dashboard/marketData', icon: 'trending', enabled: false },
     { name: 'new campaign', to: '/dashboard/newCampaign', icon: 'add', enabled: true },

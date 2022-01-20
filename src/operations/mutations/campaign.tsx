@@ -17,6 +17,7 @@ export const NEW_CAMPAIGN = gql`
     $coiinTotal: Float!
     $algorithm: String!
     $company: String
+    $isGlobal: Boolean
     $targetVideo: String
     $imagePath: String
     $tagline: String!
@@ -42,6 +43,7 @@ export const NEW_CAMPAIGN = gql`
       coiinTotal: $coiinTotal
       algorithm: $algorithm
       company: $company
+      isGlobal: $isGlobal
       targetVideo: $targetVideo
       imagePath: $imagePath
       tagline: $tagline

@@ -153,6 +153,16 @@ export const LIST_ORGS = gql`
     }
   }
 `;
+export const ORG_DETAILS = gql`
+  query getOrgDetails {
+    getOrgDetails {
+      name
+      createdAt
+      campaignCount
+      adminCount
+    }
+  }
+`;
 
 export const UPDATE_PASSWORD = gql`
   mutation updatePassword($password: String!) {
@@ -163,7 +173,11 @@ export const UPDATE_PASSWORD = gql`
 export const LIST_EMPLOYEES = gql`
   query listEmployees {
     listEmployees {
-      name
+      orgName
+      adminsDetails {
+        name
+        createdAt
+      }
     }
   }
 `;

@@ -4,6 +4,21 @@ export interface PaginatedCampaignResults {
     total: number;
   };
 }
+//!----
+export interface GetUserCampaigns {
+  listAllCampaignsForOrg: [UserCampaignSingle];
+}
+export interface UserCampaignTypes {
+  clickCount: string | number | undefined;
+}
+
+export interface UserCampaignSingle {
+  id: string;
+  name: string;
+}
+
+//!----
+
 export interface GetCampaignResult {
   getCampaign: Campaign;
 }
@@ -38,11 +53,23 @@ export interface ListOrgs {
     name: string;
   }[];
 }
+export interface OrgDetails {
+  getOrgDetails: {
+    name: string;
+    createdAt: string;
+    campaignCount: number;
+    adminCount: number;
+  }[];
+}
 
 export interface ListEmployees {
   listEmployees: {
-    name: string;
-  }[];
+    orgName: string;
+    adminsDetails: {
+      name: string;
+      createdAt: string;
+    }[];
+  };
 }
 
 export interface CampaignListVars {
@@ -254,6 +281,7 @@ export interface NewCampaignVars {
   instructions: string;
   symbol: string;
   company: string;
+  isGlobal: boolean;
   algorithm: string;
   imagePath: string;
   campaignType: string;
@@ -322,6 +350,7 @@ export interface CampaignConfig {
   success: boolean;
   channelMedia: ChannelMediaStructure;
   channelTemplates: ChannelTemplateStructure;
+  isGlobal: boolean;
 }
 
 export interface CampaignMediaResponse {
@@ -355,6 +384,7 @@ export interface Campaign {
   keywords: string[];
   algorithm: AlgorithmSpecs;
   company: string;
+  isGlobal: boolean;
   audited: boolean;
   targetVideo: string;
   imagePath: string;
@@ -418,6 +448,14 @@ export interface StoreSettings {
   appLoader: boolean;
   languageCode: string;
   loadingMessage: string;
+}
+
+export interface UserData {
+  id: string;
+  role: string;
+  company: string;
+  tempPass: boolean;
+  isLoggedIn: boolean;
 }
 
 export interface Alert {

@@ -9,6 +9,7 @@ import useEffectSkipFirst from '../../../hooks/useEffectSkipFirst';
 interface Props {
   socialMediaType: string[];
   handleChange: (val: string[]) => void;
+  selectAllByDefault: boolean;
 }
 
 interface IconsObject {
@@ -28,11 +29,11 @@ export const getSocialIcon: IconsObject = {
 
 export const socialMediaTypeMenu: string[] = ['Twitter', 'Instagram', 'Tiktok', 'Facebook'];
 
-const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange }) => {
-  const [all, setAll] = useState(false);
+const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange, selectAllByDefault }) => {
+  const [all, setAll] = useState(selectAllByDefault);
 
   const selectAll = () => {
-    if (all) {
+    if (all || selectAllByDefault) {
       const channels = [...socialMediaType];
       socialMediaTypeMenu.forEach((item) => {
         if (!channels.includes(item)) {
@@ -45,7 +46,7 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange }
     }
   };
 
-  useEffectSkipFirst(selectAll, [all]);
+  useEffectSkipFirst(selectAll, [all, selectAllByDefault]);
 
   const handleSocialSelect = (val: string) => {
     const channels = [...socialMediaType];
@@ -65,7 +66,7 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange }
         <FormControlLabel
           control={
             <Checkbox
-              checked={all}
+              checked={all || selectAllByDefault}
               style={{ color: '#3f51b5' }}
               name="Brand Agreement"
               onChange={(e, checked) => {
