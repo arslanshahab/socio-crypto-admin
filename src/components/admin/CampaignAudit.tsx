@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import { DELETE_CAMPAIGN, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
 import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { CircularProgress } from '@material-ui/core';
 
 interface Props {
   auditDetails?: any;
@@ -20,13 +21,13 @@ export const CampaignAudit: React.FC<Props> = ({ auditDetails, handleCampaignAud
   });
   const history = useHistory();
 
-  const [submitReport] = useMutation(SUBMIT_AUDIT_REPORT, {
+  const [submitReport, { loading: submitLoading }] = useMutation(SUBMIT_AUDIT_REPORT, {
     variables: {
       campaignId: auditDetails?.id,
       rejected: state.rejected,
     },
   });
-  const [deleteCampaign, { data: deletedCampaign }] = useMutation(DELETE_CAMPAIGN, {
+  const [deleteCampaign, { data: deletedCampaign, loading: rejectLoading }] = useMutation(DELETE_CAMPAIGN, {
     variables: {
       id: auditDetails?.id,
     },
@@ -89,11 +90,11 @@ export const CampaignAudit: React.FC<Props> = ({ auditDetails, handleCampaignAud
         )}
 
         <div className="flex justify-evenly items-center pt-6">
-          <Button variant="contained" color="primary" size="small" onClick={handleSubmit}>{`${
-            state.rejected.length ? `Submit Audit, Rejecting ${state.rejected.length} Participants ` : 'Submit Audit'
-          } `}</Button>
+          <Button variant="contained" color="primary" size="small" onClick={handleSubmit}>
+            {submitLoading ? <CircularProgress size={20} color="inherit" /> : 'Submit Audit'}
+          </Button>
           <Button variant="contained" color="secondary" size="small" onClick={handleDelete}>
-            Reject Campaign
+            {rejectLoading ? <CircularProgress size={20} color="inherit" /> : 'Reject Campaign'}
           </Button>
         </div>
       </div>
