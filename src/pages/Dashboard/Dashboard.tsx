@@ -51,7 +51,7 @@ const Dashboard: React.FC = (props) => {
       </Box>
       <Box className={styles.content}>
         <Box className={styles.topbar}>
-          <Link className="mr-4 text-blue-700 cursor-pointer" to={'/dashboard/paymentsAccount'}>
+          <Link className="mr-2 text-blue-700 cursor-pointer" to={'/dashboard/paymentsAccount'}>
             <img src={CoiinLogo} alt="raiinmaker-logo" width="50px" height="50px" />
           </Link>
           <ExitToAppIcon className="text-blue-700 cursor-pointer" onClick={handleLogout} />
