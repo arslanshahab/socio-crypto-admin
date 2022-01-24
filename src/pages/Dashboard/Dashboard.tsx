@@ -23,6 +23,7 @@ import { showAppLoader } from '../../store/actions/settings';
 import { showErrorAlert } from '../../store/actions/alerts';
 import EditCampaignPage from '../EditCampaign/EditCampaign';
 import { logoutUser } from '../../store/actions/user';
+import CoiinLogo from '../../assets/png/coiin.png';
 
 const Dashboard: React.FC = (props) => {
   const history = useHistory();
@@ -51,7 +52,7 @@ const Dashboard: React.FC = (props) => {
       <Box className={styles.content}>
         <Box className={styles.topbar}>
           <Link className="mr-4 text-blue-700 cursor-pointer" to={'/dashboard/paymentsAccount'}>
-            <SettingsIcon />
+            <img src={CoiinLogo} alt="raiinmaker-logo" width="50px" height="50px" />
           </Link>
           <ExitToAppIcon className="text-blue-700 cursor-pointer" onClick={handleLogout} />
         </Box>
