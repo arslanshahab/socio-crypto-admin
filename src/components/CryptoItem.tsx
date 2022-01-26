@@ -4,7 +4,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import { DELETE_CRYPTO_FROM_WALLET } from '../operations/mutations/crypto';
 import { RefetchWallet } from './PaymentsAccount';
 import { formatFloat } from '../helpers/formatter';
-import cardStyles from './StatCard/statCard.module.css';
+import styles from './CryptoItem/cryptoItem.module.css';
 import { Tooltip } from '@material-ui/core';
 
 // eslint-disable-next-line
@@ -18,7 +18,7 @@ interface Props {
   refetchWallet: RefetchWallet;
 }
 
-export const CryptoItem: React.FC<Props> = ({ name, balance, id, refetchWallet }) => {
+export const CryptoItem: React.FC<Props> = ({ name, balance, refetchWallet }) => {
   // const [removeCurrency] = useMutation(DELETE_CRYPTO_FROM_WALLET, { errorPolicy: 'all' });
   // const handleDelete = async (event: any) => {
   //   event.preventDefault();
@@ -31,22 +31,20 @@ export const CryptoItem: React.FC<Props> = ({ name, balance, id, refetchWallet }
   };
 
   return (
-    <div key={id}>
-      <div className={cardStyles.statCardWrapper}>
-        <div className={cardStyles.analyticsNumberIcon}>
-          <Tooltip title="Coin Type" placement="top-start">
-            <p className={cardStyles.analyticsName}>{name.toUpperCase()}</p>
-          </Tooltip>
-          <img src={generateIcon(name)} alt="raiinmaker" className="coinIcon" />
-        </div>
-        <div className={cardStyles.analyticsNumberIcon}>
-          <Tooltip title="Balance" placement="top-start">
-            <h2 className={cardStyles.analyticsNumber}>{formatFloat(balance)}</h2>
-          </Tooltip>
-          <Tooltip title="Delete Coin" placement="top-start">
-            <DeleteIcon className="text-red-500 mr-1.5" fontSize="small" />
-          </Tooltip>
-        </div>
+    <div className={styles.cardWrapper}>
+      <div className={styles.row}>
+        <Tooltip title="Coin Type" placement="top-start">
+          <p className={styles.name}>{name.toUpperCase()}</p>
+        </Tooltip>
+        <img src={generateIcon(name)} alt="raiinmaker" className={styles.cryptIcon} />
+      </div>
+      <div className={styles.row}>
+        <Tooltip title="Balance" placement="top-start">
+          <h2 className={styles.balance}>{formatFloat(balance)}</h2>
+        </Tooltip>
+        <Tooltip title="Delete Coin" placement="top-start">
+          <DeleteIcon className={styles.deleteIcon} fontSize="small" />
+        </Tooltip>
       </div>
     </div>
   );
