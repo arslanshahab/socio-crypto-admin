@@ -5,7 +5,7 @@ import { FaEye } from 'react-icons/fa';
 import { IoSpeedometer } from 'react-icons/io5';
 interface IProps {
   type: string;
-  count: string[];
+  count?: string[];
 }
 
 const countTitleMap: { [key: string]: string } = {
@@ -26,6 +26,7 @@ const countIconMap: { [key: string]: React.ReactNode } = {
 
 const StatCard = (props: IProps) => {
   const { type, count } = props;
+  console.log('CryptoList', props);
   return (
     <div className={styles.statCardWrapper}>
       <p className={styles.analyticsName}>{countTitleMap[type]}</p>
