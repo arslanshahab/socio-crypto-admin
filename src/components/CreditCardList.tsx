@@ -38,7 +38,7 @@ export const CreditCardList: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="mt-16">
       <Elements stripe={stripePromise}>
         <CardSetupForm callback={() => setAddCard(false)} setOpen={setAddCard} open={addCard} />
       </Elements>

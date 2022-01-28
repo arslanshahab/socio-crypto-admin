@@ -108,7 +108,7 @@ export const CryptoDialog: React.FC<Props> = ({
         <Dialog open={open}>
           <DialogTitle>Select from the available tokens</DialogTitle>
           <DialogContent>
-            <FormControl>
+            <FormControl className="w-full">
               <InputLabel>Crypto Currencies</InputLabel>
               {isLoading ? (
                 <div />

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Button, Grid, Typography } from '@material-ui/core';
 import { CryptoItem } from './CryptoItem';
 import { GetFundingWalletResponse, ListCurrenciesResult, ListSupportedCryptoResults } from '../types';
 import { RefetchWallet } from './PaymentsAccount';
@@ -9,6 +8,9 @@ import { useQuery } from '@apollo/client';
 import { LIST_CURRENCIES, LIST_SUPPORTED_CRYPTO } from '../operations/queries/crypto';
 import GenericModal from './GenericModal';
 import DepositCryptoForm from './Forms/DepositCryptoForm';
+import CustomButton from '../components/CustomButton';
+import { CircularProgress } from '@material-ui/core';
+import circleStyles from './PendingCampaigns/pendingCampaigns.module.css';
 
 interface Props {
   data: GetFundingWalletResponse | undefined;
@@ -22,32 +24,13 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
 
-  const renderCryptoList = () => {
-    let cryptoList: JSX.Element[] = [];
-    if (isLoading) {
-      return <div />;
-    } else if (data && data.getFundingWallet) {
-      cryptoList = data.getFundingWallet.currency.map((currency, index) => {
-        return (
-          <CryptoItem
-            key={index}
-            name={currency.type}
-            balance={currency.balance}
-            id={currency.id}
-            refetchWallet={refetchWallet}
-          />
-        );
-      });
-    }
-    if (cryptoList.length === 0) {
-      return (
-        <Grid item className="list-item">
-          <Typography component="div">Please register or add a supported crypto currency</Typography>
-        </Grid>
-      );
-    }
-    return cryptoList;
-  };
+  if (isLoading) {
+    return (
+      <div className={circleStyles.loading}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -62,35 +45,32 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
       <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
         <DepositCryptoForm cryptoList={currencyList?.getSupportedCurrencies} />
       </GenericModal>
-      <Grid item container className="list-header" direction={'column'}>
-        <Grid item container>
-          <Grid item>
-            <Typography component={'div'} variant={'h5'}>
-              Crypto Currencies
-            </Typography>
-          </Grid>
-          <Grid item xs />
-          <Grid item>
-            <Button color={'primary'} onClick={() => setOpenCrypto(true)}>
-              Deposit
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button color={'primary'} onClick={() => setOpenRegistration(true)}>
-              <AddIcon />
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid item container>
-          <Grid item xs={4}>
-            <Typography>Type</Typography>
-          </Grid>
-          <Grid item xs>
-            <Typography>Balance</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-      {renderCryptoList()}
+      <div className="flex justify-between items-center border-b-2 mb-6">
+        <h1 className="text-center py-4 text-blue-800 text-3xl font-semibold">Crypto Currencies</h1>
+        <div className="flex justify-between items-center">
+          <CustomButton className="text-blue-800 w-16 p-1" onClick={() => setOpenCrypto(true)}>
+            Deposit
+          </CustomButton>
+          <CustomButton className="text-blue-800 p-1" onClick={() => setOpenRegistration(true)}>
+            <AddIcon />
+          </CustomButton>
+        </div>
+      </div>
+      {data && data?.getFundingWallet?.currency ? (
+        <div className="grid grid-cols-4 gap-6 px-4">
+          {data?.getFundingWallet?.currency?.map((currency) => (
+            <CryptoItem
+              key={currency.id}
+              name={currency.type}
+              balance={currency.balance}
+              id={currency.id}
+              refetchWallet={refetchWallet}
+            />
+          ))}
+        </div>
+      ) : (
+        <p>Please register or add a supported crypto currency</p>
+      )}
     </div>
   );
 };
