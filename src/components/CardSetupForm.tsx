@@ -24,7 +24,9 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    debugger;
     const { data, errors } = await addPaymentMethod();
+    console.log('Response of addPaymentMethod', data);
     // Make sure to disable form submission until Stripe.js has loaded.
     if (!stripe || !elements) return;
     const cardElement = elements.getElement(CardElement);
@@ -40,7 +42,7 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
         // Display result.error.message in your UI.
       } else {
         console.log('successfully added payment method');
-        reloadWindow();
+        // reloadWindow();
         // The setup has succeeded. Display a success message and send
         // result.setupIntent.payment_method to your server to save the
         // card to a Customer
@@ -55,7 +57,7 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
   return (
     <Dialog open={open}>
       <DialogTitle>Add Credit Card</DialogTitle>
-      <DialogContent>
+      <DialogContent style={{ width: '600px' }}>
         <form onSubmit={handleSubmit}>
           <Grid container justify={'center'} direction={'column'}>
             <Grid item className="add-card-section">
