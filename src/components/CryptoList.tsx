@@ -57,7 +57,7 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
         </div>
       </div>
       {data && data?.getFundingWallet?.currency ? (
-        <div className="grid grid-cols-4 gap-6 px-4">
+        <div className="flex flex-wrap gap-4">
           {data?.getFundingWallet?.currency?.map((currency) => (
             <CryptoItem
               key={currency.id}
