@@ -5,7 +5,8 @@ import { useMutation } from '@apollo/client';
 import { AddPaymentMethod } from '../types';
 import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
 import { Button, Dialog, DialogContent, DialogTitle, Grid } from '@material-ui/core';
-import { reloadWindow } from '../helpers/fileHandler';
+// import { reloadWindow } from '../helpers/fileHandler';
+import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
 
 interface Props {
   callback: () => void;
@@ -14,7 +15,9 @@ interface Props {
 }
 
 export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
-  const [addPaymentMethod] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD);
+  const [addPaymentMethod] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD, {
+    refetchQueries: [{ query: LIST_PAYMENT_METHODS }],
+  });
   const stripe = useStripe();
   const elements = useElements();
 
@@ -24,9 +27,7 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    debugger;
     const { data, errors } = await addPaymentMethod();
-    console.log('Response of addPaymentMethod', data);
     // Make sure to disable form submission until Stripe.js has loaded.
     if (!stripe || !elements) return;
     const cardElement = elements.getElement(CardElement);
@@ -39,13 +40,8 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
       });
       if (result.error) {
         console.log('card error: ', result.error.message);
-        // Display result.error.message in your UI.
       } else {
         console.log('successfully added payment method');
-        // reloadWindow();
-        // The setup has succeeded. Display a success message and send
-        // result.setupIntent.payment_method to your server to save the
-        // card to a Customer
         await callback();
       }
     } else {
