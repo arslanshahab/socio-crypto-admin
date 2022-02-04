@@ -68,7 +68,7 @@ export const AddressList: React.FC = () => {
     <div>
       <AddEthAddress setOpen={setAddAddress} open={addAddress} refetchExternalAddresses={refetch} />
       <div className="flex justify-between items-center border-b-2 mb-6 w-full mt-2">
-        <h1 className={headingStyles.heading2Xl}>Claimed Addresses</h1>
+        <h1 className={headingStyles.headingXl}>Claimed Addresses</h1>
       </div>
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
@@ -113,7 +113,7 @@ export const AddressList: React.FC = () => {
         </Grid>
       </Grid> */}
       <div className="flex justify-between items-center border-b-2 mb-6 w-full mt-2">
-        <h1 className={headingStyles.heading2Xl}>Unclaimed Addresses</h1>
+        <h1 className={headingStyles.headingXl}>Unclaimed Addresses</h1>
         <CustomButton className="text-blue-800 p-1" onClick={() => setAddAddress(true)}>
           <AddIcon />
         </CustomButton>

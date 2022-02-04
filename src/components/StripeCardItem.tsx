@@ -39,7 +39,7 @@ export const StripeCardItem: React.FC<Props> = ({ stripeWallet, callback, refetc
         </div>
         <div className={styles.row}>
           <Tooltip title="Last Four Digits of Card" placement="top-start">
-            <h2 className={styles.balance}>{stripeWallet.last4}</h2>
+            <h2 className={styles.balance}>*{stripeWallet.last4}</h2>
           </Tooltip>
           <Tooltip title="Delete Coin" placement="top-start">
             <DeleteIcon

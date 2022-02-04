@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@material-ui/core';
+import { Dialog, DialogContent, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { useMutation } from '@apollo/client';
 import { ListSupportedCryptoResults } from '../types';
 import { ADD_CRYPTO_TO_WALLET, REGISTER_CRYPTO } from '../operations/mutations/crypto';
@@ -87,25 +75,26 @@ export const CryptoDialog: React.FC<Props> = ({
     <div>
       {isTokenRegistration ? (
         <Dialog open={open}>
-          <DialogTitle>Please provide token information</DialogTitle>
-          <DialogContent>
-            <Grid container direction={'column'} spacing={1}>
-              <Grid item>
-                <TextField className="text-input" label={'Token Name'} onChange={handleTokenChange} />
-              </Grid>
-              <Grid item>
-                <TextField className="text-input" label={'Contract Address'} onChange={handleContractChange} />
-              </Grid>
-            </Grid>
+          <h2 className={headingStyles.headingXl}>Please Provide Token Information</h2>
+          <DialogContent style={{ width: '600px', padding: '24px' }}>
+            <div className="flex flex-col">
+              <TextField
+                className="text-input"
+                label={'Token Name'}
+                style={{ marginBottom: '24px' }}
+                onChange={handleTokenChange}
+              />
+              <TextField className="text-input" label={'Contract Address'} onChange={handleContractChange} />
+            </div>
           </DialogContent>
-          <DialogActions>
-            <Button variant={'contained'} color={'primary'} onClick={() => setOpenDialog(false)}>
-              Cancel
-            </Button>
-            <Button variant={'contained'} color={'primary'} type={'submit'} onClick={handleRegisterToken}>
+          <div className="flex gap-4 justify-center my-4">
+            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'} onClick={handleRegisterToken}>
               Submit
-            </Button>
-          </DialogActions>
+            </CustomButton>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={() => setOpenDialog(false)}>
+              Cancel
+            </CustomButton>
+          </div>
         </Dialog>
       ) : (
         <Dialog open={open}>
@@ -150,7 +139,7 @@ export const CryptoDialog: React.FC<Props> = ({
               Submit
             </CustomButton>
             <CustomButton className={buttonStyles.buttonPrimary} onClick={() => setOpenDialog(false)}>
-              Cancle
+              Cancel
             </CustomButton>
           </div>
         </Dialog>

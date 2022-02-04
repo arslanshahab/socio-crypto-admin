@@ -8,6 +8,8 @@ import { CircularProgress, Dialog, DialogContent } from '@material-ui/core';
 // import { reloadWindow } from '../helpers/fileHandler';
 import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
 import CustomButton from './CustomButton';
+import buttonStyles from '../assets/styles/customButton.module.css';
+import headingStyles from '../assets/styles/heading.module.css';
 
 interface Props {
   callback: () => void;
@@ -53,17 +55,17 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
 
   return (
     <Dialog open={open}>
-      <h2 className="p-4 text-blue-800 text-xl font-semibold">Add Credit Card:</h2>
+      <h2 className={headingStyles.headingXl}>Add Credit Card</h2>
       <DialogContent style={{ width: '600px' }}>
         <form onSubmit={handleSubmit}>
           <div className="mb-9">
             <CardSection />
           </div>
           <div className="flex justify-center gap-4 mb-4">
-            <CustomButton className="bg-blue-900 text-white w-32 rounded p-1.5" type={'submit'}>
+            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'}>
               {loading ? <CircularProgress size={22} color="inherit" /> : 'Submit'}
             </CustomButton>
-            <CustomButton className="bg-blue-900 text-white w-32 rounded p-1.5" onClick={handleClose}>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleClose}>
               Cancel
             </CustomButton>
           </div>

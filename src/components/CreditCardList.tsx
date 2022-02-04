@@ -11,6 +11,7 @@ import { stripePubKey } from '../apiConfig.json';
 import { loadStripe } from '@stripe/stripe-js';
 import CustomButton from './CustomButton';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
+import headingStyles from '../assets/styles/heading.module.css';
 
 const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
 const stripeKey = (stripePubKey as { [key: string]: string })[env] as any;
@@ -32,7 +33,7 @@ export const CreditCardList: React.FC = () => {
         <CardSetupForm callback={() => setAddCard(false)} setOpen={setAddCard} open={addCard} />
       </Elements>
       <div className="flex justify-between items-center border-b-2 mb-6 w-full">
-        <h1 className="text-center py-4 text-blue-800 text-2xl font-semibold">Credit Cards</h1>
+        <h1 className={headingStyles.headingXl}>Credit Cards</h1>
         <CustomButton className="text-blue-800 p-1" onClick={() => setAddCard(true)}>
           <AddIcon />
         </CustomButton>
