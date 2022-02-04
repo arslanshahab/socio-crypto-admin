@@ -1,10 +1,9 @@
 import React from 'react';
-import { Button, Grid, Typography } from '@material-ui/core';
 import { StripeWallet } from '../types';
 import { capitalize } from '../helpers/formatter';
 import { useMutation } from '@apollo/client';
 import { REMOVE_PAYMENT_METHOD } from '../operations/mutations/stripe';
-import { Tooltip } from '@material-ui/core';
+import { CircularProgress, Tooltip } from '@material-ui/core';
 import styles from './CryptoItem/cryptoItem.module.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { BsCreditCard2BackFill } from 'react-icons/bs';
@@ -12,14 +11,22 @@ import { BsCreditCard2BackFill } from 'react-icons/bs';
 interface Props {
   stripeWallet: StripeWallet;
   callback: () => void;
+  refetchCreditCard: () => void;
 }
 
 interface RemoveStripeWalletVars {
   paymentMethodId: string;
 }
 
-export const StripeCardItem: React.FC<Props> = ({ stripeWallet, callback }) => {
-  const [removePaymentMethod, { error }] = useMutation<boolean, RemoveStripeWalletVars>(REMOVE_PAYMENT_METHOD);
+export const StripeCardItem: React.FC<Props> = ({ stripeWallet, callback, refetchCreditCard }) => {
+  const [removePaymentMethod, { loading }] = useMutation<boolean, RemoveStripeWalletVars>(REMOVE_PAYMENT_METHOD);
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <CircularProgress />
+      </div>
+    );
+  }
   return (
     <div>
       <div className={styles.cardWrapper}>
@@ -27,7 +34,6 @@ export const StripeCardItem: React.FC<Props> = ({ stripeWallet, callback }) => {
           <Tooltip title="Card Type" placement="top-start">
             <p className={styles.name}>{capitalize(stripeWallet.brand)}</p>
           </Tooltip>
-
           <BsCreditCard2BackFill fontSize="20px" className="text-indigo-500" />
         </div>
         <div className={styles.row}>
@@ -41,6 +47,7 @@ export const StripeCardItem: React.FC<Props> = ({ stripeWallet, callback }) => {
               onClick={async () => {
                 if (window.confirm('Are you sure you want to delete this card?')) {
                   await removePaymentMethod({ variables: { paymentMethodId: stripeWallet.id } });
+                  await refetchCreditCard();
                   await callback();
                 }
               }}

@@ -22,3 +22,6 @@
 .cardWrapper:hover .deleteIcon {
   @apply visible text-red-600;
 }
+.loading {
+  @apply flex justify-center items-center;
+}

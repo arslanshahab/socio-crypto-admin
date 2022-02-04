@@ -17,7 +17,7 @@ const stripeKey = (stripePubKey as { [key: string]: string })[env] as any;
 const stripePromise = loadStripe(stripeKey);
 
 export const CreditCardList: React.FC = () => {
-  const { data, loading } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS);
+  const { data, loading, refetch } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS);
   const [addCard, setAddCard] = useState(false);
   if (loading) {
     return (
@@ -32,14 +32,19 @@ export const CreditCardList: React.FC = () => {
         <CardSetupForm callback={() => setAddCard(false)} setOpen={setAddCard} open={addCard} />
       </Elements>
       <div className="flex justify-between items-center border-b-2 mb-6 w-full">
-        <h1 className="text-center py-4 text-blue-800 text-3xl font-semibold">Credit Cards</h1>
+        <h1 className="text-center py-4 text-blue-800 text-2xl font-semibold">Credit Cards</h1>
         <CustomButton className="text-blue-800 p-1" onClick={() => setAddCard(true)}>
           <AddIcon />
         </CustomButton>
       </div>
       <div className="flex flex-wrap gap-4">
         {data?.listPaymentMethods?.map((card) => (
-          <StripeCardItem callback={() => setAddCard(false)} key={card.id} stripeWallet={card} />
+          <StripeCardItem
+            callback={() => setAddCard(false)}
+            key={card.id}
+            stripeWallet={card}
+            refetchCreditCard={refetch}
+          />
         ))}
       </div>
     </div>

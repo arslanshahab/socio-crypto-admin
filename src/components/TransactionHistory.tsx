@@ -11,6 +11,8 @@ interface Props {
 }
 
 export const TransactionHistory: React.FC<Props> = ({ data, isLoading }) => {
+  // debugger;
+  console.log('TransactionHistory data: ', data);
   const renderTransactionHistory = () => {
     let transactionList: JSX.Element[] = [];
     if (isLoading) {
@@ -51,7 +53,7 @@ export const TransactionHistory: React.FC<Props> = ({ data, isLoading }) => {
         </Grid>
       </Grid>
       <Grid container item direction={'column'}>
-        {renderTransactionHistory()}
+        {/* {renderTransactionHistory()} */}
       </Grid>
     </Grid>
   );

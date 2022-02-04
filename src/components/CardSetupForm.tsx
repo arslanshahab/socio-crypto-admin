@@ -4,9 +4,10 @@ import { CardSection } from './CardSection';
 import { useMutation } from '@apollo/client';
 import { AddPaymentMethod } from '../types';
 import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
-import { Button, Dialog, DialogContent, DialogTitle, Grid } from '@material-ui/core';
+import { CircularProgress, Dialog, DialogContent } from '@material-ui/core';
 // import { reloadWindow } from '../helpers/fileHandler';
 import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
+import CustomButton from './CustomButton';
 
 interface Props {
   callback: () => void;
@@ -15,7 +16,7 @@ interface Props {
 }
 
 export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
-  const [addPaymentMethod] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD, {
+  const [addPaymentMethod, { loading }] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD, {
     refetchQueries: [{ query: LIST_PAYMENT_METHODS }],
   });
   const stripe = useStripe();
@@ -52,26 +53,20 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
 
   return (
     <Dialog open={open}>
-      <DialogTitle>Add Credit Card</DialogTitle>
+      <h2 className="p-4 text-blue-800 text-xl font-semibold">Add Credit Card:</h2>
       <DialogContent style={{ width: '600px' }}>
         <form onSubmit={handleSubmit}>
-          <Grid container justify={'center'} direction={'column'}>
-            <Grid item className="add-card-section">
-              <CardSection />
-            </Grid>
-          </Grid>
-          <Grid container item justify={'center'} spacing={2} style={{ marginTop: '25px' }}>
-            <Grid item>
-              <Button variant={'contained'} color={'primary'} type={'submit'}>
-                Submit
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant={'contained'} color={'primary'} onClick={handleClose}>
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
+          <div className="mb-9">
+            <CardSection />
+          </div>
+          <div className="flex justify-center gap-4 mb-4">
+            <CustomButton className="bg-blue-900 text-white w-32 rounded p-1.5" type={'submit'}>
+              {loading ? <CircularProgress size={22} color="inherit" /> : 'Submit'}
+            </CustomButton>
+            <CustomButton className="bg-blue-900 text-white w-32 rounded p-1.5" onClick={handleClose}>
+              Cancel
+            </CustomButton>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

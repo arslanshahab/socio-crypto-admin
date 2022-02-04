@@ -46,7 +46,7 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
         <DepositCryptoForm cryptoList={currencyList?.getSupportedCurrencies} />
       </GenericModal>
       <div className="flex justify-between items-center border-b-2 mb-6">
-        <h1 className="text-center py-4 text-blue-800 text-3xl font-semibold">Crypto Currencies</h1>
+        <h1 className="text-center py-4 text-blue-800 text-2xl font-semibold">Crypto Currencies</h1>
         <div className="flex justify-between items-center">
           <CustomButton className="text-blue-800 w-16 p-1" onClick={() => setOpenCrypto(true)}>
             Deposit
