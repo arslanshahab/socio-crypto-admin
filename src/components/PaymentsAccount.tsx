@@ -38,11 +38,11 @@ export const PaymentsAccount: React.FC = () => {
 
   return (
     <div>
-      <AppBar position="static">
+      <AppBar position="static" color="transparent">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-          <Tab label="Funding Wallet" {...a11yProps(0)} />
-          <Tab label="Campaigns" {...a11yProps(1)} />
-          <Tab label="Transaction History" {...a11yProps(2)} />
+          <Tab label="Funding Wallet" {...a11yProps(0)} className="focus:outline-none" />
+          <Tab label="Campaigns" {...a11yProps(1)} className="focus:outline-none" />
+          <Tab label="Transaction History" {...a11yProps(2)} className="focus:outline-none" />
         </Tabs>
       </AppBar>
       <Paper className="paper">

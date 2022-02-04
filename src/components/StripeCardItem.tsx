@@ -4,7 +4,8 @@ import { capitalize } from '../helpers/formatter';
 import { useMutation } from '@apollo/client';
 import { REMOVE_PAYMENT_METHOD } from '../operations/mutations/stripe';
 import { CircularProgress, Tooltip } from '@material-ui/core';
-import styles from './CryptoItem/cryptoItem.module.css';
+// import styles from './CryptoItem/cryptoItem.module.css';
+import styles from './CryptoCard/cryptoCard.module.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { BsCreditCard2BackFill } from 'react-icons/bs';
 

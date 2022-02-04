@@ -4,7 +4,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import { DELETE_CRYPTO_FROM_WALLET } from '../operations/mutations/crypto';
 import { RefetchWallet } from './PaymentsAccount';
 import { formatFloat } from '../helpers/formatter';
-import styles from './CryptoItem/cryptoItem.module.css';
+// import styles from './CryptoItem/cryptoItem.module.css';
+import styles from './CryptoCard/cryptoCard.module.css';
 import { Tooltip } from '@material-ui/core';
 
 // eslint-disable-next-line

@@ -8,6 +8,7 @@ import { AddEthAddress } from './AddEthAddress';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
 import CustomButton from '../components/CustomButton';
 import { CircularProgress } from '@material-ui/core';
+import headingStyles from '../assets/styles/heading.module.css';
 
 export type RefetchExternalAddresses = (
   variables?: Partial<Record<string, any>> | undefined,
@@ -67,7 +68,7 @@ export const AddressList: React.FC = () => {
     <div>
       <AddEthAddress setOpen={setAddAddress} open={addAddress} refetchExternalAddresses={refetch} />
       <div className="flex justify-between items-center border-b-2 mb-6 w-full mt-2">
-        <h1 className="text-center py-4 text-blue-800 text-2xl font-semibold">Claimed Addresses</h1>
+        <h1 className={headingStyles.heading2Xl}>Claimed Addresses</h1>
       </div>
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
@@ -112,7 +113,7 @@ export const AddressList: React.FC = () => {
         </Grid>
       </Grid> */}
       <div className="flex justify-between items-center border-b-2 mb-6 w-full mt-2">
-        <h1 className="text-center py-4 text-blue-800 text-2xl font-semibold">Unclaimed Addresses</h1>
+        <h1 className={headingStyles.heading2Xl}>Unclaimed Addresses</h1>
         <CustomButton className="text-blue-800 p-1" onClick={() => setAddAddress(true)}>
           <AddIcon />
         </CustomButton>

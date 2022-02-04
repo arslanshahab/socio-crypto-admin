@@ -1,0 +1,9 @@
+.heading3Xl {
+  @apply py-4 text-blue-800 text-3xl font-semibold;
+}
+.heading2Xl {
+  @apply py-4 text-blue-800 text-2xl font-semibold;
+}
+.headingXl {
+  @apply p-4 text-blue-800 text-xl font-semibold;
+}
