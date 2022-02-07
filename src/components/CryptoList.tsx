@@ -46,7 +46,7 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
       <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
         <DepositCryptoForm cryptoList={currencyList?.getSupportedCurrencies} />
       </GenericModal>
-      <div className="flex justify-between items-center border-b-2 mb-6">
+      <div className={headingStyles.paymentHeadingWrapper}>
         <h1 className={headingStyles.headingXl}>Crypto Currencies</h1>
         <div className="flex gap-4 justify-between items-center">
           <CustomButton className="text-blue-800 w-16 p-1" onClick={() => setOpenCrypto(true)}>
@@ -59,9 +59,9 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
       </div>
       {data && data?.getFundingWallet?.currency ? (
         <div className="flex flex-wrap gap-4">
-          {data?.getFundingWallet?.currency?.map((currency) => (
+          {data?.getFundingWallet?.currency?.map((currency, index) => (
             <CryptoItem
-              key={currency.id}
+              key={index}
               name={currency.type}
               balance={currency.balance}
               id={currency.id}

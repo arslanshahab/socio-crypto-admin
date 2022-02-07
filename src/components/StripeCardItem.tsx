@@ -11,7 +11,7 @@ import { BsCreditCard2BackFill } from 'react-icons/bs';
 
 interface Props {
   stripeWallet: StripeWallet;
-  callback: () => void;
+  callback?: () => void;
   refetchCreditCard: () => void;
 }
 
@@ -19,7 +19,7 @@ interface RemoveStripeWalletVars {
   paymentMethodId: string;
 }
 
-export const StripeCardItem: React.FC<Props> = ({ stripeWallet, callback, refetchCreditCard }) => {
+export const StripeCardItem: React.FC<Props> = ({ stripeWallet, refetchCreditCard }) => {
   const [removePaymentMethod, { loading }] = useMutation<boolean, RemoveStripeWalletVars>(REMOVE_PAYMENT_METHOD);
   if (loading) {
     return (
@@ -49,13 +49,14 @@ export const StripeCardItem: React.FC<Props> = ({ stripeWallet, callback, refetc
                 if (window.confirm('Are you sure you want to delete this card?')) {
                   await removePaymentMethod({ variables: { paymentMethodId: stripeWallet.id } });
                   await refetchCreditCard();
-                  await callback();
+                  // await callback();
                 }
               }}
             />
           </Tooltip>
         </div>
       </div>
+
       {/* <Grid container item direction={'row'} className="list-row">
         <Grid item className="list-item">
           <Typography>{capitalize(stripeWallet.brand)}</Typography>

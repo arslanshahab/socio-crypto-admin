@@ -12,14 +12,19 @@ import { loadStripe } from '@stripe/stripe-js';
 import CustomButton from './CustomButton';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
+import commonStyles from '../assets/styles/common.module.css';
+import customButtonStyle from '../assets/styles/customButton.module.css';
 
 const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
 const stripeKey = (stripePubKey as { [key: string]: string })[env] as any;
 const stripePromise = loadStripe(stripeKey);
 
 export const CreditCardList: React.FC = () => {
-  const { data, loading, refetch } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS);
-  const [addCard, setAddCard] = useState(false);
+  const [modal, setModal] = useState(false);
+  const { data, loading, refetch } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
+  });
   if (loading) {
     return (
       <div className={styles.loading}>
@@ -30,24 +35,24 @@ export const CreditCardList: React.FC = () => {
   return (
     <div className="mt-4">
       <Elements stripe={stripePromise}>
-        <CardSetupForm callback={() => setAddCard(false)} setOpen={setAddCard} open={addCard} />
+        <CardSetupForm setModal={setModal} open={modal} />
       </Elements>
-      <div className="flex justify-between items-center border-b-2 mb-6 w-full">
+      {/* <div className="flex justify-between items-center border-b-2 mb-6 w-full"> */}
+      <div className={headingStyles.paymentHeadingWrapper}>
         <h1 className={headingStyles.headingXl}>Credit Cards</h1>
-        <CustomButton className="text-blue-800 p-1" onClick={() => setAddCard(true)}>
+        <CustomButton className={customButtonStyle.addButton} onClick={() => setModal(true)}>
           <AddIcon />
         </CustomButton>
       </div>
-      <div className="flex flex-wrap gap-4">
-        {data?.listPaymentMethods?.map((card) => (
-          <StripeCardItem
-            callback={() => setAddCard(false)}
-            key={card.id}
-            stripeWallet={card}
-            refetchCreditCard={refetch}
-          />
-        ))}
-      </div>
+      {data && data.listPaymentMethods.length < 1 ? (
+        <div className={commonStyles.hasItemList}> There is no credit card found</div>
+      ) : (
+        <div className="flex flex-wrap gap-4">
+          {data?.listPaymentMethods?.map((card) => (
+            <StripeCardItem key={card.id} stripeWallet={card} refetchCreditCard={refetch} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

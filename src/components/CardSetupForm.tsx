@@ -12,12 +12,11 @@ import buttonStyles from '../assets/styles/customButton.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
 
 interface Props {
-  callback: () => void;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
 }
 
-export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
+export const CardSetupForm: React.FC<Props> = ({ setModal, open }) => {
   const [addPaymentMethod, { loading }] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD, {
     refetchQueries: [{ query: LIST_PAYMENT_METHODS }],
   });
@@ -25,7 +24,7 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
   const elements = useElements();
 
   const handleClose = () => {
-    setOpen(false);
+    setModal(false);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +44,6 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
         console.log('card error: ', result.error.message);
       } else {
         console.log('successfully added payment method');
-        await callback();
       }
     } else {
       console.log('error: ', errors);
