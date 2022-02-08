@@ -23,8 +23,6 @@ export const TransactionHistory: React.FC<Props> = () => {
     fetchPolicy: 'network-only',
   });
 
-  console.log('TransactionHistory', data?.transectionHistory);
-
   // const renderTransactionHistory = () => {
   //   let transactionList: JSX.Element[] = [];
   //   if (isLoading) {
