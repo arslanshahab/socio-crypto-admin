@@ -1,5 +1,5 @@
 .cardWrapper {
-  @apply shadow-md py-2 px-2 rounded-lg bg-gray-50 cursor-pointer w-48;
+  @apply shadow py-2 px-2 rounded-lg bg-gray-50 cursor-pointer w-48;
 }
 .cardWrapper:hover {
   @apply bg-white shadow-lg;

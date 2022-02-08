@@ -42,7 +42,7 @@ export const FundingWallet: React.FC<Props> = ({ data, isLoading, refetchWallet 
       </div>
       <CryptoList data={data} isLoading={isLoading} refetchWallet={refetchWallet} />
       <CreditCardList />
-      <AddressList />
+      {/* <AddressList /> */}
     </div>
   );
 };
