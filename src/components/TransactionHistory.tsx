@@ -3,6 +3,13 @@ import { Grid, Typography } from '@material-ui/core';
 import { TransferCard } from './TransferCard';
 import { GetFundingWalletResponse } from '../types';
 import { RefetchWallet } from './PaymentsAccount';
+import { useQuery } from '@apollo/client';
+import { GET_TRANSACTION_HISTORY } from '../operations/queries/fundingWallet';
+import { GetTransectionHistory } from '../types';
+import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
+import { capitalize } from '../helpers/formatter';
+import headingStyles from '../assets/styles/heading.module.css';
+import { CircularProgress } from '@material-ui/core';
 
 interface Props {
   data: GetFundingWalletResponse | undefined;
@@ -10,51 +17,68 @@ interface Props {
   refetchWallet: RefetchWallet;
 }
 
-export const TransactionHistory: React.FC<Props> = ({ data, isLoading }) => {
+export const TransactionHistory: React.FC<Props> = () => {
   // debugger;
-  console.log('TransactionHistory data: ', data);
-  const renderTransactionHistory = () => {
-    let transactionList: JSX.Element[] = [];
-    if (isLoading) {
-      return <div />;
-    } else if (data && data.getFundingWallet) {
-      transactionList = data.getFundingWallet.transfers.map((transfer, index) => {
-        return <TransferCard key={index} transfer={transfer} />;
-      });
-    }
-    if (transactionList.length === 0) {
-      return (
-        <Grid item className="list-item">
-          <Typography component="div">You have no transaction history</Typography>
-        </Grid>
-      );
-    }
-    return transactionList;
-  };
+  const { data, loading, error } = useQuery<GetTransectionHistory>(GET_TRANSACTION_HISTORY, {
+    fetchPolicy: 'network-only',
+  });
+
+  console.log('TransactionHistory', data?.transectionHistory);
+
+  // const renderTransactionHistory = () => {
+  //   let transactionList: JSX.Element[] = [];
+  //   if (isLoading) {
+  //     return <div />;
+  //   } else if (data && data.getFundingWallet) {
+  //     transactionList = data.getFundingWallet.transfers.map((transfer, index) => {
+  //       return <TransferCard key={index} transfer={transfer} />;
+  //     });
+  //   }
+  //   if (transactionList.length === 0) {
+  //     return (
+  //       <Grid item className="list-item">
+  //         <Typography component="div">You have no transaction history</Typography>
+  //       </Grid>
+  //     );
+  //   }
+  //   return transactionList;
+  // };
+  if (loading) {
+    return (
+      <div className={styles.loading}>
+        <CircularProgress />
+      </div>
+    );
+  }
   return (
-    <Grid container className="section">
-      <Grid item>
-        <Typography variant={'h5'}>Transaction History</Typography>
-      </Grid>
-      <Grid container item className="list-header">
-        <Grid item container>
-          <Grid item xs={1}>
-            <Typography>Action</Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography>Amount</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography>Method</Typography>
-          </Grid>
-          <Grid item xs={3}>
-            <Typography>Date</Typography>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid container item direction={'column'}>
-        {/* {renderTransactionHistory()} */}
-      </Grid>
-    </Grid>
+    <div>
+      <h1 className={headingStyles.headingXl}>Transaction History</h1>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.tableHeadRow}>
+              <th className={styles.withdrawColumn}>Action</th>
+              <th className={styles.withdrawColumn}>Amount</th>
+              <th className={styles.withdrawColumn}>Currency Type</th>
+              <th className={styles.withdrawColumn}>Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {data &&
+              data?.transectionHistory?.map((transfer: any, index) => {
+                return (
+                  <tr className={styles.tableBodyRow} key={index}>
+                    <td className={styles.withdrawColumn}>{transfer.action}</td>
+                    <td className={styles.withdrawColumn}>{transfer.amount}</td>
+                    <td className={styles.withdrawColumn}>{capitalize(transfer.currency) || 'COIN'}</td>
+                    <td className={styles.withdrawColumn}>{new Date(parseInt(transfer.createdAt)).toLocaleString()}</td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };

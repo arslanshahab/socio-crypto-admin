@@ -16,3 +16,13 @@ export const GET_FUNDING_WALLET = gql`
     }
   }
 `;
+export const GET_TRANSACTION_HISTORY = gql`
+  query transectionHistory {
+    transectionHistory {
+      action
+      amount
+      currency
+      createdAt
+    }
+  }
+`;
