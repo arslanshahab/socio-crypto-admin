@@ -121,6 +121,14 @@ export interface GetFundingWalletResponse {
     transfers: Transfer[];
   };
 }
+export interface GetTransectionHistory {
+  transectionHistory: {
+    action: string;
+    amount: number;
+    currency: string;
+    createdAt: string;
+  }[];
+}
 
 export interface WalletCurrency {
   id: string;

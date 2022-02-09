@@ -4,6 +4,9 @@ import { useMutation } from '@apollo/client';
 import { ClaimEthereumAddress } from '../types';
 import { ATTACH_WALLET } from '../operations/mutations/ethereum';
 import { RefetchExternalAddresses } from './AddressList';
+import headingStyles from '../assets/styles/heading.module.css';
+import buttonStyles from '../assets/styles/customButton.module.css';
+import CustomButton from './CustomButton';
 
 interface AttachWallet {
   ethereumAddress: string;
@@ -37,34 +40,27 @@ export const AddEthAddress: React.FC<Props> = ({ setOpen, open, refetchExternalA
 
   return (
     <Dialog open={open}>
-      <DialogTitle>Add ETH Address</DialogTitle>
-      <DialogContent>
+      <h2 className={headingStyles.headingXl}>Add ETH Address</h2>
+      <DialogContent style={{ width: '600px' }}>
         <form onSubmit={handleAttachWallet}>
-          <Grid container justify={'center'} direction={'column'}>
-            <Grid item>
-              <TextField
-                style={{ width: '375px' }}
-                fullWidth
-                margin={'dense'}
-                type={'text'}
-                name={'address'}
-                onChange={handleChange}
-                label="ETH Address"
-              />
-            </Grid>
-            <Grid container item justify={'center'} spacing={2} style={{ marginTop: '25px' }}>
-              <Grid item>
-                <Button variant={'contained'} color={'primary'} type={'submit'}>
-                  Submit
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button variant={'contained'} color={'primary'} onClick={handleClose}>
-                  Cancel
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
+          <div className="mb-8 w-full">
+            <TextField
+              fullWidth
+              margin={'dense'}
+              type={'text'}
+              name={'address'}
+              onChange={handleChange}
+              label="ETH Address"
+            />
+          </div>
+          <div className="flex justify-center gap-4 mb-4">
+            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'}>
+              Submit
+            </CustomButton>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleClose}>
+              Cancel
+            </CustomButton>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

@@ -1,23 +1,14 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@material-ui/core';
+import { Dialog, DialogContent, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { useMutation } from '@apollo/client';
 import { ListSupportedCryptoResults } from '../types';
 import { ADD_CRYPTO_TO_WALLET, REGISTER_CRYPTO } from '../operations/mutations/crypto';
 import { capitalize } from '../helpers/formatter';
 import { RefetchWallet } from './PaymentsAccount';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import headingStyles from '../assets/styles/heading.module.css';
+import CustomButton from './CustomButton';
+import buttonStyles from '../assets/styles/customButton.module.css';
 
 interface Props {
   isTokenRegistration: boolean;
@@ -84,30 +75,31 @@ export const CryptoDialog: React.FC<Props> = ({
     <div>
       {isTokenRegistration ? (
         <Dialog open={open}>
-          <DialogTitle>Please provide token information</DialogTitle>
-          <DialogContent>
-            <Grid container direction={'column'} spacing={1}>
-              <Grid item>
-                <TextField className="text-input" label={'Token Name'} onChange={handleTokenChange} />
-              </Grid>
-              <Grid item>
-                <TextField className="text-input" label={'Contract Address'} onChange={handleContractChange} />
-              </Grid>
-            </Grid>
+          <h2 className={headingStyles.headingXl}>Please Provide Token Information</h2>
+          <DialogContent style={{ width: '600px', padding: '24px' }}>
+            <div className="flex flex-col">
+              <TextField
+                className="text-input"
+                label={'Token Name'}
+                style={{ marginBottom: '24px' }}
+                onChange={handleTokenChange}
+              />
+              <TextField className="text-input" label={'Contract Address'} onChange={handleContractChange} />
+            </div>
           </DialogContent>
-          <DialogActions>
-            <Button variant={'contained'} color={'primary'} onClick={() => setOpenDialog(false)}>
-              Cancel
-            </Button>
-            <Button variant={'contained'} color={'primary'} type={'submit'} onClick={handleRegisterToken}>
+          <div className="flex gap-4 justify-center my-4">
+            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'} onClick={handleRegisterToken}>
               Submit
-            </Button>
-          </DialogActions>
+            </CustomButton>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={() => setOpenDialog(false)}>
+              Cancel
+            </CustomButton>
+          </div>
         </Dialog>
       ) : (
         <Dialog open={open}>
-          <DialogTitle>Select from the available tokens</DialogTitle>
-          <DialogContent>
+          <h2 className={headingStyles.headingXl}>Select From the Ailable Tokens</h2>
+          <DialogContent style={{ width: '600px' }}>
             <FormControl className="w-full">
               <InputLabel>Crypto Currencies</InputLabel>
               {isLoading ? (
@@ -142,17 +134,16 @@ export const CryptoDialog: React.FC<Props> = ({
               )}
             </FormControl>
           </DialogContent>
-          <DialogActions>
-            <Button variant={'contained'} color={'primary'} onClick={() => setOpenDialog(false)}>
-              Cancel
-            </Button>
-            <Button variant={'contained'} color={'primary'} type={'submit'} onClick={handleAddToken}>
+          <div className="flex gap-4 justify-center mt-8 mb-4">
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleAddToken}>
               Submit
-            </Button>
-          </DialogActions>
+            </CustomButton>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={() => setOpenDialog(false)}>
+              Cancel
+            </CustomButton>
+          </div>
         </Dialog>
       )}
-      <ToastContainer></ToastContainer>
     </div>
   );
 };
