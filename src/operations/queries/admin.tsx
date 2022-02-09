@@ -19,8 +19,11 @@ export const CREATE_CAMPAIGN_REPORT = gql`
 `;
 
 export const SUBMIT_AUDIT_REPORT = gql`
-  mutation SubmitAuditReport($campaignId: String!, $rejected: [String]!) {
-    payoutCampaignRewards(campaignId: $campaignId, rejected: $rejected)
+  mutation SubmitAuditReport($campaignId: String!, $rejected: [String]) {
+    payoutCampaignRewards(campaignId: $campaignId, rejected: $rejected) {
+      success
+      message
+    }
   }
 `;
 
@@ -125,6 +128,7 @@ export const ADMIN_LIST_CAMPAIGN_QUERY = gql`
         coiinTotal
         description
         audited
+        symbol
         participants {
           id
           participationScore
@@ -142,7 +146,6 @@ export const ADMIN_LIST_CAMPAIGN_QUERY = gql`
     }
   }
 `;
-
 export const LIST_ORGS = gql`
   query listOrgs($skip: Int, $take: Int) {
     listOrgs(skip: $skip, take: $take) {
