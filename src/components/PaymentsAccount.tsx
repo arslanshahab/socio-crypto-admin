@@ -36,6 +36,7 @@ export const PaymentsAccount: React.FC = () => {
     };
   }
 
+  console.log('Response from funding wallet query: ', fundingWallet);
   return (
     <div>
       <AppBar position="static" color="transparent">

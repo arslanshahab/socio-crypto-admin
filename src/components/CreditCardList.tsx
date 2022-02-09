@@ -25,32 +25,33 @@ export const CreditCardList: React.FC = () => {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
   });
-  if (loading) {
-    return (
-      <div className={styles.loading}>
-        <CircularProgress />
-      </div>
-    );
-  }
+
   return (
-    <div className="mt-4">
-      <Elements stripe={stripePromise}>
-        <CardSetupForm setModal={setModal} open={modal} />
-      </Elements>
-      {/* <div className="flex justify-between items-center border-b-2 mb-6 w-full"> */}
-      <div className={headingStyles.paymentHeadingWrapper}>
-        <h1 className={headingStyles.headingXl}>Credit Cards</h1>
-        <CustomButton className={customButtonStyle.addButton} onClick={() => setModal(true)}>
-          <AddIcon />
-        </CustomButton>
-      </div>
-      {data && data.listPaymentMethods.length < 1 ? (
-        <div className={commonStyles.hasItemList}> There is no credit card found</div>
+    <div className={`${commonStyles.sectionMinHeight} mt-4`}>
+      {loading ? (
+        <div className={styles.loading}>
+          <CircularProgress />
+        </div>
       ) : (
-        <div className="flex flex-wrap gap-4">
-          {data?.listPaymentMethods?.map((card) => (
-            <StripeCardItem key={card.id} stripeWallet={card} refetchCreditCard={refetch} />
-          ))}
+        <div>
+          <Elements stripe={stripePromise}>
+            <CardSetupForm setModal={setModal} open={modal} />
+          </Elements>
+          <div className={headingStyles.paymentHeadingWrapper}>
+            <h1 className={headingStyles.headingXl}>Credit Cards</h1>
+            <CustomButton className={customButtonStyle.addButton} onClick={() => setModal(true)}>
+              <AddIcon />
+            </CustomButton>
+          </div>
+          {data && data.listPaymentMethods.length < 1 ? (
+            <div className={commonStyles.hasItemList}> There is no credit card found</div>
+          ) : (
+            <div className="flex flex-wrap gap-4">
+              {data?.listPaymentMethods?.map((card) => (
+                <StripeCardItem key={card.id} stripeWallet={card} refetchCreditCard={refetch} />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
