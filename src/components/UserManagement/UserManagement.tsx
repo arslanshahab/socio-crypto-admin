@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
 import { useQuery } from '@apollo/client';
 import { ListEmployees } from '../../types';
@@ -9,13 +9,37 @@ import PrimaryCard from '../CryptoCard/PrimaryCard';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 
 export const UserManagement: React.FC = () => {
-  const { data, loading } = useQuery<ListEmployees>(LIST_EMPLOYEES, { variables: { skip: 0, take: 20 } });
+  const { data, loading } = useQuery<ListEmployees>(LIST_EMPLOYEES, { variables: { skip: 0, take: 25 } });
   const [openUserDialog, setUserDialog] = useState(false);
-
+  const [filterEmployee, setFilterEmployee] = useState<{ name: string; createdAt: string }[] | undefined>([]);
+  const [searchField, setSearchField] = useState('');
   const toolTipMap = {
     title: 'Employee Name',
     value: 'Active Since',
   };
+  useEffect(() => {
+    let identifier: any;
+    if (searchField) {
+      identifier = setTimeout(() => {
+        const filter = data?.listEmployees?.adminsDetails?.filter((x: { name: string; createdAt: string }) => {
+          return x.name.toLowerCase().includes(searchField.toLowerCase());
+        });
+        setFilterEmployee(filter);
+      }, 500);
+    } else if (searchField === '') {
+      const empList = data?.listEmployees?.adminsDetails;
+      setFilterEmployee(empList);
+    }
+    return () => {
+      clearTimeout(identifier);
+    };
+  }, [searchField, data]);
+
+  const handleSearch = (e: any) => {
+    const { value } = e.target;
+    setSearchField(value);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -42,10 +66,11 @@ export const UserManagement: React.FC = () => {
           <div className={styles.organization}>
             <h6>Organization:</h6>
             <p className={styles.orgName}>{data?.listEmployees?.orgName}</p>
+            <input type="text" name="search" className="border-2" onChange={handleSearch} />
           </div>
           <div className="flex gap-4 flex-wrap">
-            {data &&
-              data.listEmployees.adminsDetails.map((admin, index) => (
+            {filterEmployee &&
+              filterEmployee.map((admin: any, index: number) => (
                 <PrimaryCard
                   key={index}
                   title={admin.name}
