@@ -32,12 +32,11 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
   const { data: currencyList } = useQuery<ListCurrenciesResult>(LIST_CURRENCIES, { fetchPolicy: 'network-only' });
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
-
   const toolTipMap = {
     title: 'Currency Type',
     value: 'Balance',
   };
-
+  console.log('CryptoLis------------/', data);
   return (
     <div className={commonStyles.sectionMinHeight}>
       {isLoading ? (
@@ -75,7 +74,7 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
                   key={index}
                   title={currency.type}
                   value={currency.balance}
-                  icon={generateIcon(currency.type)}
+                  icon={currency.symbolImageUrl}
                   tooltipTitle={toolTipMap.title}
                   tooltipValue={toolTipMap.value}
                   id={currency.id}

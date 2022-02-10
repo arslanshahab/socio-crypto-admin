@@ -134,6 +134,7 @@ export interface WalletCurrency {
   id: string;
   type: string;
   balance: number;
+  symbolImageUrl: string;
 }
 
 export interface ListSupportedCryptoResults {
