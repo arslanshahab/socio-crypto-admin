@@ -171,8 +171,8 @@ export const UPDATE_PASSWORD = gql`
 `;
 
 export const LIST_EMPLOYEES = gql`
-  query listEmployees {
-    listEmployees {
+  query listEmployees($skip: Int, $take: Int) {
+    listEmployees(skip: $skip, take: $take) {
       orgName
       adminsDetails {
         name

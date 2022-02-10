@@ -14,7 +14,7 @@
   @apply font-semibold text-gray-600;
 }
 .cryptIcon {
-  @apply w-6;
+  @apply h-6 w-6 object-contain;
 }
 .deleteIcon {
   @apply invisible;

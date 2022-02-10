@@ -9,7 +9,7 @@ import PrimaryCard from '../CryptoCard/PrimaryCard';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 
 export const UserManagement: React.FC = () => {
-  const { data, loading } = useQuery<ListEmployees>(LIST_EMPLOYEES);
+  const { data, loading } = useQuery<ListEmployees>(LIST_EMPLOYEES, { variables: { skip: 0, take: 20 } });
   const [openUserDialog, setUserDialog] = useState(false);
 
   const toolTipMap = {
