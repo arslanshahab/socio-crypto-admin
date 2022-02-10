@@ -34,7 +34,7 @@ const PrimaryCard: FC<UserProps> = ({
     });
     await refetchCard();
   };
-  if (removeId) {
+  if (removeLoading && removeId) {
     return (
       <div className={styles.loading}>
         <CircularProgress />
