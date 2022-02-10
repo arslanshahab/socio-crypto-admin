@@ -26,7 +26,6 @@ const countIconMap: { [key: string]: React.ReactNode } = {
 
 const StatCard = (props: IProps) => {
   const { type, count } = props;
-  console.log('CryptoList', props);
   return (
     <div className={styles.statCardWrapper}>
       <p className={styles.analyticsName}>{countTitleMap[type]}</p>

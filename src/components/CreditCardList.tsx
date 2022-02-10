@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { ListPaymentMethodsResults } from '../types';
 import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
 import { CircularProgress } from '@material-ui/core';
@@ -14,10 +14,16 @@ import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
 import commonStyles from '../assets/styles/common.module.css';
 import customButtonStyle from '../assets/styles/customButton.module.css';
+import PrimaryCard from './CryptoCard/PrimaryCard';
+import { BsCreditCard2BackFill } from 'react-icons/bs';
+import { REMOVE_PAYMENT_METHOD } from '../operations/mutations/stripe';
 
 const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
 const stripeKey = (stripePubKey as { [key: string]: string })[env] as any;
 const stripePromise = loadStripe(stripeKey);
+interface RemoveStripeWalletVars {
+  paymentMethodId: string;
+}
 
 export const CreditCardList: React.FC = () => {
   const [modal, setModal] = useState(false);
@@ -25,6 +31,14 @@ export const CreditCardList: React.FC = () => {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
   });
+  const [removePaymentMethod, { loading: removeLoading }] = useMutation<boolean, RemoveStripeWalletVars>(
+    REMOVE_PAYMENT_METHOD,
+  );
+
+  const toolTipMap = {
+    title: 'Credit Card Type',
+    value: 'Last Four Digits of Card',
+  };
 
   return (
     <div className={`${commonStyles.sectionMinHeight} mt-4`}>
@@ -47,8 +61,22 @@ export const CreditCardList: React.FC = () => {
             <div className={commonStyles.hasItemList}> There is no credit card found</div>
           ) : (
             <div className="flex flex-wrap gap-4">
-              {data?.listPaymentMethods?.map((card) => (
-                <StripeCardItem key={card.id} stripeWallet={card} refetchCreditCard={refetch} />
+              {data?.listPaymentMethods?.map((payment) => (
+                <>
+                  <PrimaryCard
+                    key={payment.id}
+                    title={payment.brand}
+                    value={`*${payment.last4}`}
+                    tooltipTitle={toolTipMap['title']}
+                    tooltipValue={toolTipMap['value']}
+                    icon={<BsCreditCard2BackFill />}
+                    removeMethod={removePaymentMethod}
+                    removeLoading={removeLoading}
+                    removeId={payment.id}
+                    refetchCard={refetch}
+                  />
+                  {/* <StripeCardItem key={payment.id} stripeWallet={payment} refetchCreditCard={refetch} /> */}
+                </>
               ))}
             </div>
           )}

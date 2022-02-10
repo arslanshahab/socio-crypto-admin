@@ -5,12 +5,17 @@ import { ListEmployees } from '../../types';
 import { LIST_EMPLOYEES } from '../../operations/queries/admin';
 import { RegisterUser } from '../RegisterUser';
 import styles from './userManagement.module.css';
+import PrimaryCard from '../CryptoCard/PrimaryCard';
+import { BsFillPersonCheckFill } from 'react-icons/bs';
 
 export const UserManagement: React.FC = () => {
   const { data, loading } = useQuery<ListEmployees>(LIST_EMPLOYEES);
   const [openUserDialog, setUserDialog] = useState(false);
-  console.log('Manage Users Record', data);
 
+  const toolTipMap = {
+    title: 'Employee Name',
+    value: 'Active Since',
+  };
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -38,19 +43,29 @@ export const UserManagement: React.FC = () => {
             <h6>Organization:</h6>
             <p className={styles.orgName}>{data?.listEmployees?.orgName}</p>
           </div>
-          <div className={styles.gridView}>
+          <div className="flex gap-4 flex-wrap">
             {data &&
               data.listEmployees.adminsDetails.map((admin, index) => (
-                <div className={styles.itemsWrapper} key={index}>
-                  <div className={styles.items}>
-                    <h6 className={styles.itemsHeading}>Name:</h6>
-                    <p className={styles.itemsDetails}>{admin.name}</p>
-                  </div>
-                  <div className={styles.items}>
-                    <h6 className={styles.itemsHeading}>Active Since:</h6>
-                    <p className={styles.itemsDetails}>{new Date(parseInt(admin.createdAt)).toDateString()}</p>
-                  </div>
-                </div>
+                <>
+                  <PrimaryCard
+                    key={index}
+                    title={admin.name}
+                    value={new Date(parseInt(admin.createdAt)).toDateString()}
+                    tooltipTitle={toolTipMap['title']}
+                    tooltipValue={toolTipMap['value']}
+                    icon={<BsFillPersonCheckFill />}
+                  />
+                  {/* <div className={styles.itemsWrapper} key={index}>
+                    <div className={styles.items}>
+                      <h6 className={styles.itemsHeading}>Name:</h6>
+                      <p className={styles.itemsDetails}>{admin.name}</p>
+                    </div>
+                    <div className={styles.items}>
+                      <h6 className={styles.itemsHeading}>Active Since:</h6>
+                      <p className={styles.itemsDetails}>{new Date(parseInt(admin.createdAt)).toDateString()}</p>
+                    </div>
+                  </div> */}
+                </>
               ))}
           </div>
         </div>

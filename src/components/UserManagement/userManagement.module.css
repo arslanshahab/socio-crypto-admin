@@ -14,7 +14,7 @@
   @apply text-blue-600;
 }
 .gridView {
-  @apply grid grid-cols-1 md:grid-cols-3;
+  /* @apply grid grid-cols-1 md:grid-cols-3; */
 }
 .itemsWrapper {
   @apply shadow-md rounded px-4 py-8 mb-8 w-full md:w-11/12 hover:bg-gray-50;

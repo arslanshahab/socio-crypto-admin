@@ -11,7 +11,7 @@
   @apply flex justify-between items-center;
 }
 .balance {
-  @apply text-xl font-semibold text-gray-600;
+  @apply font-semibold text-gray-600;
 }
 .cryptIcon {
   @apply w-6;
@@ -24,4 +24,7 @@
 }
 .loading {
   @apply flex justify-center items-center;
+}
+.activeDate {
+  @apply text-gray-600;
 }
