@@ -33,7 +33,7 @@ export const CryptoItem: React.FC<Props> = ({ name, balance, refetchWallet }) =>
 
   return (
     <div className={styles.cardWrapper}>
-      <div className={styles.row}>
+      {/* <div className={styles.row}>
         <Tooltip title="Coin Type" placement="top-start">
           <p className={styles.name}>{name.toUpperCase()}</p>
         </Tooltip>
@@ -46,7 +46,7 @@ export const CryptoItem: React.FC<Props> = ({ name, balance, refetchWallet }) =>
         <Tooltip title="Delete Coin" placement="top-start">
           <DeleteIcon className={styles.deleteIcon} fontSize="small" />
         </Tooltip>
-      </div>
+      </div> */}
     </div>
   );
 };

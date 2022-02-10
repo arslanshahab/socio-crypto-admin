@@ -2,21 +2,17 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { NEW_USER } from '../operations/queries/admin';
 import {
-  Button,
+  CircularProgress,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
   FormControlLabel,
-  FormLabel,
-  Grid,
   Radio,
   RadioGroup,
   TextField,
-  Typography,
 } from '@material-ui/core';
+import CustomButton from './CustomButton';
+import buttonStyles from '../assets/styles/customButton.module.css';
+import headingStyles from '../assets/styles/heading.module.css';
 
 interface Props {
   open: boolean;
@@ -36,7 +32,8 @@ export const RegisterUser: React.FC<Props> = ({ open, setOpen }) => {
     role: '',
   } as FormItems);
   const [role, setRole] = useState('');
-  const [newUser, { error }] = useMutation(NEW_USER, {
+
+  const [newUser, { loading, error }] = useMutation(NEW_USER, {
     variables: { name: values.name, email: values.email, role },
   });
 
@@ -63,78 +60,40 @@ export const RegisterUser: React.FC<Props> = ({ open, setOpen }) => {
   };
 
   return (
-    <Dialog open={open} className="user-dialog">
-      <DialogTitle>Register New User</DialogTitle>
-      <DialogContent>
-        <Grid container direction={'column'} justify={'center'}>
-          <FormControl>
-            <Grid container justify={'center'}>
-              <Grid item>
-                <FormLabel>User Role</FormLabel>
-              </Grid>
-            </Grid>
-            <RadioGroup>
-              <Grid container direction={'row'} justify={'center'}>
-                <Grid item>
-                  <FormControlLabel
-                    control={<Radio color={'primary'} />}
-                    label={'Admin'}
-                    value={'admin'}
-                    onChange={handleChange}
-                    labelPlacement={'top'}
-                  />
-                </Grid>
-                <Grid item>
-                  <FormControlLabel
-                    labelPlacement={'top'}
-                    control={<Radio color={'primary'} />}
-                    label={'Manager'}
-                    value={'manager'}
-                    onChange={handleChange}
-                  />
-                </Grid>
-              </Grid>
-            </RadioGroup>
-          </FormControl>
-          <Grid item>
-            <TextField
-              autoFocus
-              onChange={handleChange}
-              margin="dense"
-              name="name"
-              label="Name"
-              type="text"
-              fullWidth
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              autoFocus
-              onChange={handleChange}
-              margin="dense"
-              name="email"
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
-          </Grid>
-        </Grid>
-        {error && (
-          <DialogContentText>
-            <Typography component={'div'} style={{ color: 'red' }}>
-              {error.message}
-            </Typography>
-          </DialogContentText>
-        )}
+    <Dialog open={open}>
+      <h2 className={`${headingStyles.headingXl} pb-0`}>Register New User</h2>
+      <DialogContent style={{ width: '500px' }}>
+        <RadioGroup style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+          <FormControlLabel
+            control={<Radio color={'primary'} style={{ padding: '0px' }} />}
+            label={'Admin'}
+            value={'admin'}
+            onChange={handleChange}
+            labelPlacement={'top'}
+            className="text-blue-800 p-0"
+          />
+          <FormControlLabel
+            labelPlacement={'top'}
+            control={<Radio color={'primary'} style={{ padding: '0px' }} />}
+            label={'Manager'}
+            value={'manager'}
+            onChange={handleChange}
+            className="text-blue-800"
+          />
+        </RadioGroup>
+        <div className="mb-4">
+          <TextField autoFocus onChange={handleChange} name="name" label="Name" type="text" fullWidth />
+          <TextField autoFocus onChange={handleChange} name="email" label="Email Address" type="email" fullWidth />
+        </div>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
+      <div className={`${buttonStyles.buttonWrapper} mb-4`}>
+        <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSubmit}>
+          {loading ? <CircularProgress color="inherit" size={20} /> : 'Create'}
+        </CustomButton>
+        <CustomButton className={buttonStyles.buttonPrimary} onClick={handleClose}>
           Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="primary">
-          Create
-        </Button>
-      </DialogActions>
+        </CustomButton>
+      </div>
     </Dialog>
   );
 };

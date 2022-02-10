@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CryptoItem } from './CryptoItem';
+// import { CryptoItem } from './CryptoItem';
 import { GetFundingWalletResponse, ListCurrenciesResult, ListSupportedCryptoResults } from '../types';
 import { RefetchWallet } from './PaymentsAccount';
 import { CryptoDialog } from './CryptoDialog';
@@ -13,18 +13,30 @@ import { CircularProgress } from '@material-ui/core';
 import circleStyles from './PendingCampaigns/pendingCampaigns.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
 import commonStyles from '../assets/styles/common.module.css';
+import PrimaryCard from './CryptoCard/PrimaryCard';
+
+// eslint-disable-next-line
+// @ts-ignore
+import getImage from 'cryptoicons-cdn';
 
 interface Props {
   data: GetFundingWalletResponse | undefined;
   isLoading: boolean;
   refetchWallet: RefetchWallet;
 }
-
+const generateIcon = (type: string): string => {
+  return getImage(type).toLowerCase().includes('unknown') ? getImage('ETH') : getImage(type);
+};
 export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) => {
   const { data: currencyData, loading } = useQuery<ListSupportedCryptoResults>(LIST_SUPPORTED_CRYPTO);
   const { data: currencyList } = useQuery<ListCurrenciesResult>(LIST_CURRENCIES, { fetchPolicy: 'network-only' });
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
+
+  const toolTipMap = {
+    title: 'Currency Type',
+    value: 'Balance',
+  };
 
   return (
     <div className={commonStyles.sectionMinHeight}>
@@ -59,12 +71,14 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
           {data && data?.getFundingWallet?.currency ? (
             <div className="flex flex-wrap gap-4">
               {data?.getFundingWallet?.currency?.map((currency, index) => (
-                <CryptoItem
+                <PrimaryCard
                   key={index}
-                  name={currency.type}
-                  balance={currency.balance}
+                  title={currency.type}
+                  value={currency.balance}
+                  icon={generateIcon(currency.type)}
+                  tooltipTitle={toolTipMap.title}
+                  tooltipValue={toolTipMap.value}
                   id={currency.id}
-                  refetchWallet={refetchWallet}
                 />
               ))}
             </div>

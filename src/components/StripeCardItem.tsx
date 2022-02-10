@@ -28,6 +28,14 @@ export const StripeCardItem: React.FC<Props> = ({ stripeWallet, refetchCreditCar
       </div>
     );
   }
+  const handleRemove = async () => {
+    await removePaymentMethod({
+      variables: {
+        paymentMethodId: stripeWallet.id,
+      },
+    });
+    await refetchCreditCard();
+  };
   return (
     <div>
       <div className={styles.cardWrapper}>
@@ -44,14 +52,15 @@ export const StripeCardItem: React.FC<Props> = ({ stripeWallet, refetchCreditCar
           <Tooltip title="Delete Coin" placement="top-start">
             <DeleteIcon
               className={styles.deleteIcon}
+              onClick={handleRemove}
               fontSize="small"
-              onClick={async () => {
-                if (window.confirm('Are you sure you want to delete this card?')) {
-                  await removePaymentMethod({ variables: { paymentMethodId: stripeWallet.id } });
-                  await refetchCreditCard();
-                  // await callback();
-                }
-              }}
+              // onClick={async () => {
+              //   if (window.confirm('Are you sure you want to delete this card?')) {
+              //     await removePaymentMethod({ variables: { paymentMethodId: stripeWallet.id } });
+              //     await refetchCreditCard();
+              //     // await callback();
+              //   }
+              // }}
             />
           </Tooltip>
         </div>
