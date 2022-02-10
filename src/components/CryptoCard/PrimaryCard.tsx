@@ -5,14 +5,13 @@ import styles from './cryptoCard.module.css';
 
 interface UserProps {
   title: string;
-  value?: any;
-  icon?: any;
-  tooltipTitle?: any;
-  tooltipValue?: any;
-  removeLoading?: any;
-  removeId?: any;
-  removeMethod?: any;
-  refetchCard?: any;
+  value?: string | number;
+  icon?: string | JSX.Element;
+  tooltipTitle?: string;
+  tooltipValue?: string;
+  removeLoading?: boolean;
+  id: string;
+  removeMethod?: (id: string) => void;
 }
 
 const PrimaryCard: FC<UserProps> = ({
@@ -22,19 +21,13 @@ const PrimaryCard: FC<UserProps> = ({
   tooltipTitle,
   tooltipValue,
   removeLoading,
-  removeId,
+  id,
   removeMethod,
-  refetchCard,
 }) => {
-  const handleRemove = async () => {
-    await removeMethod({
-      variables: {
-        paymentMethodId: removeId,
-      },
-    });
-    await refetchCard();
+  const handleRemove = () => {
+    if (removeMethod) removeMethod(id);
   };
-  if (removeLoading && removeId) {
+  if (removeLoading) {
     return (
       <div className={styles.loading}>
         <CircularProgress />
@@ -48,18 +41,20 @@ const PrimaryCard: FC<UserProps> = ({
           <p className={styles.name}>{title.substring(0, 20) || 'Title'}</p>
         </Tooltip>
         {icon && tooltipTitle === 'Currency Type' ? (
-          <img src={icon} alt="raiinmaker" className={styles.cryptIcon} />
+          <img src={(icon || '') as string} alt="raiinmaker" className={styles.cryptIcon} />
         ) : (
           <div className="text-indigo-300">{icon}</div>
         )}
       </div>
       <div className={styles.row}>
-        <Tooltip title={tooltipValue} placement="top-start">
+        <Tooltip title={tooltipValue || ''} placement="top-start">
           <h2 className={tooltipValue == 'Active Since' ? `${styles.activeDate}` : `${styles.balance}`}>{value}</h2>
         </Tooltip>
-        <Tooltip title="Delete Record" placement="top-start">
-          <DeleteIcon className={styles.deleteIcon} fontSize="small" onClick={handleRemove} />
-        </Tooltip>
+        {removeMethod && (
+          <Tooltip title="Delete Record" placement="top-start">
+            <DeleteIcon className={styles.deleteIcon} fontSize="small" onClick={handleRemove} />
+          </Tooltip>
+        )}
       </div>
     </div>
   );

@@ -46,26 +46,15 @@ export const UserManagement: React.FC = () => {
           <div className="flex gap-4 flex-wrap">
             {data &&
               data.listEmployees.adminsDetails.map((admin, index) => (
-                <>
-                  <PrimaryCard
-                    key={index}
-                    title={admin.name}
-                    value={new Date(parseInt(admin.createdAt)).toDateString()}
-                    tooltipTitle={toolTipMap['title']}
-                    tooltipValue={toolTipMap['value']}
-                    icon={<BsFillPersonCheckFill />}
-                  />
-                  {/* <div className={styles.itemsWrapper} key={index}>
-                    <div className={styles.items}>
-                      <h6 className={styles.itemsHeading}>Name:</h6>
-                      <p className={styles.itemsDetails}>{admin.name}</p>
-                    </div>
-                    <div className={styles.items}>
-                      <h6 className={styles.itemsHeading}>Active Since:</h6>
-                      <p className={styles.itemsDetails}>{new Date(parseInt(admin.createdAt)).toDateString()}</p>
-                    </div>
-                  </div> */}
-                </>
+                <PrimaryCard
+                  key={index}
+                  title={admin.name}
+                  value={new Date(parseInt(admin.createdAt)).toDateString()}
+                  tooltipTitle={toolTipMap['title']}
+                  tooltipValue={toolTipMap['value']}
+                  icon={<BsFillPersonCheckFill />}
+                  id={admin.name}
+                />
               ))}
           </div>
         </div>

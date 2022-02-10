@@ -71,23 +71,15 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
           {data && data?.getFundingWallet?.currency ? (
             <div className="flex flex-wrap gap-4">
               {data?.getFundingWallet?.currency?.map((currency, index) => (
-                <>
-                  {/* <CryptoItem
-                    key={index}
-                    name={currency.type}
-                    balance={currency.balance}
-                    id={currency.id}
-                    refetchWallet={refetchWallet}
-                  /> */}
-                  <PrimaryCard
-                    key={index}
-                    title={currency.type}
-                    value={currency.balance}
-                    icon={generateIcon(currency.type)}
-                    tooltipTitle={toolTipMap.title}
-                    tooltipValue={toolTipMap.value}
-                  />
-                </>
+                <PrimaryCard
+                  key={index}
+                  title={currency.type}
+                  value={currency.balance}
+                  icon={generateIcon(currency.type)}
+                  tooltipTitle={toolTipMap.title}
+                  tooltipValue={toolTipMap.value}
+                  id={currency.id}
+                />
               ))}
             </div>
           ) : (

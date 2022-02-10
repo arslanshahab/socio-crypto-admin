@@ -27,6 +27,7 @@ interface RemoveStripeWalletVars {
 
 export const CreditCardList: React.FC = () => {
   const [modal, setModal] = useState(false);
+  const [removalId, setRemovalId] = useState('');
   const { data, loading, refetch } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: 'network-only',
@@ -34,6 +35,12 @@ export const CreditCardList: React.FC = () => {
   const [removePaymentMethod, { loading: removeLoading }] = useMutation<boolean, RemoveStripeWalletVars>(
     REMOVE_PAYMENT_METHOD,
   );
+
+  const performDeletion = async (id: string) => {
+    setRemovalId(id);
+    await removePaymentMethod({ variables: { paymentMethodId: id } });
+    await refetch();
+  };
 
   const toolTipMap = {
     title: 'Credit Card Type',
@@ -62,21 +69,17 @@ export const CreditCardList: React.FC = () => {
           ) : (
             <div className="flex flex-wrap gap-4">
               {data?.listPaymentMethods?.map((payment) => (
-                <>
-                  <PrimaryCard
-                    key={payment.id}
-                    title={payment.brand}
-                    value={`*${payment.last4}`}
-                    tooltipTitle={toolTipMap['title']}
-                    tooltipValue={toolTipMap['value']}
-                    icon={<BsCreditCard2BackFill />}
-                    removeMethod={removePaymentMethod}
-                    removeLoading={removeLoading}
-                    removeId={payment.id}
-                    refetchCard={refetch}
-                  />
-                  {/* <StripeCardItem key={payment.id} stripeWallet={payment} refetchCreditCard={refetch} /> */}
-                </>
+                <PrimaryCard
+                  key={payment.id}
+                  title={payment.brand}
+                  value={`*${payment.last4}`}
+                  tooltipTitle={toolTipMap['title']}
+                  tooltipValue={toolTipMap['value']}
+                  icon={<BsCreditCard2BackFill />}
+                  removeMethod={performDeletion}
+                  removeLoading={removeLoading && removalId === payment.id}
+                  id={payment.id}
+                />
               ))}
             </div>
           )}
