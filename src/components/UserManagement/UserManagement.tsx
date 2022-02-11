@@ -18,21 +18,15 @@ export const UserManagement: React.FC = () => {
     value: 'Active Since',
   };
   useEffect(() => {
-    let identifier: any;
     if (searchField) {
-      identifier = setTimeout(() => {
-        const filter = data?.listEmployees?.adminsDetails?.filter((x: { name: string; createdAt: string }) => {
-          return x.name.toLowerCase().includes(searchField.toLowerCase());
-        });
-        setFilterEmployee(filter);
-      }, 500);
+      const filter = data?.listEmployees?.adminsDetails?.filter((x: { name: string; createdAt: string }) => {
+        return x.name.toLowerCase().includes(searchField.toLowerCase());
+      });
+      setFilterEmployee(filter);
     } else if (searchField === '') {
       const empList = data?.listEmployees?.adminsDetails;
       setFilterEmployee(empList);
     }
-    return () => {
-      clearTimeout(identifier);
-    };
   }, [searchField, data]);
 
   const handleSearch = (e: any) => {
