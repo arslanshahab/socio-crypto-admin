@@ -18,20 +18,19 @@ export const UserManagement: React.FC = () => {
     value: 'Active Since',
   };
   useEffect(() => {
-    if (searchField) {
-      const filter = data?.listEmployees?.adminsDetails?.filter((x: { name: string; createdAt: string }) => {
-        return x.name.toLowerCase().includes(searchField.toLowerCase());
-      });
-      setFilterEmployee(filter);
-    } else if (searchField === '') {
-      const empList = data?.listEmployees?.adminsDetails;
-      setFilterEmployee(empList);
+    if (!searchField) {
+      setFilterEmployee(data?.listEmployees?.adminsDetails);
+      return;
     }
+    const filter =
+      data?.listEmployees?.adminsDetails?.filter((x: { name: string; createdAt: string }) => {
+        return x.name.toLowerCase().includes(searchField.toLowerCase());
+      }) || [];
+    setFilterEmployee(filter);
   }, [searchField, data]);
 
-  const handleSearch = (e: any) => {
-    const { value } = e.target;
-    setSearchField(value);
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchField(e.target.value);
   };
 
   if (loading) {
@@ -60,11 +59,17 @@ export const UserManagement: React.FC = () => {
           <div className={styles.organization}>
             <h6>Organization:</h6>
             <p className={styles.orgName}>{data?.listEmployees?.orgName}</p>
-            <input type="text" name="search" className="border-2" onChange={handleSearch} />
+            <input
+              type="text"
+              name="search"
+              className="border-2 p-1 rounded"
+              placeholder="Search User"
+              onChange={handleSearch}
+            />
           </div>
           <div className="flex gap-4 flex-wrap">
             {filterEmployee &&
-              filterEmployee.map((admin: any, index: number) => (
+              filterEmployee.map((admin: { name: string; createdAt: string }, index: number) => (
                 <PrimaryCard
                   key={index}
                   title={admin.name}
