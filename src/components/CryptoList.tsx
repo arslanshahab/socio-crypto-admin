@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-// import { CryptoItem } from './CryptoItem';
+import React, { useEffect, useReducer, useState } from 'react';
 import { GetFundingWalletResponse, ListCurrenciesResult, ListSupportedCryptoResults } from '../types';
 import { RefetchWallet } from './PaymentsAccount';
 import { CryptoDialog } from './CryptoDialog';
@@ -15,28 +14,53 @@ import headingStyles from '../assets/styles/heading.module.css';
 import commonStyles from '../assets/styles/common.module.css';
 import PrimaryCard from './CryptoCard/PrimaryCard';
 
-// eslint-disable-next-line
-// @ts-ignore
-import getImage from 'cryptoicons-cdn';
-
 interface Props {
   data: GetFundingWalletResponse | undefined;
   isLoading: boolean;
   refetchWallet: RefetchWallet;
 }
-const generateIcon = (type: string): string => {
-  return getImage(type).toLowerCase().includes('unknown') ? getImage('ETH') : getImage(type);
+const triggerReducer = (
+  state: any,
+  action: {
+    type: string;
+    payload: { type: string; symbolImageUrl: string; balance: number; id: string }[] | undefined;
+  },
+) => {
+  switch (action.type) {
+    case 'CHANGE_SEARCH':
+      return { ...state, currency: action.payload };
+    default:
+      return state;
+  }
 };
+
 export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) => {
   const { data: currencyData, loading } = useQuery<ListSupportedCryptoResults>(LIST_SUPPORTED_CRYPTO);
   const { data: currencyList } = useQuery<ListCurrenciesResult>(LIST_CURRENCIES, { fetchPolicy: 'network-only' });
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
+  const [search, setSearch] = useState('');
+  const [filterCurrency, dispatch] = useReducer(triggerReducer, []);
+
+  useEffect(() => {
+    if (!search) {
+      dispatch({ type: 'CHANGE_SEARCH', payload: data?.getFundingWallet?.currency });
+    } else {
+      const filter = data?.getFundingWallet?.currency.filter((x: any) => {
+        return x.type.toLowerCase().includes(search.toLowerCase());
+      });
+      dispatch({ type: 'CHANGE_SEARCH', payload: filter });
+    }
+  }, [search, data]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
   const toolTipMap = {
     title: 'Currency Type',
     value: 'Balance',
   };
-  console.log('CryptoLis------------/', data);
   return (
     <div className={commonStyles.sectionMinHeight}>
       {isLoading ? (
@@ -59,6 +83,14 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
           <div className={headingStyles.paymentHeadingWrapper}>
             <h1 className={headingStyles.headingXl}>Crypto Currencies</h1>
             <div className="flex gap-4 justify-between items-center">
+              <input
+                type="text"
+                name="search"
+                value={search}
+                className="border-2 p-1 rounded"
+                placeholder="Search Currency"
+                onChange={handleSearch}
+              />
               <CustomButton className="text-blue-800 w-16 p-1" onClick={() => setOpenCrypto(true)}>
                 Deposit
               </CustomButton>
@@ -67,19 +99,21 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
               </CustomButton>
             </div>
           </div>
-          {data && data?.getFundingWallet?.currency ? (
+          {data && filterCurrency.currency ? (
             <div className="flex flex-wrap gap-4">
-              {data?.getFundingWallet?.currency?.map((currency, index) => (
-                <PrimaryCard
-                  key={index}
-                  title={currency.type}
-                  value={currency.balance}
-                  icon={currency.symbolImageUrl}
-                  tooltipTitle={toolTipMap.title}
-                  tooltipValue={toolTipMap.value}
-                  id={currency.id}
-                />
-              ))}
+              {filterCurrency.currency.map(
+                (currency: { type: string; symbolImageUrl: string; balance: number; id: string }, index: number) => (
+                  <PrimaryCard
+                    key={index}
+                    title={currency.type}
+                    value={currency.balance}
+                    icon={currency.symbolImageUrl}
+                    tooltipTitle={toolTipMap.title}
+                    tooltipValue={toolTipMap.value}
+                    id={currency.id}
+                  />
+                ),
+              )}
             </div>
           ) : (
             <p>Please register or add a supported crypto currency</p>
