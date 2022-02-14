@@ -19,7 +19,13 @@ interface Props {
   isLoading: boolean;
   refetchWallet: RefetchWallet;
 }
-const triggerReducer = (state: any, action: any) => {
+const triggerReducer = (
+  state: any,
+  action: {
+    type: string;
+    payload: { type: string; symbolImageUrl: string; balance: number; id: string }[] | undefined;
+  },
+) => {
   switch (action.type) {
     case 'CHANGE_SEARCH':
       return { ...state, currency: action.payload };
@@ -34,7 +40,7 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
   const [search, setSearch] = useState('');
-  const [filterCurrency, dispatch] = useReducer(triggerReducer, {});
+  const [filterCurrency, dispatch] = useReducer(triggerReducer, []);
 
   useEffect(() => {
     if (!search) {
@@ -76,15 +82,15 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
           </GenericModal>
           <div className={headingStyles.paymentHeadingWrapper}>
             <h1 className={headingStyles.headingXl}>Crypto Currencies</h1>
-            <input
-              type="text"
-              name="search"
-              value={search}
-              className="border-2 p-1 rounded"
-              placeholder="Search Currency"
-              onChange={handleSearch}
-            />
             <div className="flex gap-4 justify-between items-center">
+              <input
+                type="text"
+                name="search"
+                value={search}
+                className="border-2 p-1 rounded"
+                placeholder="Search Currency"
+                onChange={handleSearch}
+              />
               <CustomButton className="text-blue-800 w-16 p-1" onClick={() => setOpenCrypto(true)}>
                 Deposit
               </CustomButton>
@@ -95,17 +101,19 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
           </div>
           {data && filterCurrency.currency ? (
             <div className="flex flex-wrap gap-4">
-              {filterCurrency.currency.map((currency: any, index: number) => (
-                <PrimaryCard
-                  key={index}
-                  title={currency.type}
-                  value={currency.balance}
-                  icon={currency.symbolImageUrl}
-                  tooltipTitle={toolTipMap.title}
-                  tooltipValue={toolTipMap.value}
-                  id={currency.id}
-                />
-              ))}
+              {filterCurrency.currency.map(
+                (currency: { type: string; symbolImageUrl: string; balance: number; id: string }, index: number) => (
+                  <PrimaryCard
+                    key={index}
+                    title={currency.type}
+                    value={currency.balance}
+                    icon={currency.symbolImageUrl}
+                    tooltipTitle={toolTipMap.title}
+                    tooltipValue={toolTipMap.value}
+                    id={currency.id}
+                  />
+                ),
+              )}
             </div>
           ) : (
             <p>Please register or add a supported crypto currency</p>
