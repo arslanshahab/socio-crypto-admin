@@ -8,6 +8,7 @@ import copy from 'copy-to-clipboard';
 import { useDispatch } from 'react-redux';
 import { showSuccessAlert } from '../../../store/actions/alerts';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
+import headingStyles from '../../../assets/styles/heading.module.css';
 
 interface Props {
   cryptoList: string[] | undefined;
@@ -28,7 +29,8 @@ const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
 
   return (
     <Box className="p-10 w-full flex flex-col justify-center items-center">
-      <h3 className="text-2xl text-center text-gray-800 mb-10">Deposit Crypto</h3>
+      {/* <h3 className="text-2xl text-center text-gray-800 mb-10">Deposit Crypto</h3> */}
+      <h3 className={`${headingStyles.headingXl} mb-8`}>Deposit Crypto</h3>
       <Box className="w-4/6 box-border pr-4">
         <CustomSelect
           required={true}

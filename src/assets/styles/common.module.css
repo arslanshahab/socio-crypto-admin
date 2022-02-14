@@ -1,0 +1,6 @@
+.hasItemList {
+  @apply font-semibold;
+}
+.sectionMinHeight {
+  min-height: 200px;
+}

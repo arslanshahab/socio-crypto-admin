@@ -6,7 +6,24 @@ export const GET_FUNDING_WALLET = gql`
       currency {
         type
         balance
+        symbolImageUrl
       }
+      transfers {
+        action
+        amount
+        currency
+        createdAt
+      }
+    }
+  }
+`;
+export const GET_TRANSACTION_HISTORY = gql`
+  query transectionHistory {
+    transectionHistory {
+      action
+      amount
+      currency
+      createdAt
     }
   }
 `;

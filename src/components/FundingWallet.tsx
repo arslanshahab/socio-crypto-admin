@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Button, Grid } from '@material-ui/core';
 import { CreditCardList } from './CreditCardList';
 import { AddressList } from './AddressList';
 import { CryptoList } from './CryptoList';
@@ -7,6 +6,7 @@ import { GetFundingWalletResponse } from '../types';
 import { CryptoDialog } from './CryptoDialog';
 import { PurchaseDialog } from './PurchaseDialog';
 import { RefetchWallet } from './PaymentsAccount';
+import CustomButton from './CustomButton';
 
 interface Props {
   data: GetFundingWalletResponse | undefined;
@@ -19,7 +19,7 @@ export const FundingWallet: React.FC<Props> = ({ data, isLoading, refetchWallet 
   const [purchaseCoiin, setPurchaseCoiin] = useState(false);
 
   return (
-    <Grid container direction={'column'}>
+    <div>
       <PurchaseDialog open={purchaseCoiin} setOpen={setPurchaseCoiin} refetchWallet={refetchWallet} />
       <CryptoDialog
         isTokenRegistration={true}
@@ -27,27 +27,22 @@ export const FundingWallet: React.FC<Props> = ({ data, isLoading, refetchWallet 
         setOpenDialog={setOpenDialog}
         refetchWallet={refetchWallet}
       />
-      <Grid item container spacing={1} justify={'flex-end'}>
-        <Grid item>
-          <Button variant={'contained'} color={'primary'} onClick={() => setPurchaseCoiin(true)}>
-            Purchase Coiin Points
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            variant={'contained'}
-            color={'primary'}
-            onClick={() => {
-              setOpenDialog(true);
-            }}
-          >
-            Register ERC20 Token
-          </Button>
-        </Grid>
-      </Grid>
+      <div className="flex justify-end gap-4">
+        <CustomButton className="bg-blue-900 text-white w-44 rounded p-1.5" onClick={() => setPurchaseCoiin(true)}>
+          Purchase Coiin Points
+        </CustomButton>
+        <CustomButton
+          className="bg-blue-900 text-white w-44 rounded p-1.5"
+          onClick={() => {
+            setOpenDialog(true);
+          }}
+        >
+          Register ERC20 Token
+        </CustomButton>
+      </div>
       <CryptoList data={data} isLoading={isLoading} refetchWallet={refetchWallet} />
       <CreditCardList />
-      <AddressList />
-    </Grid>
+      {/* <AddressList /> */}
+    </div>
   );
 };

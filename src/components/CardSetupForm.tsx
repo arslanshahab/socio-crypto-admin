@@ -4,22 +4,27 @@ import { CardSection } from './CardSection';
 import { useMutation } from '@apollo/client';
 import { AddPaymentMethod } from '../types';
 import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
-import { Button, Dialog, DialogContent, DialogTitle, Grid } from '@material-ui/core';
-import { reloadWindow } from '../helpers/fileHandler';
+import { CircularProgress, Dialog, DialogContent } from '@material-ui/core';
+// import { reloadWindow } from '../helpers/fileHandler';
+import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
+import CustomButton from './CustomButton';
+import buttonStyles from '../assets/styles/customButton.module.css';
+import headingStyles from '../assets/styles/heading.module.css';
 
 interface Props {
-  callback: () => void;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
 }
 
-export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
-  const [addPaymentMethod] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD);
+export const CardSetupForm: React.FC<Props> = ({ setModal, open }) => {
+  const [addPaymentMethod, { loading }] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD, {
+    refetchQueries: [{ query: LIST_PAYMENT_METHODS }],
+  });
   const stripe = useStripe();
   const elements = useElements();
 
   const handleClose = () => {
-    setOpen(false);
+    setModal(false);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,14 +42,8 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
       });
       if (result.error) {
         console.log('card error: ', result.error.message);
-        // Display result.error.message in your UI.
       } else {
         console.log('successfully added payment method');
-        reloadWindow();
-        // The setup has succeeded. Display a success message and send
-        // result.setupIntent.payment_method to your server to save the
-        // card to a Customer
-        await callback();
       }
     } else {
       console.log('error: ', errors);
@@ -54,26 +53,20 @@ export const CardSetupForm: React.FC<Props> = ({ setOpen, callback, open }) => {
 
   return (
     <Dialog open={open}>
-      <DialogTitle>Add Credit Card</DialogTitle>
-      <DialogContent>
+      <h2 className={headingStyles.headingXl}>Add Credit Card</h2>
+      <DialogContent style={{ width: '600px' }}>
         <form onSubmit={handleSubmit}>
-          <Grid container justify={'center'} direction={'column'}>
-            <Grid item className="add-card-section">
-              <CardSection />
-            </Grid>
-          </Grid>
-          <Grid container item justify={'center'} spacing={2} style={{ marginTop: '25px' }}>
-            <Grid item>
-              <Button variant={'contained'} color={'primary'} type={'submit'}>
-                Submit
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant={'contained'} color={'primary'} onClick={handleClose}>
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
+          <div className="mb-9">
+            <CardSection />
+          </div>
+          <div className="flex justify-center gap-4 mb-4">
+            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'}>
+              {loading ? <CircularProgress size={22} color="inherit" /> : 'Submit'}
+            </CustomButton>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleClose}>
+              Cancel
+            </CustomButton>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

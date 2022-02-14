@@ -20,6 +20,8 @@ interface Props {
   campaignType: string;
 }
 
+const MAX_TAGS_LENGTH = 50;
+
 const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   campaignType,
   activeStep,
@@ -33,13 +35,27 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   const [name, setName] = useState(campaign.name);
   const [target, setTarget] = useState(campaign.target);
   const [targetVideo, setTargetVideo] = useState(campaign.targetVideo);
-  const [numOfTiers, setTiers] = useState(campaign.config.numOfTiers);
+  const [numOfTiers, setTiers] = useState(!campaign.config.isGlobal ? campaign.config.numOfTiers : '1');
   const [tagline, setTagline] = useState(campaign.tagline);
   const [keywords, setKeywords] = useState(campaign.keywords);
   const [description, setDescription] = useState(campaign.description);
   const [instructions, setInstructions] = useState(campaign.instructions);
-  const [beginDate, setBeginDate] = useState(campaign.beginDate);
-  const [endDate, setEndDate] = useState(campaign.endDate);
+  const [beginDate, setBeginDate] = useState(
+    campaign.beginDate ||
+      new Date().toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+  );
+  const [endDate, setEndDate] = useState(
+    campaign.endDate ||
+      new Date().toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+  );
   const [tags, setTags] = useState(campaign.suggestedTags.join(','));
   const [errors, setErrors] = useState<ErrorObject>({});
 
@@ -65,14 +81,19 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
     updateErrors('endDate', dateIsoString);
   };
 
-  const updateErrors = (name: string, data: any) => {
-    const key = name;
+  const updateErrors = (key: string, data: any) => {
     const value = data;
     const newErrors = { ...errors };
     if (!value || value.length === 0) {
       newErrors[key] = true;
     } else {
-      newErrors[key] = false;
+      if (key === 'tags') {
+        if (data.length > MAX_TAGS_LENGTH) {
+          newErrors[key] = true;
+        } else {
+          newErrors[key] = false;
+        }
+      }
     }
     setErrors(newErrors);
   };
@@ -132,6 +153,10 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       return (validated = false);
     }
     if (!tags) {
+      setErrors((prev) => ({ ...prev, tags: true }));
+      return (validated = false);
+    }
+    if (tags.length > MAX_TAGS_LENGTH) {
       setErrors((prev) => ({ ...prev, tags: true }));
       return (validated = false);
     }
@@ -259,6 +284,13 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
                 updateErrors('tags', e.target.value);
               }}
             />
+            <span
+              className={`w-full text-xs flex flex-row justify-end ${
+                errors['tags'] ? 'text-red-500' : 'text-gray-500'
+              }`}
+            >
+              Characters added {`${tags.length}/${MAX_TAGS_LENGTH}`}
+            </span>
           </Box>
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
@@ -299,6 +331,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               showTodayButton
               className="customInput"
               error={errors['beginDate']}
+              disabled={campaign.config.isGlobal}
               onChange={handleBeginDateChange}
             />
           </Box>
@@ -313,6 +346,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               showTodayButton
               className="customInput"
               error={errors['endDate']}
+              disabled={campaign.config.isGlobal}
               onChange={handleEndDateChange}
             />
           </Box>

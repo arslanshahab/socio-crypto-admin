@@ -1,0 +1,9 @@
+.buttonWrapper {
+  @apply flex gap-4 justify-center items-center;
+}
+.buttonPrimary {
+  @apply bg-blue-900 text-white w-32 rounded p-1.5;
+}
+.addButton {
+  @apply text-blue-800 p-1;
+}

@@ -1,0 +1,30 @@
+.cardWrapper {
+  @apply shadow py-2 px-2 rounded-lg bg-gray-50 cursor-pointer w-48;
+}
+.cardWrapper:hover {
+  @apply bg-white shadow-lg;
+}
+.name {
+  @apply text-blue-800 inline-block text-sm;
+}
+.row {
+  @apply flex justify-between items-center;
+}
+.balance {
+  @apply font-semibold text-gray-600;
+}
+.cryptIcon {
+  @apply h-6 w-6 object-contain;
+}
+.deleteIcon {
+  @apply invisible;
+}
+.cardWrapper:hover .deleteIcon {
+  @apply visible text-red-600;
+}
+.loading {
+  @apply flex justify-center items-center;
+}
+.activeDate {
+  @apply text-gray-600;
+}

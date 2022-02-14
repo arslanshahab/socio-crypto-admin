@@ -1,0 +1,36 @@
+/* @import './../../assets/styles/vars.scss'; */
+
+.statCardWrapper {
+  @apply shadow-md p-4 rounded-lg bg-gray-50 cursor-pointer w-full mb-4 md:mb-0;
+}
+.statCardWrapper:hover {
+  @apply bg-white shadow-lg;
+}
+.analyticsName {
+  @apply text-blue-800 inline-block;
+}
+.analyticsNumberIcon {
+  @apply flex justify-between items-center pt-2;
+}
+.analyticsNumber {
+  @apply text-2xl;
+}
+.campaignIcon {
+  @apply h-10 w-10 rounded-full  flex justify-center items-center text-white text-xl;
+}
+
+.clickCount {
+  @apply bg-gradient-to-r from-pink-300 to-blue-600;
+}
+.viewCount {
+  @apply bg-gradient-to-r from-green-300 to-blue-600;
+}
+.shareCount {
+  @apply bg-gradient-to-r from-pink-300 to-blue-600;
+}
+.totalParticipants {
+  @apply bg-gradient-to-r from-green-300 to-blue-600;
+}
+.participationScore {
+  @apply bg-gradient-to-r from-pink-300 to-blue-600;
+}

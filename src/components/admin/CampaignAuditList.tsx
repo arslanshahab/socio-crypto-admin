@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
-import { useHistory } from 'react-router';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress } from '@material-ui/core';
+import { Campaign } from '../../types';
+import GenericModal from './../GenericModal';
+import { CampaignAudit } from './CampaignAudit';
 
 interface Props {
   location?: {
@@ -14,99 +16,84 @@ interface Props {
 }
 
 export const CampaignAuditList: React.FC<Props> = () => {
-  const history = useHistory();
-  const [loaded, setLoaded] = useState(false);
-  const [skip, setSkip] = useState(0);
-  const [getCampaigns, { loading, data }] = useLazyQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
+  const [progressModal, showProgressModal] = useState(false);
+  const [auditDetails, setAuditDetails] = useState();
+
+  const { loading, data, refetch } = useQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
     variables: {
       open: false,
       scoped: true,
       approved: true,
-      skip: skip,
       take: 10,
       pendingAudit: true,
     },
     fetchPolicy: 'cache-and-network',
   });
 
-  const loadData = async (skip: number) => {
-    try {
-      await getCampaigns();
-      await setSkip(skip);
-    } catch (e) {
-      console.log('Error: Load Data Error');
-      console.log(e);
-    }
-    await setLoaded(true);
-  };
-
   const handleClick = (data: any) => {
-    history.push('/dashboard/admin/campaign-audit', { data: data });
-  };
-
-  const renderManageWithdrawals = () => {
-    if (!loaded) loadData(skip);
-    if (loading)
-      return (
-        <div>
-          <CircularProgress></CircularProgress>
-        </div>
-      );
-    if (data) {
-      if (data.listCampaigns.results.length == 0)
-        return (
-          <div>
-            <p>No Auditable Campaigns Found</p>
-          </div>
-        );
-      return (
-        <div>
-          {data.listCampaigns.results.map((campaign: any) => {
-            if (campaign.audited) return <div />;
-            return (
-              <div className="pending-withdraw" key={campaign.id} onClick={() => handleClick(campaign)}>
-                <div>
-                  <div className="flex-display">
-                    <p>Campaign Name</p>
-                    <p className="flex-item right">{campaign.name}</p>
-                  </div>
-                  <div className="flex-display">
-                    <p>Audited</p>
-                    <p className="flex-item right">{campaign.audited.toString()}</p>
-                  </div>
-                  <div className="flex-display">
-                    <p>Campaign Ended</p>
-                    <p className="flex-item right">{new Date(parseInt(campaign.endDate)).toString()}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-          {skip != 0 ? (
-            <Button
-              onClick={async () => {
-                await loadData(skip - 10);
-              }}
-            >
-              <p>Previous</p>
-            </Button>
-          ) : (
-            <></>
-          )}
-          {skip + data.listCampaigns.results.length != data.listCampaigns.total ? (
-            <Button
-              onClick={async () => {
-                await loadData(skip + 10);
-              }}
-            >
-              <p>Next</p>
-            </Button>
-          ) : (
-            <></>
-          )}
-        </div>
-      );
+    try {
+      showProgressModal(true);
+      setAuditDetails(data);
+    } catch (e) {
+      showProgressModal(false);
     }
   };
-  return <div>{renderManageWithdrawals()}</div>;
+  const handleCampaignAuditModal = (value: any) => {
+    showProgressModal(value);
+    refetch();
+  };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <CircularProgress />
+      </div>
+    );
+
+  return (
+    <div className="p-8">
+      <GenericModal
+        open={progressModal}
+        onClose={() => showProgressModal(false)}
+        persist={false}
+        size="small"
+        showCloseIcon={true}
+      >
+        <CampaignAudit auditDetails={auditDetails} handleCampaignAuditModal={handleCampaignAuditModal} />
+      </GenericModal>
+
+      {data.listCampaigns.results?.length <= 0 ? (
+        'There is no campaign for auditing'
+      ) : (
+        <>
+          <h1 className="text-blue-900 font-semibold text-2xl pb-3">Campaigns Pending to be Audited.</h1>
+          <Box className="w-full pb-10 overflow-scroll">
+            <table className="w-full table-auto bg-gray-50">
+              <thead>
+                <tr className="font-semibold bg-gray-100">
+                  <th className="px-7 py-5 text-left">Campaign Name</th>
+                  <th className="px-7 py-5 text-left">Audited</th>
+                  <th className="px-7 py-5 text-left">Campaign Ended</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data &&
+                  data.listCampaigns.results.map((x: Campaign, index: number) => (
+                    <tr
+                      className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
+                      key={x.id}
+                      onClick={() => handleClick(x)}
+                    >
+                      <td className="px-7 py-5 text-left capitalize">{x.name}</td>
+                      <td className="px-7 py-5 text-left">{x.audited.toString()}</td>
+                      <td className="px-7 py-5 text-left">{new Date(parseInt(x.endDate)).toDateString()}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </Box>
+        </>
+      )}
+    </div>
+  );
 };
