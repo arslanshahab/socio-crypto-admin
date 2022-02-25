@@ -89,6 +89,7 @@ const campaignInitState: CampaignState = {
       ],
     },
     isGlobal: false,
+    showUrl: false,
   },
   instructions: '',
 };

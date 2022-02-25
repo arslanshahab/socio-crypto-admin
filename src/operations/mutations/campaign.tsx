@@ -18,6 +18,7 @@ export const NEW_CAMPAIGN = gql`
     $algorithm: String!
     $company: String
     $isGlobal: Boolean
+    $showUrl: Boolean!
     $targetVideo: String
     $imagePath: String
     $tagline: String!
@@ -44,6 +45,7 @@ export const NEW_CAMPAIGN = gql`
       algorithm: $algorithm
       company: $company
       isGlobal: $isGlobal
+      showUrl: $showUrl
       targetVideo: $targetVideo
       imagePath: $imagePath
       tagline: $tagline
@@ -97,6 +99,7 @@ export const UPDATE_CAMPAIGN = gql`
     $socialMediaType: [String]
     $campaignMedia: JSON
     $campaignTemplates: JSON
+    $showUrl: Boolean!
   ) {
     updateCampaign(
       id: $id
@@ -123,6 +126,7 @@ export const UPDATE_CAMPAIGN = gql`
       socialMediaType: $socialMediaType
       campaignMedia: $campaignMedia
       campaignTemplates: $campaignTemplates
+      showUrl: $showUrl
     ) {
       campaignId
       campaignImageSignedURL
