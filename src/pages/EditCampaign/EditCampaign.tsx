@@ -97,6 +97,7 @@ const EditCampaignPage: React.FC = () => {
           budgetType: getCampaign.type,
           cryptoSymbol: getCampaign.symbol,
           isGlobal: getCampaign.isGlobal,
+          showUrl: getCampaign.showUrl,
           channelMedia: prepareChannelMediaFromResponse(
             { ...initialState.newCampaign.config.channelMedia },
             getCampaign.id,
@@ -139,6 +140,7 @@ const EditCampaignPage: React.FC = () => {
           instructions: data.instructions,
           company: userData.company,
           isGlobal: campaign.config.isGlobal,
+          showUrl: campaign.config.showUrl,
           algorithm: JSON.stringify(data.algorithm),
           requirements:
             data.config.budgetType === 'raffle' ? { ...data.requirements, email: true } : { ...data.requirements },

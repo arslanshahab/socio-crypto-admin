@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, TextField } from '@material-ui/core';
+import { Box, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
 import { DateTimePicker } from '@material-ui/pickers';
 import { useDispatch } from 'react-redux';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
@@ -40,6 +40,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   const [keywords, setKeywords] = useState(campaign.keywords);
   const [description, setDescription] = useState(campaign.description);
   const [instructions, setInstructions] = useState(campaign.instructions);
+  const [showUrl, setShowUrl] = useState(campaign.config.showUrl);
   const [beginDate, setBeginDate] = useState(
     campaign.beginDate ||
       new Date().toLocaleString('en-US', {
@@ -115,6 +116,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
         config: {
           ...campaign.config,
           numOfTiers,
+          showUrl,
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
@@ -221,7 +223,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
-          <Box className="w-full box-border pr-4 mt-5">
+          <Box className="w-3/6 box-border pr-4 mt-5">
             <CustomInput
               required={true}
               label="How many Reward Tiers would you like to provide? (1-10)"
@@ -231,6 +233,22 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               error={errors['numOfTiers']}
               InputProps={{ inputProps: { min: 0, max: 10 } }}
               onChange={(e) => setTiers(e.target.value)}
+            />
+          </Box>
+
+          <Box className="w-3/6 box-border pr-4 mt-5">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={showUrl}
+                  style={{ color: '#3f51b5' }}
+                  name="Brand Agreement"
+                  onChange={(e, checked) => {
+                    setShowUrl(checked);
+                  }}
+                />
+              }
+              label="Show URL with Social Post"
             />
           </Box>
 
