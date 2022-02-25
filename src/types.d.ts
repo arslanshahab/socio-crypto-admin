@@ -282,6 +282,7 @@ export interface NewCampaignVars {
   symbol: string;
   company: string;
   isGlobal: boolean;
+  showUrl: boolean;
   algorithm: string;
   imagePath: string;
   campaignType: string;
@@ -351,6 +352,7 @@ export interface CampaignConfig {
   channelMedia: ChannelMediaStructure;
   channelTemplates: ChannelTemplateStructure;
   isGlobal: boolean;
+  showUrl: boolean;
 }
 
 export interface CampaignMediaResponse {
@@ -385,6 +387,7 @@ export interface Campaign {
   algorithm: AlgorithmSpecs;
   company: string;
   isGlobal: boolean;
+  showUrl: boolean;
   audited: boolean;
   targetVideo: string;
   imagePath: string;

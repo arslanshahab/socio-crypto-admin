@@ -66,6 +66,8 @@ export const GET_CAMPAIGN = gql`
       target
       targetVideo
       status
+      isGlobal
+      showUrl
       endDate
       company
       imagePath
