@@ -25,7 +25,7 @@ const CampaignTable: React.FC<Props> = ({ data }) => {
         </thead>
         <tbody>
           {data &&
-            data.listCampaigns.results.map((campaign: Campaign, index: number) => {
+            data.listCampaignsV2.results.map((campaign: Campaign, index: number) => {
               return <RenderRow key={index} campaign={campaign} />;
             })}
         </tbody>

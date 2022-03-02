@@ -1,5 +1,5 @@
 export interface PaginatedCampaignResults {
-  listCampaigns: {
+  listCampaignsV2: {
     results: [Campaign];
     total: number;
   };
@@ -72,13 +72,13 @@ export interface ListEmployees {
   };
 }
 
+export type CampaignAcceptanceStatus = 'ACTIVE' | 'PENDING' | 'INSUFFICIENT_FUNDS' | 'CLOSED' | 'APPROVED' | 'DENIED';
+export type CampaignOpenState = 'ALL' | 'OPEN' | 'CLOSED';
 export interface CampaignListVars {
-  open?: boolean;
-  skip?: number;
-  take?: number;
-  scoped?: boolean;
-  approved: boolean;
-  sort?: boolean;
+  skip: number;
+  take: number;
+  state: CampaignOpenState;
+  status: CampaignAcceptanceStatus;
 }
 
 export interface CampaignGetVars {

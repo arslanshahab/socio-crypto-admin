@@ -31,7 +31,7 @@ export const CampaignsList: React.FC = () => {
     if (dateIsoString) setEndDate(dateIsoString);
   };
   const { loading, data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
-    variables: { scoped: true, skip: 0, take: 10, sort: true, approved: true, open: true },
+    variables: { skip: 0, take: 10, state: 'OPEN', status: 'APPROVED' },
     fetchPolicy: 'cache-and-network',
   });
 
@@ -42,7 +42,7 @@ export const CampaignsList: React.FC = () => {
         <LoaderDots theme="muted" size="medium" />
       </div>
     </div>
-  ) : data?.listCampaigns.results.length == null || data?.listCampaigns.results.length < 1 ? (
+  ) : data?.listCampaignsV2?.results.length == null || data?.listCampaignsV2?.results.length < 1 ? (
     <div className="fill-height">
       <div className="center-all">
         <p style={{ fontSize: '20px' }}>No Campaigns Found</p>
@@ -167,7 +167,7 @@ export const CampaignsList: React.FC = () => {
       <Paper style={{ marginTop: '40px' }}>
         <div>
           {data &&
-            data.listCampaigns.results.map((campaign, index) => {
+            data.listCampaignsV2.results.map((campaign, index) => {
               return (
                 <CampaignMetricsCard
                   key={index}
