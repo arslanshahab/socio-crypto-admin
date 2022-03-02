@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const LIST_CAMPAIGNS = gql`
-  query listCampaigns($skip: Int, $take: Int, $scoped: Boolean, $sort: Boolean, $approved: Boolean, $open: Boolean) {
-    listCampaigns(skip: $skip, take: $take, scoped: $scoped, sort: $sort, approved: $approved, open: $open) {
+  query ListCampaignsV2($skip: Int!, $take: Int!, $state: CampaignState!, $status: CampaignStatus) {
+    listCampaignsV2(skip: $skip, take: $take, state: $state, status: $status) {
       results {
         id
         name
@@ -32,19 +32,6 @@ export const LIST_CAMPAIGNS = gql`
           post
         }
         tagline
-        crypto {
-          type
-          contractAddress
-        }
-        participants {
-          id
-          metrics {
-            clickCount
-          }
-          user {
-            id
-          }
-        }
       }
       total
     }

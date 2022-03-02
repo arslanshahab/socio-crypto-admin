@@ -15,11 +15,10 @@ interface Props {
 export const CampaignStatusList: React.FC<Props> = ({ fundingWallet, refetchWallet }) => {
   const { loading, data: campaigns } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
     variables: {
-      scoped: true,
       skip: 0,
       take: 10,
-      sort: true,
-      approved: true,
+      state: 'ALL',
+      status: 'APPROVED',
     },
   });
   const [open, setOpen] = useState(false);
@@ -100,7 +99,7 @@ export const CampaignStatusList: React.FC<Props> = ({ fundingWallet, refetchWall
             </tr>
           </thead>
           <tbody>
-            {campaigns?.listCampaigns?.results?.map((campaign: any, index) => {
+            {campaigns?.listCampaignsV2?.results?.map((campaign: any, index) => {
               return (
                 <tr className={styles.tableBodyRow} key={index}>
                   <td className={styles.withdrawColumn}>{campaign.name}</td>
