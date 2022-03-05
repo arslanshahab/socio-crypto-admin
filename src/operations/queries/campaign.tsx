@@ -184,7 +184,7 @@ export const DASHBOARD_METRICS = gql`
         viewCount
         shareCount
         participationScore
-        campaign_name
+        campaignName
         totalParticipants
       }
       campaignMetrics {
