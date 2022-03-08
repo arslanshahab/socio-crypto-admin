@@ -63,42 +63,50 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
   };
   return (
     <div className={commonStyles.sectionMinHeight}>
+      <CryptoDialog
+        isTokenRegistration={false}
+        open={openTokenRegistration}
+        setOpenDialog={setOpenRegistration}
+        data={currencyData}
+        isLoading={loading}
+        refetchWallet={refetchWallet}
+      />
+      <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
+        <DepositCryptoForm cryptoList={currencyList?.getSupportedCurrencies} />
+      </GenericModal>
+      <div className={headingStyles.paymentHeadingWrapper}>
+        <h1 className={headingStyles.headingXl}>Crypto Currencies</h1>
+        <div className="flex gap-4 justify-between items-center">
+          <CustomButton
+            className="text-blue-800 w-40 p-1"
+            onClick={() => {
+              refetchWallet();
+            }}
+          >
+            Refresh Balances
+          </CustomButton>
+          <input
+            type="text"
+            name="search"
+            value={search}
+            className="border-2 p-1 rounded"
+            placeholder="Search Currency"
+            onChange={handleSearch}
+          />
+          <CustomButton className="text-blue-800 w-16 p-1" onClick={() => setOpenCrypto(true)}>
+            Deposit
+          </CustomButton>
+          <CustomButton className="text-blue-800 p-1" onClick={() => setOpenRegistration(true)}>
+            <AddIcon />
+          </CustomButton>
+        </div>
+      </div>
       {isLoading ? (
         <div className={circleStyles.loading}>
           <CircularProgress />
         </div>
       ) : (
         <div>
-          <CryptoDialog
-            isTokenRegistration={false}
-            open={openTokenRegistration}
-            setOpenDialog={setOpenRegistration}
-            data={currencyData}
-            isLoading={loading}
-            refetchWallet={refetchWallet}
-          />
-          <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
-            <DepositCryptoForm cryptoList={currencyList?.getSupportedCurrencies} />
-          </GenericModal>
-          <div className={headingStyles.paymentHeadingWrapper}>
-            <h1 className={headingStyles.headingXl}>Crypto Currencies</h1>
-            <div className="flex gap-4 justify-between items-center">
-              <input
-                type="text"
-                name="search"
-                value={search}
-                className="border-2 p-1 rounded"
-                placeholder="Search Currency"
-                onChange={handleSearch}
-              />
-              <CustomButton className="text-blue-800 w-16 p-1" onClick={() => setOpenCrypto(true)}>
-                Deposit
-              </CustomButton>
-              <CustomButton className="text-blue-800 p-1" onClick={() => setOpenRegistration(true)}>
-                <AddIcon />
-              </CustomButton>
-            </div>
-          </div>
           {data && filterCurrency.currency ? (
             <div className="flex flex-wrap gap-4">
               {filterCurrency.currency.map(
