@@ -23,7 +23,10 @@ export const PaymentsAccount: React.FC = () => {
     loading,
     data: fundingWallet,
     refetch,
-  } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, { fetchPolicy: 'network-only' });
+  } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
+  });
 
   const handleChange = (event: any, newValue: number) => {
     setValue(newValue);
