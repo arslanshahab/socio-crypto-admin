@@ -11,14 +11,15 @@ import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import headingStyles from '../../../assets/styles/heading.module.css';
 
 interface Props {
-  cryptoList: string[] | undefined;
+  cryptoList: { symbol: string; network: string }[] | undefined;
 }
 
 const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
-  const [symbol, setSymbol] = useState('COIIN');
+  const [symbol, setSymbol] = useState('COIIN-BSC');
+  const options = cryptoList?.map((item) => `${item.symbol}-${item.network}`) || [];
   const dispatch = useDispatch();
   const { data, loading } = useQuery<DepositAddressResult>(GET_DEPOSIT_ADDRESS, {
-    variables: { symbol },
+    variables: { symbol: symbol.split('-')[0], network: symbol.split('-')[1] },
     fetchPolicy: 'network-only',
   });
 
@@ -37,7 +38,7 @@ const DepositCryptoForm: React.FC<Props> = ({ cryptoList }) => {
           value={symbol}
           onChange={(event: React.ChangeEvent<any>) => setSymbol(event.target.value)}
           label="Select Token to Deposit"
-          options={cryptoList || []}
+          options={options}
           upperCaseOptions={true}
         />
       </Box>

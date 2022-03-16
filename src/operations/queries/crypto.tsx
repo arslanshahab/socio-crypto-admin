@@ -11,13 +11,16 @@ export const LIST_SUPPORTED_CRYPTO = gql`
 
 export const LIST_CURRENCIES = gql`
   query getSupportedCurrencies {
-    getSupportedCurrencies
+    getSupportedCurrencies {
+      symbol
+      network
+    }
   }
 `;
 
 export const GET_DEPOSIT_ADDRESS = gql`
-  query getDepositAddressForSymbol($symbol: String!) {
-    getDepositAddressForSymbol(symbol: $symbol) {
+  query getDepositAddressForSymbol($symbol: String!, $network: String!) {
+    getDepositAddressForSymbol(symbol: $symbol, network: $network) {
       symbol
       address
       fromTatum
