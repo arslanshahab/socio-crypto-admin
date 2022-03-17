@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import { useMutation, FetchResult, useQuery } from '@apollo/client';
 import {
   CampaignCreationResponse,
-  NewCampaignVars,
   CampaignState,
   CampaignMediaSignedUrl,
   GetCampaignResult,
   CampaignGetVars,
+  UpdateCampaignVars,
 } from '../../types';
 import { UPDATE_CAMPAIGN } from '../../operations/mutations/campaign';
 import StepsView from '../../components/NewCampaign/StepsView';
@@ -59,7 +59,7 @@ const EditCampaignPage: React.FC = () => {
   const finalStep = steps.length - 1;
   const [activeStep, setActiveStep] = useState(firstStep);
   const campaign = useStoreCampaignSelector();
-  const [saveCampaign] = useMutation<CampaignCreationResponse, NewCampaignVars>(UPDATE_CAMPAIGN);
+  const [saveCampaign] = useMutation<CampaignCreationResponse, UpdateCampaignVars>(UPDATE_CAMPAIGN);
   const { loading: campaignLoading, data } = useQuery<GetCampaignResult, CampaignGetVars>(GET_CAMPAIGN, {
     variables: { id: campaignId },
     fetchPolicy: 'network-only',
@@ -95,7 +95,7 @@ const EditCampaignPage: React.FC = () => {
           campaignType: getCampaign.campaignType,
           socialMediaType: getCampaign.socialMediaType,
           budgetType: getCampaign.type,
-          cryptoSymbol: getCampaign.symbol,
+          cryptoSymbol: `${getCampaign.symbol}-${getCampaign.network}`,
           isGlobal: getCampaign.isGlobal,
           showUrl: getCampaign.showUrl,
           channelMedia: prepareChannelMediaFromResponse(
@@ -128,14 +128,13 @@ const EditCampaignPage: React.FC = () => {
       showProgressModal(true);
       const response: FetchResult<Record<string, any>, Record<string, any>> = await saveCampaign({
         variables: {
-          id: campaignId,
+          id: campaignId || '',
           name: data.name,
           coiinTotal: parseFloat(data.config.budgetType === 'raffle' ? '0' : data.config.coiinBudget),
           target: data.target,
           targetVideo: data.targetVideo || '',
           beginDate: data.beginDate,
           endDate: data.endDate,
-          symbol: data.config.cryptoSymbol,
           description: data.description,
           instructions: data.instructions,
           company: userData.company,

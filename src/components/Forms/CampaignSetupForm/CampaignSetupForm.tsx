@@ -46,7 +46,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const [errors, setErrors] = useState<ErrorObject>({});
   const coiinOptions =
     !loading && data && data.getFundingWallet
-      ? data.getFundingWallet.currency.map((item) => item.type.toUpperCase())
+      ? data.getFundingWallet.currency.map((item) => `${item.type}-${item.network}`)
       : [];
   const handleSocialMediaType = (type: string[]) => {
     setSocialMediaType(type);
@@ -62,9 +62,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   const handleCoiinBudgetChange = (event: React.ChangeEvent<any>) => {
     if (data && data.getFundingWallet) {
-      const token = data.getFundingWallet.currency.find(
-        (item) => item.type.toLowerCase() === cryptoSymbol.toLowerCase(),
-      );
+      const token = data.getFundingWallet.currency.find((item) => `${item.type}-${item.network}` === cryptoSymbol);
       if (token) {
         let value = event.target.value;
         if (parseFloat(value) > token.balance) {

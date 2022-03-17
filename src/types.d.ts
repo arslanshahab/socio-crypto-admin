@@ -135,6 +135,7 @@ export interface WalletCurrency {
   type: string;
   balance: number;
   symbolImageUrl: string;
+  network: string;
 }
 
 export interface ListSupportedCryptoResults {
@@ -145,7 +146,7 @@ export interface ListSupportedCryptoResults {
 }
 
 export interface ListCurrenciesResult {
-  getSupportedCurrencies: string[];
+  getSupportedCurrencies: { symbol: string; network: string }[];
 }
 
 export interface DepositAddressResult {
@@ -279,7 +280,6 @@ export interface GetHourlyPlatformMetrics {
 }
 
 export interface NewCampaignVars {
-  id?: string;
   name: string;
   coiinTotal: number;
   target: string;
@@ -289,6 +289,35 @@ export interface NewCampaignVars {
   description: string;
   instructions: string;
   symbol: string;
+  network: string;
+  company: string;
+  isGlobal: boolean;
+  showUrl: boolean;
+  algorithm: string;
+  imagePath: string;
+  campaignType: string;
+  socialMediaType: string[];
+  requirements?: CampaignRequirementSpecs;
+  tagline: string;
+  suggestedPosts: string[];
+  suggestedTags: string[];
+  keywords: string[];
+  type: string;
+  rafflePrize?: RafflePrizeStructure;
+  campaignTemplates: CampaignTemplateResponse[];
+  campaignMedia: CampaignMediaResponse[];
+}
+
+export interface UpdateCampaignVars {
+  id: string;
+  name: string;
+  coiinTotal: number;
+  target: string;
+  targetVideo: string;
+  beginDate: string;
+  endDate: string;
+  description: string;
+  instructions: string;
   company: string;
   isGlobal: boolean;
   showUrl: boolean;
@@ -389,6 +418,7 @@ export interface Campaign {
   totalParticipationScore: string;
   status: string;
   symbol: string;
+  network: string;
   target: string;
   description: string;
   instructions: string;
