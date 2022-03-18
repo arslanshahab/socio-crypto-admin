@@ -7,6 +7,7 @@ export const GET_FUNDING_WALLET = gql`
         type
         balance
         symbolImageUrl
+        network
       }
       transfers {
         action

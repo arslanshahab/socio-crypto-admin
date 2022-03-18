@@ -101,7 +101,7 @@ export const DashboardHome: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="pb-1">
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="grid grid-cols-5 gap-4 px-4">
         {countsKey?.map((x: any) => (

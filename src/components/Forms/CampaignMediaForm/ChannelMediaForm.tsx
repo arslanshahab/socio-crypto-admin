@@ -20,7 +20,8 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
 
   const onSuccess = (index: number, data: FileObject) => {
     const medias = [...channelMedias];
-    medias[index] = { channel: channel, media: data, isDefault: medias[index].isDefault };
+    const id = medias?.[index]?.id;
+    medias[index] = { channel: channel, id, media: data, isDefault: medias[index].isDefault };
     onChange(channel, medias);
   };
 

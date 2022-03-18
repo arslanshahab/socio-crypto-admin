@@ -20,7 +20,7 @@ export const NEW_CAMPAIGN = gql`
     $isGlobal: Boolean
     $showUrl: Boolean!
     $targetVideo: String
-    $imagePath: String
+    $imagePath: String!
     $tagline: String!
     $requirements: JSON!
     $suggestedPosts: [String]
@@ -28,7 +28,8 @@ export const NEW_CAMPAIGN = gql`
     $keywords: [String]
     $type: String
     $rafflePrize: JSON
-    $symbol: String
+    $symbol: String!
+    $network: String!
     $campaignType: String
     $socialMediaType: [String]
     $campaignMedia: JSON
@@ -56,6 +57,7 @@ export const NEW_CAMPAIGN = gql`
       type: $type
       rafflePrize: $rafflePrize
       symbol: $symbol
+      network: $network
       campaignType: $campaignType
       socialMediaType: $socialMediaType
       campaignMedia: $campaignMedia
@@ -94,7 +96,6 @@ export const UPDATE_CAMPAIGN = gql`
     $keywords: [String]
     $type: String
     $rafflePrize: JSON
-    $symbol: String
     $campaignType: String
     $socialMediaType: [String]
     $campaignMedia: JSON
@@ -121,7 +122,6 @@ export const UPDATE_CAMPAIGN = gql`
       keywords: $keywords
       type: $type
       rafflePrize: $rafflePrize
-      symbol: $symbol
       campaignType: $campaignType
       socialMediaType: $socialMediaType
       campaignMedia: $campaignMedia
