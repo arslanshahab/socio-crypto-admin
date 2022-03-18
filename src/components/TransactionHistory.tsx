@@ -5,7 +5,7 @@ import { GetFundingWalletResponse } from '../types';
 import { RefetchWallet } from './PaymentsAccount';
 import { useQuery } from '@apollo/client';
 import { GET_TRANSACTION_HISTORY } from '../operations/queries/fundingWallet';
-import { GetTransectionHistory } from '../types';
+import { GetTransactionHistory } from '../types';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
 import { capitalize } from '../helpers/formatter';
 import headingStyles from '../assets/styles/heading.module.css';
@@ -18,8 +18,7 @@ interface Props {
 }
 
 export const TransactionHistory: React.FC<Props> = () => {
-  // debugger;
-  const { data, loading, error } = useQuery<GetTransectionHistory>(GET_TRANSACTION_HISTORY, {
+  const { data, loading, error } = useQuery<GetTransactionHistory>(GET_TRANSACTION_HISTORY, {
     fetchPolicy: 'network-only',
   });
 
@@ -64,7 +63,7 @@ export const TransactionHistory: React.FC<Props> = () => {
 
           <tbody>
             {data &&
-              data?.transectionHistory?.map((transfer: any, index) => {
+              data?.transactionHistory?.map((transfer: any, index) => {
                 return (
                   <tr className={styles.tableBodyRow} key={index}>
                     <td className={styles.withdrawColumn}>{transfer.action}</td>
