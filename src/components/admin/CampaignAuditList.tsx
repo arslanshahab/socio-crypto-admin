@@ -24,7 +24,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
       open: false,
       scoped: true,
       approved: true,
-      take: 20,
+      take: 10,
       pendingAudit: true,
     },
     fetchPolicy: 'cache-and-network',
