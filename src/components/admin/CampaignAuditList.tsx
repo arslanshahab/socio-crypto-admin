@@ -24,7 +24,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
       open: false,
       scoped: true,
       approved: true,
-      take: 10,
+      take: 20,
       pendingAudit: true,
     },
     fetchPolicy: 'cache-and-network',
@@ -49,7 +49,6 @@ export const CampaignAuditList: React.FC<Props> = () => {
         <CircularProgress />
       </div>
     );
-
   return (
     <div className="p-8">
       <GenericModal
@@ -85,7 +84,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
                       onClick={() => handleClick(x)}
                     >
                       <td className="px-7 py-5 text-left capitalize">{x.name}</td>
-                      <td className="px-7 py-5 text-left">{x.audited.toString()}</td>
+                      <td className="px-7 py-5 text-left">False</td>
                       <td className="px-7 py-5 text-left">{new Date(parseInt(x.endDate)).toDateString()}</td>
                     </tr>
                   ))}
