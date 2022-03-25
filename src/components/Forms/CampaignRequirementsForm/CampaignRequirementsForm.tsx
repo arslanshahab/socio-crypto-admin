@@ -28,7 +28,9 @@ const CampaignRequirementsForm: React.FC<ActionsProps> = ({
   const dispatch = useDispatch();
   const [formType, setFormtype] = useState<'location' | 'age' | 'values' | 'interests' | 'social' | ''>('');
   const [selectedFollowerCount, setSelectedFollowerCount] = useState<string>(
-    requirements.socialFollowing.twitter.minFollower ? requirements.socialFollowing.twitter.minFollower.toString() : '',
+    requirements.socialFollowing.twitter.minFollower
+      ? requirements.socialFollowing.twitter.minFollower.toString()
+      : '0',
   );
   const [selectedInterests, setSelectedInterests] = useState<string[]>(requirements.interests);
   const [selectedValues, setSelectedValues] = useState<string[]>(requirements.values);
