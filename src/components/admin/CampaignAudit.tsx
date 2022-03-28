@@ -68,13 +68,7 @@ export const CampaignAudit: React.FC<Props> = ({ auditDetails, handleCampaignAud
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">Audit Status:</h6>
 
-          <p
-            className={`${
-              auditDetails?.audited == false ? 'text-red-600' : 'text-green-600'
-            }  text-sm shadow p-1 rounded inline`}
-          >
-            {auditDetails?.audited.toString()}
-          </p>
+          <p className={`text-red-600  text-sm shadow p-1 rounded inline`}>False</p>
         </div>
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">Description:</h6>
