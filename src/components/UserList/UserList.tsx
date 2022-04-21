@@ -30,7 +30,7 @@ type UserProfileType = {
 const UserList: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [userList, setUserList] = useState([]);
-  const [userDetail, setUserDetail] = useState();
+  const [userDetail, setUserDetail] = useState<UserListType>();
 
   useEffect(() => {
     const fetchUserList = async () => {
@@ -39,7 +39,7 @@ const UserList: React.FC = () => {
     };
     fetchUserList();
   }, []);
-  const handleClick = (data: any) => {
+  const handleClick = (data: UserListType) => {
     try {
       setOpen(true);
       setUserDetail(data);
@@ -67,11 +67,7 @@ const UserList: React.FC = () => {
             <tbody>
               {userList &&
                 userList.map((user: UserListType) => (
-                  <tr
-                    className={styles.tableBodyRow}
-                    key={Math.random()}
-                    onClick={() => handleClick({ name: 'aliraza' })}
-                  >
+                  <tr className={styles.tableBodyRow} key={user.id} onClick={() => handleClick(user)}>
                     <td className={styles.tableColumn}>{user?.profile?.username}</td>
                     <td className={styles.tableColumn}>{user.email}</td>
                     <td className={styles.tableColumn}>{user.kycStatus}</td>
