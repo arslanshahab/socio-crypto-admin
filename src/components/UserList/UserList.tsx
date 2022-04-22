@@ -4,6 +4,8 @@ import styles from './userList.module.css';
 import GenericModal from '../GenericModal';
 import axios from 'axios';
 import headingStyles from '../../assets/styles/heading.module.css';
+import CustomButton from '../CustomButton';
+import buttonStyles from '../../assets/styles/customButton.module.css';
 
 // if (loading) {
 //   return (
@@ -31,10 +33,14 @@ const UserList: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [userList, setUserList] = useState([]);
   const [userDetail, setUserDetail] = useState<UserListType>();
+  const [skip, setSkip] = useState(0);
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     const fetchUserList = async () => {
-      const response = await axios.get('http://localhost:4000/v1/user/user-record?skip=0&take=30');
+      const response = await axios.get(
+        `http://localhost:4000/v1/user/users-record?skip=${skip}&take=20&filter=${filter}`,
+      );
       setUserList(response.data.data.items);
     };
     fetchUserList();
@@ -50,10 +56,25 @@ const UserList: React.FC = () => {
   return (
     <div>
       <GenericModal open={open} onClose={() => setOpen(false)} size="small">
-        <h2 className={headingStyles.heading}>User Details:</h2>
+        <h2 className={headingStyles.headingSm}>User Details</h2>
       </GenericModal>
       <div className={styles.brandListWrapper}>
-        <h1 className={styles.headingXl}>Users Record</h1>
+        <div className={styles.headingWithSearch}>
+          <h1 className={headingStyles.headingXl}>Users Record</h1>
+          <div className={styles.search}>
+            <input
+              type="text"
+              name="search"
+              // value={search}
+              className={styles.inputField}
+              placeholder="Search by username or email"
+              // onChange={handleSearch}
+            />
+            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'}>
+              Search
+            </CustomButton>
+          </div>
+        </div>
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
             <thead>
