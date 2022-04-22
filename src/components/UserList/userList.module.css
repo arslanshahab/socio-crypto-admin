@@ -22,9 +22,21 @@
 .headingWithSearch {
   @apply flex justify-between items-center;
 }
+.searchWrapper {
+  @apply flex mr-4;
+}
 .inputField {
   @apply border-2 p-1 rounded mx-6 w-80 h-10;
 }
-.search {
-  @apply flex mr-4;
+
+/* User details styles */
+.userDetailsWrapper {
+  @apply p-4 flex gap-8;
+}
+.userSideWrapper {
+}
+.transferSide {
+}
+.boxStyle {
+  @apply flex gap-4;
 }

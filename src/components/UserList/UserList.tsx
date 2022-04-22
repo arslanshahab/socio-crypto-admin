@@ -6,6 +6,7 @@ import axios from 'axios';
 import headingStyles from '../../assets/styles/heading.module.css';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
+import UserDetails from './UserDetails';
 
 // if (loading) {
 //   return (
@@ -35,6 +36,7 @@ const UserList: React.FC = () => {
   const [userDetail, setUserDetail] = useState<UserListType>();
   const [skip, setSkip] = useState(0);
   const [filter, setFilter] = useState('');
+  const [searchData, setSearchData] = useState('');
 
   useEffect(() => {
     const fetchUserList = async () => {
@@ -44,7 +46,15 @@ const UserList: React.FC = () => {
       setUserList(response.data.data.items);
     };
     fetchUserList();
-  }, []);
+  }, [filter]);
+  // Search field
+  const handleSearchField = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchData(e.target.value);
+    if (e.target.value === '') {
+      setFilter('');
+    }
+  };
+  // Handle click on row
   const handleClick = (data: UserListType) => {
     try {
       setOpen(true);
@@ -53,24 +63,28 @@ const UserList: React.FC = () => {
       setOpen(false);
     }
   };
+  // Search record
+  const handleSearchRecord = () => {
+    setFilter(searchData);
+  };
   return (
     <div>
-      <GenericModal open={open} onClose={() => setOpen(false)} size="small">
-        <h2 className={headingStyles.headingSm}>User Details</h2>
+      <GenericModal open={open} onClose={() => setOpen(false)} size="fullscreen">
+        <UserDetails userDetails={userDetail} />
       </GenericModal>
       <div className={styles.brandListWrapper}>
         <div className={styles.headingWithSearch}>
           <h1 className={headingStyles.headingXl}>Users Record</h1>
-          <div className={styles.search}>
+          <div className={styles.searchWrapper}>
             <input
               type="text"
               name="search"
-              // value={search}
+              value={searchData}
               className={styles.inputField}
               placeholder="Search by username or email"
-              // onChange={handleSearch}
+              onChange={handleSearchField}
             />
-            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'}>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSearchRecord}>
               Search
             </CustomButton>
           </div>
