@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import headingStyles from '../../assets/styles/heading.module.css';
+import CustomButton from '../CustomButton';
 import styles from './userList.module.css';
+import buttonStyles from '../../assets/styles/customButton.module.css';
 
 const UserDetails: React.FC<any> = (props: any) => {
   const { userDetails } = props;
   const [curreny, setCurrency] = useState<any>();
+  const [activeStatus, setActiveStatus] = useState<boolean>();
   useEffect(() => {
     const fetchUserCurrencyDetails = async () => {
       const response = await axios.get(`http://localhost:4000/v1/user/wallet-balances?userId=${userDetails.id}`);
@@ -13,7 +16,30 @@ const UserDetails: React.FC<any> = (props: any) => {
     };
     fetchUserCurrencyDetails();
   }, [userDetails]);
-  console.log('userDetails: ', userDetails, '---------', curreny);
+
+  // Update user active status
+  useEffect(() => {
+    const handleUpdate = async () => {
+      try {
+        await axios.put(`http://localhost:4000/v1/user/update-user-status`, {
+          id: userDetails.id,
+          activeStatus: activeStatus,
+        });
+      } catch (e) {
+        console.log('error: ', e);
+      }
+    };
+    handleUpdate();
+  }, [activeStatus]);
+
+  // Handle active user
+  const handleActiveUser = () => {
+    setActiveStatus(true);
+  };
+  // Handle banned user
+  const handleBannedUser = () => {
+    setActiveStatus(false);
+  };
 
   return (
     <div className={styles.userDetailsWrapper}>
@@ -36,8 +62,19 @@ const UserDetails: React.FC<any> = (props: any) => {
           <p>{new Date(userDetails.lastLogin).toDateString() || 'Not login ever'}</p>
         </div>
         <div className={styles.boxStyle}>
-          <h4>User Banned:</h4>
+          <h4>User Status</h4>
           <p>{userDetails.active === true ? 'Active' : 'Banned'}</p>
+        </div>
+        <div className={styles.boxStyle}>
+          {userDetails.active === false ? (
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleActiveUser}>
+              Activate
+            </CustomButton>
+          ) : (
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleBannedUser}>
+              Banned
+            </CustomButton>
+          )}
         </div>
         <div className={styles.boxStyle}>
           <h4>Active Since:</h4>
