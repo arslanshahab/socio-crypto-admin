@@ -42,20 +42,27 @@ type CurrencyTypes = {
   symbol: string;
   usdBalance: number;
 };
-const props: React.FC<any> = (props: UserDetailsProps) => {
+const { REACT_APP_URL } = process.env;
+
+const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
   const [curreny, setCurrency] = useState<CurrencyTypes[]>();
   const [activeStatus, setActiveStatus] = useState<boolean>();
   const [redemptions, setRedemptions] = useState<RedemptionTypes>();
+
   useEffect(() => {
     const fetchUserCurrencyDetails = async () => {
-      const response = await axios.get(`http://localhost:4000/v1/docs/user-balances?userId=${props.id}`);
+      const response = await axios.get(`${REACT_APP_URL}/user/user-balances?userId=${props.id}`, {
+        withCredentials: true,
+      });
       setCurrency(response.data.data);
     };
     fetchUserCurrencyDetails();
   }, [props]);
   useEffect(() => {
     const fetchRedemptions = async () => {
-      const response = await axios.get(`http://localhost:4000/v1/docs/redemption-requirements/${props.id}`);
+      const response = await axios.get(`${REACT_APP_URL}/xoxoday/redemption-requirements/${props.id}`, {
+        withCredentials: true,
+      });
       setRedemptions(response.data.data);
     };
     fetchRedemptions();
@@ -64,10 +71,14 @@ const props: React.FC<any> = (props: UserDetailsProps) => {
   useEffect(() => {
     const handleUpdate = async () => {
       try {
-        await axios.put(`http://localhost:4000/v1/docs/update-user-status`, {
-          id: props.id,
-          activeStatus: activeStatus,
-        });
+        await axios.put(
+          `${REACT_APP_URL}/user/update-user-status`,
+          {
+            id: props.id,
+            activeStatus: activeStatus,
+          },
+          { withCredentials: true },
+        );
       } catch (e) {
         console.log('error: ', e);
       }
@@ -202,4 +213,4 @@ const props: React.FC<any> = (props: UserDetailsProps) => {
   );
 };
 
-export default props;
+export default UserDetails;

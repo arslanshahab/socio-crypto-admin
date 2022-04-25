@@ -38,6 +38,8 @@ type SocialPostType = {
     userId: string;
   };
 };
+const { REACT_APP_URL } = process.env;
+
 const UserList: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [userList, setUserList] = useState([]);
@@ -48,9 +50,9 @@ const UserList: React.FC = () => {
 
   useEffect(() => {
     const fetchUserList = async () => {
-      const response = await axios.get(
-        `http://localhost:4000/v1/docs/users-record?skip=${skip}&take=20&filter=${filter}`,
-      );
+      const response = await axios.get(`${REACT_APP_URL}/user/users-record?skip=${skip}&take=20&filter=${filter}`, {
+        withCredentials: true,
+      });
       setUserList(response.data.data.items);
     };
     fetchUserList();
