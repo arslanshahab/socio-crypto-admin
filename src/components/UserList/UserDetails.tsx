@@ -5,24 +5,67 @@ import CustomButton from '../CustomButton';
 import styles from './userList.module.css';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 
-const UserDetails: React.FC<any> = (props: any) => {
-  const { userDetails } = props;
-  const [curreny, setCurrency] = useState<any>();
+type UserDetailsProps = {
+  id: string;
+  email: string | null;
+  createdAt: string;
+  kycStatus: string | null;
+  lastLogin: string;
+  active: boolean;
+  profile: UserProfileType;
+  social_post: SocialPostType;
+};
+type UserProfileType = {
+  city: string | null;
+  country: string | null;
+  state: string | null;
+  username: string;
+};
+type SocialPostType = {
+  [key: string]: {
+    id: string;
+    userId: string;
+  };
+};
+type RedemptionTypes = {
+  orderLimitForTwentyFourHoursReached: boolean;
+  participation: boolean;
+  twitterLinked: boolean;
+  twitterfollowers: number;
+  twitterfollowersRequirement: number;
+};
+type CurrencyTypes = {
+  balance: string;
+  imageUrl: string;
+  minWithdrawAmount: number;
+  network: string;
+  symbol: string;
+  usdBalance: number;
+};
+const props: React.FC<any> = (props: UserDetailsProps) => {
+  const [curreny, setCurrency] = useState<CurrencyTypes[]>();
   const [activeStatus, setActiveStatus] = useState<boolean>();
+  const [redemptions, setRedemptions] = useState<RedemptionTypes>();
   useEffect(() => {
     const fetchUserCurrencyDetails = async () => {
-      const response = await axios.get(`http://localhost:4000/v1/user/wallet-balances?userId=${userDetails.id}`);
+      const response = await axios.get(`http://localhost:4000/v1/docs/user-balances?userId=${props.id}`);
       setCurrency(response.data.data);
     };
     fetchUserCurrencyDetails();
-  }, [userDetails]);
-
+  }, [props]);
+  useEffect(() => {
+    const fetchRedemptions = async () => {
+      const response = await axios.get(`http://localhost:4000/v1/docs/redemption-requirements/${props.id}`);
+      setRedemptions(response.data.data);
+    };
+    fetchRedemptions();
+  }, []);
   // Update user active status
   useEffect(() => {
     const handleUpdate = async () => {
       try {
-        await axios.put(`http://localhost:4000/v1/user/update-user-status`, {
-          id: userDetails.id,
+        await axios.put(`http://localhost:4000/v1/docs/update-user-status`, {
+          id: props.id,
           activeStatus: activeStatus,
         });
       } catch (e) {
@@ -43,30 +86,31 @@ const UserDetails: React.FC<any> = (props: any) => {
 
   return (
     <div className={styles.userDetailsWrapper}>
+      {/* User details */}
       <div className={styles.userSideWrapper}>
         <h2 className={headingStyles.headingSm}>User Details</h2>
         <div className={styles.boxStyle}>
           <h4>User Name:</h4>
-          <p>{userDetails.profile.username}</p>
+          <p>{props?.profile?.username}</p>
         </div>
         <div className={styles.boxStyle}>
           <h4>Email:</h4>
-          <p>{userDetails.email} </p>
+          <p>{props.email} </p>
         </div>
         <div className={styles.boxStyle}>
           <h4>Kyc Status:</h4>
-          <p>{userDetails.kycStatus}</p>
+          <p>{props.kycStatus}</p>
         </div>
         <div className={styles.boxStyle}>
           <h4>Last Login:</h4>
-          <p>{new Date(userDetails.lastLogin).toDateString() || 'Not login ever'}</p>
+          <p>{new Date(props.lastLogin).toDateString() || 'Not login ever'}</p>
         </div>
         <div className={styles.boxStyle}>
           <h4>User Status</h4>
-          <p>{userDetails.active === true ? 'Active' : 'Banned'}</p>
+          <p>{props.active === true ? 'Active' : 'Banned'}</p>
         </div>
         <div className={styles.boxStyle}>
-          {userDetails.active === false ? (
+          {props.active === false ? (
             <CustomButton className={buttonStyles.buttonPrimary} onClick={handleActiveUser}>
               Activate
             </CustomButton>
@@ -78,19 +122,20 @@ const UserDetails: React.FC<any> = (props: any) => {
         </div>
         <div className={styles.boxStyle}>
           <h4>Active Since:</h4>
-          <p>{new Date(userDetails.createdAt).toDateString()}</p>
+          <p>{new Date(props.createdAt).toDateString()}</p>
         </div>
         <div className={styles.boxStyle}>
           <h4>Post Frequency:</h4>
-          <p>{userDetails.social_post.length || 0}</p>
+          <p>{props?.social_post?.length || 0}</p>
         </div>
       </div>
+      {/* User currency details */}
       <div className={styles.transferSide}>
         <h3 className={headingStyles.headingSm}>Transfer User Record</h3>
         <h4 className={headingStyles.headingXs}>Coiin Amount:</h4>
         {curreny &&
-          curreny?.map((x: any) => (
-            <div className="shadow-md rounded-sm my-2 p-2" key={userDetails.id}>
+          curreny?.map((x: CurrencyTypes) => (
+            <div className={styles.boxWrapper} key={props.id}>
               <div className={styles.boxStyle}>
                 <h4>Balance:</h4>
                 <p>{x.balance}</p>
@@ -114,8 +159,47 @@ const UserDetails: React.FC<any> = (props: any) => {
             </div>
           ))}
       </div>
+      {/* Redemptions details */}
+      <div className={styles.redemptionsSide}>
+        <h3 className={headingStyles.headingSm}>Redemption Details</h3>
+        {redemptions ? (
+          <div className={styles.boxWrapper}>
+            <h4 className={headingStyles.headingXs}>Twitter Redemptions:</h4>
+            <div className={styles.boxStyle}>
+              <h4>Twitter Linked:</h4>
+              <p>{redemptions.twitterLinked ? 'True' : 'False'}</p>
+            </div>
+            <div className={styles.boxStyle}>
+              <h4>Twitter Followers:</h4>
+              <p>{redemptions.twitterfollowers}</p>
+            </div>
+            <div className={styles.boxStyle}>
+              <h4>Twitter followers Requirement:</h4>
+              <p>{redemptions.twitterfollowersRequirement}</p>
+            </div>
+            <div className={styles.boxStyle}>
+              <h4>Participation:</h4>
+              <p>{redemptions.participation ? 'True' : 'False'}</p>
+            </div>
+            <div className={styles.boxStyle}>
+              <h4>Order Limit For Twenty Four Hours Reached:</h4>
+              <p>{redemptions.orderLimitForTwentyFourHoursReached ? 'True' : 'False'}</p>
+            </div>
+          </div>
+        ) : (
+          <h4>No redemption record found</h4>
+        )}
+        <div className={styles.boxWrapper}>
+          <h4 className={headingStyles.headingXs}>Tiktok Redemptions:</h4>
+          <p>No record found</p>
+        </div>
+        <div className={styles.boxWrapper}>
+          <h4 className={headingStyles.headingXs}>Facebook Redemptions:</h4>
+          <p>No record found</p>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default UserDetails;
+export default props;

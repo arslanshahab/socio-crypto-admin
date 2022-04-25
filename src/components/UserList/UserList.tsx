@@ -21,7 +21,10 @@ type UserListType = {
   email: string | null;
   createdAt: string;
   kycStatus: string | null;
+  lastLogin: string;
+  active: boolean;
   profile: UserProfileType;
+  social_post: SocialPostType;
 };
 type UserProfileType = {
   city: string | null;
@@ -29,7 +32,12 @@ type UserProfileType = {
   state: string | null;
   username: string;
 };
-
+type SocialPostType = {
+  [key: string]: {
+    id: string;
+    userId: string;
+  };
+};
 const UserList: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [userList, setUserList] = useState([]);
@@ -41,7 +49,7 @@ const UserList: React.FC = () => {
   useEffect(() => {
     const fetchUserList = async () => {
       const response = await axios.get(
-        `http://localhost:4000/v1/user/users-record?skip=${skip}&take=20&filter=${filter}`,
+        `http://localhost:4000/v1/docs/users-record?skip=${skip}&take=20&filter=${filter}`,
       );
       setUserList(response.data.data.items);
     };
@@ -70,7 +78,7 @@ const UserList: React.FC = () => {
   return (
     <div>
       <GenericModal open={open} onClose={() => setOpen(false)} size="fullscreen">
-        <UserDetails userDetails={userDetail} />
+        <UserDetails {...userDetail} />
       </GenericModal>
       <div className={styles.brandListWrapper}>
         <div className={styles.headingWithSearch}>

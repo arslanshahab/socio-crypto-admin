@@ -37,6 +37,9 @@
 }
 .transferSide {
 }
+.boxWrapper {
+  @apply shadow-md rounded-sm my-3 p-2;
+}
 .boxStyle {
   @apply flex gap-4;
 }
