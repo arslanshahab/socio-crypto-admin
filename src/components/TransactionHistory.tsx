@@ -13,30 +13,18 @@ interface Props {
   isLoading: boolean;
   refetchWallet: RefetchWallet;
 }
+type CurrencyTypes = {
+  action: string;
+  amount: number;
+  currency: string;
+  createdAt: string;
+};
 
 export const TransactionHistory: React.FC<Props> = () => {
-  const { data, loading, error } = useQuery<GetTransactionHistory>(GET_TRANSACTION_HISTORY, {
+  const { data, loading } = useQuery<GetTransactionHistory>(GET_TRANSACTION_HISTORY, {
     fetchPolicy: 'network-only',
   });
 
-  // const renderTransactionHistory = () => {
-  //   let transactionList: JSX.Element[] = [];
-  //   if (isLoading) {
-  //     return <div />;
-  //   } else if (data && data.getFundingWallet) {
-  //     transactionList = data.getFundingWallet.transfers.map((transfer, index) => {
-  //       return <TransferCard key={index} transfer={transfer} />;
-  //     });
-  //   }
-  //   if (transactionList.length === 0) {
-  //     return (
-  //       <Grid item className="list-item">
-  //         <Typography component="div">You have no transaction history</Typography>
-  //       </Grid>
-  //     );
-  //   }
-  //   return transactionList;
-  // };
   if (loading) {
     return (
       <div className={styles.loading}>
@@ -60,7 +48,7 @@ export const TransactionHistory: React.FC<Props> = () => {
 
           <tbody>
             {data &&
-              data?.transactionHistory?.map((transfer: any, index) => {
+              data?.transactionHistory?.map((transfer: CurrencyTypes, index) => {
                 return (
                   <tr className={styles.tableBodyRow} key={index}>
                     <td className={styles.withdrawColumn}>{transfer.action}</td>
