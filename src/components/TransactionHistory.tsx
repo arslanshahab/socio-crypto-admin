@@ -68,7 +68,7 @@ export const TransactionHistory: React.FC<Props> = () => {
                   <tr className={styles.tableBodyRow} key={index}>
                     <td className={styles.withdrawColumn}>{transfer.action}</td>
                     <td className={styles.withdrawColumn}>{transfer.amount}</td>
-                    <td className={styles.withdrawColumn}>{capitalize(transfer.currency) || 'COIN'}</td>
+                    <td className={`${styles.withdrawColumn} uppercase`}>{transfer.currency || 'COIN'}</td>
                     <td className={styles.withdrawColumn}>{new Date(parseInt(transfer.createdAt)).toLocaleString()}</td>
                   </tr>
                 );
