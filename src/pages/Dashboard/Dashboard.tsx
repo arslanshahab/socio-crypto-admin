@@ -3,7 +3,7 @@ import { Switch } from 'react-router';
 import CampaignsPage from '../Campaigns';
 import { Link, useHistory } from 'react-router-dom';
 // import { MarketData } from '../../components/MarketData';
-import SettingsIcon from '@material-ui/icons/Settings';
+// import SettingsIcon from '@material-ui/icons/Settings';
 import { PaymentsAccount } from '../../components/PaymentsAccount';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
@@ -24,6 +24,7 @@ import { showErrorAlert } from '../../store/actions/alerts';
 import EditCampaignPage from '../EditCampaign/EditCampaign';
 import { logoutUser } from '../../store/actions/user';
 import CoiinLogo from '../../assets/png/coiin.png';
+import UserList from '../../components/UserList/UserList';
 
 const Dashboard: React.FC = (props) => {
   const history = useHistory();
@@ -90,6 +91,9 @@ const Dashboard: React.FC = (props) => {
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/admin/audit-campaigns'}>
               <CampaignAuditList {...props} />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/admin/userList'}>
+              <UserList {...props} />
             </ProtectedRoute>
           </Switch>
         </Box>

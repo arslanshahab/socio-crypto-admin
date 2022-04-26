@@ -7,3 +7,6 @@
 .addButton {
   @apply text-blue-800 p-1;
 }
+.secondaryButton {
+  @apply bg-red-700 text-white w-32 rounded p-1.5;
+}
