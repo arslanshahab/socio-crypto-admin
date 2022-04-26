@@ -57,10 +57,10 @@ const UserList: React.FC = () => {
       </div>
     );
   }
-  const hanldeChildData = (value: boolean) => {
-    setActionStatus(value);
+  const hanldeChildData = (value: { userAction: boolean; modal: boolean }) => {
+    setActionStatus(value.userAction);
+    setOpen(value.modal);
   };
-  console.log('user status', actionStatus);
 
   return (
     <div>

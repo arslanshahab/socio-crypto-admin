@@ -56,12 +56,12 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
   // Handle active user
   const handleActiveUser = () => {
     setActiveStatus(true);
-    props.userStatus(true);
+    props.userStatus({ userAction: false, modal: false });
   };
   // Handle banned user
   const handleBannedUser = () => {
     setActiveStatus(false);
-    props.userStatus(true);
+    props.userStatus({ userAction: false, modal: false });
   };
 
   return (
