@@ -1,13 +1,10 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
-import { TransferCard } from './TransferCard';
 import { GetFundingWalletResponse } from '../types';
 import { RefetchWallet } from './PaymentsAccount';
 import { useQuery } from '@apollo/client';
 import { GET_TRANSACTION_HISTORY } from '../operations/queries/fundingWallet';
 import { GetTransactionHistory } from '../types';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
-import { capitalize } from '../helpers/formatter';
 import headingStyles from '../assets/styles/heading.module.css';
 import { CircularProgress } from '@material-ui/core';
 
