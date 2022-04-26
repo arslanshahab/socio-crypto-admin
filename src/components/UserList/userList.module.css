@@ -35,11 +35,17 @@
 }
 .userSideWrapper {
 }
-.transferSide {
-}
 .boxWrapper {
-  @apply shadow-md rounded-sm my-3 p-2;
+  @apply shadow rounded my-3 p-2;
 }
 .boxStyle {
-  @apply flex gap-4;
+  @apply flex justify-between items-center m-1.5 p-1 shadow rounded w-80;
+}
+.coiinWrapper {
+  @apply shadow rounded p-1;
+}
+
+.transferSide {
+  height: 90vh;
+  overflow-y: scroll;
 }

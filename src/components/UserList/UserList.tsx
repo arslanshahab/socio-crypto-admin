@@ -7,37 +7,8 @@ import headingStyles from '../../assets/styles/heading.module.css';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import UserDetails from './UserDetails';
+import { UserListType } from '../../rest-types';
 
-// if (loading) {
-//   return (
-//     <div className={styles.loading}>
-//       <CircularProgress />
-//     </div>
-//   );
-// }
-
-type UserListType = {
-  id: string;
-  email: string | null;
-  createdAt: string;
-  kycStatus: string | null;
-  lastLogin: string;
-  active: boolean;
-  profile: UserProfileType;
-  social_post: SocialPostType;
-};
-type UserProfileType = {
-  city: string | null;
-  country: string | null;
-  state: string | null;
-  username: string;
-};
-type SocialPostType = {
-  [key: string]: {
-    id: string;
-    userId: string;
-  };
-};
 const { REACT_APP_URL } = process.env;
 
 const UserList: React.FC = () => {
@@ -50,7 +21,7 @@ const UserList: React.FC = () => {
 
   useEffect(() => {
     const fetchUserList = async () => {
-      const response = await axios.get(`${REACT_APP_URL}/user/users-record?skip=${skip}&take=20&filter=${filter}`, {
+      const response = await axios.get(`${REACT_APP_URL}/user/users-record?skip=${skip}&take=100&filter=${filter}`, {
         withCredentials: true,
       });
       setUserList(response.data.data.items);
@@ -77,6 +48,14 @@ const UserList: React.FC = () => {
   const handleSearchRecord = () => {
     setFilter(searchData);
   };
+
+  if (!userList) {
+    return (
+      <div className={styles.loading}>
+        <CircularProgress />
+      </div>
+    );
+  }
   return (
     <div>
       <GenericModal open={open} onClose={() => setOpen(false)} size="fullscreen">
