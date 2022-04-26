@@ -10,6 +10,8 @@ import { CircularProgress } from '@material-ui/core';
 const { REACT_APP_URL } = process.env;
 
 const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
+  console.log('user status value', props.userStatus);
+
   const [curreny, setCurrency] = useState<CurrencyTypes[]>();
   const [activeStatus, setActiveStatus] = useState<boolean>();
   const [redemptions, setRedemptions] = useState<RedemptionTypes>();
@@ -54,10 +56,12 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
   // Handle active user
   const handleActiveUser = () => {
     setActiveStatus(true);
+    props.userStatus(true);
   };
   // Handle banned user
   const handleBannedUser = () => {
     setActiveStatus(false);
+    props.userStatus(true);
   };
 
   return (

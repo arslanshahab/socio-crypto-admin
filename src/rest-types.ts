@@ -17,6 +17,7 @@ export type UserDetailsProps = {
   active: boolean;
   profile: UserProfileType;
   social_post: SocialPostType;
+  userStatus: (value: boolean) => void;
 };
 export type UserProfileType = {
   city: string | null;

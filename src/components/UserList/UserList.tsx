@@ -18,6 +18,7 @@ const UserList: React.FC = () => {
   const [skip, setSkip] = useState(0);
   const [filter, setFilter] = useState('');
   const [searchData, setSearchData] = useState('');
+  const [actionStatus, setActionStatus] = useState(false);
 
   useEffect(() => {
     const fetchUserList = async () => {
@@ -27,7 +28,7 @@ const UserList: React.FC = () => {
       setUserList(response.data.data.items);
     };
     fetchUserList();
-  }, [filter]);
+  }, [filter, actionStatus]);
   // Search field
   const handleSearchField = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchData(e.target.value);
@@ -56,10 +57,15 @@ const UserList: React.FC = () => {
       </div>
     );
   }
+  const hanldeChildData = (value: boolean) => {
+    setActionStatus(value);
+  };
+  console.log('user status', actionStatus);
+
   return (
     <div>
       <GenericModal open={open} onClose={() => setOpen(false)} size="fullscreen">
-        <UserDetails {...userDetail} />
+        <UserDetails {...userDetail} userStatus={hanldeChildData} />
       </GenericModal>
       <div className={styles.brandListWrapper}>
         <div className={styles.headingWithSearch}>
