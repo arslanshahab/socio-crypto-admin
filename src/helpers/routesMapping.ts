@@ -32,6 +32,12 @@ export const getRoutesMapping = (data: any): Array<MenuObject> => {
       icon: 'user',
       enabled: (data && data.company === 'raiinmaker') || false,
     },
+    {
+      name: 'User List',
+      to: '/dashboard/admin/userList',
+      icon: 'user',
+      enabled: (data && data.company === 'raiinmaker') || false,
+    },
     { name: 'FAQ', to: '', icon: 'question', enabled: true, href: faqUrl },
     { name: 'Contact Support', to: '', icon: 'support', enabled: true, href: supportEmail },
   ];

@@ -10,6 +10,9 @@
 .headingSm {
   @apply text-left text-blue-800 text-base font-semibold;
 }
+.headingXs {
+  @apply text-left text-blue-800 text-sm font-semibold;
+}
 .paymentHeadingWrapper {
   @apply flex justify-between items-center border-b-2 mb-6 w-full;
 }
