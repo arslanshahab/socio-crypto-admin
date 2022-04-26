@@ -5,6 +5,7 @@ import CustomButton from '../CustomButton';
 import styles from './userList.module.css';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { CurrencyTypes, RedemptionTypes, UserDetailsProps } from '../../rest-types';
+import { CircularProgress } from '@material-ui/core';
 
 const { REACT_APP_URL } = process.env;
 
@@ -109,7 +110,8 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
         <h3 className={headingStyles.headingSm}>Transfer User Record</h3>
         <div className={styles.coiinWrapper}>
           <h4 className={headingStyles.headingXs}>Coiin Amount:</h4>
-          {curreny === [] ? (
+          {curreny && curreny?.length === 0 ? <p>No transfer record found</p> : ''}
+          {curreny ? (
             curreny?.map((x: CurrencyTypes) => (
               <div key={props.id} className={styles.boxWrapper}>
                 <div className={styles.boxStyle}>
@@ -136,7 +138,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
             ))
           ) : (
             <div>
-              <p>No transfer record found</p>
+              <CircularProgress />
             </div>
           )}
         </div>
