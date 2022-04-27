@@ -8,8 +8,7 @@ import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import UserDetails from './UserDetails';
 import { UserListType } from '../../rest-types';
-
-const { REACT_APP_URL } = process.env;
+import { apiURI } from '../../clients/raiinmaker-api';
 
 const UserList: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -22,7 +21,7 @@ const UserList: React.FC = () => {
 
   useEffect(() => {
     const fetchUserList = async () => {
-      const response = await axios.get(`${REACT_APP_URL}/user/users-record?skip=${skip}&take=100&filter=${filter}`, {
+      const response = await axios.get(`${apiURI}/v1/user/users-record?skip=${skip}&take=100&filter=${filter}`, {
         withCredentials: true,
       });
       setUserList(response.data.data.items);
