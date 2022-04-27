@@ -6,8 +6,7 @@ import styles from './userList.module.css';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { CurrencyTypes, RedemptionTypes, UserDetailsProps } from '../../rest-types';
 import { CircularProgress } from '@material-ui/core';
-
-const { REACT_APP_URL } = process.env;
+import { apiURI } from '../../clients/raiinmaker-api';
 
 const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
   console.log('user status value', props.userStatus);
@@ -18,7 +17,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
 
   useEffect(() => {
     const fetchUserCurrencyDetails = async () => {
-      const response = await axios.get(`${REACT_APP_URL}/user/user-balances?userId=${props.id}`, {
+      const response = await axios.get(`${apiURI}/v1/user/user-balances?userId=${props.id}`, {
         withCredentials: true,
       });
       setCurrency(response.data.data);
@@ -27,7 +26,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
   }, [props]);
   useEffect(() => {
     const fetchRedemptions = async () => {
-      const response = await axios.get(`${REACT_APP_URL}/xoxoday/redemption-requirements/${props.id}`, {
+      const response = await axios.get(`${apiURI}/v1/xoxoday/redemption-requirements/${props.id}`, {
         withCredentials: true,
       });
       setRedemptions(response.data.data);
@@ -39,7 +38,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
     const handleUpdate = async () => {
       try {
         await axios.put(
-          `${REACT_APP_URL}/user/update-user-status`,
+          `${apiURI}/v1/user/update-user-status`,
           {
             id: props.id,
             activeStatus: activeStatus,
