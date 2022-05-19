@@ -9,7 +9,6 @@ import buttonStyles from '../../assets/styles/customButton.module.css';
 import UserDetails from './UserDetails';
 import { UserListType } from '../../rest-types';
 import ReactPaginate from 'react-paginate';
-import './pagination.less';
 import { apiURI } from '../../clients/raiinmaker-api';
 
 const UserList: React.FC = () => {
@@ -25,7 +24,7 @@ const UserList: React.FC = () => {
 
   useEffect(() => {
     const fetchUserList = async () => {
-      const response = await axios.get(`${apiURI}/v1/user/users-record?skip=${skip}&take=100&filter=${filter}`, {
+      const response = await axios.get(`${apiURI}/v1/user/users-record?skip=${skip}&take=10&filter=${filter}`, {
         withCredentials: true,
       });
       setUserList(response.data.data.items);
@@ -120,15 +119,25 @@ const UserList: React.FC = () => {
           </table>
         </div>
       </div>
-      <div className="pagination-prefix-clsv2 ">
+      <div className={styles.paginateWrapper}>
         <ReactPaginate
           breakLabel="..."
-          nextLabel="next >"
+          nextLabel=">"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           pageCount={Math.ceil(total / take)}
-          previousLabel="< previous"
+          previousLabel="<"
           renderOnZeroPageCount={undefined}
+          breakClassName={'page-item'}
+          breakLinkClassName={'page-link'}
+          containerClassName={'pagination'}
+          pageClassName={'page-item'}
+          pageLinkClassName={'page-link'}
+          previousClassName={'page-item'}
+          previousLinkClassName={'page-link'}
+          nextClassName={'page-item'}
+          nextLinkClassName={'page-link'}
+          activeClassName={'active'}
         />
       </div>
     </div>

@@ -49,3 +49,8 @@
   height: 90vh;
   overflow-y: scroll;
 }
+
+/* React Pagniation */
+.paginateWrapper {
+  @apply flex justify-center pb-6;
+}

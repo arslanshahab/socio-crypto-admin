@@ -8,6 +8,7 @@ import ErrorAlert from './components/Alerts/ErrorAlert/ErrorAlert';
 import SuccessAlert from './components/Alerts/SuccessAlert/SuccessAlert';
 import AppLoader from './components/AppLoader';
 import useStoreSettingsSelector from './hooks/useStoreSettingsSelector';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const App: React.FC = () => {
   const storeSettings = useStoreSettingsSelector();
