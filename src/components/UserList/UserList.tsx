@@ -16,7 +16,7 @@ const UserList: React.FC = () => {
   const [userList, setUserList] = useState([]);
   const [userDetail, setUserDetail] = useState<UserListType>();
   const [skip, setSkip] = useState(0);
-  const [take] = useState(8);
+  const [take] = useState(10);
   const [total, setTotal] = useState(0);
   const [filter, setFilter] = useState('');
   const [searchData, setSearchData] = useState('');
