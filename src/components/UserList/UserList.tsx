@@ -16,15 +16,17 @@ const UserList: React.FC = () => {
   const [userList, setUserList] = useState([]);
   const [userDetail, setUserDetail] = useState<UserListType>();
   const [skip, setSkip] = useState(0);
-  const [take] = useState(10);
+  const [take] = useState(8);
   const [total, setTotal] = useState(0);
   const [filter, setFilter] = useState('');
   const [searchData, setSearchData] = useState('');
   const [actionStatus, setActionStatus] = useState(false);
+  const [isloading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchUserList = async () => {
-      const response = await axios.get(`${apiURI}/v1/user/users-record?skip=${skip}&take=10&filter=${filter}`, {
+      const response = await axios.get(`${apiURI}/v1/user/users-record?skip=${skip}&take=${take}&filter=${filter}`, {
         withCredentials: true,
       });
       setUserList(response.data.data.items);
@@ -33,6 +35,7 @@ const UserList: React.FC = () => {
       } else {
         setTotal(response.data.data.total);
       }
+      setLoading(false);
     };
     fetchUserList();
   }, [filter, actionStatus, skip]);
@@ -93,6 +96,7 @@ const UserList: React.FC = () => {
         <div className={styles.headingWithSearch}>
           <h1 className={headingStyles.headingXl}>Users Record</h1>
           <div className={styles.searchWrapper}>
+            <div>{isloading && <CircularProgress />}</div>
             <input
               type="text"
               name="search"
