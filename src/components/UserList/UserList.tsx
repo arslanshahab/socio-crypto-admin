@@ -8,6 +8,8 @@ import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import UserDetails from './UserDetails';
 import { UserListType } from '../../rest-types';
+import ReactPaginate from 'react-paginate';
+import './pagination.less';
 
 const { REACT_APP_URL } = process.env;
 
@@ -16,19 +18,25 @@ const UserList: React.FC = () => {
   const [userList, setUserList] = useState([]);
   const [userDetail, setUserDetail] = useState<UserListType>();
   const [skip, setSkip] = useState(0);
+  const [take] = useState(10);
+  const [total, setTotal] = useState(0);
   const [filter, setFilter] = useState('');
   const [searchData, setSearchData] = useState('');
   const [actionStatus, setActionStatus] = useState(false);
 
   useEffect(() => {
     const fetchUserList = async () => {
-      const response = await axios.get(`${REACT_APP_URL}/user/users-record?skip=${skip}&take=100&filter=${filter}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${REACT_APP_URL}/user/users-record?skip=${skip}&take=${take}&filter=${filter}`,
+        {
+          withCredentials: true,
+        },
+      );
       setUserList(response.data.data.items);
+      setTotal(response.data.data.total);
     };
     fetchUserList();
-  }, [filter, actionStatus]);
+  }, [filter, actionStatus, skip]);
   // Search field
   const handleSearchField = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchData(e.target.value);
@@ -60,6 +68,14 @@ const UserList: React.FC = () => {
   const hanldeChildData = (value: { userAction: boolean; modal: boolean }) => {
     setActionStatus(value.userAction);
     setOpen(value.modal);
+  };
+  // Take Paginated value
+  const handlePageClick = (event: { selected: number }) => {
+    try {
+      setSkip(event.selected * take);
+    } catch (e) {
+      setSkip(0);
+    }
   };
 
   return (
@@ -107,6 +123,17 @@ const UserList: React.FC = () => {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="pagination-prefix-clsv2 ">
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={Math.ceil(total / take)}
+          previousLabel="< previous"
+          renderOnZeroPageCount={undefined}
+        />
       </div>
     </div>
   );
