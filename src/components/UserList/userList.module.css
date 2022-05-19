@@ -1,5 +1,5 @@
 .loading {
-  @apply flex justify-center;
+  @apply flex justify-center items-center h-screen;
 }
 .heading {
   @apply text-blue-900 font-semibold text-xl pb-4;

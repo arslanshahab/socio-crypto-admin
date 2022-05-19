@@ -62,14 +62,7 @@ const UserList: React.FC = () => {
   const handleSearchRecord = () => {
     setFilter(searchData);
   };
-
-  if (!userList) {
-    return (
-      <div className={styles.loading}>
-        <CircularProgress />
-      </div>
-    );
-  }
+  // Handle user details modal
   const hanldeChildData = (value: { userAction: boolean; modal: boolean }) => {
     setActionStatus(value.userAction);
     setOpen(value.modal);
@@ -82,6 +75,14 @@ const UserList: React.FC = () => {
       setSkip(0);
     }
   };
+
+  if (userList.length < 1) {
+    return (
+      <div className={styles.loading}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <div>
