@@ -28,7 +28,11 @@ const UserList: React.FC = () => {
         withCredentials: true,
       });
       setUserList(response.data.data.items);
-      setTotal(response.data.data.total);
+      if (filter !== '') {
+        setTotal(response.data.data.items.length);
+      } else {
+        setTotal(response.data.data.total);
+      }
     };
     fetchUserList();
   }, [filter, actionStatus, skip]);
