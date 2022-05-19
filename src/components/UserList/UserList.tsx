@@ -43,6 +43,12 @@ const UserList: React.FC = () => {
       setFilter('');
     }
   };
+  // Handle Key Press
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setFilter(searchData);
+    }
+  };
   // Handle click on row
   const handleClick = (data: UserListType) => {
     try {
@@ -93,6 +99,7 @@ const UserList: React.FC = () => {
               className={styles.inputField}
               placeholder="Search by username or email"
               onChange={handleSearchField}
+              onKeyPress={handleKeyPress}
             />
             <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSearchRecord}>
               Search
