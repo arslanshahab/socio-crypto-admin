@@ -144,16 +144,6 @@ const UserList: React.FC = () => {
           pageCount={Math.ceil(total / take)}
           previousLabel="<"
           renderOnZeroPageCount={undefined}
-          breakClassName={'page-item'}
-          breakLinkClassName={'page-link'}
-          containerClassName={'pagination'}
-          pageClassName={'page-item'}
-          pageLinkClassName={'page-link'}
-          previousClassName={'page-item'}
-          previousLinkClassName={'page-link'}
-          nextClassName={'page-item'}
-          nextLinkClassName={'page-link'}
-          activeClassName={'active'}
         />
       </div>
     </div>

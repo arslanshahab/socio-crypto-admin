@@ -48,3 +48,32 @@
 .paginateWrapper {
   @apply flex justify-center pb-6;
 }
+.paginateWrapper {
+  @apply flex justify-center pb-8;
+}
+.paginateWrapper ul {
+  @apply flex pl-0 list-none;
+}
+.paginateWrapper ul li a {
+  @apply relative block py-2 px-3 -ml-px leading-5 text-blue-800 border border-indigo-100 hover:bg-indigo-50 focus:z-10 focus:outline-none focus:bg-blue-800 focus:text-white;
+}
+.paginateWrapper ul li.disabled a {
+  color: #6c757d;
+  pointer-events: none;
+  cursor: auto;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+.paginateWrapper ul li:first-child a {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+.paginateWrapper ul li:last-child a {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+.paginateWrapper ul li a {
+  color: #1f398a;
+  text-decoration: none;
+  background-color: transparent;
+}
