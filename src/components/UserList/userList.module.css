@@ -44,7 +44,7 @@
   overflow-y: scroll;
 }
 
-/* React Pagniation */
+/* React Pagination */
 .paginateWrapper {
   @apply flex justify-center pb-6;
 }
