@@ -144,6 +144,8 @@ const UserList: React.FC = () => {
           pageCount={Math.ceil(total / take)}
           previousLabel="<"
           renderOnZeroPageCount={undefined}
+          activeClassName={styles.active}
+          disabledClassName={styles.disabled}
         />
       </div>
     </div>
