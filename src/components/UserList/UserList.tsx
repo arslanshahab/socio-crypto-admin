@@ -21,7 +21,7 @@ const UserList: React.FC = () => {
   const [filter, setFilter] = useState('');
   const [searchData, setSearchData] = useState('');
   const [actionStatus, setActionStatus] = useState(false);
-  const [isloading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -79,7 +79,7 @@ const UserList: React.FC = () => {
     }
   };
 
-  if (userList.length < 1) {
+  if (isLoading) {
     return (
       <div className={styles.loading}>
         <CircularProgress />
@@ -96,7 +96,7 @@ const UserList: React.FC = () => {
         <div className={styles.headingWithSearch}>
           <h1 className={headingStyles.headingXl}>Users Record</h1>
           <div className={styles.searchWrapper}>
-            <div>{isloading && <CircularProgress />}</div>
+            <div>{isLoading && <CircularProgress />}</div>
             <input
               type="text"
               name="search"
