@@ -79,7 +79,7 @@ const UserList: React.FC = () => {
     }
   };
 
-  if (isLoading) {
+  if (userList.length < 1) {
     return (
       <div className={styles.loading}>
         <CircularProgress />
