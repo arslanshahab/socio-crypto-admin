@@ -1,5 +1,5 @@
 .loading {
-  @apply flex justify-center;
+  @apply flex justify-center items-center h-screen;
 }
 .heading {
   @apply text-blue-900 font-semibold text-xl pb-4;
@@ -33,19 +33,41 @@
 .userDetailsWrapper {
   @apply p-4 flex gap-8;
 }
-.userSideWrapper {
-}
 .boxWrapper {
-  @apply shadow rounded my-3 p-2;
+  @apply shadow-md rounded mx-px my-2 p-2;
 }
 .boxStyle {
   @apply flex justify-between items-center m-1.5 p-1 shadow rounded w-80;
 }
-.coiinWrapper {
-  @apply shadow rounded p-1;
-}
-
 .transferSide {
   height: 90vh;
   overflow-y: scroll;
+}
+
+/* React Pagination */
+.paginateWrapper {
+  @apply flex justify-center pb-6;
+}
+.paginateWrapper {
+  @apply flex justify-center pb-8;
+}
+.paginateWrapper ul {
+  @apply flex pl-0 list-none;
+}
+.paginateWrapper ul li a {
+  @apply relative block py-2 px-3 -ml-px leading-5 border border-indigo-100  focus:outline-none focus:bg-blue-800 focus:text-white;
+}
+.paginateWrapper ul li:first-child a {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+.paginateWrapper ul li:last-child a {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+.active {
+  @apply bg-blue-800 text-white z-20;
+}
+.disabled {
+  @apply text-indigo-200 pointer-events-none cursor-auto bg-white;
 }
