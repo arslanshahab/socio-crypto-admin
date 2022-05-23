@@ -10,8 +10,10 @@ import UserDetails from './UserDetails';
 import { UserListType } from '../../rest-types';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const UserList: React.FC = () => {
+  const history = useHistory();
   const [open, setOpen] = useState(false);
   const [userList, setUserList] = useState([]);
   const [userDetail, setUserDetail] = useState<UserListType>();
@@ -97,14 +99,16 @@ const UserList: React.FC = () => {
             <tbody>
               {userList &&
                 userList.map((user: UserListType) => (
-                  <Link to={`userDetails/${user.id}`} key={user.id}>
-                    <tr className={styles.tableBodyRow} onClick={() => handleClick(user)}>
-                      <td className={styles.tableColumn}>{user?.profile?.username}</td>
-                      <td className={styles.tableColumn}>{user.email}</td>
-                      <td className={styles.tableColumn}>{user.kycStatus}</td>
-                      <td className={styles.tableColumn}>{new Date(user.createdAt).toDateString()}</td>
-                    </tr>
-                  </Link>
+                  <tr
+                    className={styles.tableBodyRow}
+                    key={user.id}
+                    onClick={() => history.push(`userDetails/${user.id}`)}
+                  >
+                    <td className={styles.tableColumn}>{user?.profile?.username}</td>
+                    <td className={styles.tableColumn}>{user.email}</td>
+                    <td className={styles.tableColumn}>{user.kycStatus}</td>
+                    <td className={styles.tableColumn}>{new Date(user.createdAt).toDateString()}</td>
+                  </tr>
                 ))}
             </tbody>
           </table>

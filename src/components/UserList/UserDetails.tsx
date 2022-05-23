@@ -20,27 +20,23 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
   const [activeStatus, setActiveStatus] = useState<boolean>();
   const [redemptions, setRedemptions] = useState<RedemptionTypes>();
   const [value, setValue] = useState<number>(0);
-  const [transactionHistory, setTransactionHistory] = useState();
+  const [transactionHistory, setTransactionHistory] = useState([]);
 
   useEffect(() => {
     const fetchUserCurrencyDetails = async () => {
-      const response = await axios.get(`${apiURI}/v1/user/user-balances/${id}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(`${apiURI}/v1/user/user-balances/${id}`, { withCredentials: true });
       setCurrency(response.data.data);
     };
     const fetchTransactionHistory = async () => {
       const response = await axios.get(`${apiURI}/v1/user/user-transactions-history/${id}`, { withCredentials: true });
-      setTransactionHistory(response.data.data);
+      setTransactionHistory(response.data.data.items);
     };
     fetchUserCurrencyDetails();
     fetchTransactionHistory();
   }, [props]);
   useEffect(() => {
     const fetchRedemptions = async () => {
-      const response = await axios.get(`${apiURI}/v1/xoxoday/redemption-requirements/${id}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(`${apiURI}/v1/xoxoday/redemption-requirements/${id}`, { withCredentials: true });
       setRedemptions(response.data.data);
     };
     fetchRedemptions();

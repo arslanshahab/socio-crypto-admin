@@ -629,3 +629,29 @@ export interface ErrorObject {
 }
 
 export type APIError = GraphQLError;
+
+export interface UserTransactionHistoryTypes {
+  action: string;
+  amount: string;
+  campaignId: string | null;
+  createdAt: string;
+  currency: string;
+  ethAddress: string | null;
+  id: string;
+  network: string | null;
+  orgId: string | null;
+  payoutId: string | null;
+  payoutStatus: string | null;
+  paypalAddress: string | null;
+  rafflePrizeId: string | null;
+  status: string | null;
+  stripeCardId: string | null;
+  transactionHash: string | null;
+  updatedAt: string;
+  usdAmount: string | null;
+  walletId: string;
+}
+
+export type UserTransactionHistoryTypesArray = {
+  [x: string]: UserTransactionHistoryTypes[];
+};
