@@ -22,20 +22,27 @@ const UserList: React.FC = () => {
   const [searchData, setSearchData] = useState('');
   const [actionStatus, setActionStatus] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
+    if (filter) {
+      setSearchLoading(true);
+      setSkip(0);
+    } else {
+      setLoading(true);
+    }
     const fetchUserList = async () => {
       const response = await axios.get(`${apiURI}/v1/user/users-record?skip=${skip}&take=${take}&filter=${filter}`, {
         withCredentials: true,
       });
       setUserList(response.data.data.items);
-      if (filter !== '') {
+      if (filter) {
         setTotal(response.data.data.items.length);
       } else {
         setTotal(response.data.data.total);
       }
       setLoading(false);
+      setSearchLoading(false);
     };
     fetchUserList();
   }, [filter, actionStatus, skip]);
@@ -79,7 +86,7 @@ const UserList: React.FC = () => {
     }
   };
 
-  if (userList.length < 1) {
+  if (isLoading) {
     return (
       <div className={styles.loading}>
         <CircularProgress />
@@ -96,7 +103,6 @@ const UserList: React.FC = () => {
         <div className={styles.headingWithSearch}>
           <h1 className={headingStyles.headingXl}>Users Record</h1>
           <div className={styles.searchWrapper}>
-            <div>{isLoading && <CircularProgress />}</div>
             <input
               type="text"
               name="search"
@@ -106,7 +112,7 @@ const UserList: React.FC = () => {
               onChange={handleSearchField}
               onKeyPress={handleKeyPress}
             />
-            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSearchRecord}>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSearchRecord} loading={searchLoading}>
               Search
             </CustomButton>
           </div>
@@ -146,6 +152,7 @@ const UserList: React.FC = () => {
           renderOnZeroPageCount={undefined}
           activeClassName={styles.active}
           disabledClassName={styles.disabled}
+          initialPage={skip / take}
         />
       </div>
     </div>
