@@ -9,6 +9,7 @@ import buttonStyles from '../../assets/styles/customButton.module.css';
 import UserDetails from './UserDetails';
 import { UserListType } from '../../rest-types';
 import { apiURI } from '../../clients/raiinmaker-api';
+import { Link } from 'react-router-dom';
 
 const UserList: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -63,9 +64,9 @@ const UserList: React.FC = () => {
 
   return (
     <div>
-      <GenericModal open={open} onClose={() => setOpen(false)} size="fullscreen">
+      {/* <GenericModal open={open} onClose={() => setOpen(false)} size="fullscreen">
         <UserDetails {...userDetail} userStatus={hanldeChildData} />
-      </GenericModal>
+      </GenericModal> */}
       <div className={styles.brandListWrapper}>
         <div className={styles.headingWithSearch}>
           <h1 className={headingStyles.headingXl}>Users Record</h1>
@@ -96,12 +97,14 @@ const UserList: React.FC = () => {
             <tbody>
               {userList &&
                 userList.map((user: UserListType) => (
-                  <tr className={styles.tableBodyRow} key={user.id} onClick={() => handleClick(user)}>
-                    <td className={styles.tableColumn}>{user?.profile?.username}</td>
-                    <td className={styles.tableColumn}>{user.email}</td>
-                    <td className={styles.tableColumn}>{user.kycStatus}</td>
-                    <td className={styles.tableColumn}>{new Date(user.createdAt).toDateString()}</td>
-                  </tr>
+                  <Link to={`userDetails/${user.id}`} key={user.id}>
+                    <tr className={styles.tableBodyRow} onClick={() => handleClick(user)}>
+                      <td className={styles.tableColumn}>{user?.profile?.username}</td>
+                      <td className={styles.tableColumn}>{user.email}</td>
+                      <td className={styles.tableColumn}>{user.kycStatus}</td>
+                      <td className={styles.tableColumn}>{new Date(user.createdAt).toDateString()}</td>
+                    </tr>
+                  </Link>
                 ))}
             </tbody>
           </table>
