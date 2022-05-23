@@ -1,29 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import styles from './userList.module.css';
-import GenericModal from '../GenericModal';
 import axios from 'axios';
 import headingStyles from '../../assets/styles/heading.module.css';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
-import UserDetails from './UserDetails';
 import { UserListType } from '../../rest-types';
 import ReactPaginate from 'react-paginate';
 import { apiURI } from '../../clients/raiinmaker-api';
-import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 const UserList: React.FC = () => {
   const history = useHistory();
-  const [open, setOpen] = useState(false);
   const [userList, setUserList] = useState([]);
-  const [userDetail, setUserDetail] = useState<UserListType>();
   const [skip, setSkip] = useState(0);
   const [take] = useState(10);
   const [total, setTotal] = useState(0);
   const [filter, setFilter] = useState('');
   const [searchData, setSearchData] = useState('');
-  const [actionStatus, setActionStatus] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
 
@@ -48,7 +42,7 @@ const UserList: React.FC = () => {
       setSearchLoading(false);
     };
     fetchUserList();
-  }, [filter, actionStatus, skip]);
+  }, [filter, skip]);
   // Search field
   const handleSearchField = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchData(e.target.value);
@@ -62,24 +56,12 @@ const UserList: React.FC = () => {
       setFilter(searchData);
     }
   };
-  // Handle click on row
-  const handleClick = (data: UserListType) => {
-    try {
-      setOpen(true);
-      setUserDetail(data);
-    } catch (e) {
-      setOpen(false);
-    }
-  };
+
   // Search record
   const handleSearchRecord = () => {
     setFilter(searchData);
   };
-  // Handle user details modal
-  const hanldeChildData = (value: { userAction: boolean; modal: boolean }) => {
-    setActionStatus(value.userAction);
-    setOpen(value.modal);
-  };
+
   // Take Paginated value
   const handlePageClick = (event: { selected: number }) => {
     try {
@@ -99,9 +81,6 @@ const UserList: React.FC = () => {
 
   return (
     <div>
-      {/* <GenericModal open={open} onClose={() => setOpen(false)} size="fullscreen">
-        <UserDetails {...userDetail} userStatus={hanldeChildData} />
-      </GenericModal> */}
       <div className={styles.brandListWrapper}>
         <div className={styles.headingWithSearch}>
           <h1 className={headingStyles.headingXl}>Users Record</h1>
