@@ -32,17 +32,15 @@ export const DashboardHome: React.FC = () => {
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
-      debugger;
       const userResponse = await axios.get(`${apiURI}/v1/user/dashboard-stats`, { withCredentials: true });
-      const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${params.id || '-1'}`, {
-        withCredentials: true,
-      });
-      const userRecord = userResponse.data.data;
-      const campaignRecord = campaignResponse.data.data;
-      setDashboardStats({ ...userRecord, ...campaignRecord });
+      // const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${params.id || '-1'}`, {
+      //   withCredentials: true,
+      // });
+      setDashboardStats(userResponse.data.data);
     };
     fetchDashboardStats();
-  }, []);
+    console.log(dashboardMetrics?.getDashboardMetrics);
+  }, [dashboardMetrics]);
 
   const allCampaignsList = [{ name: 'All', id: '-1' }, ...(data?.listAllCampaignsForOrg || [])];
 
