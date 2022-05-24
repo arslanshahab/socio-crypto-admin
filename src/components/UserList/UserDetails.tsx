@@ -24,6 +24,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
     };
     fetchUserCurrencyDetails();
   }, [props]);
+
   useEffect(() => {
     const fetchRedemptions = async () => {
       const response = await axios.get(`${apiURI}/v1/xoxoday/redemption-requirements/${props.id}`, {
@@ -33,6 +34,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
     };
     fetchRedemptions();
   }, []);
+
   // Update user active status
   useEffect(() => {
     const handleUpdate = async () => {
@@ -111,7 +113,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
       {/* User currency details */}
       <div className={styles.transferSide}>
         <h3 className={headingStyles.headingSm}>Transfer User Record</h3>
-        <div className={styles.coiinWrapper}>
+        <div>
           <h4 className={headingStyles.headingXs}>Coiin Amount:</h4>
           {curreny && curreny?.length === 0 ? <p>No transfer record found</p> : ''}
           {curreny ? (
