@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StatCard from './StatCard';
 import LineChart from './Charts/LineChart';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
@@ -7,10 +7,16 @@ import { GET_USER_CAMPAIGNS, DASHBOARD_METRICS } from '../operations/queries/cam
 import { GetUserCampaigns } from './../types';
 import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
+import axios from 'axios';
+import { apiURI } from '../clients/raiinmaker-api';
+import { useParams } from 'react-router-dom';
 
 export const DashboardHome: React.FC = () => {
+  const params: { id: string } = useParams();
   //! Use State Hook
   const [campaignId, setCamapignId] = useState('-1');
+  const [dashboardStats, setDashboardStats] = useState<any>();
+  // const [campaigns, setCampaigns] = useState();
 
   //! ApolloClient Query Hook
   const { data } = useQuery<GetUserCampaigns>(GET_USER_CAMPAIGNS, {
@@ -24,6 +30,20 @@ export const DashboardHome: React.FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
+  useEffect(() => {
+    const fetchDashboardStats = async () => {
+      debugger;
+      const userResponse = await axios.get(`${apiURI}/v1/user/dashboard-stats`, { withCredentials: true });
+      const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${params.id || '-1'}`, {
+        withCredentials: true,
+      });
+      const userRecord = userResponse.data.data;
+      const campaignRecord = campaignResponse.data.data;
+      setDashboardStats({ ...userRecord, ...campaignRecord });
+    };
+    fetchDashboardStats();
+  }, []);
+
   const allCampaignsList = [{ name: 'All', id: '-1' }, ...(data?.listAllCampaignsForOrg || [])];
 
   const getCampaignId = (id: string) => {
@@ -31,7 +51,18 @@ export const DashboardHome: React.FC = () => {
   };
 
   //! Stat Card Keys
-  const countsKey = ['clickCount', 'viewCount', 'shareCount', 'totalParticipants', 'participationScore'];
+  const countsKey = [
+    'clickCount',
+    'viewCount',
+    'shareCount',
+    'totalParticipants',
+    'participationScore',
+    'totalUsers',
+    'lastWeekUsers',
+    'distributedTotalAmount',
+    'redeemedTotalAmount',
+    'bannedUsers',
+  ];
 
   //! Bar Chart Data
   const barChartData = {
@@ -104,7 +135,7 @@ export const DashboardHome: React.FC = () => {
     <div className="pb-1">
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="grid grid-cols-5 gap-4 px-4">
-        {countsKey?.map((x: any) => (
+        {countsKey?.map((x: string) => (
           <StatCard
             key={x}
             count={dashboardMetrics?.getDashboardMetrics?.aggregatedCampaignMetrics?.[x] || 0}

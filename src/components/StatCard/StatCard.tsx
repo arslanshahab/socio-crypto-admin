@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './statCard.module.css';
 import { BsHandIndexThumbFill, BsFillShareFill, BsPeopleFill } from 'react-icons/bs';
 import { FaEye } from 'react-icons/fa';
@@ -24,7 +24,7 @@ const countIconMap: { [key: string]: React.ReactNode } = {
   participationScore: <IoSpeedometer />,
 };
 
-const StatCard = (props: IProps) => {
+const StatCard: FC<IProps> = (props: IProps) => {
   const { type, count } = props;
   return (
     <div className={styles.statCardWrapper}>
