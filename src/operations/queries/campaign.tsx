@@ -78,19 +78,6 @@ export const GET_CAMPAIGN = gql`
         post
       }
       tagline
-      crypto {
-        type
-        contractAddress
-      }
-      participants {
-        id
-        metrics {
-          clickCount
-        }
-        user {
-          id
-        }
-      }
     }
   }
 `;
