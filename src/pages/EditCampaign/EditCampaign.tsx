@@ -2,15 +2,8 @@ import { Box, CircularProgress, LinearProgress } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { useMutation, FetchResult, useQuery } from '@apollo/client';
-import {
-  CampaignCreationResponse,
-  CampaignState,
-  CampaignMediaSignedUrl,
-  GetCampaignResult,
-  CampaignGetVars,
-  UpdateCampaignVars,
-} from '../../types';
+import { useMutation, FetchResult } from '@apollo/client';
+import { CampaignCreationResponse, CampaignState, CampaignMediaSignedUrl, UpdateCampaignVars } from '../../types';
 import { UPDATE_CAMPAIGN } from '../../operations/mutations/campaign';
 import StepsView from '../../components/NewCampaign/StepsView';
 import StepContent from '../../components/NewCampaign/StepsContent';
@@ -19,7 +12,6 @@ import GenericModal from '../../components/GenericModal';
 import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
 import { resetCampaign, updateCampaign } from '../../store/actions/campaign';
 import { flatten } from 'lodash';
-import { GET_CAMPAIGN } from '../../operations/queries/campaign';
 import initialState from '../../store/initialState';
 import {
   generateCampaignMediaUrl,
@@ -30,6 +22,9 @@ import {
   prepareTemplateRequest,
 } from '../../helpers/utils';
 import useStoreUserSelector from '../../hooks/useStoreUserSelector';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
+import { Campaign } from '../../types.d';
 
 interface PageParams {
   campaignId?: string;
@@ -60,52 +55,64 @@ const EditCampaignPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(firstStep);
   const campaign = useStoreCampaignSelector();
   const [saveCampaign] = useMutation<CampaignCreationResponse, UpdateCampaignVars>(UPDATE_CAMPAIGN);
-  const { loading: campaignLoading, data } = useQuery<GetCampaignResult, CampaignGetVars>(GET_CAMPAIGN, {
-    variables: { id: campaignId },
-    fetchPolicy: 'network-only',
-  });
+  const [campaignLoading, setCampaignLoading] = useState(false);
+  const [fetchedCampaign, setFetchedCampaign] = useState<Campaign | null>(null);
 
   useEffect(() => {
-    if (campaignId && data && data.getCampaign && campaignId === data.getCampaign.id) {
-      const { getCampaign } = data;
+    console.log('called', campaignId);
+    const fetchedCampaign = async () => {
+      if (campaignId) {
+        setCampaignLoading(true);
+        const response = await axios.get(`${apiURI}/v1/campaign/one/${campaignId}`, {
+          withCredentials: true,
+        });
+        setCampaignLoading(false);
+        setFetchedCampaign(response.data.data);
+      }
+    };
+    fetchedCampaign();
+  }, [campaignId]);
+
+  useEffect(() => {
+    if (campaignId && fetchedCampaign && fetchedCampaign.id && campaignId === fetchedCampaign.id) {
       const augmentedCampaign = {
         ...campaign,
-        id: getCampaign.id,
-        name: getCampaign.name,
+        id: fetchedCampaign.id,
+        name: fetchedCampaign.name,
         campaignImage: {
-          filename: getCampaign.imagePath,
-          file: generateCampaignMediaUrl(getCampaign.id, getCampaign.imagePath),
-          format: `image/${getCampaign.imagePath.split('.')[0]}`,
+          filename: fetchedCampaign.imagePath,
+          file: generateCampaignMediaUrl(fetchedCampaign.id, fetchedCampaign.imagePath),
+          format: `image/${fetchedCampaign.imagePath.split('.')[0]}`,
         },
-        description: getCampaign.description,
-        instructions: getCampaign.instructions,
-        tagline: getCampaign.tagline,
-        target: getCampaign.target,
-        targetVideo: getCampaign.targetVideo,
-        keywords: getCampaign.keywords,
-        beginDate: new Date(parseInt(getCampaign.beginDate)).toISOString(),
-        endDate: new Date(parseInt(getCampaign.endDate)).toISOString(),
-        suggestedTags: getCampaign.suggestedTags,
-        requirements: getCampaign.requirements || initialState.newCampaign.requirements,
-        algorithm: getCampaign.algorithm,
+        description: fetchedCampaign.description,
+        instructions: fetchedCampaign.instructions,
+        tagline: fetchedCampaign.tagline,
+        target: fetchedCampaign.target,
+        targetVideo: fetchedCampaign.targetVideo,
+        keywords: fetchedCampaign.keywords,
+        beginDate: new Date(parseInt(fetchedCampaign.beginDate)).toISOString(),
+        endDate: new Date(parseInt(fetchedCampaign.endDate)).toISOString(),
+        suggestedTags: fetchedCampaign.suggestedTags,
+        requirements: fetchedCampaign.requirements || initialState.newCampaign.requirements,
+        algorithm: fetchedCampaign.algorithm,
         config: {
           ...campaign.config,
-          numOfTiers: Object.keys(getCampaign.algorithm.tiers).length.toString(),
-          coiinBudget: getCampaign.coiinTotal,
-          campaignType: getCampaign.campaignType,
-          socialMediaType: getCampaign.socialMediaType,
-          budgetType: getCampaign.type,
-          cryptoSymbol: `${getCampaign.symbol}-${getCampaign.network}`,
-          isGlobal: getCampaign.isGlobal,
-          showUrl: getCampaign.showUrl,
+          numOfTiers: Object.keys(fetchedCampaign.algorithm.tiers).length.toString(),
+          coiinBudget: fetchedCampaign.coiinTotal,
+          campaignType: fetchedCampaign.campaignType,
+          socialMediaType: fetchedCampaign.socialMediaType,
+          budgetType: fetchedCampaign.type,
+          cryptoSymbol: `${fetchedCampaign.symbol}-${fetchedCampaign.network}`,
+          isGlobal: fetchedCampaign.isGlobal,
+          showUrl: fetchedCampaign.showUrl,
           channelMedia: prepareChannelMediaFromResponse(
             { ...initialState.newCampaign.config.channelMedia },
-            getCampaign.id,
-            getCampaign.campaignMedia,
+            fetchedCampaign.id,
+            fetchedCampaign.campaignMedia,
           ),
           channelTemplates: prepareChannelTemplatesFromResponse(
             { ...initialState.newCampaign.config.channelTemplates },
-            getCampaign.campaignTemplates,
+            fetchedCampaign.campaignTemplates,
           ),
         },
       };
@@ -114,7 +121,7 @@ const EditCampaignPage: React.FC = () => {
     return () => {
       dispatch(resetCampaign());
     };
-  }, [data?.getCampaign, campaignId]);
+  }, [fetchedCampaign, campaignId]);
 
   const handleNext = () => {
     setActiveStep((prevState) => (prevState < finalStep ? prevState + 1 : prevState));
