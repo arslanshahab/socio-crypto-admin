@@ -34,6 +34,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
     fetchUserCurrencyDetails();
     fetchTransactionHistory();
   }, [props]);
+
   useEffect(() => {
     const fetchRedemptions = async () => {
       const response = await axios.get(`${apiURI}/v1/xoxoday/redemption-requirements/${id}`, { withCredentials: true });
@@ -41,6 +42,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
     };
     fetchRedemptions();
   }, []);
+
   // Update user active status
   useEffect(() => {
     const handleUpdate = async () => {
