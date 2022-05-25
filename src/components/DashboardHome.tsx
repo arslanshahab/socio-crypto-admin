@@ -4,19 +4,18 @@ import LineChart from './Charts/LineChart';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
 import { useQuery } from '@apollo/client';
 import { GET_USER_CAMPAIGNS, DASHBOARD_METRICS } from '../operations/queries/campaign';
-import { GetUserCampaigns } from './../types';
+import { AggregatedMetricTypes, DashboardStats, GetUserCampaigns } from './../types';
 import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
 import axios from 'axios';
 import { apiURI } from '../clients/raiinmaker-api';
-import { useParams } from 'react-router-dom';
 
 export const DashboardHome: React.FC = () => {
-  const params: { id: string } = useParams();
   //! Use State Hook
   const [campaignId, setCamapignId] = useState('-1');
-  const [dashboardStats, setDashboardStats] = useState<any>();
-  // const [campaigns, setCampaigns] = useState();
+  const [campaignStats, setCampaignStats] = useState<DashboardStats[]>([]);
+  const [aggregatedMetrics, setAggregatedMetrics] = useState<AggregatedMetricTypes | any>();
+  const [userStats, setUserStats] = useState([]);
 
   //! ApolloClient Query Hook
   const { data } = useQuery<GetUserCampaigns>(GET_USER_CAMPAIGNS, {
@@ -32,15 +31,23 @@ export const DashboardHome: React.FC = () => {
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
-      const userResponse = await axios.get(`${apiURI}/v1/user/dashboard-stats`, { withCredentials: true });
-      // const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${params.id || '-1'}`, {
-      //   withCredentials: true,
-      // });
-      setDashboardStats(userResponse.data.data);
+      const userResponse = await axios.get(`${apiURI}/v1/user/user-stats`, { withCredentials: true });
+      setUserStats(userResponse.data.data);
     };
     fetchDashboardStats();
-    console.log(dashboardMetrics?.getDashboardMetrics);
-  }, [dashboardMetrics]);
+  }, []);
+
+  useEffect(() => {
+    const fetchDashboardStats = async () => {
+      const campaignResponse = await axios.get(`${apiURI}/v1/campaign/campaign-metrics/${campaignId}`, {
+        withCredentials: true,
+      });
+      const campaignStats = campaignResponse.data.data;
+      setCampaignStats(campaignStats.calculateCampaignMetrics);
+      setAggregatedMetrics({ ...userStats, ...campaignStats.aggregaredMetrics });
+    };
+    fetchDashboardStats();
+  }, [userStats, campaignId]);
 
   const allCampaignsList = [{ name: 'All', id: '-1' }, ...(data?.listAllCampaignsForOrg || [])];
 
@@ -64,17 +71,17 @@ export const DashboardHome: React.FC = () => {
 
   //! Bar Chart Data
   const barChartData = {
-    labels: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: string[]) => ''),
+    labels: campaignStats.map((x) => ''),
     datasets: [
       {
         label: 'Clicks',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.clickCount),
+        data: campaignStats?.map((x) => x.clickCount),
         backgroundColor: chartColors[0],
         borderWidth: 1,
       },
       {
         label: 'Participation Score',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.participationScore),
+        data: campaignStats?.map((x) => x.participationScore),
 
         backgroundColor: chartColors[1],
         borderWidth: 1,
@@ -84,32 +91,32 @@ export const DashboardHome: React.FC = () => {
 
   //! Line Chart Data
   const lineChartData = {
-    labels: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: string[]) => ''),
+    labels: campaignStats?.map((x) => ''),
     datasets: [
       {
         label: 'Clicks',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.clickCount),
+        data: campaignStats?.map((x) => x.clickCount),
         backgroundColor: chartColors[0],
         borderColor: chartColors[0],
         borderWidth: 1,
       },
       {
         label: 'Views',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.viewCount),
+        data: campaignStats?.map((x) => x.viewCount),
         backgroundColor: chartColors[1],
         borderColor: chartColors[1],
         borderWidth: 1,
       },
       {
         label: 'Shares',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.shareCount),
+        data: campaignStats?.map((x) => x.shareCount),
         backgroundColor: chartColors[2],
         borderColor: chartColors[2],
         borderWidth: 1,
       },
       {
         label: 'Participation Score',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.participationScore),
+        data: campaignStats?.map((x) => x.participationScore),
         backgroundColor: chartColors[3],
         borderColor: chartColors[3],
         borderWidth: 1,
@@ -133,12 +140,8 @@ export const DashboardHome: React.FC = () => {
     <div className="pb-1">
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="grid grid-cols-5 gap-4 px-4">
-        {countsKey?.map((x: string) => (
-          <StatCard
-            key={x}
-            count={dashboardMetrics?.getDashboardMetrics?.aggregatedCampaignMetrics?.[x] || 0}
-            type={x}
-          />
+        {countsKey?.map((x) => (
+          <StatCard key={x} count={aggregatedMetrics?.[x] || 0} type={x} />
         ))}
       </div>
       <div className="w-4/5 mt-12 mx-auto flex gap-4">

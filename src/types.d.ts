@@ -657,3 +657,23 @@ export interface UserTransactionHistoryTypes {
 export type UserTransactionHistoryTypesArray = {
   [x: string]: UserTransactionHistoryTypes[];
 };
+
+export type AggregatedMetricTypes = {
+  bannedUsers: number;
+  clickCount: number;
+  distributedTotalAmount: number;
+  lastWeekUsers: number;
+  participationScore: number;
+  redeemedTotalAmount: number;
+  shareCount: number;
+  totalParticipants: number;
+  totalUsers: number;
+  viewCount: number;
+};
+
+export type DashboardStats = {
+  clickCount: number;
+  participationScore: number;
+  shareCount: number;
+  viewCount: number;
+};
