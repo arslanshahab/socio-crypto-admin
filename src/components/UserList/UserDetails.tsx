@@ -62,7 +62,6 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
     handleUpdate();
   }, [activeStatus]);
 
-  //!-----------------------------------------------
   const handleChange = (e: any, newValue: number) => {
     setValue(newValue);
   };
@@ -73,7 +72,6 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
       'aria-controls': `simple-tabpanel-${index}`,
     };
   }
-  //!-----------------------------------------------
 
   return (
     <>
