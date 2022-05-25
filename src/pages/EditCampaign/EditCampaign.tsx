@@ -108,11 +108,11 @@ const EditCampaignPage: React.FC = () => {
           channelMedia: prepareChannelMediaFromResponse(
             { ...initialState.newCampaign.config.channelMedia },
             fetchedCampaign.id,
-            fetchedCampaign.campaignMedia,
+            fetchedCampaign.campaign_media,
           ),
           channelTemplates: prepareChannelTemplatesFromResponse(
             { ...initialState.newCampaign.config.channelTemplates },
-            fetchedCampaign.campaignTemplates,
+            fetchedCampaign.campaign_templates,
           ),
         },
       };
