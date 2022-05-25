@@ -438,6 +438,8 @@ export interface Campaign {
   suggestedTags: string[];
   campaignMedia: CampaignMediaResponse[];
   campaignTemplates: CampaignTemplateResponse[];
+  campaign_media: CampaignMediaResponse[];
+  campaign_template: CampaignTemplateResponse[];
 }
 
 export interface CampaignCreationResponse {
