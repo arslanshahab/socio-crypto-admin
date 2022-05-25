@@ -439,7 +439,7 @@ export interface Campaign {
   campaignMedia: CampaignMediaResponse[];
   campaignTemplates: CampaignTemplateResponse[];
   campaign_media: CampaignMediaResponse[];
-  campaign_templates: CampaignTemplateResponse[];
+  campaign_template: CampaignTemplateResponse[];
 }
 
 export interface CampaignCreationResponse {

@@ -112,7 +112,7 @@ const EditCampaignPage: React.FC = () => {
           ),
           channelTemplates: prepareChannelTemplatesFromResponse(
             { ...initialState.newCampaign.config.channelTemplates },
-            fetchedCampaign.campaign_templates,
+            fetchedCampaign.campaign_template,
           ),
         },
       };
