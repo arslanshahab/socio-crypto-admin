@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import StatCard from './StatCard';
 import LineChart from './Charts/LineChart';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
-// import { useQuery } from '@apollo/client';
-// import { GET_USER_CAMPAIGNS, DASHBOARD_METRICS } from '../operations/queries/campaign';
 import { AggregatedMetricTypes, CampaignsListType, DashboardStats } from './../types';
 import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
@@ -17,30 +15,27 @@ export const DashboardHome: React.FC = () => {
   const [aggregatedMetrics, setAggregatedMetrics] = useState<AggregatedMetricTypes | any>();
   const [userStats, setUserStats] = useState([]);
   const [campaigns, setCampaigns] = useState<CampaignsListType>();
-
-  //! ApolloClient Query Hook
-  // const { data } = useQuery<GetUserCampaigns>(GET_USER_CAMPAIGNS, {
-  //   variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
-  //   fetchPolicy: 'cache-and-network',
-  // });
-
-  //! Dashboard Metrics
-  // const { data: dashboardMetrics } = useQuery(DASHBOARD_METRICS, {
-  //   variables: { campaignId },
-  //   fetchPolicy: 'cache-and-network',
-  // });
+  const [take, setTake] = useState(10);
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
       const userResponse = await axios.get(`${apiURI}/v1/user/user-stats`, { withCredentials: true });
-      const campaignsResponse = await axios.get(`${apiURI}/v1/campaign?skip=0&take=130&state=ALL`, {
-        withCredentials: true,
-      });
+
       setUserStats(userResponse.data.data);
-      setCampaigns(campaignsResponse.data.data);
     };
     fetchDashboardStats();
   }, []);
+
+  useEffect(() => {
+    const fetchDashboardStats = async () => {
+      const campaignsResponse = await axios.get(`${apiURI}/v1/campaign?skip=0&take=${take}&state=ALL`, {
+        withCredentials: true,
+      });
+      setCampaigns(campaignsResponse.data.data);
+      setTake(campaignsResponse.data.data.total);
+    };
+    fetchDashboardStats();
+  }, [take]);
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
