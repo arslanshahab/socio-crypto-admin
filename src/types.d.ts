@@ -677,3 +677,8 @@ export type DashboardStats = {
   shareCount: number;
   viewCount: number;
 };
+
+export type CampaignsListType = {
+  items: Campaign[];
+  total: number;
+};

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import StatCard from './StatCard';
 import LineChart from './Charts/LineChart';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
-import { useQuery } from '@apollo/client';
-import { GET_USER_CAMPAIGNS, DASHBOARD_METRICS } from '../operations/queries/campaign';
-import { AggregatedMetricTypes, DashboardStats, GetUserCampaigns } from './../types';
+// import { useQuery } from '@apollo/client';
+// import { GET_USER_CAMPAIGNS, DASHBOARD_METRICS } from '../operations/queries/campaign';
+import { AggregatedMetricTypes, CampaignsListType, DashboardStats } from './../types';
 import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
 import axios from 'axios';
@@ -16,23 +16,28 @@ export const DashboardHome: React.FC = () => {
   const [campaignStats, setCampaignStats] = useState<DashboardStats[]>([]);
   const [aggregatedMetrics, setAggregatedMetrics] = useState<AggregatedMetricTypes | any>();
   const [userStats, setUserStats] = useState([]);
+  const [campaigns, setCampaigns] = useState<CampaignsListType>();
 
   //! ApolloClient Query Hook
-  const { data } = useQuery<GetUserCampaigns>(GET_USER_CAMPAIGNS, {
-    variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
-    fetchPolicy: 'cache-and-network',
-  });
+  // const { data } = useQuery<GetUserCampaigns>(GET_USER_CAMPAIGNS, {
+  //   variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
+  //   fetchPolicy: 'cache-and-network',
+  // });
 
   //! Dashboard Metrics
-  const { data: dashboardMetrics } = useQuery(DASHBOARD_METRICS, {
-    variables: { campaignId },
-    fetchPolicy: 'cache-and-network',
-  });
+  // const { data: dashboardMetrics } = useQuery(DASHBOARD_METRICS, {
+  //   variables: { campaignId },
+  //   fetchPolicy: 'cache-and-network',
+  // });
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
       const userResponse = await axios.get(`${apiURI}/v1/user/user-stats`, { withCredentials: true });
+      const campaignsResponse = await axios.get(`${apiURI}/v1/campaign?skip=0&take=130&state=ALL`, {
+        withCredentials: true,
+      });
       setUserStats(userResponse.data.data);
+      setCampaigns(campaignsResponse.data.data);
     };
     fetchDashboardStats();
   }, []);
@@ -49,7 +54,7 @@ export const DashboardHome: React.FC = () => {
     fetchDashboardStats();
   }, [userStats, campaignId]);
 
-  const allCampaignsList = [{ name: 'All', id: '-1' }, ...(data?.listAllCampaignsForOrg || [])];
+  const allCampaignsList = [{ name: 'All', id: '-1' }, ...(campaigns?.items || [])];
 
   const getCampaignId = (id: string) => {
     setCamapignId(id);
@@ -158,11 +163,7 @@ export const DashboardHome: React.FC = () => {
         </div>
       ) : (
         <div>
-          <LineChart
-            name={dashboardMetrics?.getDashboardMetrics?.aggregatedCampaignMetrics?.campaignName || ''}
-            campaignAnalytics={lineChartData}
-            options={lineChartOptions}
-          />
+          <LineChart name={''} campaignAnalytics={lineChartData} options={lineChartOptions} />
         </div>
       )}
     </div>
