@@ -44,7 +44,7 @@ export const DashboardHome: React.FC = () => {
 
   useEffect(() => {
     const fetchDashboardStats = async () => {
-      const campaignResponse = await axios.get(`${apiURI}/v1/campaign/campaign-metrics/${campaignId}`, {
+      const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${campaignId}`, {
         withCredentials: true,
       });
       const campaignStats = campaignResponse.data.data;
