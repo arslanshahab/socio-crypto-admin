@@ -1,20 +1,20 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import headingStyles from '../../assets/styles/heading.module.css';
-import CustomButton from '../CustomButton';
 import styles from './userList.module.css';
-import buttonStyles from '../../assets/styles/customButton.module.css';
-import { CurrencyTypes, RedemptionTypes, UserDetailsProps } from '../../rest-types';
+import { CurrencyTypes, UserDetailsProps } from '../../rest-types';
 import { AppBar, CircularProgress, Paper, Tab, Tabs } from '@material-ui/core';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { TabPanel } from '../TabPanel';
 import UserTransactionHistory from './UserTransactionHistory';
 import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import UserTransferRecord from './UserTransferRecord';
 import RedemptionDetials from './RedemptionDetials';
 import UserInfo from './UserInfo';
+import { RedemptionTypes, UserTypes } from '../../types';
 
-const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
+const UserDetails: React.FC = () => {
+  const userInfo: UserTypes | any = useLocation().state;
   const { id }: { id: string } = useParams();
   const [curreny, setCurrency] = useState<CurrencyTypes[]>();
   const [activeStatus, setActiveStatus] = useState<boolean>();
@@ -33,7 +33,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
     };
     fetchUserCurrencyDetails();
     fetchTransactionHistory();
-  }, [props]);
+  }, []);
 
   useEffect(() => {
     const fetchRedemptions = async () => {
@@ -93,7 +93,7 @@ const UserDetails: React.FC<any> = (props: UserDetailsProps) => {
 
       <Paper className="paper">
         <TabPanel value={value} index={0}>
-          <UserInfo />
+          <UserInfo userInfo={userInfo} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <UserTransferRecord transferUserRecord={curreny} />

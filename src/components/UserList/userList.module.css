@@ -44,6 +44,11 @@
   overflow-y: scroll;
 }
 
+/* Redemption styles */
+.redemptionTab {
+  @apply flex gap-6;
+}
+
 /* React Pagination */
 .paginateWrapper {
   @apply flex justify-center pb-6;

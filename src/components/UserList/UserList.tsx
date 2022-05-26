@@ -5,10 +5,10 @@ import axios from 'axios';
 import headingStyles from '../../assets/styles/heading.module.css';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
-import { UserListType } from '../../rest-types';
 import ReactPaginate from 'react-paginate';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
+import { UserListType } from '../../types';
 
 const UserList: React.FC = () => {
   const history = useHistory();
@@ -43,6 +43,7 @@ const UserList: React.FC = () => {
     };
     fetchUserList();
   }, [filter, skip]);
+
   // Search field
   const handleSearchField = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchData(e.target.value);
@@ -115,7 +116,10 @@ const UserList: React.FC = () => {
                   <tr
                     className={styles.tableBodyRow}
                     key={user.id}
-                    onClick={() => history.push(`userDetails/${user.id}`)}
+                    // onClick={() => history.push(`userDetails/${user.id}`)}
+                    onClick={() =>
+                      history.push({ pathname: `/dashboard/admin/userDetails/${user.id}`, state: { user } })
+                    }
                   >
                     <td className={styles.tableColumn}>{user?.profile?.username}</td>
                     <td className={styles.tableColumn}>{user.email}</td>

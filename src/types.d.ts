@@ -682,3 +682,32 @@ export type CampaignTypes = {
   items: Campaign[];
   total: number;
 };
+
+export type RedemptionTypes = {
+  orderLimitForTwentyFourHoursReached: boolean;
+  participation: boolean;
+  twitterLinked: boolean;
+  twitterfollowers: number;
+  twitterfollowersRequirement: number;
+};
+
+export type RedemptionReturnTypes = {
+  redemptionDetails: RedemptionTypes | undefined;
+};
+
+export type UserListType = {
+  id: string;
+  email: string | null;
+  createdAt: string;
+  kycStatus: string | null;
+  lastLogin: string;
+  active: boolean;
+  profile: UserProfileType;
+  social_post: SocialPostType;
+};
+
+export type UserTypes = {
+  userInfo: {
+    user: UserListType;
+  };
+};

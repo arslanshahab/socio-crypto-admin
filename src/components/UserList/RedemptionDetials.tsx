@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
 import headingStyles from '../../assets/styles/heading.module.css';
+import { RedemptionReturnTypes } from '../../types';
 import styles from './userList.module.css';
 
-const RedemptionDetials: FC<any> = ({ redemptionDetails }) => {
+const RedemptionDetials: FC<RedemptionReturnTypes> = ({ redemptionDetails }: RedemptionReturnTypes) => {
   return (
     <div>
-      <div className={styles.redemptionsSide}>
-        <h3 className={headingStyles.headingSm}>Redemption Details</h3>
+      <h3 className={headingStyles.headingSm}>Redemption Details</h3>
+      <div className={styles.redemptionTab}>
         <div className={styles.boxWrapper}>
           <h4 className={headingStyles.headingXs}>Twitter Redemptions:</h4>
           {redemptionDetails ? (
