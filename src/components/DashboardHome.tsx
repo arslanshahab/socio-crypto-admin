@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import StatCard from './StatCard';
 import LineChart from './Charts/LineChart';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
-import { AggregatedMetricTypes, CampaignsListType, DashboardStats } from './../types';
+import { AggregatedMetricTypes, CampaignTypes, DashboardStats } from './../types';
 import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
 import axios from 'axios';
@@ -14,7 +14,7 @@ export const DashboardHome: React.FC = () => {
   const [campaignStats, setCampaignStats] = useState<DashboardStats[]>([]);
   const [aggregatedMetrics, setAggregatedMetrics] = useState<AggregatedMetricTypes | any>();
   const [userStats, setUserStats] = useState([]);
-  const [campaigns, setCampaigns] = useState<CampaignsListType>();
+  const [campaigns, setCampaigns] = useState<CampaignTypes>();
   const [take, setTake] = useState(10);
 
   useEffect(() => {

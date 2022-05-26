@@ -1,50 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/client';
-import { DELETE_CAMPAIGN, SUBMIT_AUDIT_REPORT } from '../../operations/queries/admin';
+import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
 import { CircularProgress } from '@material-ui/core';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
 
 interface Props {
   auditDetails?: any;
   handleCampaignAuditModal?: any;
 }
-interface StateInterface {
-  loaded: boolean;
-  rejected: string[];
-}
 
 export const CampaignAudit: React.FC<Props> = ({ auditDetails, handleCampaignAuditModal }) => {
-  const [state, setState] = useState<StateInterface>({
-    loaded: false,
-    rejected: [],
-  });
-  const history = useHistory();
-
-  const [submitReport, { loading: submitLoading }] = useMutation(SUBMIT_AUDIT_REPORT, {
-    variables: {
-      campaignId: auditDetails?.id,
-      rejected: state.rejected,
-    },
-  });
-  const [deleteCampaign, { data: deletedCampaign, loading: rejectLoading }] = useMutation(DELETE_CAMPAIGN, {
-    variables: {
-      id: auditDetails?.id,
-    },
-  });
-  useEffect(() => {
-    if (deletedCampaign) {
-      history.push('/dashboard/admin/audit-campaigns');
-    }
-  }, [deletedCampaign]);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [rejectLoading, setRejectLoading] = useState(false);
 
   const handleSubmit = async () => {
-    await submitReport();
+    setSubmitLoading(true);
+    await axios.post(
+      `${apiURI}/v1/campaign/payout-campaign-rewards?campaignId=${auditDetails.id}`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+    setSubmitLoading(false);
     handleCampaignAuditModal(false);
   };
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to reject this campaign?')) {
-      await deleteCampaign();
+      setRejectLoading(true);
+      await axios.post(
+        `${apiURI}/v1/campaign/delete-campaign?campaignId=${auditDetails.id}`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      setRejectLoading(false);
       handleCampaignAuditModal(false);
     }
   };
@@ -74,11 +65,11 @@ export const CampaignAudit: React.FC<Props> = ({ auditDetails, handleCampaignAud
           <h6 className="w-2/5">Description:</h6>
           <p className="w-3/5 text-sm">{auditDetails?.description}</p>
         </div>
-        {auditDetails?.participants.length >= 0 && (
+        {auditDetails?.participant.length >= 0 && (
           <div>
             <div className="flex p-2 mb-4 shadow">
               <h6 className="w-2/5">Total Participants:</h6>
-              <p className="w-3/5 text-sm">{auditDetails?.participants?.length}</p>
+              <p className="w-3/5 text-sm">{auditDetails?.participant?.length}</p>
             </div>
           </div>
         )}

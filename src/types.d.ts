@@ -678,7 +678,7 @@ export type DashboardStats = {
   viewCount: number;
 };
 
-export type CampaignsListType = {
+export type CampaignTypes = {
   items: Campaign[];
   total: number;
 };
