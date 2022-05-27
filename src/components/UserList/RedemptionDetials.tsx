@@ -7,44 +7,68 @@ const RedemptionDetials: FC<RedemptionReturnTypes> = ({ redemptionDetails }: Red
   return (
     <div>
       <h3 className={headingStyles.headingSm}>Redemption Details</h3>
-      <div className={styles.redemptionTab}>
-        <div className={styles.boxWrapper}>
-          <h4 className={headingStyles.headingXs}>Twitter Redemptions:</h4>
-          {redemptionDetails ? (
-            <>
-              <div className={styles.boxStyle}>
-                <h4>Twitter Linked:</h4>
-                <p>{redemptionDetails.twitterLinked ? 'True' : 'False'}</p>
-              </div>
-              <div className={styles.boxStyle}>
-                <h4>Twitter Followers:</h4>
-                <p>{redemptionDetails.twitterfollowers}</p>
-              </div>
-              <div className={styles.boxStyle}>
-                <h4>Twitter followers Requirement:</h4>
-                <p>{redemptionDetails.twitterfollowersRequirement}</p>
-              </div>
-              <div className={styles.boxStyle}>
-                <h4>Participation:</h4>
-                <p>{redemptionDetails.participation ? 'True' : 'False'}</p>
-              </div>
-              <div className={styles.boxStyle}>
-                <h4>Order Limit For Twenty Four Hours Reached:</h4>
-                <p>{redemptionDetails.orderLimitForTwentyFourHoursReached ? 'True' : 'False'}</p>
-              </div>
-            </>
-          ) : (
-            <p>No twitter record found</p>
-          )}
-        </div>
-        <div className={styles.boxWrapper}>
-          <h4 className={headingStyles.headingXs}>Tiktok Redemptions:</h4>
-          <p>No record found</p>
-        </div>
-        <div className={styles.boxWrapper}>
-          <h4 className={headingStyles.headingXs}>Facebook Redemptions:</h4>
-          <p>No record found</p>
-        </div>
+      <h4 className={`${headingStyles.headingXs} mt-3`}>Twitter Redemptions:</h4>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.tableHeadRow}>
+              <th className={styles.tableColumn}>Linked</th>
+              <th className={styles.tableColumn}>Followers</th>
+              <th className={styles.tableColumn}>Requirement</th>
+              <th className={styles.tableColumn}>Participation</th>
+              <th className={styles.tableColumn}>Order Limit 24 hours Reached</th>
+            </tr>
+          </thead>
+          <tbody>
+            {redemptionDetails ? (
+              <tr className={styles.tableBodyRow}>
+                <td className={styles.tableColumn}>{redemptionDetails.twitterLinked ? 'True' : 'False'}</td>
+                <td className={styles.tableColumn}>{redemptionDetails.twitterfollowers}</td>
+                <td className={styles.tableColumn}>{redemptionDetails.twitterfollowersRequirement}</td>
+                <td className={styles.tableColumn}>{redemptionDetails.participation ? 'True' : 'False'}</td>
+                <td className={styles.tableColumn}>
+                  {redemptionDetails.orderLimitForTwentyFourHoursReached ? 'True' : 'False'}
+                </td>
+              </tr>
+            ) : (
+              <p className="p-2">No twitter record found</p>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <h4 className={headingStyles.headingXs}>Tiktok Redemptions:</h4>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.tableHeadRow}>
+              <th className={styles.tableColumn}>Linked</th>
+              <th className={styles.tableColumn}>Followers</th>
+              <th className={styles.tableColumn}>Requirement</th>
+              <th className={styles.tableColumn}>Participation</th>
+              <th className={styles.tableColumn}>Order Limit 24 hours Reached</th>
+            </tr>
+          </thead>
+          <tbody>
+            <p className="p-2">No tiktok record found</p>
+          </tbody>
+        </table>
+      </div>
+      <h4 className={headingStyles.headingXs}> Redemptions:</h4>
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.tableHeadRow}>
+              <th className={styles.tableColumn}>Linked</th>
+              <th className={styles.tableColumn}>Followers</th>
+              <th className={styles.tableColumn}>Requirement</th>
+              <th className={styles.tableColumn}>Participation</th>
+              <th className={styles.tableColumn}>Order Limit 24 hours Reached</th>
+            </tr>
+          </thead>
+          <tbody>
+            <p className="p-2">No facebook record found</p>
+          </tbody>
+        </table>
       </div>
     </div>
   );
