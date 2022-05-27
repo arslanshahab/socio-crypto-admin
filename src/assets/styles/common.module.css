@@ -5,6 +5,6 @@
   min-height: 200px;
 }
 
-.primaryLoading {
+.loading {
   @apply flex justify-center;
 }
