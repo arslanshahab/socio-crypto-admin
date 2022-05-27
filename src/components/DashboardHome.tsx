@@ -12,11 +12,12 @@ export const DashboardHome: React.FC = () => {
   //! Use State Hook
   const [campaignId, setCamapignId] = useState('-1');
   const [campaignStats, setCampaignStats] = useState<DashboardStats[]>([]);
-  const [aggregatedMetrics, setAggregatedMetrics] = useState<AggregatedMetricTypes | any>();
+  const [campiagnAggregation, setCampaignAggregation] = useState<AggregatedMetricTypes | any>();
   const [userStats, setUserStats] = useState([]);
   const [campaigns, setCampaigns] = useState<CampaignTypes>();
   const [take, setTake] = useState(10);
 
+  // Fetch Users Dashboard Stats
   useEffect(() => {
     const fetchDashboardStats = async () => {
       const userResponse = await axios.get(`${apiURI}/v1/user/user-stats`, { withCredentials: true });
@@ -26,6 +27,7 @@ export const DashboardHome: React.FC = () => {
     fetchDashboardStats();
   }, []);
 
+  // Fetch All Campaigns
   useEffect(() => {
     const fetchDashboardStats = async () => {
       const campaignsResponse = await axios.get(`${apiURI}/v1/campaign?skip=0&take=${take}&state=ALL`, {
@@ -37,6 +39,7 @@ export const DashboardHome: React.FC = () => {
     fetchDashboardStats();
   }, [take]);
 
+  // Fetch Campaign Dashboard Stats
   useEffect(() => {
     const fetchDashboardStats = async () => {
       const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${campaignId}`, {
@@ -44,12 +47,13 @@ export const DashboardHome: React.FC = () => {
       });
       const campaignStats = campaignResponse.data.data;
       setCampaignStats(campaignStats.calculateCampaignMetrics);
-      setAggregatedMetrics({ ...userStats, ...campaignStats.aggregaredMetrics });
+      setCampaignAggregation(campaignStats.aggregaredMetrics);
     };
     fetchDashboardStats();
-  }, [userStats, campaignId]);
+  }, [campaignId]);
 
   const allCampaignsList = [{ name: 'All', id: '-1' }, ...(campaigns?.items || [])];
+  const statCardsRecord = { ...userStats, ...campiagnAggregation };
 
   const getCampaignId = (id: string) => {
     setCamapignId(id);
@@ -141,7 +145,7 @@ export const DashboardHome: React.FC = () => {
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="grid grid-cols-5 gap-4 px-4">
         {countsKey?.map((x) => (
-          <StatCard key={x} count={aggregatedMetrics?.[x] || 0} type={x} />
+          <StatCard key={x} count={statCardsRecord?.[x] || 0} type={x} />
         ))}
       </div>
       <div className="w-4/5 mt-12 mx-auto flex gap-4">
