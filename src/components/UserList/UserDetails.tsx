@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styles from './userList.module.css';
-import { CurrencyTypes, UserDetailsProps } from '../../rest-types';
-import { AppBar, CircularProgress, Paper, Tab, Tabs } from '@material-ui/core';
+import { CurrencyTypes } from '../../rest-types';
+import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { TabPanel } from '../TabPanel';
 import UserTransactionHistory from './UserTransactionHistory';
@@ -17,7 +17,6 @@ const UserDetails: React.FC = () => {
   const userInfo: UserTypes | any = useLocation().state;
   const { id }: { id: string } = useParams();
   const [curreny, setCurrency] = useState<CurrencyTypes[]>();
-  const [activeStatus, setActiveStatus] = useState<boolean>();
   const [redemptions, setRedemptions] = useState<RedemptionTypes>();
   const [value, setValue] = useState<number>(0);
   const [transactionHistory, setTransactionHistory] = useState([]);
@@ -42,25 +41,6 @@ const UserDetails: React.FC = () => {
     };
     fetchRedemptions();
   }, []);
-
-  // Update user active status
-  useEffect(() => {
-    const handleUpdate = async () => {
-      try {
-        await axios.put(
-          `${apiURI}/v1/user/update-user-status`,
-          {
-            id: id,
-            activeStatus: activeStatus,
-          },
-          { withCredentials: true },
-        );
-      } catch (e) {
-        console.log('error: ', e);
-      }
-    };
-    handleUpdate();
-  }, [activeStatus]);
 
   const handleChange = (e: any, newValue: number) => {
     setValue(newValue);
