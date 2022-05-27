@@ -19,10 +19,10 @@ export const CampaignAuditList: React.FC<Props> = () => {
   const [progressModal, showProgressModal] = useState(false);
   const [auditDetails, setAuditDetails] = useState();
   const [campaigns, setCampaigns] = useState<CampaignTypes>();
-  const [take, setTake] = useState(130);
-  const [skip, setSkip] = useState(0);
+  const [skip] = useState(0);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [refetch, setRefetch] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +38,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
       setLoading(false);
     };
     fetchData();
-  }, [total]);
+  }, [total, refetch]);
 
   const handleClick = (data: any) => {
     try {
@@ -48,8 +48,9 @@ export const CampaignAuditList: React.FC<Props> = () => {
       showProgressModal(false);
     }
   };
-  const handleCampaignAuditModal = (value: any) => {
+  const handleCampaignAuditModal = (value: boolean) => {
     showProgressModal(value);
+    setRefetch(!refetch);
   };
 
   if (loading)
