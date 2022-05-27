@@ -38,6 +38,12 @@ const UserInfo: FC<UserTypes> = ({ userInfo }: UserTypes) => {
     history.push('/dashboard/admin/userList');
   };
 
+  // Delete user
+  const handleDeleteUser = async () => {
+    await axios.post(`${apiURI}/v1/user/delete-user-by-id/${user.id}`, {}, { withCredentials: true });
+    history.push('/dashboard/admin/userList');
+  };
+
   return (
     <div>
       <div className={styles.userSideWrapper}>
@@ -82,7 +88,9 @@ const UserInfo: FC<UserTypes> = ({ userInfo }: UserTypes) => {
               </CustomButton>
             )}
           </div>
-          <CustomButton className={buttonStyles.secondaryButton}>Delete User</CustomButton>
+          <CustomButton className={buttonStyles.secondaryButton} onClick={handleDeleteUser}>
+            Delete User
+          </CustomButton>
         </div>
       </div>
     </div>
