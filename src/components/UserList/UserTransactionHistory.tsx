@@ -20,7 +20,7 @@ const UserTransactionHistory: FC<UserTransactionHistoryTypesArray> = (props) => 
             </tr>
           </thead>
           <tbody>
-            {props.transactionHistory &&
+            {props.transactionHistory.length > 0 ? (
               props.transactionHistory.map((transaction: UserTransactionHistoryTypes) => (
                 <tr className={styles.tableBodyRow} key={transaction.id}>
                   <td className={styles.tableColumn}>{transaction.action}</td>
@@ -30,7 +30,10 @@ const UserTransactionHistory: FC<UserTransactionHistoryTypesArray> = (props) => 
                   <td className={styles.tableColumn}>{transaction.transactionHash}</td>
                   <td className={styles.tableColumn}>{new Date(transaction.createdAt).toDateString()}</td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <p className="p-2">No transaction record found</p>
+            )}
           </tbody>
         </table>
       </div>

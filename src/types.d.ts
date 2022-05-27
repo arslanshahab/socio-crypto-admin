@@ -711,3 +711,16 @@ export type UserTypes = {
     user: UserListType;
   };
 };
+
+export type CurrencyTypes = {
+  balance: string;
+  imageUrl: string;
+  minWithdrawAmount: number;
+  network: string;
+  symbol: string;
+  usdBalance: number;
+};
+
+export type UserTransferTypes = {
+  transferUserRecord: CurrencyTypes[];
+};

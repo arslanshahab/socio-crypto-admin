@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styles from './userList.module.css';
-import { CurrencyTypes } from '../../rest-types';
 import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { TabPanel } from '../TabPanel';
@@ -11,12 +10,12 @@ import { useLocation } from 'react-router-dom';
 import UserTransferRecord from './UserTransferRecord';
 import RedemptionDetials from './RedemptionDetials';
 import UserInfo from './UserInfo';
-import { RedemptionTypes, UserTypes } from '../../types';
+import { RedemptionTypes, UserTypes, CurrencyTypes } from '../../types';
 
 const UserDetails: React.FC = () => {
   const userInfo: UserTypes | any = useLocation().state;
   const { id }: { id: string } = useParams();
-  const [curreny, setCurrency] = useState<CurrencyTypes[]>();
+  const [curreny, setCurrency] = useState<CurrencyTypes[]>([]);
   const [redemptions, setRedemptions] = useState<RedemptionTypes>();
   const [value, setValue] = useState<number>(0);
   const [transactionHistory, setTransactionHistory] = useState([]);

@@ -1,10 +1,9 @@
-import { CircularProgress } from '@material-ui/core';
 import React, { FC } from 'react';
 import styles from './userList.module.css';
 import headingStyles from '../../assets/styles/heading.module.css';
-import { CurrencyTypes } from '../../rest-types';
+import { UserTransferTypes, CurrencyTypes } from '../../types';
 
-const UserTransferRecord: FC<any> = ({ transferUserRecord }) => {
+const UserTransferRecord: FC<UserTransferTypes> = ({ transferUserRecord }) => {
   return (
     <div className={styles.transferSide}>
       <h3 className={headingStyles.headingSm}>Transfer User Record</h3>
@@ -20,7 +19,7 @@ const UserTransferRecord: FC<any> = ({ transferUserRecord }) => {
             </tr>
           </thead>
           <tbody>
-            {transferUserRecord &&
+            {transferUserRecord.length > 0 ? (
               transferUserRecord.map((transfer: CurrencyTypes, index: number) => (
                 <tr className={styles.tableBodyRow} key={index}>
                   <td className={styles.tableColumn}>{transfer.balance}</td>
@@ -29,7 +28,10 @@ const UserTransferRecord: FC<any> = ({ transferUserRecord }) => {
                   <td className={styles.tableColumn}>{transfer.symbol}</td>
                   <td className={styles.tableColumn}>{transfer.network}</td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <p className="p-2">No transfer record found</p>
+            )}
           </tbody>
         </table>
       </div>

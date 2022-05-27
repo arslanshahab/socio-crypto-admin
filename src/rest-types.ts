@@ -21,12 +21,3 @@ export type SocialPostType = {
     userId: string;
   };
 };
-
-export type CurrencyTypes = {
-  balance: string;
-  imageUrl: string;
-  minWithdrawAmount: number;
-  network: string;
-  symbol: string;
-  usdBalance: number;
-};
