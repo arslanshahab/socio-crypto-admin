@@ -1,51 +1,96 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StatCard from './StatCard';
 import LineChart from './Charts/LineChart';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
-import { useQuery } from '@apollo/client';
-import { GET_USER_CAMPAIGNS, DASHBOARD_METRICS } from '../operations/queries/campaign';
-import { GetUserCampaigns } from './../types';
+import { AggregatedMetricTypes, CampaignTypes, DashboardStats } from './../types';
 import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
+import axios from 'axios';
+import { apiURI } from '../clients/raiinmaker-api';
+import { CircularProgress } from '@material-ui/core';
+import commonStyle from '../assets/styles/common.module.css';
 
 export const DashboardHome: React.FC = () => {
   //! Use State Hook
   const [campaignId, setCamapignId] = useState('-1');
+  const [campaignStats, setCampaignStats] = useState<DashboardStats[]>([]);
+  const [campiagnAggregation, setCampaignAggregation] = useState<AggregatedMetricTypes | any>();
+  const [userStats, setUserStats] = useState([]);
+  const [campaigns, setCampaigns] = useState<CampaignTypes>();
+  const [take, setTake] = useState(10);
+  const [loading, setLoading] = useState(false);
 
-  //! ApolloClient Query Hook
-  const { data } = useQuery<GetUserCampaigns>(GET_USER_CAMPAIGNS, {
-    variables: { scoped: true, skip: 0, take: 50, sort: true, approved: true, open: true },
-    fetchPolicy: 'cache-and-network',
-  });
+  // Fetch Users Dashboard Stats
+  useEffect(() => {
+    const fetchDashboardStats = async () => {
+      const userResponse = await axios.get(`${apiURI}/v1/user/user-stats`, { withCredentials: true });
 
-  //! Dashboard Metrics
-  const { data: dashboardMetrics } = useQuery(DASHBOARD_METRICS, {
-    variables: { campaignId },
-    fetchPolicy: 'cache-and-network',
-  });
+      setUserStats(userResponse.data.data);
+    };
+    fetchDashboardStats();
+  }, []);
 
-  const allCampaignsList = [{ name: 'All', id: '-1' }, ...(data?.listAllCampaignsForOrg || [])];
+  // Fetch All Campaigns
+  useEffect(() => {
+    const fetchDashboardStats = async () => {
+      const campaignsResponse = await axios.get(`${apiURI}/v1/campaign?skip=0&take=${take}&state=ALL`, {
+        withCredentials: true,
+      });
+      setCampaigns(campaignsResponse.data.data);
+      setTake(campaignsResponse.data.data.total);
+    };
+    fetchDashboardStats();
+  }, [take]);
+
+  // Fetch Campaign Dashboard Stats
+  useEffect(() => {
+    const fetchDashboardStats = async () => {
+      setLoading(true);
+      const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${campaignId}`, {
+        withCredentials: true,
+      });
+      const campaignStats = campaignResponse.data.data;
+      setCampaignStats(campaignStats.calculateCampaignMetrics);
+      setCampaignAggregation(campaignStats.aggregaredMetrics);
+      setLoading(false);
+    };
+    fetchDashboardStats();
+  }, [campaignId]);
+
+  const allCampaignsList = [{ name: 'All', id: '-1' }, ...(campaigns?.items || [])];
+  const statCardsRecord = { ...userStats, ...campiagnAggregation };
 
   const getCampaignId = (id: string) => {
     setCamapignId(id);
   };
 
   //! Stat Card Keys
-  const countsKey = ['clickCount', 'viewCount', 'shareCount', 'totalParticipants', 'participationScore'];
+  const countsKey = [
+    'clickCount',
+    'viewCount',
+    'shareCount',
+    'totalParticipants',
+    'participationScore',
+    'totalUsers',
+    'lastWeekUsers',
+    'distributedTotalAmount',
+    'redeemedTotalAmount',
+    'bannedUsers',
+  ];
 
   //! Bar Chart Data
   const barChartData = {
-    labels: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: string[]) => ''),
+    labels: campaignStats.map((x) => ''),
     datasets: [
       {
         label: 'Clicks',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.clickCount),
+        data: campaignStats?.map((x) => x.clickCount),
         backgroundColor: chartColors[0],
         borderWidth: 1,
       },
       {
         label: 'Participation Score',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.participationScore),
+        data: campaignStats?.map((x) => x.participationScore),
 
         backgroundColor: chartColors[1],
         borderWidth: 1,
@@ -55,32 +100,32 @@ export const DashboardHome: React.FC = () => {
 
   //! Line Chart Data
   const lineChartData = {
-    labels: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: string[]) => ''),
+    labels: campaignStats?.map((x) => ''),
     datasets: [
       {
         label: 'Clicks',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.clickCount),
+        data: campaignStats?.map((x) => x.clickCount),
         backgroundColor: chartColors[0],
         borderColor: chartColors[0],
         borderWidth: 1,
       },
       {
         label: 'Views',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.viewCount),
+        data: campaignStats?.map((x) => x.viewCount),
         backgroundColor: chartColors[1],
         borderColor: chartColors[1],
         borderWidth: 1,
       },
       {
         label: 'Shares',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.shareCount),
+        data: campaignStats?.map((x) => x.shareCount),
         backgroundColor: chartColors[2],
         borderColor: chartColors[2],
         borderWidth: 1,
       },
       {
         label: 'Participation Score',
-        data: dashboardMetrics?.getDashboardMetrics?.campaignMetrics.map((x: any) => x.participationScore),
+        data: campaignStats?.map((x) => x.participationScore),
         backgroundColor: chartColors[3],
         borderColor: chartColors[3],
         borderWidth: 1,
@@ -103,15 +148,17 @@ export const DashboardHome: React.FC = () => {
   return (
     <div className="pb-1">
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
-      <div className="grid grid-cols-5 gap-4 px-4">
-        {countsKey?.map((x: any) => (
-          <StatCard
-            key={x}
-            count={dashboardMetrics?.getDashboardMetrics?.aggregatedCampaignMetrics?.[x] || 0}
-            type={x}
-          />
-        ))}
-      </div>
+      {loading ? (
+        <div className={commonStyle.loading}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="grid grid-cols-5 gap-4 px-4">
+          {countsKey?.map((x) => (
+            <StatCard key={x} count={statCardsRecord?.[x] || 0} type={x} />
+          ))}
+        </div>
+      )}
       <div className="w-4/5 mt-12 mx-auto flex gap-4">
         <AutoCompleteDropDown
           options={allCampaignsList}
@@ -126,11 +173,7 @@ export const DashboardHome: React.FC = () => {
         </div>
       ) : (
         <div>
-          <LineChart
-            name={dashboardMetrics?.getDashboardMetrics?.aggregatedCampaignMetrics?.campaignName || ''}
-            campaignAnalytics={lineChartData}
-            options={lineChartOptions}
-          />
+          <LineChart name={''} campaignAnalytics={lineChartData} options={lineChartOptions} />
         </div>
       )}
     </div>

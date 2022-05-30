@@ -25,6 +25,7 @@ import EditCampaignPage from '../EditCampaign/EditCampaign';
 import { logoutUser } from '../../store/actions/user';
 import CoiinLogo from '../../assets/png/coiin.png';
 import UserList from '../../components/UserList/UserList';
+import UserDetails from '../../components/UserList/UserDetails';
 
 const Dashboard: React.FC = (props) => {
   const history = useHistory();
@@ -94,6 +95,9 @@ const Dashboard: React.FC = (props) => {
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/admin/userList'}>
               <UserList {...props} />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/admin/userDetails/:id'}>
+              <UserDetails {...props} />
             </ProtectedRoute>
           </Switch>
         </Box>
