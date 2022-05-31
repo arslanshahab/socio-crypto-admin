@@ -173,7 +173,11 @@ export const DashboardHome: React.FC = () => {
         </div>
       ) : (
         <div>
-          <LineChart name={''} campaignAnalytics={lineChartData} options={lineChartOptions} />
+          <LineChart
+            name={campiagnAggregation.campaignName}
+            campaignAnalytics={lineChartData}
+            options={lineChartOptions}
+          />
         </div>
       )}
     </div>
