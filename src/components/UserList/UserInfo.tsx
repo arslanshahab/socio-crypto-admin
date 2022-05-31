@@ -7,8 +7,11 @@ import { UserListType, UserTypes } from '../../types';
 import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { CircularProgress } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { showSuccessAlert } from '../../store/actions/alerts';
 
 const UserInfo: FC<UserTypes> = ({ userId }: UserTypes) => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState<UserListType>();
   const [loading, setLoading] = useState(false);
   const [refetch, setRefetch] = useState(false);
@@ -39,6 +42,7 @@ const UserInfo: FC<UserTypes> = ({ userId }: UserTypes) => {
       { withCredentials: true },
     );
     setUnbanLoading(false);
+    dispatch(showSuccessAlert('User activated successfully!'));
     setRefetch(!refetch);
   };
 
@@ -54,6 +58,7 @@ const UserInfo: FC<UserTypes> = ({ userId }: UserTypes) => {
       { withCredentials: true },
     );
     setBanLoading(false);
+    dispatch(showSuccessAlert('User banned!'));
     setRefetch(!refetch);
   };
 
@@ -62,6 +67,8 @@ const UserInfo: FC<UserTypes> = ({ userId }: UserTypes) => {
     setResetLoading(true);
     await axios.put(`${apiURI}/v1/user/reset-user-password/${user?.id}`, {}, { withCredentials: true });
     setResetLoading(false);
+    debugger;
+    dispatch(showSuccessAlert("User's password reset successfully!"));
   };
 
   // Delete user
@@ -69,6 +76,7 @@ const UserInfo: FC<UserTypes> = ({ userId }: UserTypes) => {
     setDeleteLoading(true);
     await axios.post(`${apiURI}/v1/user/delete-user-by-id/${user?.id}`, {}, { withCredentials: true });
     setDeleteLoading(false);
+    dispatch(showSuccessAlert('User deleted successfully!'));
     setRefetch(!refetch);
   };
 
