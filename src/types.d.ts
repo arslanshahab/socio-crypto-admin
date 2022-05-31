@@ -659,15 +659,11 @@ export type UserTransactionHistoryTypesArray = {
 };
 
 export type AggregatedMetricTypes = {
-  bannedUsers: number;
+  campaignName: string;
   clickCount: number;
-  distributedTotalAmount: number;
-  lastWeekUsers: number;
   participationScore: number;
-  redeemedTotalAmount: number;
   shareCount: number;
   totalParticipants: number;
-  totalUsers: number;
   viewCount: number;
 };
 

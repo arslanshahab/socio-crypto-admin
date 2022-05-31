@@ -7,8 +7,6 @@ import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
 import axios from 'axios';
 import { apiURI } from '../clients/raiinmaker-api';
-import { CircularProgress } from '@material-ui/core';
-import commonStyle from '../assets/styles/common.module.css';
 
 export const DashboardHome: React.FC = () => {
   //! Use State Hook
@@ -18,7 +16,6 @@ export const DashboardHome: React.FC = () => {
   const [userStats, setUserStats] = useState([]);
   const [campaigns, setCampaigns] = useState<CampaignTypes>();
   const [take, setTake] = useState(10);
-  const [loading, setLoading] = useState(false);
 
   // Fetch Users Dashboard Stats
   useEffect(() => {
@@ -45,14 +42,13 @@ export const DashboardHome: React.FC = () => {
   // Fetch Campaign Dashboard Stats
   useEffect(() => {
     const fetchDashboardStats = async () => {
-      setLoading(true);
       const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${campaignId}`, {
         withCredentials: true,
       });
       const campaignStats = campaignResponse.data.data;
       setCampaignStats(campaignStats.calculateCampaignMetrics);
+      debugger;
       setCampaignAggregation(campaignStats.aggregaredMetrics);
-      setLoading(false);
     };
     fetchDashboardStats();
   }, [campaignId]);
@@ -148,17 +144,12 @@ export const DashboardHome: React.FC = () => {
   return (
     <div className="pb-1">
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
-      {loading ? (
-        <div className={commonStyle.loading}>
-          <CircularProgress />
-        </div>
-      ) : (
-        <div className="grid grid-cols-5 gap-4 px-4">
-          {countsKey?.map((x) => (
-            <StatCard key={x} count={statCardsRecord?.[x] || 0} type={x} />
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-5 gap-4 px-4">
+        {countsKey?.map((x) => (
+          <StatCard key={x} count={statCardsRecord?.[x]} type={x} />
+        ))}
+      </div>
+
       <div className="w-4/5 mt-12 mx-auto flex gap-4">
         <AutoCompleteDropDown
           options={allCampaignsList}
