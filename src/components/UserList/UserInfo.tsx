@@ -80,7 +80,7 @@ const UserInfo: FC<UserTypes> = ({ userId }: UserTypes) => {
         </div>
       )}
       {user && (
-        <div className={styles.userSideWrapper}>
+        <div className={styles.userInfoWrapper}>
           <h2 className={headingStyles.headingSm}>User Details</h2>
           <div className={styles.boxStyle}>
             <h4>User Name:</h4>
