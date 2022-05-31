@@ -47,7 +47,6 @@ export const DashboardHome: React.FC = () => {
       });
       const campaignStats = campaignResponse.data.data;
       setCampaignStats(campaignStats.calculateCampaignMetrics);
-      debugger;
       setCampaignAggregation(campaignStats.aggregaredMetrics);
     };
     fetchDashboardStats();
