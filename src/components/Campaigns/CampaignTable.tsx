@@ -1,10 +1,10 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
-import { Campaign } from '../../types';
+import { Campaign, PaginatedCampaignResultsV2 } from '../../types';
 import RenderRow from './RenderRow';
 
 interface Props {
-  data: any;
+  data: PaginatedCampaignResultsV2;
 }
 
 const CampaignTable: React.FC<Props> = ({ data }) => {
@@ -25,7 +25,7 @@ const CampaignTable: React.FC<Props> = ({ data }) => {
         </thead>
         <tbody>
           {data &&
-            data.listCampaignsV2.results.map((campaign: Campaign, index: number) => {
+            data.items.map((campaign: Campaign, index: number) => {
               return <RenderRow key={index} campaign={campaign} />;
             })}
         </tbody>

@@ -1,20 +1,26 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress } from '@material-ui/core';
-import { CampaignListVars, PaginatedCampaignResults } from '../../types';
-import { LIST_CAMPAIGNS } from '../../operations/queries/campaign';
 import CampaignTable from '../../components/Campaigns/CampaignTable';
 import EmptyCampaigns from '../../components/Campaigns/EmptyCampaigns';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
+import { PaginatedCampaignResultsV2 } from '../../types';
 
 const CampaignsPage: React.FC = () => {
-  const initialEndDate = new Date();
-  const initialStartDate = new Date();
-  initialStartDate.setUTCDate(initialEndDate.getUTCDate() - 7);
+  const [campaigns, setCampaigns] = useState<PaginatedCampaignResultsV2>();
+  const [loading, setLoading] = useState(false);
 
-  const { loading, data } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
-    variables: { skip: 0, take: 50, state: 'OPEN', status: 'APPROVED' },
-    fetchPolicy: 'cache-and-network',
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const campaigns = await axios.get(`${apiURI}/v1/campaign?skip=0&take=130&state=OPEN&status=APPROVED`, {
+        withCredentials: true,
+      });
+      setCampaigns(campaigns.data.data);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   return (
     <Box className="w-full h-full p-10">
@@ -23,7 +29,7 @@ const CampaignsPage: React.FC = () => {
           <CircularProgress size={45} color="primary" />
         </Box>
       )}
-      {!loading && (!data?.listCampaignsV2?.results.length ? <EmptyCampaigns /> : <CampaignTable data={data} />)}
+      {!loading && (!campaigns?.items?.length ? <EmptyCampaigns /> : <CampaignTable data={campaigns} />)}
     </Box>
   );
 };

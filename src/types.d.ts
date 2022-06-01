@@ -631,3 +631,8 @@ export interface ErrorObject {
 }
 
 export type APIError = GraphQLError;
+
+export interface PaginatedCampaignResultsV2 {
+  items: [Campaign];
+  total: number;
+}
