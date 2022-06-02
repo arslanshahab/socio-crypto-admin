@@ -32,7 +32,7 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
     error: '',
   });
   const history = useHistory();
-  const [withdrawData, setWithdrawData] = useState(props.location != null ? props.location.state.data : null);
+  const [withdrawData, setWithdrawData] = useState(props.location && props.location.state.data);
 
   const [value, setValue] = useState(0);
   const [getKyc, { loading, data }] = useLazyQuery(ADMIN_GET_KYC_BY_USER, {
@@ -123,11 +123,11 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
                     <div key={index} className="shadow rounded mb-4 p-2">
                       <div className={styles.detailsWrap}>
                         <h6 className={styles.detailsWrapTitle}>Balance:</h6>
-                        <p>{parseFloat(withdraw.balance).toFixed(2)}</p>
+                        <p>${parseFloat(withdraw.balance) || 0}</p>
                       </div>
                       <div className={styles.detailsWrap}>
                         <h6 className={styles.detailsWrapTitle}>USD Balance:</h6>
-                        <p>${parseFloat(withdraw.usdbalance).toFixed(2)}</p>
+                        <p>${parseFloat(withdraw.usdbalance) || 0}</p>
                       </div>
                       <div className={styles.detailsWrap}>
                         <h6 className={styles.detailsWrapTitle}>Currency:</h6>
@@ -148,7 +148,7 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
                         <h6 className={styles.detailsWrapTitle}>Action:</h6> <p>{withdraw.action}</p>{' '}
                       </div>
                       <div className={styles.detailsWrap}>
-                        <h6 className={styles.detailsWrapTitle}>Amount:</h6> <p>${withdraw.amount.toFixed(2)}</p>
+                        <h6 className={styles.detailsWrapTitle}>Amount:</h6> <p>${withdraw.amount}</p>
                       </div>
                       <div className={styles.detailsWrap}>
                         <h6 className={styles.detailsWrapTitle}>Date:</h6>
@@ -161,7 +161,7 @@ export const ManageWithdrawRequests: React.FC<Props> = (props) => {
             </div>
             <div className={styles.withdrawRow}>
               <h6 className={styles.title}>Total Annual Withdrawn </h6>
-              <p className={styles.withdrawCol}>${withdrawData?.totalAnnualWithdrawn.toFixed(2)}</p>
+              <p className={styles.withdrawCol}>${withdrawData?.totalAnnualWithdrawn}</p>
             </div>
 
             <div className={styles.checkboxAndButtonWrapper}>
