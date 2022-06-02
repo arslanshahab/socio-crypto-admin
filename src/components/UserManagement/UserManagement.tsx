@@ -1,33 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { Button, CircularProgress } from '@material-ui/core';
-import { useQuery } from '@apollo/client';
-import { ListEmployees } from '../../types';
-import { LIST_EMPLOYEES } from '../../operations/queries/admin';
+import { OrganizationEmployees } from '../../types';
 import { RegisterUser } from '../RegisterUser';
 import styles from './userManagement.module.css';
 import PrimaryCard from '../CryptoCard/PrimaryCard';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
 
 export const UserManagement: React.FC = () => {
-  const { data, loading } = useQuery<ListEmployees>(LIST_EMPLOYEES, { variables: { skip: 0, take: 25 } });
   const [openUserDialog, setUserDialog] = useState(false);
   const [filterEmployee, setFilterEmployee] = useState<{ name: string; createdAt: string }[] | undefined>([]);
   const [searchField, setSearchField] = useState('');
+  const [employees, setEmployees] = useState<OrganizationEmployees>();
+  const [loading, setLoading] = useState(false);
   const toolTipMap = {
     title: 'Employee Name',
     value: 'Active Since',
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data } = await axios.get(`${apiURI}/v1/organization/list-employees`, { withCredentials: true });
+      setEmployees(data.data);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
   useEffect(() => {
     if (!searchField) {
-      setFilterEmployee(data?.listEmployees?.adminsDetails);
+      setFilterEmployee(employees?.adminsDetails);
       return;
     }
     const filter =
-      data?.listEmployees?.adminsDetails?.filter((x: { name: string; createdAt: string }) => {
+      employees?.adminsDetails?.filter((x: { name: string; createdAt: string }) => {
         return x.name.toLowerCase().includes(searchField.toLowerCase());
       }) || [];
     setFilterEmployee(filter);
-  }, [searchField, data]);
+  }, [searchField, employees]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchField(e.target.value);
@@ -43,7 +55,7 @@ export const UserManagement: React.FC = () => {
 
   return (
     <div className={styles.userManagementWrapper}>
-      {data && data?.listEmployees?.adminsDetails?.length <= 0 ? (
+      {employees && employees?.adminsDetails?.length <= 0 ? (
         <div>
           <p className={styles.orgName}>There is no employee</p>
         </div>
@@ -58,7 +70,7 @@ export const UserManagement: React.FC = () => {
           </div>
           <div className={styles.organization}>
             <h6>Organization:</h6>
-            <p className={styles.orgName}>{data?.listEmployees?.orgName}</p>
+            <p className={styles.orgName}>{employees?.orgName}</p>
             <input
               type="text"
               name="search"

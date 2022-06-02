@@ -636,3 +636,11 @@ export interface PaginatedCampaignResultsV2 {
   items: [Campaign];
   total: number;
 }
+
+export type OrganizationEmployees = {
+  orgName: string;
+  adminsDetails: {
+    name: string;
+    createdAt: string;
+  }[];
+};
