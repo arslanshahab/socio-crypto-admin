@@ -28,6 +28,11 @@
 .inputField {
   @apply border-2 p-1 rounded mx-6 w-80 h-10;
 }
+.userInfoWrapper {
+  width: 35rem;
+  padding: 1rem;
+  box-shadow: 0px 0px 5px #cdcbcb;
+}
 
 /* User details styles */
 .userDetailsWrapper {
@@ -37,7 +42,7 @@
   @apply shadow-md rounded mx-px my-2 p-2;
 }
 .boxStyle {
-  @apply flex justify-between items-center m-3 p-3 shadow rounded w-96;
+  @apply flex justify-between items-center mt-4 p-2 shadow rounded w-full;
 }
 .transferSide {
   height: 90vh;
@@ -78,5 +83,5 @@
 }
 
 .userActiveButtonsWrapper {
-  @apply flex gap-8 mt-6;
+  @apply flex justify-center items-center gap-8 mt-6 p-2 shadow rounded;
 }
