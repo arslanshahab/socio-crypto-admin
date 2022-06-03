@@ -690,7 +690,19 @@ export type RedemptionTypes = {
 export type RedemptionReturnTypes = {
   redemptionDetails: RedemptionTypes | undefined;
 };
+export type UserProfileType = {
+  city: string | null;
+  country: string | null;
+  state: string | null;
+  username: string;
+};
 
+export type SocialPostType = {
+  [key: string]: {
+    id: string;
+    userId: string;
+  };
+};
 export type UserListType = {
   id: string;
   email: string | null;
@@ -703,9 +715,7 @@ export type UserListType = {
 };
 
 export type UserTypes = {
-  userInfo: {
-    user: UserListType;
-  };
+  userId: string;
 };
 
 export type CurrencyTypes = {

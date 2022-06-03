@@ -6,14 +6,12 @@ import { apiURI } from '../../clients/raiinmaker-api';
 import { TabPanel } from '../TabPanel';
 import UserTransactionHistory from './UserTransactionHistory';
 import { useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import UserTransferRecord from './UserTransferRecord';
 import RedemptionDetials from './RedemptionDetials';
 import UserInfo from './UserInfo';
-import { RedemptionTypes, UserTypes, CurrencyTypes } from '../../types';
+import { RedemptionTypes, CurrencyTypes } from '../../types';
 
 const UserDetails: React.FC = () => {
-  const userInfo: UserTypes | any = useLocation().state;
   const { id }: { id: string } = useParams();
   const [curreny, setCurrency] = useState<CurrencyTypes[]>([]);
   const [redemptions, setRedemptions] = useState<RedemptionTypes>();
@@ -41,7 +39,7 @@ const UserDetails: React.FC = () => {
     fetchRedemptions();
   }, []);
 
-  const handleChange = (e: any, newValue: number) => {
+  const handleChange = (event: any, newValue: number) => {
     setValue(newValue);
   };
 
@@ -72,7 +70,7 @@ const UserDetails: React.FC = () => {
 
       <Paper className="paper">
         <TabPanel value={value} index={0}>
-          <UserInfo userInfo={userInfo} />
+          <UserInfo userId={id} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <UserTransferRecord transferUserRecord={curreny} />

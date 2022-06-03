@@ -116,9 +116,7 @@ const UserList: React.FC = () => {
                   <tr
                     className={styles.tableBodyRow}
                     key={user.id}
-                    onClick={() =>
-                      history.push({ pathname: `/dashboard/admin/userDetails/${user.id}`, state: { user } })
-                    }
+                    onClick={() => history.push(`/dashboard/admin/userDetails/${user.id}`)}
                   >
                     <td className={styles.tableColumn}>{user?.profile?.username}</td>
                     <td className={styles.tableColumn}>{user.email}</td>
