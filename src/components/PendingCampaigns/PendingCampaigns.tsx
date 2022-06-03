@@ -6,14 +6,15 @@ import { UPDATE_CAMPAIGN_STATUS } from '../../operations/mutations/Admin';
 import styles from './pendingCampaigns.module.css';
 import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
+import CustomButton from '../CustomButton';
+import buttonStyles from '../../assets/styles/customButton.module.css';
 
 export const PendingCampaigns: React.FC = () => {
-  // const { data, loading, refetch } = useQuery<ListPendingCampaignsAdminResults>(ADMIN_LIST_CAMPAIGNS, {
-  //   fetchPolicy: 'network-only',
-  // });
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [take, setTake] = useState(10);
   const [loading, setLoading] = useState(false);
+  const [rejectLoading, setRejectLoading] = useState(false);
+  const [acceptLoading, setAcceptLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -25,7 +26,7 @@ export const PendingCampaigns: React.FC = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [take]);
 
   const [updateStatus, { loading: actionLoading }] = useMutation(UPDATE_CAMPAIGN_STATUS);
   const [status, setStatus] = useState({ status: '', campaignId: '' });
@@ -76,29 +77,20 @@ export const PendingCampaigns: React.FC = () => {
             <p>{new Date(parseInt(campaign.endDate)).toLocaleDateString()}</p>
           </div>
           <div className={styles.buttonWrapper}>
-            <Button
+            <CustomButton
               onClick={() => handleStatusChange('APPROVED', campaign.id)}
-              variant={'contained'}
-              color={'primary'}
-              style={{ minWidth: '120px' }}
+              className={buttonStyles.buttonPrimary}
+              loading={acceptLoading}
             >
-              {actionLoading && status.status === 'APPROVED' && status.campaignId === campaign.id ? (
-                <CircularProgress size={25} style={{ color: 'white' }} />
-              ) : (
-                'Approve'
-              )}
-            </Button>
-            <Button
+              Approve
+            </CustomButton>
+            <CustomButton
               onClick={() => handleStatusChange('DENIED', campaign.id)}
-              variant={'contained'}
-              style={{ marginLeft: '2px', backgroundColor: '#ca2c2c', color: 'white', minWidth: '120px' }}
+              className={buttonStyles.secondaryButton}
+              loading={rejectLoading}
             >
-              {actionLoading && status.status === 'DENIED' && status.campaignId === campaign.id ? (
-                <CircularProgress size={25} style={{ color: 'white' }} />
-              ) : (
-                'Deny'
-              )}
-            </Button>
+              Deny
+            </CustomButton>
           </div>
         </div>
       ))}
