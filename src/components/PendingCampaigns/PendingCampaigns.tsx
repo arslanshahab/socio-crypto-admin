@@ -1,22 +1,39 @@
-import React, { useState } from 'react';
-import { ADMIN_LIST_CAMPAIGNS } from '../../operations/queries/campaign';
-import { useMutation, useQuery } from '@apollo/client';
-import { ListPendingCampaignsAdminResults } from '../../types';
+import React, { useEffect, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { Campaign } from '../../types';
 import { Button, CircularProgress } from '@material-ui/core';
 import { UPDATE_CAMPAIGN_STATUS } from '../../operations/mutations/Admin';
 import styles from './pendingCampaigns.module.css';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
 
 export const PendingCampaigns: React.FC = () => {
-  const { data, loading, refetch } = useQuery<ListPendingCampaignsAdminResults>(ADMIN_LIST_CAMPAIGNS, {
-    fetchPolicy: 'network-only',
-  });
+  // const { data, loading, refetch } = useQuery<ListPendingCampaignsAdminResults>(ADMIN_LIST_CAMPAIGNS, {
+  //   fetchPolicy: 'network-only',
+  // });
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [take, setTake] = useState(10);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data } = await axios.get(`${apiURI}/v1/campaign?skip=0&take=${take}&state=ALL&status=PENDING`, {
+        withCredentials: true,
+      });
+      setCampaigns(data.data.items);
+      setTake(data.data.total);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
   const [updateStatus, { loading: actionLoading }] = useMutation(UPDATE_CAMPAIGN_STATUS);
   const [status, setStatus] = useState({ status: '', campaignId: '' });
 
   const handleStatusChange = async (status: string, campaignId: string) => {
     setStatus({ status: status, campaignId: campaignId });
     await updateStatus({ variables: { status, campaignId } });
-    await refetch();
+    // await refetch();
     setStatus({ status: '', campaignId: '' });
   };
   if (loading) {
@@ -30,7 +47,7 @@ export const PendingCampaigns: React.FC = () => {
   return (
     <div>
       <h2 className={styles.heading}>Pending Campaigns</h2>
-      {data?.listPendingCampaigns?.results?.map((campaign) => (
+      {campaigns?.map((campaign) => (
         <div key={campaign.id} className={styles.campaignBox}>
           <div className={styles.contentWrapper}>
             <h6>Name:</h6>
