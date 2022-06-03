@@ -37,11 +37,16 @@
   @apply shadow-md rounded mx-px my-2 p-2;
 }
 .boxStyle {
-  @apply flex justify-between items-center m-1.5 p-1 shadow rounded w-80;
+  @apply flex justify-between items-center m-3 p-3 shadow rounded w-96;
 }
 .transferSide {
   height: 90vh;
   overflow-y: scroll;
+}
+
+/* Redemption styles */
+.redemptionTab {
+  @apply flex gap-6;
 }
 
 /* React Pagination */
@@ -70,4 +75,8 @@
 }
 .disabled {
   @apply text-indigo-200 pointer-events-none cursor-auto bg-white;
+}
+
+.userActiveButtonsWrapper {
+  @apply flex gap-8 mt-6;
 }

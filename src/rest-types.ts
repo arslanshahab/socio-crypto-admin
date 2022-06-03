@@ -1,13 +1,3 @@
-export type UserListType = {
-  id: string;
-  email: string | null;
-  createdAt: string;
-  kycStatus: string | null;
-  lastLogin: string;
-  active: boolean;
-  profile: UserProfileType;
-  social_post: SocialPostType;
-};
 export type UserDetailsProps = {
   id: string;
   email: string | null;
@@ -30,19 +20,4 @@ export type SocialPostType = {
     id: string;
     userId: string;
   };
-};
-export type RedemptionTypes = {
-  orderLimitForTwentyFourHoursReached: boolean;
-  participation: boolean;
-  twitterLinked: boolean;
-  twitterfollowers: number;
-  twitterfollowersRequirement: number;
-};
-export type CurrencyTypes = {
-  balance: string;
-  imageUrl: string;
-  minWithdrawAmount: number;
-  network: string;
-  symbol: string;
-  usdBalance: number;
 };

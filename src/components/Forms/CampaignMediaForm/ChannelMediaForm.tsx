@@ -17,7 +17,6 @@ export interface Props {
 
 const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange }) => {
   const dispatch = useDispatch();
-
   const onSuccess = (index: number, data: FileObject) => {
     const medias = [...channelMedias];
     const id = medias?.[index]?.id;
