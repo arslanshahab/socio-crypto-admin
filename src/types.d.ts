@@ -631,3 +631,92 @@ export interface ErrorObject {
 }
 
 export type APIError = GraphQLError;
+
+export interface UserTransactionHistoryTypes {
+  action: string;
+  amount: string;
+  campaignId: string | null;
+  createdAt: string;
+  currency: string;
+  ethAddress: string | null;
+  id: string;
+  network: string | null;
+  orgId: string | null;
+  payoutId: string | null;
+  payoutStatus: string | null;
+  paypalAddress: string | null;
+  rafflePrizeId: string | null;
+  status: string | null;
+  stripeCardId: string | null;
+  transactionHash: string | null;
+  updatedAt: string;
+  usdAmount: string | null;
+  walletId: string;
+}
+
+export type UserTransactionHistoryTypesArray = {
+  [x: string]: UserTransactionHistoryTypes[];
+};
+
+export type AggregatedMetricTypes = {
+  campaignName: string;
+  clickCount: number;
+  participationScore: number;
+  shareCount: number;
+  totalParticipants: number;
+  viewCount: number;
+};
+
+export type DashboardStats = {
+  clickCount: number;
+  participationScore: number;
+  shareCount: number;
+  viewCount: number;
+};
+
+export type CampaignTypes = {
+  items: Campaign[];
+  total: number;
+};
+
+export type RedemptionTypes = {
+  orderLimitForTwentyFourHoursReached: boolean;
+  participation: boolean;
+  twitterLinked: boolean;
+  twitterfollowers: number;
+  twitterfollowersRequirement: number;
+};
+
+export type RedemptionReturnTypes = {
+  redemptionDetails: RedemptionTypes | undefined;
+};
+
+export type UserListType = {
+  id: string;
+  email: string | null;
+  createdAt: string;
+  kycStatus: string | null;
+  lastLogin: string;
+  active: boolean;
+  profile: UserProfileType;
+  social_post: SocialPostType;
+};
+
+export type UserTypes = {
+  userInfo: {
+    user: UserListType;
+  };
+};
+
+export type CurrencyTypes = {
+  balance: string;
+  imageUrl: string;
+  minWithdrawAmount: number;
+  network: string;
+  symbol: string;
+  usdBalance: number;
+};
+
+export type UserTransferTypes = {
+  transferUserRecord: CurrencyTypes[];
+};
