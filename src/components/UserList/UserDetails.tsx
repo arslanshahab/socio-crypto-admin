@@ -84,7 +84,7 @@ const UserDetails: React.FC = () => {
           <UserTransactionHistory transactionHistory={transactionHistory} />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          <TransferCoiin />
+          <TransferCoiin userId={id} />
         </TabPanel>
       </Paper>
     </>

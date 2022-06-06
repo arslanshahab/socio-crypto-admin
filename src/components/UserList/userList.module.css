@@ -88,7 +88,7 @@
 
 /* Transfer coiin */
 .transferWrapper {
-  @apply flex mt-4 gap-6;
+  @apply flex mt-5 gap-6;
 }
 .coiinInputField {
   @apply border-2 p-1 rounded w-80 h-10;
