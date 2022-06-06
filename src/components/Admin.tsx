@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Tabs, Tab, Typography, Grid, Button } from '@material-ui/core';
+import { AppBar, Tabs, Tab, Button } from '@material-ui/core';
 import { TabPanel } from './TabPanel';
 import { WithdrawHistory } from './admin/WithdrawHistory/WithdrawHistory';
 import { PendingWithdrawList } from './admin/PendingWithdrawList/PendingWithdrawList';
@@ -7,7 +7,7 @@ import { BrandList } from './BrandList/BrandList';
 import { RegisterBrand } from '../pages/RegisterBrand';
 import { PendingCampaigns } from './PendingCampaigns/PendingCampaigns';
 
-export const Admin: React.FC = (props) => {
+export const Admin: React.FC = () => {
   const [value, setValue] = React.useState(0);
   const [open, setOpen] = React.useState(false);
 
@@ -32,8 +32,13 @@ export const Admin: React.FC = (props) => {
           Register New Brand
         </Button>
       </div>
-      <AppBar position="static">
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+      <AppBar position="static" color="transparent" elevation={1}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="simple tabs example"
+          TabIndicatorProps={{ style: { backgroundColor: '#1d3faf' } }}
+        >
           <Tab label="Payments / KYC" {...a11yProps(0)} />
           <Tab label="Registered Brands" {...a11yProps(1)} />
           <Tab label="Withdraw History" {...a11yProps(2)} />

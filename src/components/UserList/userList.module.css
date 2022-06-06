@@ -85,3 +85,11 @@
 .userActiveButtonsWrapper {
   @apply flex justify-center items-center gap-8 mt-6 p-2 shadow rounded;
 }
+
+/* Transfer coiin */
+.transferWrapper {
+  @apply flex mt-4 gap-6;
+}
+.coiinInputField {
+  @apply border-2 p-1 rounded w-80 h-10;
+}
