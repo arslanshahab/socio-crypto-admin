@@ -5,10 +5,10 @@ import axios from 'axios';
 import headingStyles from '../../assets/styles/heading.module.css';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
-import ReactPaginate from 'react-paginate';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import { UserListType } from '../../types';
+import Pagination from '../Pagination/Pagination';
 
 const UserList: React.FC = () => {
   const history = useHistory();
@@ -63,13 +63,9 @@ const UserList: React.FC = () => {
     setFilter(searchData);
   };
 
-  // Take Paginated value
-  const handlePageClick = (event: { selected: number }) => {
-    try {
-      setSkip(event.selected * take);
-    } catch (e) {
-      setSkip(0);
-    }
+  // Take paginated value from Pagination component
+  const getValue = (skip: number) => {
+    setSkip(skip);
   };
 
   if (isLoading) {
@@ -128,20 +124,7 @@ const UserList: React.FC = () => {
           </table>
         </div>
       </div>
-      <div className={styles.paginateWrapper}>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={Math.ceil(total / take)}
-          previousLabel="<"
-          renderOnZeroPageCount={undefined}
-          activeClassName={styles.active}
-          disabledClassName={styles.disabled}
-          initialPage={skip / take}
-        />
-      </div>
+      <Pagination total={total} skip={skip} take={take} getValue={getValue} />
     </div>
   );
 };

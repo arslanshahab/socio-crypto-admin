@@ -1,13 +1,21 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
-import { Campaign } from '../../types';
+import { Campaign, PaginatedCampaignResultsV2 } from '../../types';
+import Pagination from '../Pagination/Pagination';
 import RenderRow from './RenderRow';
 
 interface Props {
-  data: any;
+  data: PaginatedCampaignResultsV2;
+  paginationData: {
+    skip: number;
+    take: number;
+    total: number;
+    getValue: (skip: number) => void;
+  };
 }
 
-const CampaignTable: React.FC<Props> = ({ data }) => {
+const CampaignTable: React.FC<Props> = ({ data, paginationData }) => {
+  const { skip, take, total, getValue } = paginationData;
   return (
     <Box className="w-full pb-10 overflow-scroll">
       <table className="w-full table-auto bg-gray-50">
@@ -25,11 +33,16 @@ const CampaignTable: React.FC<Props> = ({ data }) => {
         </thead>
         <tbody>
           {data &&
-            data.listCampaignsV2.results.map((campaign: Campaign, index: number) => {
+            data.items.map((campaign: Campaign, index: number) => {
               return <RenderRow key={index} campaign={campaign} />;
             })}
         </tbody>
       </table>
+      {total > take && (
+        <div className="mt-6">
+          <Pagination skip={skip} take={take} total={total} getValue={getValue} />
+        </div>
+      )}
     </Box>
   );
 };

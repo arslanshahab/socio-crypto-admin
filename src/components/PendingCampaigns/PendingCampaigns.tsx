@@ -1,24 +1,58 @@
-import React, { useState } from 'react';
-import { ADMIN_LIST_CAMPAIGNS } from '../../operations/queries/campaign';
-import { useMutation, useQuery } from '@apollo/client';
-import { ListPendingCampaignsAdminResults } from '../../types';
-import { Button, CircularProgress } from '@material-ui/core';
-import { UPDATE_CAMPAIGN_STATUS } from '../../operations/mutations/Admin';
+import React, { useEffect, useState } from 'react';
+import { Campaign } from '../../types';
+import { CircularProgress } from '@material-ui/core';
 import styles from './pendingCampaigns.module.css';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
+import CustomButton from '../CustomButton';
+import buttonStyles from '../../assets/styles/customButton.module.css';
+import { useDispatch } from 'react-redux';
+import { showSuccessAlert } from '../../store/actions/alerts';
 
 export const PendingCampaigns: React.FC = () => {
-  const { data, loading, refetch } = useQuery<ListPendingCampaignsAdminResults>(ADMIN_LIST_CAMPAIGNS, {
-    fetchPolicy: 'network-only',
-  });
-  const [updateStatus, { loading: actionLoading }] = useMutation(UPDATE_CAMPAIGN_STATUS);
-  const [status, setStatus] = useState({ status: '', campaignId: '' });
+  const dispatch = useDispatch();
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [take, setTake] = useState(10);
+  const [loading, setLoading] = useState(false);
+  const [rejectLoading, setRejectLoading] = useState(false);
+  const [acceptLoading, setAcceptLoading] = useState(false);
+  const [refetch, setRefetch] = useState(false);
 
-  const handleStatusChange = async (status: string, campaignId: string) => {
-    setStatus({ status: status, campaignId: campaignId });
-    await updateStatus({ variables: { status, campaignId } });
-    await refetch();
-    setStatus({ status: '', campaignId: '' });
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data } = await axios.get(`${apiURI}/v1/campaign?skip=0&take=${take}&state=ALL&status=PENDING`, {
+        withCredentials: true,
+      });
+      setCampaigns(data.data.items);
+      setTake(data.data.total);
+      setLoading(false);
+    };
+    fetchData();
+  }, [take, refetch]);
+
+  // Update campaign status
+  const updateCampaignStatus = async (status: string, campaignId: string) => {
+    if (status === 'APPROVED') setAcceptLoading(true);
+    if (status === 'DENIED') setRejectLoading(true);
+    await axios.put(
+      `${apiURI}/v1/campaign/admin-update-campaign-status?status=${status}&campaignId=${campaignId}`,
+      {},
+      { withCredentials: true },
+    );
+
+    if (status === 'APPROVED') {
+      dispatch(showSuccessAlert('Campaign approved successfully!'));
+      setAcceptLoading(false);
+      setRefetch(!refetch);
+    }
+    if (status === 'DENIED') {
+      dispatch(showSuccessAlert('Campaign rejected successfully!'));
+      setRejectLoading(false);
+      setRefetch(!refetch);
+    }
   };
+
   if (loading) {
     return (
       <div className={styles.loading}>
@@ -30,61 +64,58 @@ export const PendingCampaigns: React.FC = () => {
   return (
     <div>
       <h2 className={styles.heading}>Pending Campaigns</h2>
-      {data?.listPendingCampaigns?.results?.map((campaign) => (
-        <div key={campaign.id} className={styles.campaignBox}>
-          <div className={styles.contentWrapper}>
-            <h6>Name:</h6>
-            <p>{campaign.name}</p>
+      {campaigns?.length <= 0 ? (
+        <div>No pending campaigns</div>
+      ) : (
+        campaigns?.map((campaign) => (
+          <div key={campaign.id} className={styles.campaignBox}>
+            <div className={styles.contentWrapper}>
+              <h6>Name:</h6>
+              <p>{campaign.name}</p>
+            </div>
+            <div className={styles.contentWrapper}>
+              <h6>Company:</h6>
+              <p>{campaign.company}</p>
+            </div>
+            <div className={styles.contentWrapper}>
+              <h6>Type:</h6>
+              <p>{campaign.type}</p>
+            </div>
+            <div className={styles.contentWrapper}>
+              <h6>Budget:</h6>
+              <p>
+                {campaign.type == 'crypto'
+                  ? `${campaign.coiinTotal} ${campaign?.crypto?.type.toUpperCase() || ''}`
+                  : ''}
+              </p>
+            </div>
+            <div className={styles.contentWrapper}>
+              <h6>Begins:</h6>
+              <p>{new Date(parseInt(campaign.beginDate)).toLocaleDateString()}</p>
+            </div>
+            <div className={styles.contentWrapper}>
+              <h6>Ends:</h6>
+              <p>{new Date(parseInt(campaign.endDate)).toLocaleDateString()}</p>
+            </div>
+            <div className={styles.buttonWrapper}>
+              <CustomButton
+                onClick={() => updateCampaignStatus('APPROVED', campaign.id)}
+                className={buttonStyles.buttonPrimary}
+                loading={acceptLoading}
+              >
+                Approve
+              </CustomButton>
+              <CustomButton
+                onClick={() => updateCampaignStatus('DENIED', campaign.id)}
+                className={buttonStyles.secondaryButton}
+                loading={rejectLoading}
+              >
+                Deny
+              </CustomButton>
+            </div>
           </div>
-          <div className={styles.contentWrapper}>
-            <h6>Company:</h6>
-            <p>{campaign.company}</p>
-          </div>
-          <div className={styles.contentWrapper}>
-            <h6>Type:</h6>
-            <p>{campaign.type}</p>
-          </div>
-          <div className={styles.contentWrapper}>
-            <h6>Budget:</h6>
-            <p>
-              {campaign.type == 'crypto' ? `${campaign.coiinTotal} ${campaign?.crypto?.type.toUpperCase() || ''}` : ''}
-            </p>
-          </div>
-          <div className={styles.contentWrapper}>
-            <h6>Begins:</h6>
-            <p>{new Date(parseInt(campaign.beginDate)).toLocaleDateString()}</p>
-          </div>
-          <div className={styles.contentWrapper}>
-            <h6>Ends:</h6>
-            <p>{new Date(parseInt(campaign.endDate)).toLocaleDateString()}</p>
-          </div>
-          <div className={styles.buttonWrapper}>
-            <Button
-              onClick={() => handleStatusChange('APPROVED', campaign.id)}
-              variant={'contained'}
-              color={'primary'}
-              style={{ minWidth: '120px' }}
-            >
-              {actionLoading && status.status === 'APPROVED' && status.campaignId === campaign.id ? (
-                <CircularProgress size={25} style={{ color: 'white' }} />
-              ) : (
-                'Approve'
-              )}
-            </Button>
-            <Button
-              onClick={() => handleStatusChange('DENIED', campaign.id)}
-              variant={'contained'}
-              style={{ marginLeft: '2px', backgroundColor: '#ca2c2c', color: 'white', minWidth: '120px' }}
-            >
-              {actionLoading && status.status === 'DENIED' && status.campaignId === campaign.id ? (
-                <CircularProgress size={25} style={{ color: 'white' }} />
-              ) : (
-                'Deny'
-              )}
-            </Button>
-          </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 };

@@ -5,6 +5,7 @@ import GenericModal from './../GenericModal';
 import { CampaignAudit } from './CampaignAudit';
 import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
+import Pagination from '../Pagination/Pagination';
 
 interface Props {
   location?: {
@@ -19,7 +20,8 @@ export const CampaignAuditList: React.FC<Props> = () => {
   const [progressModal, showProgressModal] = useState(false);
   const [auditDetails, setAuditDetails] = useState();
   const [campaigns, setCampaigns] = useState<CampaignTypes>();
-  const [skip] = useState(0);
+  const [skip, setSkip] = useState(0);
+  const [take] = useState(10);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [refetch, setRefetch] = useState<boolean>(false);
@@ -28,7 +30,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
     const fetchData = async () => {
       setLoading(true);
       const campaignsResponse = await axios.get(
-        `${apiURI}/v1/campaign?skip=${skip}&take=${total}&state=ALL&auditStatus=DEFAULT`,
+        `${apiURI}/v1/campaign?skip=${skip}&take=${take}&state=ALL&auditStatus=DEFAULT`,
         {
           withCredentials: true,
         },
@@ -38,7 +40,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
       setLoading(false);
     };
     fetchData();
-  }, [total, refetch]);
+  }, [refetch]);
 
   const handleClick = (data: any) => {
     try {
@@ -48,9 +50,15 @@ export const CampaignAuditList: React.FC<Props> = () => {
       showProgressModal(false);
     }
   };
+
   const handleCampaignAuditModal = (value: boolean) => {
     showProgressModal(value);
     setRefetch(!refetch);
+  };
+
+  // Take paginated value from Pagination component
+  const getValue = (skip: number) => {
+    setSkip(skip);
   };
 
   if (loading)
@@ -59,6 +67,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
         <CircularProgress />
       </div>
     );
+
   return (
     <div className="p-8">
       <GenericModal
@@ -100,6 +109,11 @@ export const CampaignAuditList: React.FC<Props> = () => {
                   ))}
               </tbody>
             </table>
+            {total > take && (
+              <div className="mt-6">
+                <Pagination skip={skip} take={take} total={total} getValue={getValue} />
+              </div>
+            )}
           </Box>
         </>
       )}
