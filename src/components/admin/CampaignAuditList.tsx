@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { ADMIN_LIST_CAMPAIGN_QUERY } from '../../operations/queries/admin';
+import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress } from '@material-ui/core';
-import { Campaign } from '../../types';
+import { Campaign, CampaignTypes } from '../../types';
 import GenericModal from './../GenericModal';
 import { CampaignAudit } from './CampaignAudit';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
 
 interface Props {
   location?: {
@@ -18,17 +18,27 @@ interface Props {
 export const CampaignAuditList: React.FC<Props> = () => {
   const [progressModal, showProgressModal] = useState(false);
   const [auditDetails, setAuditDetails] = useState();
+  const [campaigns, setCampaigns] = useState<CampaignTypes>();
+  const [skip] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [refetch, setRefetch] = useState<boolean>(false);
 
-  const { loading, data, refetch } = useQuery(ADMIN_LIST_CAMPAIGN_QUERY, {
-    variables: {
-      open: false,
-      scoped: true,
-      approved: true,
-      take: 10,
-      pendingAudit: true,
-    },
-    fetchPolicy: 'cache-and-network',
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const campaignsResponse = await axios.get(
+        `${apiURI}/v1/campaign?skip=${skip}&take=${total}&state=ALL&auditStatus=DEFAULT`,
+        {
+          withCredentials: true,
+        },
+      );
+      setCampaigns(campaignsResponse.data.data);
+      setTotal(campaignsResponse.data.data.total);
+      setLoading(false);
+    };
+    fetchData();
+  }, [total, refetch]);
 
   const handleClick = (data: any) => {
     try {
@@ -38,9 +48,9 @@ export const CampaignAuditList: React.FC<Props> = () => {
       showProgressModal(false);
     }
   };
-  const handleCampaignAuditModal = (value: any) => {
+  const handleCampaignAuditModal = (value: boolean) => {
     showProgressModal(value);
-    refetch();
+    setRefetch(!refetch);
   };
 
   if (loading)
@@ -61,7 +71,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
         <CampaignAudit auditDetails={auditDetails} handleCampaignAuditModal={handleCampaignAuditModal} />
       </GenericModal>
 
-      {data.listCampaigns.results?.length <= 0 ? (
+      {campaigns && campaigns?.items?.length <= 0 ? (
         'There is no campaign for auditing'
       ) : (
         <>
@@ -76,8 +86,8 @@ export const CampaignAuditList: React.FC<Props> = () => {
                 </tr>
               </thead>
               <tbody>
-                {data &&
-                  data.listCampaigns.results.map((x: Campaign, index: number) => (
+                {campaigns &&
+                  campaigns.items.map((x: Campaign) => (
                     <tr
                       className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
                       key={x.id}

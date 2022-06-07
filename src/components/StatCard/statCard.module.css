@@ -34,3 +34,18 @@
 .participationScore {
   @apply bg-gradient-to-r from-pink-300 to-blue-600;
 }
+.totalUsers {
+  @apply bg-gradient-to-r from-green-300 to-blue-600;
+}
+.lastWeekUsers {
+  @apply bg-gradient-to-r from-pink-300 to-blue-600;
+}
+.distributedTotalAmount {
+  @apply bg-gradient-to-r from-green-300 to-blue-600;
+}
+.redeemedTotalAmount {
+  @apply bg-gradient-to-r from-pink-300 to-blue-600;
+}
+.bannedUsers {
+  @apply bg-gradient-to-r from-green-300 to-blue-600;
+}
