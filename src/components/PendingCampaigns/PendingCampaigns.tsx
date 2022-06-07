@@ -91,11 +91,11 @@ export const PendingCampaigns: React.FC = () => {
             </div>
             <div className={styles.contentWrapper}>
               <h6>Begins:</h6>
-              <p>{new Date(parseInt(campaign.beginDate)).toLocaleDateString()}</p>
+              <p>{new Date(campaign.beginDate).toDateString()}</p>
             </div>
             <div className={styles.contentWrapper}>
               <h6>Ends:</h6>
-              <p>{new Date(parseInt(campaign.endDate)).toLocaleDateString()}</p>
+              <p>{new Date(campaign.endDate).toDateString()}</p>
             </div>
             <div className={styles.buttonWrapper}>
               <CustomButton
