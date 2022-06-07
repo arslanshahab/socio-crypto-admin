@@ -1,14 +1,30 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_PENDING_WITHDRAWALS } from '../../../operations/queries/admin';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { CircularProgress } from '@material-ui/core';
 import styles from './pendingWithdrawList.module.css';
+import { apiURI } from '../../../clients/raiinmaker-api';
+import axios from 'axios';
 
 export const PendingWithdrawList = () => {
   const history = useHistory();
-  //! GraphQL Queries
-  const { data, loading } = useQuery(GET_PENDING_WITHDRAWALS, { fetchPolicy: 'network-only' });
+  const [pendingWithdrawals, setPendingWithdrawals] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const { data } = await axios.get(`${apiURI}/v1/withdraw`, { withCredentials: true });
+      setPendingWithdrawals(data.data);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  //! Functions
+  const handleClick = (data: any) => {
+    history.push('/dashboard/admin/withdraw', { data });
+  };
+
   //! Loading
   if (loading) {
     return (
@@ -17,11 +33,6 @@ export const PendingWithdrawList = () => {
       </div>
     );
   }
-  //! Functions
-  const handleClick = (data: any) => {
-    history.push('/dashboard/admin/withdraw', { data });
-  };
-
   return (
     <div className={styles.pendingWithdrawListWrapper}>
       <h1 className={styles.withdrawalHeading}>Pending Withdrawals</h1>
@@ -37,18 +48,20 @@ export const PendingWithdrawList = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.getWithdrawalsV2.map((withdraw: any, index: number) => (
+            {pendingWithdrawals?.map((withdraw: any, index: number) => (
               <tr className={styles.tableBodyRow} key={index} onClick={() => handleClick(withdraw)}>
-                <td className={styles.withdrawColumn}>{withdraw.user.username}</td>
-                <td className={styles.withdrawColumn}>{withdraw.transfers.length}</td>
-                <td className={styles.withdrawColumn}>{withdraw.totalPendingWithdrawal.length}</td>
-                <td className={styles.withdrawColumn}>${withdraw.totalAnnualWithdrawn}</td>
+                <td className={styles.withdrawColumn}>{withdraw?.user?.username || ''}</td>
+                <td className={styles.withdrawColumn}>{(withdraw.transfers && withdraw.transfers.length) || 0}</td>
+                <td className={styles.withdrawColumn}>
+                  {(withdraw.totalPendingWithdrawal && withdraw.totalPendingWithdrawal.length) || 0}
+                </td>
+                <td className={styles.withdrawColumn}>${withdraw.totalAnnualWithdrawn || 0}</td>
                 <td
-                  className={`${withdraw.user.kycStatus === 'pending' ? 'text-red-600' : 'text-green-600'} ${
-                    styles.withdrawColumn
-                  }`}
+                  className={`${
+                    withdraw.user && withdraw.user.kycStatus === 'pending' ? 'text-red-600' : 'text-green-600'
+                  } ${styles.withdrawColumn}`}
                 >
-                  {withdraw.user.kycStatus}
+                  {withdraw.user && withdraw.user.kycStatus}
                 </td>
               </tr>
             ))}

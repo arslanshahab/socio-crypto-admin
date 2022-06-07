@@ -632,6 +632,18 @@ export interface ErrorObject {
 
 export type APIError = GraphQLError;
 
+export interface PaginatedCampaignResultsV2 {
+  items: [Campaign];
+  total: number;
+}
+
+export type OrganizationEmployees = {
+  orgName: string;
+  adminsDetails: {
+    name: string;
+    createdAt: string;
+  }[];
+};
 export interface UserTransactionHistoryTypes {
   action: string;
   amount: string;
