@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import StatCard from './StatCard';
 import LineChart from './Charts/LineChart';
 import AutoCompleteDropDown from './AutoCompleteDropDown';
-import { AggregatedMetricTypes, CampaignTypes, DashboardStats } from './../types';
+import { AggregatedMetricTypes, DashboardStats } from './../types';
 import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
 import axios from 'axios';
@@ -14,14 +14,12 @@ export const DashboardHome: React.FC = () => {
   const [campaignStats, setCampaignStats] = useState<DashboardStats[]>([]);
   const [campiagnAggregation, setCampaignAggregation] = useState<AggregatedMetricTypes | any>();
   const [userStats, setUserStats] = useState([]);
-  const [campaigns, setCampaigns] = useState<CampaignTypes>();
-  const [take, setTake] = useState(10);
+  const [campaigns, setCampaigns] = useState();
 
   // Fetch Users Dashboard Stats
   useEffect(() => {
     const fetchDashboardStats = async () => {
       const userResponse = await axios.get(`${apiURI}/v1/user/user-stats`, { withCredentials: true });
-
       setUserStats(userResponse.data.data);
     };
     fetchDashboardStats();
@@ -30,14 +28,13 @@ export const DashboardHome: React.FC = () => {
   // Fetch All Campaigns
   useEffect(() => {
     const fetchDashboardStats = async () => {
-      const campaignsResponse = await axios.get(`${apiURI}/v1/campaign?skip=0&take=${take}&state=ALL`, {
+      const campaignsResponse = await axios.get(`${apiURI}/v1/campaign/campaigns-lite`, {
         withCredentials: true,
       });
       setCampaigns(campaignsResponse.data.data);
-      setTake(campaignsResponse.data.data.total);
     };
     fetchDashboardStats();
-  }, [take]);
+  }, []);
 
   // Fetch Campaign Dashboard Stats
   useEffect(() => {
@@ -52,7 +49,7 @@ export const DashboardHome: React.FC = () => {
     fetchDashboardStats();
   }, [campaignId]);
 
-  const allCampaignsList = [{ name: 'All', id: '-1' }, ...(campaigns?.items || [])];
+  const allCampaignsList = [{ name: 'All', id: '-1' }, ...(campaigns || [])];
   const statCardsRecord = { ...userStats, ...campiagnAggregation };
 
   const getCampaignId = (id: string) => {
