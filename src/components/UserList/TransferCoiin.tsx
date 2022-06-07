@@ -29,7 +29,7 @@ const TransferCoiin: FC<IProps> = ({ userId }: IProps) => {
       setAddLoading(true);
       await axios.post(
         `${apiURI}/v1/user/transfer-user-coiin`,
-        { coiin, userId, status: 'ADD' },
+        { coiin, userId, action: 'ADD' },
         { withCredentials: true },
       );
       dispatch(showSuccessAlert('Coiin added successfully!'));
@@ -46,7 +46,7 @@ const TransferCoiin: FC<IProps> = ({ userId }: IProps) => {
       setRemoveLoading(true);
       await axios.post(
         `${apiURI}/v1/user/transfer-user-coiin`,
-        { coiin, userId, status: 'REMOVE' },
+        { coiin, userId, action: 'REMOVE' },
         { withCredentials: true },
       );
       dispatch(showSuccessAlert('Coiin removed successfully!'));
