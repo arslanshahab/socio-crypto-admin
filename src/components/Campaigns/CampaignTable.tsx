@@ -38,7 +38,7 @@ const CampaignTable: React.FC<Props> = ({ data, paginationData }) => {
             })}
         </tbody>
       </table>
-      {total > 10 && (
+      {total > take && (
         <div className="mt-6">
           <Pagination skip={skip} take={take} total={total} getValue={getValue} />
         </div>
