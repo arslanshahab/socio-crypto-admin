@@ -14,7 +14,7 @@ interface MenuItem {
 const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange }) => {
   const menu: Array<MenuItem> = [
     { name: 'Crypto', value: 'crypto', enabled: true },
-    { name: 'Raffle (Coming Soon)', value: 'raffle', enabled: false },
+    { name: 'Raffle (Coming Soon)', value: 'raffle', enabled: true },
     { name: 'Social Engagement', value: 'social-engagement', enabled: false },
   ];
 
