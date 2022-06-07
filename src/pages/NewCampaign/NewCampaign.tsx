@@ -59,7 +59,7 @@ const NewCampaignPage: React.FC = () => {
           beginDate: data.beginDate,
           endDate: data.endDate,
           symbol: data.config.cryptoSymbol.split('-')[0],
-          network: data.config.cryptoSymbol.split('-')[1] || '',
+          network: data.config.cryptoSymbol.split('-')[1],
           description: data.description,
           instructions: data.instructions,
           company: userData.company,
