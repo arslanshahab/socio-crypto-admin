@@ -28,7 +28,7 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
   );
 
   const getStatus = () => {
-    const endDate = new Date(Number(campaign.endDate));
+    const endDate = new Date(campaign.endDate);
     const now = new Date();
     return now < endDate ? 'Open' : 'Closed';
   };
