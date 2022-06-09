@@ -50,8 +50,8 @@ export const DashboardHome: React.FC = () => {
     const response = async () => {
       setLoading(true);
       await fetchUsersStats();
-      await fetchCampaigns();
       await fetchDashboardStats();
+      await fetchCampaigns();
       setLoading(false);
     };
     response();
