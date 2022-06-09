@@ -7,6 +7,8 @@ import BarChart from './BarChart';
 import { chartColors } from './../helpers/utils';
 import axios from 'axios';
 import { apiURI } from '../clients/raiinmaker-api';
+import ProgressBar from './ProgressBar/ProgressBar';
+import useEffectSkipFirst from '../hooks/useEffectSkipFirst';
 
 export const DashboardHome: React.FC = () => {
   //! Use State Hook
@@ -15,39 +17,48 @@ export const DashboardHome: React.FC = () => {
   const [campiagnAggregation, setCampaignAggregation] = useState<AggregatedMetricTypes | any>();
   const [userStats, setUserStats] = useState([]);
   const [campaigns, setCampaigns] = useState();
+  const [loading, setLoading] = useState(false);
 
   // Fetch Users Dashboard Stats
-  useEffect(() => {
-    const fetchDashboardStats = async () => {
-      const userResponse = await axios.get(`${apiURI}/v1/user/user-stats`, { withCredentials: true });
-      setUserStats(userResponse.data.data);
-    };
-    fetchDashboardStats();
-  }, []);
+  const fetchUsersStats = async () => {
+    const userResponse = await axios.get(`${apiURI}/v1/user/user-stats`, { withCredentials: true });
+    setUserStats(userResponse.data.data);
+  };
 
   // Fetch All Campaigns
-  useEffect(() => {
-    const fetchDashboardStats = async () => {
-      const campaignsResponse = await axios.get(`${apiURI}/v1/campaign/campaigns-lite`, {
-        withCredentials: true,
-      });
-      setCampaigns(campaignsResponse.data.data);
-    };
-    fetchDashboardStats();
-  }, []);
+  const fetchCampaigns = async () => {
+    const campaignsResponse = await axios.get(`${apiURI}/v1/campaign/campaigns-lite`, {
+      withCredentials: true,
+    });
+    setCampaigns(campaignsResponse.data.data);
+  };
 
   // Fetch Campaign Dashboard Stats
+  const fetchDashboardStats = async () => {
+    setLoading(true);
+    const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${campaignId}`, {
+      withCredentials: true,
+    });
+    const campaignStats = campaignResponse.data.data;
+    setCampaignStats(campaignStats.calculateCampaignMetrics);
+    setCampaignAggregation(campaignStats.aggregaredMetrics);
+    setLoading(false);
+  };
+
+  // Call fetchData() only once
   useEffect(() => {
-    const fetchDashboardStats = async () => {
-      const campaignResponse = await axios.get(`${apiURI}/v1/campaign/dashboard-metrics/${campaignId}`, {
-        withCredentials: true,
-      });
-      const campaignStats = campaignResponse.data.data;
-      setCampaignStats(campaignStats.calculateCampaignMetrics);
-      setCampaignAggregation(campaignStats.aggregaredMetrics);
+    const response = async () => {
+      setLoading(true);
+      await fetchUsersStats();
+      await fetchCampaigns();
+      await fetchDashboardStats();
+      setLoading(false);
     };
-    fetchDashboardStats();
-  }, [campaignId]);
+    response();
+  }, []);
+
+  // UseEffect Skip 1st
+  useEffectSkipFirst(fetchDashboardStats, [campaignId]);
 
   const allCampaignsList = [{ name: 'All', id: '-1' }, ...(campaigns || [])];
   const statCardsRecord = { ...userStats, ...campiagnAggregation };
@@ -139,6 +150,7 @@ export const DashboardHome: React.FC = () => {
 
   return (
     <div className="pb-1">
+      {loading && <ProgressBar />}
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="grid grid-cols-5 gap-4 px-4">
         {countsKey?.map((x) => (
