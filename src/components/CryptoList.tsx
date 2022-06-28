@@ -36,7 +36,7 @@ const triggerReducer = (
   }
 };
 
-export const CryptoList: React.FC<Props> = ({ isLoading, refetchWallet }) => {
+export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
   const { data: currencyData, loading } = useQuery<ListSupportedCryptoResults>(LIST_SUPPORTED_CRYPTO);
   const { data: currencyList } = useQuery<ListCurrenciesResult>(LIST_CURRENCIES, { fetchPolicy: 'network-only' });
   const [openCrypto, setOpenCrypto] = useState(false);
@@ -44,11 +44,14 @@ export const CryptoList: React.FC<Props> = ({ isLoading, refetchWallet }) => {
   const [search, setSearch] = useState('');
   const [filterCurrency, dispatch] = useReducer(triggerReducer, []);
   const [fundingWallet, setFundingWallet] = useState([]);
+  const [isWalletLoading, setIsWalletLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsWalletLoading(true);
       const { data } = await axios(`${apiURI}/v1/funding-wallet`, { withCredentials: true });
       setFundingWallet(data.data);
+      setIsWalletLoading(false);
     };
     fetchData();
   }, []);
@@ -113,7 +116,7 @@ export const CryptoList: React.FC<Props> = ({ isLoading, refetchWallet }) => {
           </CustomButton>
         </div>
       </div>
-      {isLoading ? (
+      {isWalletLoading ? (
         <div className={circleStyles.loading}>
           <CircularProgress />
         </div>
