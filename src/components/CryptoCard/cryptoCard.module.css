@@ -28,3 +28,8 @@
 .activeDate {
   @apply text-gray-600;
 }
+
+.network {
+  @apply text-gray-400 mt-1;
+  font-size: 10px;
+}

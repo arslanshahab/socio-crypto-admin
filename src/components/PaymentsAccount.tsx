@@ -42,7 +42,12 @@ export const PaymentsAccount: React.FC = () => {
   return (
     <div>
       <AppBar position="static" color="transparent">
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="simple tabs example"
+          TabIndicatorProps={{ style: { backgroundColor: '#1d3faf' } }}
+        >
           <Tab label="Funding Wallet" {...a11yProps(0)} className="focus:outline-none" />
           <Tab label="Campaigns" {...a11yProps(1)} className="focus:outline-none" />
           <Tab label="Transaction History" {...a11yProps(2)} className="focus:outline-none" />
