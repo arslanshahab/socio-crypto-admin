@@ -1,20 +1,33 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import { GET_WITHDRAWAL_HISTORY } from '../../../operations/queries/admin';
+import React, { useEffect, useState } from 'react';
 import tableStyles from './../../BrandList/brandList.module.css';
 import styles from './withdrawHistory.module.css';
 import { CircularProgress } from '@material-ui/core';
+import axios from 'axios';
+import { apiURI } from '../../../clients/raiinmaker-api';
 
 export const WithdrawHistory: React.FC = () => {
-  const { data, loading } = useQuery(GET_WITHDRAWAL_HISTORY, { fetchPolicy: 'network-only' });
+  const [withdraws, setWithdraws] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const { data } = await axios.get(`${apiURI}/v1/withdraw/history`, { withCredentials: true });
+      setWithdraws(data.data);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
   //! Loading
-  if (loading) {
+  if (isLoading) {
     return (
       <div className={tableStyles.loading}>
         <CircularProgress />
       </div>
     );
   }
+
   return (
     <div>
       <h2 className={tableStyles.heading}>Withdraw History</h2>
@@ -24,35 +37,32 @@ export const WithdrawHistory: React.FC = () => {
             <tr className={tableStyles.tableHeadRow}>
               <th className={tableStyles.tableColumn}>Amount</th>
               <th className={tableStyles.tableColumn}>Action</th>
-              <th className={tableStyles.tableColumn}>Withdraw Status</th>
-              <th className={tableStyles.tableColumn}>Paypal Address</th>
+              <th className={tableStyles.tableColumn}>Status</th>
+              <th className={tableStyles.tableColumn}>Eth Address</th>
               <th className={tableStyles.tableColumn}>Active Since</th>
             </tr>
           </thead>
           <tbody>
-            {data?.getWithdrawalHistory.length <= 0 ? (
+            {withdraws.length <= 0 ? (
               <div className={styles.notFoundCheck}>There is no history found</div>
             ) : (
               <>
-                {data.getWithdrawalHistory.map(
+                {withdraws.map(
                   (withdraw: {
                     id: string;
                     amount: number;
                     action: string;
-                    withdrawStatus: string;
+                    status: string;
                     ethAddress: string;
                     paypalAddress: string;
                     createdAt: string;
                   }) => (
                     <tr className={tableStyles.tableBodyRow} key={withdraw.id}>
-                      <td className={tableStyles.tableColumn}>{withdraw.amount.toFixed(2)}</td>
+                      <td className={tableStyles.tableColumn}>{withdraw.amount}</td>
                       <td className={tableStyles.tableColumn}>{withdraw.action}</td>
-                      <td className={tableStyles.tableColumn}>{withdraw.withdrawStatus}</td>
+                      <td className={tableStyles.tableColumn}>{withdraw.status}</td>
                       <td className={tableStyles.tableColumn}>{withdraw.ethAddress}</td>
-                      <td className={tableStyles.tableColumn}>{withdraw.paypalAddress}</td>
-                      <td className={tableStyles.tableColumn}>
-                        {new Date(parseInt(withdraw.createdAt)).toLocaleString()}
-                      </td>
+                      <td className={tableStyles.tableColumn}>{new Date(withdraw.createdAt).toLocaleString()}</td>
                     </tr>
                   ),
                 )}
