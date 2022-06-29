@@ -93,3 +93,6 @@
 .coiinInputField {
   @apply border-2 p-1 rounded w-80 h-10;
 }
+.downloadWrapper {
+  @apply flex items-center bg-blue-900 px-4 rounded text-white;
+}

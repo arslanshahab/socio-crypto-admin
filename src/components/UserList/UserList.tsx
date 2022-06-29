@@ -9,6 +9,8 @@ import { apiURI } from '../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import { UserListType } from '../../types';
 import Pagination from '../Pagination/Pagination';
+import { CSVLink } from 'react-csv';
+import DownloadFile from './Download';
 
 const UserList: React.FC = () => {
   const history = useHistory();
@@ -20,6 +22,15 @@ const UserList: React.FC = () => {
   const [searchData, setSearchData] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [usersRecord, setUsersRecord] = useState([]);
+
+  useEffect(() => {
+    const fetchUsersRecord = async () => {
+      const { data } = await axios.get(`${apiURI}/v1/user/record`, { withCredentials: true });
+      setUsersRecord(data.data);
+    };
+    fetchUsersRecord();
+  }, []);
 
   useEffect(() => {
     if (filter) {
@@ -82,6 +93,11 @@ const UserList: React.FC = () => {
         <div className={styles.headingWithSearch}>
           <h1 className={headingStyles.headingXl}>Users Record</h1>
           <div className={styles.searchWrapper}>
+            {usersRecord.length > 0 && (
+              <div className={styles.downloadWrapper}>
+                <CSVLink data={usersRecord}>Download</CSVLink>
+              </div>
+            )}
             <input
               type="text"
               name="search"
@@ -125,6 +141,7 @@ const UserList: React.FC = () => {
         </div>
       </div>
       <Pagination total={total} skip={skip} take={take} getValue={getValue} />
+      <DownloadFile />
     </div>
   );
 };
