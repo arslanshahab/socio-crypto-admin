@@ -43,6 +43,8 @@ const CampaignTable: React.FC<Props> = ({ data, paginationData }) => {
           <Pagination skip={skip} take={take} total={total} getValue={getValue} />
         </div>
       )}
+      {/* Campaign list and their participants. */}
+      <div></div>
     </Box>
   );
 };
