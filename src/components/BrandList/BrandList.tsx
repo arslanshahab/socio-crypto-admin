@@ -11,7 +11,7 @@ export const BrandList: React.FC = () => {
     const fetchDate = async () => {
       setLoading(true);
       const { data } = await axios.get(`${apiURI}/v1/organization/org-details`, { withCredentials: true });
-      setOrgDetails(data.data.orgDetails);
+      setOrgDetails(data.data);
       setLoading(false);
     };
     fetchDate();
@@ -40,12 +40,15 @@ export const BrandList: React.FC = () => {
           </thead>
           <tbody>
             {orgDetails?.map(
-              (brand: { name: string; createdAt: string; campaigns: number; admins: number }, index: number) => (
+              (
+                brand: { name: string; createdAt: string; campaignCount: number; adminCount: number },
+                index: number,
+              ) => (
                 <tr className={styles.tableBodyRow} key={index}>
                   <td className={styles.tableColumn}>{brand.name}</td>
-                  <td className={styles.tableColumn}>{brand.campaigns}</td>
-                  <td className={styles.tableColumn}>{brand.admins}</td>
-                  <td className={styles.tableColumn}>{new Date(parseInt(brand.createdAt)).toLocaleString()}</td>
+                  <td className={styles.tableColumn}>{brand.campaignCount}</td>
+                  <td className={styles.tableColumn}>{brand.adminCount}</td>
+                  <td className={styles.tableColumn}>{new Date(brand.createdAt).toLocaleString()}</td>
                 </tr>
               ),
             )}
