@@ -30,7 +30,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
     const fetchData = async () => {
       setLoading(true);
       const campaignsResponse = await axios.get(
-        `${apiURI}/v1/campaign?skip=${skip}&take=${take}&state=ALL&auditStatus=DEFAULT`,
+        `${apiURI}/v1/campaign?skip=${skip}&take=${take}&state=CLOSED&auditStatus=DEFAULT`,
         {
           withCredentials: true,
         },
