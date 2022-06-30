@@ -9,8 +9,10 @@ interface UserProps {
   icon?: string | JSX.Element;
   tooltipTitle?: string;
   tooltipValue?: string;
+  tooltipNetwork?: string;
   removeLoading?: boolean;
   id: string;
+  network?: string;
   removeMethod?: (id: string) => void;
 }
 
@@ -20,8 +22,10 @@ const PrimaryCard: FC<UserProps> = ({
   icon,
   tooltipTitle,
   tooltipValue,
+  tooltipNetwork,
   removeLoading,
   id,
+  network,
   removeMethod,
 }) => {
   const handleRemove = () => {
@@ -40,7 +44,7 @@ const PrimaryCard: FC<UserProps> = ({
         <Tooltip title={`${tooltipTitle}: ${title}`} placement="top-start">
           <p className={styles.name}>{title.substring(0, 20) || 'Title'}</p>
         </Tooltip>
-        {icon && tooltipTitle === 'Currency Type' ? (
+        {icon && tooltipTitle === 'Token' ? (
           <img src={(icon || '') as string} alt="raiinmaker" className={styles.cryptIcon} />
         ) : (
           <div className="text-indigo-300">{icon}</div>
@@ -50,6 +54,11 @@ const PrimaryCard: FC<UserProps> = ({
         <Tooltip title={tooltipValue || ''} placement="top-start">
           <h2 className={tooltipValue == 'Active Since' ? `${styles.activeDate}` : `${styles.balance}`}>{value}</h2>
         </Tooltip>
+        {network && (
+          <Tooltip title={`${tooltipNetwork}: ${network}`} placement="top-start">
+            <p className={styles.network}>{network.substring(0, 20) || 'Network'}</p>
+          </Tooltip>
+        )}
         {removeMethod && (
           <Tooltip title="Delete Record" placement="top-start">
             <DeleteIcon className={styles.deleteIcon} fontSize="small" onClick={handleRemove} />

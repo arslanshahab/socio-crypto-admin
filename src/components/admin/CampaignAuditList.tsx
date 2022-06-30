@@ -104,7 +104,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
                     >
                       <td className="px-7 py-5 text-left capitalize">{x.name}</td>
                       <td className="px-7 py-5 text-left">False</td>
-                      <td className="px-7 py-5 text-left">{new Date(parseInt(x.endDate)).toDateString()}</td>
+                      <td className="px-7 py-5 text-left">{new Date(x.endDate).toDateString()}</td>
                     </tr>
                   ))}
               </tbody>

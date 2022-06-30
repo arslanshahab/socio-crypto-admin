@@ -8,15 +8,19 @@ import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { useDispatch } from 'react-redux';
 import { showSuccessAlert } from '../../store/actions/alerts';
+import Pagination from '../Pagination/Pagination';
 
 export const PendingCampaigns: React.FC = () => {
   const dispatch = useDispatch();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [take, setTake] = useState(10);
   const [loading, setLoading] = useState(false);
   const [rejectLoading, setRejectLoading] = useState(false);
   const [acceptLoading, setAcceptLoading] = useState(false);
   const [refetch, setRefetch] = useState(false);
+  const [skip, setSkip] = useState(0);
+  const [take] = useState(20);
+  const [total, setTotal] = useState(0);
+  const [selectedCampaignId, setSelectedCampaignId] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,14 +29,15 @@ export const PendingCampaigns: React.FC = () => {
         withCredentials: true,
       });
       setCampaigns(data.data.items);
-      setTake(data.data.total);
+      setTotal(data.data.total);
       setLoading(false);
     };
     fetchData();
-  }, [take, refetch]);
+  }, [refetch]);
 
   // Update campaign status
   const updateCampaignStatus = async (status: string, campaignId: string) => {
+    setSelectedCampaignId(campaignId);
     if (status === 'APPROVED') setAcceptLoading(true);
     if (status === 'DENIED') setRejectLoading(true);
     await axios.put(
@@ -51,6 +56,10 @@ export const PendingCampaigns: React.FC = () => {
       setRejectLoading(false);
       setRefetch(!refetch);
     }
+  };
+
+  const getValue = (skip: number) => {
+    setSkip(skip);
   };
 
   if (loading) {
@@ -101,14 +110,14 @@ export const PendingCampaigns: React.FC = () => {
               <CustomButton
                 onClick={() => updateCampaignStatus('APPROVED', campaign.id)}
                 className={buttonStyles.buttonPrimary}
-                loading={acceptLoading}
+                loading={acceptLoading && selectedCampaignId === campaign.id}
               >
                 Approve
               </CustomButton>
               <CustomButton
                 onClick={() => updateCampaignStatus('DENIED', campaign.id)}
                 className={buttonStyles.secondaryButton}
-                loading={rejectLoading}
+                loading={rejectLoading && selectedCampaignId === campaign.id}
               >
                 Deny
               </CustomButton>
@@ -116,6 +125,7 @@ export const PendingCampaigns: React.FC = () => {
           </div>
         ))
       )}
+      {total > take && <Pagination skip={skip} take={take} total={total} getValue={getValue} />}
     </div>
   );
 };

@@ -108,7 +108,9 @@ const UserInfo: FC<UserTypes> = ({ userId }: UserTypes) => {
           </div>
           <div className={styles.boxStyle}>
             <h4>User Status:</h4>
-            <p>{user.active === true ? 'Active' : 'Banned'}</p>
+            <p className={`${user.active === true ? 'text-green-700' : 'text-red-700'}`}>
+              {user.active === true ? 'Active' : 'Banned'}
+            </p>
           </div>
           <div className={styles.boxStyle}>
             <h4>Active Since:</h4>
