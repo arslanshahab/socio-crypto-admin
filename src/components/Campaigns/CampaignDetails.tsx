@@ -88,7 +88,10 @@ const CampaignDetails: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-start text-center cursor-pointer p-2" onClick={() => push('/dashboard/campaigns')}>
+      <div
+        className="flex justify-start text-center cursor-pointer p-2 w-20"
+        onClick={() => push('/dashboard/campaigns')}
+      >
         <div className="flex items-center">
           <IoChevronBackOutline />
         </div>
