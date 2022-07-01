@@ -4,6 +4,9 @@ import { apiURI } from '../../clients/raiinmaker-api';
 import AutoCompleteDropDown from '../AutoCompleteDropDown';
 import tableStyles from '../../assets/styles/table.module.css';
 import useEffectSkipFirst from '../../hooks/useEffectSkipFirst';
+import CustomButton from '../CustomButton';
+import buttonStyle from '../../assets/styles/customButton.module.css';
+import { CircularProgress } from '@material-ui/core';
 
 type Participant = {
   id: string;
@@ -15,6 +18,7 @@ type Participant = {
   };
   participationScore: string;
   createdAt: string;
+  blackList: boolean;
 };
 
 const CampaignDetails: React.FC = () => {
@@ -22,6 +26,8 @@ const CampaignDetails: React.FC = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [participantsLoading, setParticipantsLoading] = useState(false);
+  const [participantId, setParticipantId] = useState('');
+  const [blackListLoading, setBlackListLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,11 +53,27 @@ const CampaignDetails: React.FC = () => {
     }
   };
 
+  // Blacklist a participant
+  const blackListParticpant = async (participantId: string) => {
+    setParticipantId(participantId);
+    setBlackListLoading(true);
+    await axios.put(`${apiURI}/v1/participant/blacklist/${participantId}`, {}, { withCredentials: true });
+    setBlackListLoading(false);
+  };
+
   // Get campaign id from AutoCompleteDropDown
   const getCampaignId = (id: string) => {
     setCamapignId(id);
   };
   useEffectSkipFirst(fetchCampaignParticipants, [campaignId]);
+
+  if (participantsLoading) {
+    return (
+      <div className={tableStyles.loading}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -69,6 +91,7 @@ const CampaignDetails: React.FC = () => {
                 <th className={tableStyles.tableColumn}>Email</th>
                 <th className={tableStyles.tableColumn}>Participation Score</th>
                 <th className={tableStyles.tableColumn}>Participation Date</th>
+                <th className={tableStyles.tableColumn}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -79,6 +102,17 @@ const CampaignDetails: React.FC = () => {
                     <td className={tableStyles.tableColumn}>{participant.user.email}</td>
                     <td className={tableStyles.tableColumn}>{participant.participationScore}</td>
                     <td className={tableStyles.tableColumn}>{new Date(participant.createdAt).toDateString()}</td>
+                    <td className={tableStyles.tableColumn}>
+                      {!participant.blackList && (
+                        <CustomButton
+                          className={buttonStyle.secondaryButton}
+                          onClick={() => blackListParticpant(participant.id)}
+                          loading={blackListLoading && participantId === participant.id}
+                        >
+                          Black List
+                        </CustomButton>
+                      )}
+                    </td>
                   </tr>
                 ))}
             </tbody>

@@ -19,3 +19,7 @@
 .tableColumn {
   @apply px-7 py-5 text-left capitalize;
 }
+
+.tableBodyLoading {
+  @apply flex justify-center;
+}
