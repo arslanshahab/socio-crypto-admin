@@ -37,7 +37,7 @@ const CampaignDetails: React.FC = () => {
     if (campaignId) {
       setParticipantsLoading(true);
       const { data } = await axios.get(
-        `${apiURI}/v1/participant/campaign-participants?nonZoroScore=true&campaignId=${campaignId}`,
+        `${apiURI}/v1/participant/campaign-participants?nonZeroScore=true&campaignId=${campaignId}`,
         {
           withCredentials: true,
         },
