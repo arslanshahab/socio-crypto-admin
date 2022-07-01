@@ -1,9 +1,7 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
 import { Campaign, PaginatedCampaignResultsV2 } from '../../types';
-import AutoCompleteDropDown from '../AutoCompleteDropDown';
 import Pagination from '../Pagination/Pagination';
-import CampaignDetails from './CampaignDetails';
 import RenderRow from './RenderRow';
 
 interface Props {
@@ -45,9 +43,6 @@ const CampaignTable: React.FC<Props> = ({ data, paginationData }) => {
           <Pagination skip={skip} take={take} total={total} getValue={getValue} />
         </div>
       )}
-      <div className="mt-8">
-        <CampaignDetails />
-      </div>
     </Box>
   );
 };

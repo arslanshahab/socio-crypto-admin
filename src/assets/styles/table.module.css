@@ -17,9 +17,16 @@
   @apply hover:bg-gray-100 cursor-pointer border-b-2 border-solid border-gray-100;
 }
 .tableColumn {
-  @apply px-7 py-5 text-left capitalize;
+  @apply px-7 py-5 text-left;
 }
 
 .tableBodyLoading {
   @apply flex justify-center;
+}
+
+.searchWrapper {
+  @apply flex mr-4;
+}
+.inputField {
+  @apply border-2 p-1 rounded mx-6 w-80 h-10;
 }

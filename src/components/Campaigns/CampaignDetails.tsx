@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { apiURI } from '../../clients/raiinmaker-api';
-import AutoCompleteDropDown from '../AutoCompleteDropDown';
 import tableStyles from '../../assets/styles/table.module.css';
-import useEffectSkipFirst from '../../hooks/useEffectSkipFirst';
 import CustomButton from '../CustomButton';
 import buttonStyle from '../../assets/styles/customButton.module.css';
 import { CircularProgress } from '@material-ui/core';
+import { useParams, useLocation, useHistory } from 'react-router-dom';
+import headingStyles from '../../assets/styles/heading.module.css';
+import { IoChevronBackOutline } from 'react-icons/io5';
 
 type Participant = {
   id: string;
@@ -22,36 +23,44 @@ type Participant = {
 };
 
 const CampaignDetails: React.FC = () => {
-  const [campaignId, setCamapignId] = useState('');
-  const [campaigns, setCampaigns] = useState([]);
+  const { id }: { id: string } = useParams();
+  const { state }: { state: { campaignName: string } } = useLocation();
+  const { push } = useHistory();
   const [participants, setParticipants] = useState([]);
   const [participantsLoading, setParticipantsLoading] = useState(false);
   const [participantId, setParticipantId] = useState('');
   const [blackListLoading, setBlackListLoading] = useState(false);
+  const [searchData, setSearchData] = useState('');
+  const [filterParticipant, setFilterParticipant] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const campaignsResponse = await axios.get(`${apiURI}/v1/campaign/campaigns-lite`, {
-        withCredentials: true,
-      });
-      setCampaigns(campaignsResponse.data.data);
-    };
-    fetchData();
-  }, []);
-
-  const fetchCampaignParticipants = async () => {
-    if (campaignId) {
+    const fetchCampaignParticipants = async () => {
       setParticipantsLoading(true);
       const { data } = await axios.get(
-        `${apiURI}/v1/participant/campaign-participants?nonZeroScore=true&campaignId=${campaignId}`,
+        `${apiURI}/v1/participant/campaign-participants?nonZeroScore=true&campaignId=${id}`,
         {
           withCredentials: true,
         },
       );
       setParticipants(data.data.items);
       setParticipantsLoading(false);
-    }
-  };
+    };
+    fetchCampaignParticipants();
+  }, [id]);
+
+  useEffect(() => {
+    const getFilteredParticipants = () => {
+      // debugger;
+      if (!searchData) return setFilterParticipant(participants);
+      const filteredParticipants = participants.filter(
+        (participant: Participant) =>
+          participant.user.profile.username.toLowerCase().includes(searchData.toLowerCase()) ||
+          participant.user.email.toLowerCase().includes(searchData.toLowerCase()),
+      );
+      setFilterParticipant(filteredParticipants);
+    };
+    getFilteredParticipants();
+  }, [searchData, participants]);
 
   // Blacklist a participant
   const blackListParticpant = async (participantId: string) => {
@@ -61,11 +70,13 @@ const CampaignDetails: React.FC = () => {
     setBlackListLoading(false);
   };
 
-  // Get campaign id from AutoCompleteDropDown
-  const getCampaignId = (id: string) => {
-    setCamapignId(id);
+  // Search field
+  const handleSearchField = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchData(e.target.value);
+    if (!e.target.value) {
+      setSearchData('');
+    }
   };
-  useEffectSkipFirst(fetchCampaignParticipants, [campaignId]);
 
   if (participantsLoading) {
     return (
@@ -77,12 +88,26 @@ const CampaignDetails: React.FC = () => {
 
   return (
     <div>
-      <h1>All Campaign List</h1>
-      <div className="w-4/5">
-        <AutoCompleteDropDown options={campaigns} label="Campaign" getCampaignId={(id) => getCampaignId(id || '')} />
+      <div className="flex justify-start text-center cursor-pointer p-2" onClick={() => push('/dashboard/campaigns')}>
+        <div className="flex items-center">
+          <IoChevronBackOutline />
+        </div>
+        <p>Back</p>
       </div>
-      <div className="mt-8">
-        <h1>Participant Table</h1>
+      <div className="px-6">
+        <h2 className="text-blue-800 text-2xl">Participant List</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-blue-800">{state?.campaignName}</h2>
+          <input
+            type="text"
+            name="search"
+            value={searchData}
+            className=" border-2 p-1 rounded w-64 h-10"
+            placeholder="Search by username or email"
+            onChange={handleSearchField}
+          />
+        </div>
+
         <div className={tableStyles.tableWrapper}>
           <table className={tableStyles.table}>
             <thead>
@@ -95,8 +120,9 @@ const CampaignDetails: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {participants &&
-                participants.map((participant: Participant) => (
+              {!filterParticipant.length && <p className="p-2">No participant found for this campaign.</p>}
+              {filterParticipant &&
+                filterParticipant.map((participant: Participant) => (
                   <tr className={tableStyles.tableBodyRow} key={participant.id}>
                     <td className={tableStyles.tableColumn}>{participant.user.profile.username}</td>
                     <td className={tableStyles.tableColumn}>{participant.user.email}</td>
