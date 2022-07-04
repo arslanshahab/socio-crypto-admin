@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { FC, useState } from 'react';
 import { apiURI } from '../../clients/raiinmaker-api';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { Campaign } from '../../types';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
@@ -15,6 +15,7 @@ type State = {
 const CampaignDetails: FC = () => {
   const { id }: { id: string } = useParams();
   const { state }: { state: State } = useLocation();
+  const { push } = useHistory();
   const { campaign, isAudit } = state;
   const [submitLoading, setSubmitLoading] = useState(false);
   const [rejectLoading, setRejectLoading] = useState(false);
@@ -81,10 +82,24 @@ const CampaignDetails: FC = () => {
         )}
         {isAudit && (
           <div className="flex justify-evenly items-center  shadow h-12">
-            <CustomButton className={buttonStyles.secondaryButton} onClick={handleDelete} loading={rejectLoading}>
+            <CustomButton
+              className={buttonStyles.secondaryButton}
+              onClick={() => {
+                handleDelete();
+                push('/dashboard/admin/audit-campaigns');
+              }}
+              loading={rejectLoading}
+            >
               Reject
             </CustomButton>
-            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSubmit} loading={submitLoading}>
+            <CustomButton
+              className={buttonStyles.buttonPrimary}
+              onClick={() => {
+                handleSubmit();
+                push('/dashboard/admin/audit-campaigns');
+              }}
+              loading={submitLoading}
+            >
               Submit Audit
             </CustomButton>
           </div>
