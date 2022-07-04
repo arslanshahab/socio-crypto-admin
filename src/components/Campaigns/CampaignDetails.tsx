@@ -5,6 +5,8 @@ import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { Campaign } from '../../types';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
+import { useDispatch } from 'react-redux';
+import { showSuccessAlert } from '../../store/actions/alerts';
 
 type State = {
   campaign: Campaign;
@@ -12,6 +14,7 @@ type State = {
 };
 
 const CampaignDetails: FC = () => {
+  const dispatch = useDispatch();
   const { id }: { id: string } = useParams();
   const { state }: { state: State } = useLocation();
   const { push } = useHistory();
@@ -29,6 +32,7 @@ const CampaignDetails: FC = () => {
         withCredentials: true,
       },
     );
+    dispatch(showSuccessAlert('Campaign audited successfully!'));
     setSubmitLoading(false);
   };
 
@@ -43,6 +47,8 @@ const CampaignDetails: FC = () => {
           withCredentials: true,
         },
       );
+      dispatch(showSuccessAlert('Campaign rejected successfully!'));
+
       setRejectLoading(false);
     }
   };
