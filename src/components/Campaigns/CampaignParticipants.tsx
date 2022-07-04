@@ -35,6 +35,7 @@ const CampaignParticipants: React.FC = () => {
   const [take] = useState(10);
   const [total, setTotal] = useState(0);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     const fetchCampaignParticipants = async () => {
@@ -51,7 +52,7 @@ const CampaignParticipants: React.FC = () => {
       setSearchLoading(false);
     };
     fetchCampaignParticipants();
-  }, [id, filter, skip]);
+  }, [id, filter, skip, reload]);
 
   // Blacklist a participant
   const blacklistParticpant = async (participantId: string) => {
@@ -59,6 +60,7 @@ const CampaignParticipants: React.FC = () => {
     setBlacklistLoading(true);
     await axios.put(`${apiURI}/v1/participant/blacklist/${participantId}`, {}, { withCredentials: true });
     setBlacklistLoading(false);
+    setReload(true);
   };
 
   // Search field
