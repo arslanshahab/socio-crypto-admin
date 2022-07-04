@@ -3,6 +3,7 @@ import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
 import { TabPanel } from '../TabPanel';
 import CampaignParticipants from './CampaignParticipants';
 import CampaignDetails from './CampaignDetails';
+import headingStyles from '../../assets/styles/heading.module.css';
 
 const CampaignTabs: FC = () => {
   const [value, setValue] = useState<number>(0);
@@ -19,9 +20,10 @@ const CampaignTabs: FC = () => {
   }
 
   return (
-    <Fragment>
-      <div>
-        <AppBar position="static" color="transparent">
+    <div className="m-4">
+      <h2 className={headingStyles.heading2Xl}>Campaign Details</h2>
+      <div className="mb-2">
+        <AppBar elevation={1} position="static" color="transparent">
           <Tabs
             TabIndicatorProps={{ style: { backgroundColor: '#1d3faf' } }}
             value={value}
@@ -42,7 +44,7 @@ const CampaignTabs: FC = () => {
           <CampaignParticipants />
         </TabPanel>
       </Paper>
-    </Fragment>
+    </div>
   );
 };
 

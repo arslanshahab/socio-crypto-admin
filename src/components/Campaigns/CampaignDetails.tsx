@@ -5,7 +5,6 @@ import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { Campaign } from '../../types';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
-import headingStyles from '../../assets/styles/heading.module.css';
 
 type State = {
   campaign: Campaign;
@@ -49,62 +48,59 @@ const CampaignDetails: FC = () => {
   };
   return (
     <div className="p-4 w-2/4">
-      <h2 className={`${headingStyles.heading} mb-4`}>Audit Detials:</h2>
-      <div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Name:</h6>
-          <p className="w-3/5 text-sm">{campaign.name}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Total Coin:</h6>
-          <p className="w-3/5 text-sm">{campaign.coiinTotal}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Symbol:</h6>
-          <p className="w-3/5 text-sm">{campaign.symbol}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Audit Status:</h6>
-
-          <p className={`text-red-600  text-sm shadow p-1 rounded inline`}>False</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Description:</h6>
-          <p className="w-3/5 text-sm">{campaign.description}</p>
-        </div>
-        {campaign?.participant.length >= 0 && (
-          <div>
-            <div className="flex p-2 mb-4 shadow">
-              <h6 className="w-2/5">Total Participants:</h6>
-              <p className="w-3/5 text-sm">{campaign?.participant?.length}</p>
-            </div>
-          </div>
-        )}
-        {isAudit && (
-          <div className="flex justify-evenly items-center  shadow h-12">
-            <CustomButton
-              className={buttonStyles.secondaryButton}
-              onClick={() => {
-                handleDelete();
-                push('/dashboard/admin/audit-campaigns');
-              }}
-              loading={rejectLoading}
-            >
-              Reject
-            </CustomButton>
-            <CustomButton
-              className={buttonStyles.buttonPrimary}
-              onClick={() => {
-                handleSubmit();
-                push('/dashboard/admin/audit-campaigns');
-              }}
-              loading={submitLoading}
-            >
-              Submit Audit
-            </CustomButton>
-          </div>
-        )}
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Name:</h6>
+        <p className="w-3/5 text-sm">{campaign.name}</p>
       </div>
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Total Coin:</h6>
+        <p className="w-3/5 text-sm">{campaign.coiinTotal}</p>
+      </div>
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Symbol:</h6>
+        <p className="w-3/5 text-sm">{campaign.symbol}</p>
+      </div>
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Audit Status:</h6>
+
+        <p className={`text-red-600  text-sm shadow p-1 rounded inline`}>False</p>
+      </div>
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Description:</h6>
+        <p className="w-3/5 text-sm">{campaign.description}</p>
+      </div>
+      {campaign?.participant.length >= 0 && (
+        <div>
+          <div className="flex p-2 mb-4 shadow">
+            <h6 className="w-2/5">Total Participants:</h6>
+            <p className="w-3/5 text-sm">{campaign?.participant?.length}</p>
+          </div>
+        </div>
+      )}
+      {isAudit && (
+        <div className="flex justify-evenly items-center  shadow h-12">
+          <CustomButton
+            className={buttonStyles.secondaryButton}
+            onClick={() => {
+              handleDelete();
+              push('/dashboard/admin/audit-campaigns');
+            }}
+            loading={rejectLoading}
+          >
+            Reject
+          </CustomButton>
+          <CustomButton
+            className={buttonStyles.buttonPrimary}
+            onClick={() => {
+              handleSubmit();
+              push('/dashboard/admin/audit-campaigns');
+            }}
+            loading={submitLoading}
+          >
+            Submit Audit
+          </CustomButton>
+        </div>
+      )}
     </div>
   );
 };
