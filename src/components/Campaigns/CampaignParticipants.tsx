@@ -150,7 +150,7 @@ const CampaignParticipants: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <Pagination total={total} skip={skip} take={take} getValue={getValue} />
+      {total > take && <Pagination total={total} skip={skip} take={take} getValue={getValue} />}
     </div>
   );
 };
