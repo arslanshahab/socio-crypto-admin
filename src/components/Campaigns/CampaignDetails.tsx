@@ -32,8 +32,9 @@ const CampaignDetails: FC = () => {
         withCredentials: true,
       },
     );
-    dispatch(showSuccessAlert('Campaign audited successfully!'));
     setSubmitLoading(false);
+    dispatch(showSuccessAlert('Campaign audited successfully!'));
+    push('/dashboard/admin/audit-campaigns');
   };
 
   // Delete campaign
@@ -47,9 +48,9 @@ const CampaignDetails: FC = () => {
           withCredentials: true,
         },
       );
-      dispatch(showSuccessAlert('Campaign rejected successfully!'));
-
       setRejectLoading(false);
+      dispatch(showSuccessAlert('Campaign rejected successfully!'));
+      push('/dashboard/admin/audit-campaigns');
     }
   };
   return (
@@ -85,24 +86,10 @@ const CampaignDetails: FC = () => {
       )}
       {isAudit && (
         <div className="flex justify-evenly items-center  shadow h-12">
-          <CustomButton
-            className={buttonStyles.secondaryButton}
-            onClick={() => {
-              handleDelete();
-              push('/dashboard/admin/audit-campaigns');
-            }}
-            loading={rejectLoading}
-          >
+          <CustomButton className={buttonStyles.secondaryButton} onClick={handleDelete} loading={rejectLoading}>
             Reject
           </CustomButton>
-          <CustomButton
-            className={buttonStyles.buttonPrimary}
-            onClick={() => {
-              handleSubmit();
-              push('/dashboard/admin/audit-campaigns');
-            }}
-            loading={submitLoading}
-          >
+          <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSubmit} loading={submitLoading}>
             Submit Audit
           </CustomButton>
         </div>

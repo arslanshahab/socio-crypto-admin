@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
 import { TabPanel } from '../TabPanel';
 import CampaignParticipants from './CampaignParticipants';
