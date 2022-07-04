@@ -6,16 +6,7 @@ import { apiURI } from '../../clients/raiinmaker-api';
 import Pagination from '../Pagination/Pagination';
 import { useHistory } from 'react-router-dom';
 
-interface Props {
-  location?: {
-    state: {
-      reload: boolean;
-      deletedCampaignId: string;
-    };
-  };
-}
-
-export const CampaignAuditList: React.FC<Props> = () => {
+export const CampaignAuditList: React.FC = () => {
   const { push } = useHistory();
   const [campaigns, setCampaigns] = useState<CampaignTypes>();
   const [skip, setSkip] = useState(0);
