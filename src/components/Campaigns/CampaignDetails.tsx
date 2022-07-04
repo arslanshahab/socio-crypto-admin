@@ -19,7 +19,7 @@ type Participant = {
   };
   participationScore: string;
   createdAt: string;
-  blackList: boolean;
+  blacklist: boolean;
 };
 
 const CampaignDetails: React.FC = () => {
@@ -29,7 +29,7 @@ const CampaignDetails: React.FC = () => {
   const [participants, setParticipants] = useState([]);
   const [participantsLoading, setParticipantsLoading] = useState(false);
   const [participantId, setParticipantId] = useState('');
-  const [blackListLoading, setBlackListLoading] = useState(false);
+  const [blacklistLoading, setBlacklistLoading] = useState(false);
   const [searchData, setSearchData] = useState('');
   const [filterParticipant, setFilterParticipant] = useState([]);
 
@@ -65,9 +65,9 @@ const CampaignDetails: React.FC = () => {
   // Blacklist a participant
   const blackListParticpant = async (participantId: string) => {
     setParticipantId(participantId);
-    setBlackListLoading(true);
+    setBlacklistLoading(true);
     await axios.put(`${apiURI}/v1/participant/blacklist/${participantId}`, {}, { withCredentials: true });
-    setBlackListLoading(false);
+    setBlacklistLoading(false);
   };
 
   // Search field
@@ -132,11 +132,11 @@ const CampaignDetails: React.FC = () => {
                     <td className={tableStyles.tableColumn}>{participant.participationScore}</td>
                     <td className={tableStyles.tableColumn}>{new Date(participant.createdAt).toDateString()}</td>
                     <td className={tableStyles.tableColumn}>
-                      {!participant.blackList && (
+                      {!participant.blacklist && (
                         <CustomButton
                           className={buttonStyle.secondaryButton}
                           onClick={() => blackListParticpant(participant.id)}
-                          loading={blackListLoading && participantId === participant.id}
+                          loading={blacklistLoading && participantId === participant.id}
                         >
                           Black List
                         </CustomButton>
