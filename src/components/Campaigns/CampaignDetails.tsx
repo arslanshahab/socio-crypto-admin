@@ -1,162 +1,94 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { apiURI } from '../../clients/raiinmaker-api';
-import tableStyles from '../../assets/styles/table.module.css';
+import { useParams, useLocation } from 'react-router-dom';
+import { Campaign } from '../../types';
 import CustomButton from '../CustomButton';
-import buttonStyle from '../../assets/styles/customButton.module.css';
-import { CircularProgress } from '@material-ui/core';
-import { useParams, useLocation, useHistory } from 'react-router-dom';
-import headingStyles from '../../assets/styles/heading.module.css';
 import buttonStyles from '../../assets/styles/customButton.module.css';
-import Pagination from '../Pagination/Pagination';
+import headingStyles from '../../assets/styles/heading.module.css';
 
-type Participant = {
-  id: string;
-  user: {
-    email: string;
-    profile: {
-      username: string;
-    };
-  };
-  participationScore: string;
-  createdAt: string;
-  blacklist: boolean;
+type State = {
+  campaign: Campaign;
+  isAudit: boolean;
 };
 
-const CampaignDetails: React.FC = () => {
+const CampaignDetails: FC = () => {
   const { id }: { id: string } = useParams();
-  const { state }: { state: { campaignName: string } } = useLocation();
-  const { push } = useHistory();
-  const [participants, setParticipants] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [participantId, setParticipantId] = useState('');
-  const [blacklistLoading, setBlacklistLoading] = useState(false);
-  const [searchData, setSearchData] = useState('');
-  const [filter, setFilter] = useState('');
-  const [skip, setSkip] = useState(0);
-  const [take] = useState(10);
-  const [total, setTotal] = useState(0);
-  const [searchLoading, setSearchLoading] = useState(false);
+  const { state }: { state: State } = useLocation();
+  const { campaign, isAudit } = state;
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [rejectLoading, setRejectLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchCampaignParticipants = async () => {
-      filter ? setSearchLoading(true) : setIsLoading(true);
-      const { data } = await axios.get(
-        `${apiURI}/v1/participant/campaign-all-participants?skip=${skip}&take=${take}&campaignId=${id}&filter=${filter}`,
+  // Audit campaign
+  const handleSubmit = async () => {
+    setSubmitLoading(true);
+    await axios.post(
+      `${apiURI}/v1/campaign/payout-campaign-rewards?campaignId=${id}`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
+    setSubmitLoading(false);
+  };
+
+  // Delete campaign
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to reject this campaign?')) {
+      setRejectLoading(true);
+      await axios.post(
+        `${apiURI}/v1/campaign/delete-campaign?campaignId=${id}`,
+        {},
         {
           withCredentials: true,
         },
       );
-      setParticipants(data.data.items);
-      setTotal(data.data.count);
-      setIsLoading(false);
-      setSearchLoading(false);
-    };
-    fetchCampaignParticipants();
-  }, [id, filter, skip]);
-
-  // Blacklist a participant
-  const blacklistParticpant = async (participantId: string) => {
-    setParticipantId(participantId);
-    setBlacklistLoading(true);
-    await axios.put(`${apiURI}/v1/participant/blacklist/${participantId}`, {}, { withCredentials: true });
-    setBlacklistLoading(false);
-  };
-
-  // Search field
-  const handleSearchField = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchData(e.target.value);
-    if (!e.target.value) {
-      setFilter('');
+      setRejectLoading(false);
     }
   };
-
-  // Search record
-  const handleSearchRecord = () => {
-    setFilter(searchData);
-  };
-
-  // Handle Key Press
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      setFilter(searchData);
-    }
-  };
-
-  // Take paginated value from Pagination component
-  const getValue = (skip: number) => {
-    setSkip(skip);
-  };
-
-  if (isLoading) {
-    return (
-      <div className={tableStyles.loading}>
-        <CircularProgress />
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <div
-        className="flex justify-start text-center cursor-pointer p-2 w-20"
-        onClick={() => push('/dashboard/campaigns')}
-      ></div>
-      <div className="px-6">
-        <h2 className="text-blue-800 text-2xl">Participant List</h2>
-        <div className="flex justify-between items-center">
-          <h2 className="text-blue-800">{state?.campaignName}</h2>
-          <input
-            type="text"
-            name="search"
-            value={searchData}
-            className=" border-2 p-1 rounded w-64 h-10"
-            placeholder="Search by username or email"
-            onChange={handleSearchField}
-            onKeyPress={handleKeyPress}
-          />
-          <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSearchRecord} loading={searchLoading}>
-            Search
-          </CustomButton>
+    <div className="p-4 w-2/4">
+      <h2 className={`${headingStyles.heading} mb-4`}>Audit Detials:</h2>
+      <div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Name:</h6>
+          <p className="w-3/5 text-sm">{campaign.name}</p>
         </div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Total Coin:</h6>
+          <p className="w-3/5 text-sm">{campaign.coiinTotal}</p>
+        </div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Symbol:</h6>
+          <p className="w-3/5 text-sm">{campaign.symbol}</p>
+        </div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Audit Status:</h6>
 
-        <div className={tableStyles.tableWrapper}>
-          <table className={tableStyles.table}>
-            <thead>
-              <tr className={tableStyles.tableHeadRow}>
-                <th className={tableStyles.tableColumn}>Username</th>
-                <th className={tableStyles.tableColumn}>Email</th>
-                <th className={tableStyles.tableColumn}>Participation Score</th>
-                <th className={tableStyles.tableColumn}>Participation Date</th>
-                <th className={tableStyles.tableColumn}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {!participants.length && <p className="p-2">No participant found for this campaign.</p>}
-              {participants &&
-                participants.map((participant: Participant) => (
-                  <tr className={tableStyles.tableBodyRow} key={participant.id}>
-                    <td className={tableStyles.tableColumn}>{participant.user.profile.username}</td>
-                    <td className={tableStyles.tableColumn}>{participant.user.email}</td>
-                    <td className={tableStyles.tableColumn}>{participant.participationScore}</td>
-                    <td className={tableStyles.tableColumn}>{new Date(participant.createdAt).toDateString()}</td>
-                    <td className={tableStyles.tableColumn}>
-                      {!participant.blacklist && (
-                        <CustomButton
-                          className={buttonStyle.secondaryButton}
-                          onClick={() => blacklistParticpant(participant.id)}
-                          loading={blacklistLoading && participantId === participant.id}
-                        >
-                          Blacklist
-                        </CustomButton>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <p className={`text-red-600  text-sm shadow p-1 rounded inline`}>False</p>
         </div>
-        <Pagination total={total} skip={skip} take={take} getValue={getValue} />
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Description:</h6>
+          <p className="w-3/5 text-sm">{campaign.description}</p>
+        </div>
+        {campaign?.participant.length >= 0 && (
+          <div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Total Participants:</h6>
+              <p className="w-3/5 text-sm">{campaign?.participant?.length}</p>
+            </div>
+          </div>
+        )}
+        {isAudit && (
+          <div className="flex justify-evenly items-center  shadow h-12">
+            <CustomButton className={buttonStyles.secondaryButton} onClick={handleDelete} loading={rejectLoading}>
+              Reject
+            </CustomButton>
+            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSubmit} loading={submitLoading}>
+              Submit Audit
+            </CustomButton>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -48,7 +48,7 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
   return (
     <tr
       className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
-      onClick={() => history.push(`/dashboard/campaigns/${campaign.id}`, { campaignName: campaign.name })}
+      onClick={() => history.push(`/dashboard/campaigns/${campaign.id}`, { campaign, isAudit: false })}
     >
       <td className="px-7 py-5 text-left capitalize">{campaign.name}</td>
       <td className="px-7 py-5 text-left">{formatFloat(budget)}</td>

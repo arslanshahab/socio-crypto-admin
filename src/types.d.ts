@@ -440,6 +440,7 @@ export interface Campaign {
   campaignTemplates: CampaignTemplateResponse[];
   campaign_media: CampaignMediaResponse[];
   campaign_template: CampaignTemplateResponse[];
+  participant: Participant[];
 }
 
 export interface CampaignCreationResponse {
