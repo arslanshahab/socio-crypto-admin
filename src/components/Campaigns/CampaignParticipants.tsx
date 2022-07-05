@@ -46,7 +46,7 @@ const CampaignParticipants: React.FC = () => {
     const fetchCampaignParticipants = async () => {
       filter ? setSearchLoading(true) : setIsLoading(true);
       const { data } = await axios.get(
-        `${apiURI}/v1/participant/campaign-all-participants?skip=${skip}&take=${take}&campaignId=${id}&filter=${filter}`,
+        `${apiURI}/v1/participant/all?skip=${skip}&take=${take}&campaignId=${id}&filter=${filter}`,
         {
           withCredentials: true,
         },
