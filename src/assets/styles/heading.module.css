@@ -13,6 +13,9 @@
 .headingXs {
   @apply text-left text-blue-800 text-sm font-semibold;
 }
+.heading {
+  @apply text-left text-blue-800 text-xl font-semibold;
+}
 .paymentHeadingWrapper {
   @apply flex justify-between items-center border-b-2 mb-6 w-full;
 }
