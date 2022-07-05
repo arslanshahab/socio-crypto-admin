@@ -12,13 +12,18 @@ import Pagination from '../Pagination/Pagination';
 
 type Participant = {
   id: string;
-  user: {
-    email: string;
-    profile: {
-      username: string;
-    };
-  };
-  participationScore: string;
+  userId: string;
+  username: string;
+  email: string;
+  twitterUsername: string;
+  campaignName: string;
+  lastLogin: string;
+  selfPostCount: number;
+  participationScore: number;
+  shareScore: number;
+  totalLikes: number;
+  totalShares: number;
+  likeScore: number;
   createdAt: string;
   blacklist: boolean;
 };
@@ -46,7 +51,7 @@ const CampaignParticipants: React.FC = () => {
           withCredentials: true,
         },
       );
-      setParticipants(data.data.items);
+      setParticipants(data.data.participants);
       setTotal(data.data.count);
       setIsLoading(false);
       setSearchLoading(false);
@@ -122,8 +127,16 @@ const CampaignParticipants: React.FC = () => {
             <tr className={tableStyles.tableHeadRow}>
               <th className={tableStyles.tableColumn}>Username</th>
               <th className={tableStyles.tableColumn}>Email</th>
+              <th className={tableStyles.tableColumn}>Twitter Username</th>
+              <th className={tableStyles.tableColumn}>Campaign Name</th>
+              <th className={tableStyles.tableColumn}>Post Count</th>
+              <th className={tableStyles.tableColumn}>Like Score</th>
+              <th className={tableStyles.tableColumn}>Share Score</th>
               <th className={tableStyles.tableColumn}>Participation Score</th>
-              <th className={tableStyles.tableColumn}>Participation Date</th>
+              <th className={tableStyles.tableColumn}>Total Likes</th>
+              <th className={tableStyles.tableColumn}>Total Shares</th>
+              <th className={tableStyles.tableColumn}>Created At</th>
+              <th className={tableStyles.tableColumn}>Last Login</th>
               <th className={tableStyles.tableColumn}>Action</th>
             </tr>
           </thead>
@@ -132,10 +145,18 @@ const CampaignParticipants: React.FC = () => {
             {participants &&
               participants.map((participant: Participant) => (
                 <tr className={tableStyles.tableBodyRow} key={participant.id}>
-                  <td className={tableStyles.tableColumn}>{participant.user.profile.username}</td>
-                  <td className={tableStyles.tableColumn}>{participant.user.email}</td>
+                  <td className={tableStyles.tableColumn}>{participant.username}</td>
+                  <td className={tableStyles.tableColumn}>{participant.email}</td>
+                  <td className={tableStyles.tableColumn}>{participant.twitterUsername}</td>
+                  <td className={tableStyles.tableColumn}>{participant.campaignName}</td>
+                  <td className={tableStyles.tableColumn}>{participant.selfPostCount}</td>
+                  <td className={tableStyles.tableColumn}>{participant.likeScore}</td>
+                  <td className={tableStyles.tableColumn}>{participant.shareScore}</td>
                   <td className={tableStyles.tableColumn}>{participant.participationScore}</td>
+                  <td className={tableStyles.tableColumn}>{participant.totalLikes}</td>
+                  <td className={tableStyles.tableColumn}>{participant.totalShares}</td>
                   <td className={tableStyles.tableColumn}>{new Date(participant.createdAt).toDateString()}</td>
+                  <td className={tableStyles.tableColumn}>{new Date(participant.lastLogin).toDateString()}</td>
                   <td className={tableStyles.tableColumn}>
                     {!participant.blacklist && (
                       <CustomButton
