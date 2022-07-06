@@ -111,7 +111,7 @@ const CampaignDetails: FC = () => {
         </div>
       )}
       <div className="flex p-2 mb-4 shadow">
-        <h6 className="w-2/5">Paidout Crypto:</h6>
+        <h6 className="w-2/5">Paid Out Crypto:</h6>
         <p className="w-3/5 text-sm">{cryptoLoading ? 'Loading...' : crypto}</p>
       </div>
       {isAudit && (
