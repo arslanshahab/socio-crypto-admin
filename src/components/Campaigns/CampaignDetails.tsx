@@ -28,7 +28,7 @@ const CampaignDetails: FC = () => {
     try {
       const fetchPaidCrypto = async () => {
         setCryptoLoading(true);
-        const { data } = await axios.get(`${apiURI}/v1/campaign/crypto/${id}`, {
+        const { data } = await axios.get(`${apiURI}/v1/campaign/payout/${id}`, {
           withCredentials: true,
         });
         setCrypto(data.data.totalCrypto);
