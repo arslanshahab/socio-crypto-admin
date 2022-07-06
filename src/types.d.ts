@@ -441,6 +441,8 @@ export interface Campaign {
   campaign_media: CampaignMediaResponse[];
   campaign_template: CampaignTemplateResponse[];
   participant: Participant[];
+  beginDate: string;
+  endDate: string;
 }
 
 export interface CampaignCreationResponse {

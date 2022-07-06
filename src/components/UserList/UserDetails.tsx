@@ -11,6 +11,7 @@ import RedemptionDetials from './RedemptionDetials';
 import UserInfo from './UserInfo';
 import { RedemptionTypes, CurrencyTypes } from '../../types';
 import TransferCoiin from './TransferCoiin';
+import Statistics from './Statistics';
 
 const UserDetails: React.FC = () => {
   const { id }: { id: string } = useParams();
@@ -66,6 +67,7 @@ const UserDetails: React.FC = () => {
             <Tab label="Redemption Details" {...a11yProps(2)} className="focus:outline-none" />
             <Tab label="Transaction History" {...a11yProps(3)} className="focus:outline-none" />
             <Tab label="Transfer Coiin" {...a11yProps(4)} className="focus:outline-none" />
+            <Tab label="Statistics" {...a11yProps(5)} className="focus:outline-none" />
           </Tabs>
         </AppBar>
       </div>
@@ -85,6 +87,9 @@ const UserDetails: React.FC = () => {
         </TabPanel>
         <TabPanel value={value} index={4}>
           <TransferCoiin userId={id} />
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          <Statistics />
         </TabPanel>
       </Paper>
     </>
