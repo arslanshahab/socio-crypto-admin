@@ -26,7 +26,7 @@ const Statistics: FC = () => {
     try {
       const fetchUserStatistics = async () => {
         setIsLoading(true);
-        const { data } = await axios.get(`${apiURI}/v1/user/statistics?userId=${id}`, { withCredentials: true });
+        const { data } = await axios.get(`${apiURI}/v1/participant/statistics?userId=${id}`, { withCredentials: true });
         setCampaignStatistics(data.data);
         setIsLoading(false);
       };
