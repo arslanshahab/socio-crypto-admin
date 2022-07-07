@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { Campaign } from '../../types';
@@ -21,6 +21,24 @@ const CampaignDetails: FC = () => {
   const { campaign, isAudit } = state;
   const [submitLoading, setSubmitLoading] = useState(false);
   const [rejectLoading, setRejectLoading] = useState(false);
+  const [crypto, setCrypto] = useState('');
+  const [cryptoLoading, setCryptoLoading] = useState(false);
+
+  useEffect(() => {
+    try {
+      const fetchPaidCrypto = async () => {
+        setCryptoLoading(true);
+        const { data } = await axios.get(`${apiURI}/v1/campaign/payout/${id}`, {
+          withCredentials: true,
+        });
+        setCrypto(data.data.totalCrypto);
+        setCryptoLoading(false);
+      };
+      fetchPaidCrypto();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   // Audit campaign
   const handleSubmit = async () => {
@@ -73,6 +91,14 @@ const CampaignDetails: FC = () => {
         <p className={`text-red-600  text-sm shadow p-1 rounded inline`}>False</p>
       </div>
       <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Start Date:</h6>
+        <p className="w-3/5 text-sm">{new Date(campaign.beginDate).toDateString()}</p>
+      </div>
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">End Date:</h6>
+        <p className="w-3/5 text-sm">{new Date(campaign.endDate).toDateString()}</p>
+      </div>
+      <div className="flex p-2 mb-4 shadow">
         <h6 className="w-2/5">Description:</h6>
         <p className="w-3/5 text-sm">{campaign.description}</p>
       </div>
@@ -84,6 +110,10 @@ const CampaignDetails: FC = () => {
           </div>
         </div>
       )}
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Paid Out Crypto:</h6>
+        <p className="w-3/5 text-sm">{cryptoLoading ? 'Loading...' : crypto}</p>
+      </div>
       {isAudit && (
         <div className="flex justify-evenly items-center  shadow h-12">
           <CustomButton className={buttonStyles.secondaryButton} onClick={handleDelete} loading={rejectLoading}>
