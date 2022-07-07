@@ -4,6 +4,7 @@ import { TabPanel } from '../TabPanel';
 import CampaignParticipants from './CampaignParticipants';
 import CampaignDetails from './CampaignDetails';
 import headingStyles from '../../assets/styles/heading.module.css';
+import SocialPostList from './SocialPostList';
 
 const CampaignTabs: FC = () => {
   const [value, setValue] = useState<number>(0);
@@ -32,6 +33,7 @@ const CampaignTabs: FC = () => {
           >
             <Tab label="Details" {...a11yProps(0)} className="focus:outline-none" />
             <Tab label="Participants" {...a11yProps(1)} className="focus:outline-none" />
+            <Tab label="Social Posts" {...a11yProps(2)} className="focus:outline-none" />
           </Tabs>
         </AppBar>
       </div>
@@ -42,6 +44,9 @@ const CampaignTabs: FC = () => {
         </TabPanel>
         <TabPanel value={value} index={1}>
           <CampaignParticipants />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <SocialPostList />
         </TabPanel>
       </Paper>
     </div>
