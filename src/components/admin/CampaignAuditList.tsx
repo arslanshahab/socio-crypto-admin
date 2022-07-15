@@ -1,36 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress } from '@material-ui/core';
 import { Campaign, CampaignTypes } from '../../types';
-import GenericModal from './../GenericModal';
-import { CampaignAudit } from './CampaignAudit';
 import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
 import Pagination from '../Pagination/Pagination';
+import { useHistory } from 'react-router-dom';
 
-interface Props {
-  location?: {
-    state: {
-      reload: boolean;
-      deletedCampaignId: string;
-    };
-  };
-}
-
-export const CampaignAuditList: React.FC<Props> = () => {
-  const [progressModal, showProgressModal] = useState(false);
-  const [auditDetails, setAuditDetails] = useState();
+export const CampaignAuditList: React.FC = () => {
+  const { push } = useHistory();
   const [campaigns, setCampaigns] = useState<CampaignTypes>();
   const [skip, setSkip] = useState(0);
   const [take] = useState(10);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [refetch, setRefetch] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const campaignsResponse = await axios.get(
-        `${apiURI}/v1/campaign?skip=${skip}&take=${take}&state=ALL&auditStatus=DEFAULT`,
+        `${apiURI}/v1/campaign?skip=${skip}&take=${take}&state=CLOSED&auditStatus=DEFAULT`,
         {
           withCredentials: true,
         },
@@ -40,21 +28,7 @@ export const CampaignAuditList: React.FC<Props> = () => {
       setLoading(false);
     };
     fetchData();
-  }, [refetch]);
-
-  const handleClick = (data: any) => {
-    try {
-      showProgressModal(true);
-      setAuditDetails(data);
-    } catch (e) {
-      showProgressModal(false);
-    }
-  };
-
-  const handleCampaignAuditModal = (value: boolean) => {
-    showProgressModal(value);
-    setRefetch(!refetch);
-  };
+  }, []);
 
   // Take paginated value from Pagination component
   const getValue = (skip: number) => {
@@ -70,16 +44,6 @@ export const CampaignAuditList: React.FC<Props> = () => {
 
   return (
     <div className="p-8">
-      <GenericModal
-        open={progressModal}
-        onClose={() => showProgressModal(false)}
-        persist={false}
-        size="small"
-        showCloseIcon={true}
-      >
-        <CampaignAudit auditDetails={auditDetails} handleCampaignAuditModal={handleCampaignAuditModal} />
-      </GenericModal>
-
       {campaigns && campaigns?.items?.length <= 0 ? (
         'There is no campaign for auditing'
       ) : (
@@ -96,15 +60,15 @@ export const CampaignAuditList: React.FC<Props> = () => {
               </thead>
               <tbody>
                 {campaigns &&
-                  campaigns.items.map((x: Campaign) => (
+                  campaigns.items.map((campaign: Campaign) => (
                     <tr
                       className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
-                      key={x.id}
-                      onClick={() => handleClick(x)}
+                      key={campaign.id}
+                      onClick={() => push(`/dashboard/campaigns/${campaign.id}`, { campaign, isAudit: true })}
                     >
-                      <td className="px-7 py-5 text-left capitalize">{x.name}</td>
+                      <td className="px-7 py-5 text-left capitalize">{campaign.name}</td>
                       <td className="px-7 py-5 text-left">False</td>
-                      <td className="px-7 py-5 text-left">{new Date(parseInt(x.endDate)).toDateString()}</td>
+                      <td className="px-7 py-5 text-left">{new Date(campaign.endDate).toDateString()}</td>
                     </tr>
                   ))}
               </tbody>

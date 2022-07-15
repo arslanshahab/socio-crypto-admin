@@ -1,54 +1,34 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { CampaignListVars, GetFundingWalletResponse, PaginatedCampaignResults } from '../types';
-import { LIST_CAMPAIGNS } from '../operations/queries/campaign';
+import React, { useEffect, useState } from 'react';
+import { GetFundingWalletResponse } from '../types';
 import { CircularProgress } from '@material-ui/core';
 import { RefetchWallet } from './PaymentsAccount';
 import { capitalize } from '../helpers/formatter';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
+import axios from 'axios';
+import { apiURI } from '../clients/raiinmaker-api';
 
 interface Props {
   fundingWallet: GetFundingWalletResponse | undefined;
   refetchWallet: RefetchWallet;
 }
 
-export const CampaignStatusList: React.FC<Props> = ({ fundingWallet, refetchWallet }) => {
-  const { loading, data: campaigns } = useQuery<PaginatedCampaignResults, CampaignListVars>(LIST_CAMPAIGNS, {
-    variables: {
-      skip: 0,
-      take: 10,
-      state: 'ALL',
-      status: 'APPROVED',
-    },
-  });
-  const [open, setOpen] = useState(false);
+export const CampaignStatusList: React.FC<Props> = () => {
+  const [campaigns, setCampaigns] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // const renderCampaignList = () => {
-  //   let campaignList: JSX.Element[] = [];
-  //   if (loading) {
-  //     return <div />;
-  //   } else if (campaigns && campaigns.listCampaigns) {
-  //     campaignList = campaigns.listCampaigns.results.map((campaign, index) => {
-  //       return (
-  //         <CampaignStatusCard
-  //           key={index}
-  //           campaign={campaign}
-  //           fundingWallet={fundingWallet}
-  //           refetchWallet={refetchWallet}
-  //         />
-  //       );
-  //     });
-  //   }
-  //   if (campaignList.length === 0) {
-  //     return (
-  //       <Grid item className="list-item">
-  //         <Typography component="div">No campaigns have been created yet</Typography>
-  //       </Grid>
-  //     );
-  //   }
-  //   return campaignList;
-  // };
-  if (loading) {
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const { data } = await axios.get(`${apiURI}/v1/campaign?skip=0&take=1000&state=ALL&status=APPROVED`, {
+        withCredentials: true,
+      });
+      setCampaigns(data.data.items);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  if (isLoading) {
     return (
       <div className={styles.loading}>
         <CircularProgress />
@@ -58,36 +38,6 @@ export const CampaignStatusList: React.FC<Props> = ({ fundingWallet, refetchWall
 
   return (
     <div>
-      {/* {loading ? (
-        <div />
-      ) : (
-        <Grid container direction={'column'}>
-          <PurchaseDialog open={open} setOpen={setOpen} refetchWallet={refetchWallet} />
-          <Grid container item className="campaign-header" direction={'row'}>
-            <Grid item xs={2}>
-              <Typography component={'div'} variant={'h5'}>
-                Campaigns
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography component={'div'} variant={'h6'}>
-                Status
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography component={'div'} variant={'h6'}>
-                Currency
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography component={'div'} variant={'h6'}>
-                Budget
-              </Typography>
-            </Grid>
-          </Grid>
-          {renderCampaignList()}
-        </Grid>
-      )} */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
           <thead>
@@ -99,7 +49,7 @@ export const CampaignStatusList: React.FC<Props> = ({ fundingWallet, refetchWall
             </tr>
           </thead>
           <tbody>
-            {campaigns?.listCampaignsV2?.results?.map((campaign: any, index) => {
+            {campaigns?.map((campaign: any, index) => {
               return (
                 <tr className={styles.tableBodyRow} key={index}>
                   <td className={styles.withdrawColumn}>{campaign.name}</td>

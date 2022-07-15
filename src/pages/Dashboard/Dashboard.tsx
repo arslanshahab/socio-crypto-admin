@@ -20,12 +20,12 @@ import { DashboardHome } from '../../components/DashboardHome';
 import NewCampaignPage from '../NewCampaign';
 import { useDispatch } from 'react-redux';
 import { showAppLoader } from '../../store/actions/settings';
-import { showErrorAlert } from '../../store/actions/alerts';
 import EditCampaignPage from '../EditCampaign/EditCampaign';
 import { logoutUser } from '../../store/actions/user';
 import CoiinLogo from '../../assets/png/coiin.png';
 import UserList from '../../components/UserList/UserList';
 import UserDetails from '../../components/UserList/UserDetails';
+import CampaignTabs from '../../components/Campaigns/CampaignTabs';
 
 const Dashboard: React.FC = (props) => {
   const history = useHistory();
@@ -33,17 +33,15 @@ const Dashboard: React.FC = (props) => {
 
   const handleLogout = async () => {
     dispatch(showAppLoader({ flag: true, message: 'Ending your session!' }));
-    const res = await sessionLogout();
-    if (res.status === 200) {
-      await graphqlClient.clearStore();
-      history.push('/');
-      dispatch(logoutUser());
-      dispatch(showAppLoader({ flag: false, message: '' }));
-    } else {
-      console.log('ERROR: ', res.body);
-      dispatch(showAppLoader({ flag: false, message: '' }));
-      dispatch(showErrorAlert('There was an error logging while you out'));
+    try {
+      await sessionLogout();
+    } catch (e) {
+      console.log(e);
     }
+    await graphqlClient.clearStore();
+    history.push('/');
+    dispatch(logoutUser());
+    dispatch(showAppLoader({ flag: false, message: '' }));
   };
 
   return (
@@ -98,6 +96,9 @@ const Dashboard: React.FC = (props) => {
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/admin/userDetails/:id'}>
               <UserDetails {...props} />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/campaigns/:id'}>
+              <CampaignTabs />
             </ProtectedRoute>
           </Switch>
         </Box>

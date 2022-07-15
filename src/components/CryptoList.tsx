@@ -13,6 +13,8 @@ import circleStyles from './PendingCampaigns/pendingCampaigns.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
 import commonStyles from '../assets/styles/common.module.css';
 import PrimaryCard from './CryptoCard/PrimaryCard';
+import axios from 'axios';
+import { apiURI } from '../clients/raiinmaker-api';
 
 interface Props {
   data: GetFundingWalletResponse | undefined;
@@ -34,32 +36,45 @@ const triggerReducer = (
   }
 };
 
-export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) => {
+export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
   const { data: currencyData, loading } = useQuery<ListSupportedCryptoResults>(LIST_SUPPORTED_CRYPTO);
   const { data: currencyList } = useQuery<ListCurrenciesResult>(LIST_CURRENCIES, { fetchPolicy: 'network-only' });
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
   const [search, setSearch] = useState('');
   const [filterCurrency, dispatch] = useReducer(triggerReducer, []);
+  const [fundingWallet, setFundingWallet] = useState([]);
+  const [isWalletLoading, setIsWalletLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsWalletLoading(true);
+      const { data } = await axios(`${apiURI}/v1/funding-wallet`, { withCredentials: true });
+      setFundingWallet(data.data);
+      setIsWalletLoading(false);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (!search) {
-      dispatch({ type: 'CHANGE_SEARCH', payload: data?.getFundingWallet?.currency });
+      dispatch({ type: 'CHANGE_SEARCH', payload: fundingWallet });
     } else {
-      const filter = data?.getFundingWallet?.currency.filter((x: any) => {
+      const filter = fundingWallet.filter((x: any) => {
         return x.type.toLowerCase().includes(search.toLowerCase());
       });
       dispatch({ type: 'CHANGE_SEARCH', payload: filter });
     }
-  }, [search, data]);
+  }, [search, fundingWallet]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const toolTipMap = {
-    title: 'Currency Type',
+    title: 'Token',
     value: 'Balance',
+    network: 'Network',
   };
   return (
     <div className={commonStyles.sectionMinHeight}>
@@ -101,23 +116,28 @@ export const CryptoList: React.FC<Props> = ({ data, isLoading, refetchWallet }) 
           </CustomButton>
         </div>
       </div>
-      {isLoading ? (
+      {isWalletLoading ? (
         <div className={circleStyles.loading}>
           <CircularProgress />
         </div>
       ) : (
         <div>
-          {data && filterCurrency.currency ? (
+          {fundingWallet && filterCurrency.currency ? (
             <div className="flex flex-wrap gap-4">
               {filterCurrency.currency.map(
-                (currency: { type: string; symbolImageUrl: string; balance: number; id: string }, index: number) => (
+                (
+                  currency: { type: string; symbolImageUrl: string; balance: number; id: string; network: string },
+                  index: number,
+                ) => (
                   <PrimaryCard
                     key={index}
                     title={currency.type}
+                    network={currency.network}
                     value={currency.balance}
                     icon={currency.symbolImageUrl}
                     tooltipTitle={toolTipMap.title}
                     tooltipValue={toolTipMap.value}
+                    tooltipNetwork={toolTipMap.network}
                     id={currency.id}
                   />
                 ),

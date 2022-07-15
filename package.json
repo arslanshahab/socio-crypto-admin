@@ -26,6 +26,7 @@
     "dayjs": "^1.9.1",
     "firebase": "^7.21.1",
     "graphql": "^15.3.0",
+    "js-file-download": "^0.4.12",
     "lodash": "^4.17.21",
     "postcss": "^7",
     "postcss-cli": "^8.3.1",

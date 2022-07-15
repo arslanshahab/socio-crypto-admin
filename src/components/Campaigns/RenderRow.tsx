@@ -40,12 +40,16 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
   const hasTier = campaign.algorithm.tiers[numberOfTiers];
   const budget = hasTier ? campaign.algorithm.tiers[numberOfTiers].totalCoiins : '0';
 
-  const redirect = (id: string) => {
+  const redirect = (id: string, e: React.ChangeEvent<any>) => {
     history.push(`/dashboard/editCampaign/${id}`);
+    e.stopPropagation();
   };
 
   return (
-    <tr className="hover:bg-gray-100 border-b-2 border-solid border-gray-100">
+    <tr
+      className="hover:bg-gray-100 border-b-2 border-solid border-gray-100 cursor-pointer"
+      onClick={() => history.push(`/dashboard/campaigns/${campaign.id}`, { campaign, isAudit: false })}
+    >
       <td className="px-7 py-5 text-left capitalize">{campaign.name}</td>
       <td className="px-7 py-5 text-left">{formatFloat(budget)}</td>
       <td className="px-7 py-5 text-left">
@@ -77,7 +81,7 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
       <td className="px-7 py-5 text-left">{getStatus()}</td>
       <td className="px-7 py-5 text-left">
         <Tooltip title="Edit Campaign" placement="top">
-          <span className="cursor-pointer" onClick={() => redirect(campaign.id)}>
+          <span className="cursor-pointer" onClick={(e) => redirect(campaign.id, e)}>
             <EditIcon />
           </span>
         </Tooltip>
