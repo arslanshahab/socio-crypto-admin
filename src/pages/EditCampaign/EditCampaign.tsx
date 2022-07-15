@@ -127,7 +127,6 @@ const EditCampaignPage: React.FC = () => {
   };
 
   const mutateCampaign = async (data: CampaignState) => {
-    debugger;
     try {
       showProgressModal(true);
       const response = await axios.post(
