@@ -41,7 +41,7 @@ const NewCampaignPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(firstStep);
   const campaign = useStoreCampaignSelector();
 
-  const [saveCampaign] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN);
+  // const [saveCampaign] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN);
 
   const handleNext = () => {
     setActiveStep((prevState) => (prevState < finalStep ? prevState + 1 : prevState));

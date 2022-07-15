@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, FormControlLabel, Checkbox } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
@@ -17,10 +17,14 @@ import { ActionsProps } from '../../NewCampaign/StepsContent';
 import SocialMediaTypeInput from './SocialMediaTypeInput';
 import FileUpload from '../../FileUpload';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { apiURI } from '../../../clients/raiinmaker-api';
 
 interface Props {
   company: string;
 }
+
+type FundingWalletTypes = { type: string; symbolImageUrl: string; balance: number; id: string; network: string };
 
 const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   company,
@@ -32,7 +36,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, { fetchPolicy: 'cache-first' });
+  // const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, { fetchPolicy: 'cache-first' });
   const campaign = useStoreCampaignSelector();
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
   const [socialMediaType, setSocialMediaType] = useState(campaign.config.socialMediaType);
@@ -44,10 +48,19 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const [raffleImage, setRaffleImage] = useState(campaign.config.raffleImage);
   const [isGlobal, setIsGlobal] = useState(campaign.config.isGlobal);
   const [errors, setErrors] = useState<ErrorObject>({});
-  const coiinOptions =
-    !loading && data && data.getFundingWallet
-      ? data.getFundingWallet.currency.map((item) => `${item.type}-${item.network}`)
-      : [];
+  const [fundingWallet, setFundingWallet] = useState<FundingWalletTypes[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      const { data } = await axios(`${apiURI}/v1/funding-wallet`, { withCredentials: true });
+      setFundingWallet(data.data);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+  const coiinOptions = !isLoading && fundingWallet ? fundingWallet.map((item) => `${item.type}-${item.network}`) : [];
   const handleSocialMediaType = (type: string[]) => {
     setSocialMediaType(type);
   };
@@ -61,8 +74,8 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   };
 
   const handleCoiinBudgetChange = (event: React.ChangeEvent<any>) => {
-    if (data && data.getFundingWallet) {
-      const token = data.getFundingWallet.currency.find((item) => `${item.type}-${item.network}` === cryptoSymbol);
+    if (fundingWallet) {
+      const token = fundingWallet.find((item) => `${item.type}-${item.network}` === cryptoSymbol);
       if (token) {
         let value = event.target.value;
         if (parseFloat(value) > token.balance) {
@@ -154,7 +167,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     setErrors(newErrors);
   };
 
-  if (!data || loading) {
+  if (isLoading) {
     return (
       <Box className="p-10 w-full flex flex-col justify-center items-center">
         <CircularProgress size={30} color="primary" className="mt-3" />
@@ -162,7 +175,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     );
   }
 
-  if (!data?.getFundingWallet?.currency?.length) {
+  if (!fundingWallet?.length) {
     return (
       <Box className="p-10 w-full flex flex-col justify-center items-center">
         <p>
