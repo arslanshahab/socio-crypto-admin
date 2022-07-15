@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, FormControlLabel, Checkbox } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
 import { useDispatch } from 'react-redux';
-import { useQuery } from '@apollo/client';
-import { ErrorObject, FileObject, GetFundingWalletResponse } from '../../../types';
-import { GET_FUNDING_WALLET } from '../../../operations/queries/fundingWallet';
+import { ErrorObject, FileObject } from '../../../types';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
 import Actions from '../../NewCampaign/Actions';
@@ -36,7 +34,6 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  // const { loading, data } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, { fetchPolicy: 'cache-first' });
   const campaign = useStoreCampaignSelector();
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
   const [socialMediaType, setSocialMediaType] = useState(campaign.config.socialMediaType);
