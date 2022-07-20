@@ -83,6 +83,7 @@ const LoginForm: React.FC = () => {
       setResetPassword(false);
     } catch (error) {
       setError(error);
+      setLoading(false);
     }
   };
 
