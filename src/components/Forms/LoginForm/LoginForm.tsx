@@ -78,7 +78,7 @@ const LoginForm: React.FC = () => {
     event.preventDefault();
     try {
       setLoading(true);
-      await axios.put(`${apiURI}/v1/auth/forgot-admin-password`, { email: values.email, password: values.password });
+      await axios.put(`${apiURI}/v1/auth/reset-password`, { email: values.email, password: values.password });
       setLoading(false);
       setResetPassword(false);
     } catch (error) {
