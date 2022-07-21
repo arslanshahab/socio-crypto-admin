@@ -40,8 +40,8 @@ export const DashboardHome: React.FC = () => {
       withCredentials: true,
     });
     const campaignStats = campaignResponse.data.data;
-    setCampaignStats(campaignStats.calculateCampaignMetrics);
-    setCampaignAggregation(campaignStats.aggregaredMetrics);
+    setCampaignStats(campaignStats.rawMetrics);
+    setCampaignAggregation(campaignStats.aggregatedMetrics);
     setLoading(false);
   };
 
