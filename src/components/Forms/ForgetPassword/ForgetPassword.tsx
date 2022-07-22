@@ -43,7 +43,7 @@ const ForgetPassword: FC = () => {
       });
       setLoading(false);
       push('/');
-    } catch (error) {
+    } catch (error: any) {
       setError(error);
       setLoading(false);
     }

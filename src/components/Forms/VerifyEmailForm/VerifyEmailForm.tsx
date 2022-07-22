@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { apiURI } from '../../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import CustomButton from '../../CustomButton';
@@ -24,7 +24,7 @@ const VerifyEmailForm: FC = () => {
       });
       setLoading(false);
       push('/reset-password');
-    } catch (error) {
+    } catch (error: any) {
       setError(error);
       setLoading(false);
     }
@@ -39,7 +39,7 @@ const VerifyEmailForm: FC = () => {
       <div className="w-full">
         {error.code !== '' ? (
           <ErrorCard
-            data={'The email and password you entered does not match the information we have on file.'}
+            data={'The email you entered does not match the information we have on file.'}
             close={() => setError({ code: '' })}
           ></ErrorCard>
         ) : (
