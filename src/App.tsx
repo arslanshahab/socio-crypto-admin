@@ -8,7 +8,7 @@ import ErrorAlert from './components/Alerts/ErrorAlert/ErrorAlert';
 import SuccessAlert from './components/Alerts/SuccessAlert/SuccessAlert';
 import AppLoader from './components/AppLoader';
 import useStoreSettingsSelector from './hooks/useStoreSettingsSelector';
-
+import ForgetPage from './pages/Forget';
 export const App: React.FC = () => {
   const storeSettings = useStoreSettingsSelector();
   return (
@@ -19,6 +19,7 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <Switch>
           <Route exact path={'/'} component={LoginPage} />
+          <Route exact path={'/forget-password'} component={ForgetPage} />
           <ProtectedRoute path={'/dashboard'} component={Dashboard} />
         </Switch>
       </BrowserRouter>
