@@ -120,7 +120,9 @@ const LoginForm: React.FC = () => {
           Login
         </CustomButton>
       </Box>
-      <p className="text-md text-blue-600 cursor-pointer">Forgot Password?</p>
+      <p className="text-md text-blue-600 cursor-pointer" onClick={() => history.push('/forget-password')}>
+        Forgot Password?
+      </p>
     </Box>
   );
 };
