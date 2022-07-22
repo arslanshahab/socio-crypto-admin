@@ -39,11 +39,12 @@ const ForgetPassword: FC = () => {
       await axios.put(`${apiURI}/v1/auth/reset-password`, {
         email: values.email,
         password: values.newPassword,
-        verificationCode: values.verificationCode,
+        code: values.verificationCode,
       });
       setLoading(false);
+      push('/');
     } catch (error) {
-      //   setError(error);
+      setError(error);
       setLoading(false);
     }
   };
@@ -53,7 +54,7 @@ const ForgetPassword: FC = () => {
       <div className="w-full">
         {error.code !== '' ? (
           <ErrorCard
-            data={'The email and password you entered does not match the information we have on file.'}
+            data={'The email and password or code you entered does not match the information we have on file.'}
             close={() => setError({ code: '' })}
           ></ErrorCard>
         ) : (

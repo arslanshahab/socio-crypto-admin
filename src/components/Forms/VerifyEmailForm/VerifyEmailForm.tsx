@@ -15,23 +15,20 @@ const VerifyEmailForm: FC = () => {
     code: '',
   });
 
-  useEffect(() => {
-    const verifyEmail = async () => {
-      try {
-        setLoading(true);
-        await axios.post(`${apiURI}/v1/auth/start-verification`, {
-          email,
-          type: 'PASSWORD',
-        });
-
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    };
-    verifyEmail();
-  }, []);
+  const verifyEmail = async () => {
+    try {
+      setLoading(true);
+      await axios.post(`${apiURI}/v1/auth/start-verification`, {
+        email,
+        type: 'PASSWORD',
+      });
+      setLoading(false);
+      push('/reset-password');
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -67,7 +64,7 @@ const VerifyEmailForm: FC = () => {
         <CustomButton
           loading={loading}
           className="w-full bg-blue-600 h-14 rounded text-lg text-white"
-          //   onClick={handleResetPassword}
+          onClick={verifyEmail}
         >
           Verify Email
         </CustomButton>
