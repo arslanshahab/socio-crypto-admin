@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { ReactComponent as RaiinmakerLogo } from '../../assets/svg/raiinmaker_logo2x1.svg';
-import ForgetPassword from '../../components/Forms/ForgetPassword/ForgetPassword';
+import VerifyEmailForm from '../../components/Forms/VerifyEmailForm/VerifyEmailForm';
 
-const ForgetPage: React.FC = () => {
+const VerifyEmail: React.FC = () => {
   return (
     <Box className="relative flex flex-row justify-center items-center bg-gradient-to-b from-blue-900 to-gray-900 h-screen min-h-screen">
       <Box className="flex flex-row justify-between h-3/6 w-3/6 bg-white">
@@ -16,10 +16,10 @@ const ForgetPage: React.FC = () => {
             Your personal Dashboard to manage your Campaigns and get Insights through various Data Metrics.
           </p>
         </Box>
-        <ForgetPassword />
+        <VerifyEmailForm />
       </Box>
     </Box>
   );
 };
 
-export default ForgetPage;
+export default VerifyEmail;

@@ -3,7 +3,7 @@ import { ErrorCard } from '../../Error';
 import CustomButton from '../../CustomButton';
 import { Box, TextField } from '@material-ui/core';
 import { fireClient, getAuthPersistence } from '../../../clients/firebase';
-import { apiURI, sessionLogin } from '../../../clients/raiinmaker-api';
+import { sessionLogin } from '../../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import { ChangePasswordDialog } from '../../ChangePasswordDialog';
 import styles from './login.module.css';
@@ -12,7 +12,6 @@ import { VERIFY_SESSION } from '../../../operations/queries/firebase';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../store/actions/user';
 import AppLoader from '../../AppLoader';
-import axios from 'axios';
 
 interface UserData {
   [key: string]: string;
@@ -26,7 +25,6 @@ const LoginForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
-  const [resetPassword, setResetPassword] = useState(false);
   const [error, setError] = useState({
     code: '',
   });
@@ -74,18 +72,6 @@ const LoginForm: React.FC = () => {
       setLoading(false);
     }
   };
-  const handleResetPassword = async (event: any) => {
-    event.preventDefault();
-    try {
-      setLoading(true);
-      await axios.put(`${apiURI}/v1/auth/reset-password`, { email: values.email, password: values.password });
-      setLoading(false);
-      setResetPassword(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  };
 
   if (userDataLoading) return <AppLoader message="Setting up everything. Please wait!" />;
 
@@ -129,14 +115,12 @@ const LoginForm: React.FC = () => {
         <CustomButton
           loading={loading}
           className="w-full bg-blue-600 h-14 rounded text-lg text-white"
-          onClick={!resetPassword ? handleSubmit : handleResetPassword}
+          onClick={handleSubmit}
         >
-          {!resetPassword ? 'Login' : 'Reset Password'}
+          Login
         </CustomButton>
       </Box>
-      <p className="text-md text-blue-600 cursor-pointer" onClick={() => setResetPassword(!resetPassword && true)}>
-        {resetPassword ? 'Login' : 'Forgot Password?'}
-      </p>
+      <p className="text-md text-blue-600 cursor-pointer">Forgot Password?</p>
     </Box>
   );
 };
