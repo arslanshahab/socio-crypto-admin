@@ -2,9 +2,7 @@ import { Box, LinearProgress } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { useMutation, FetchResult } from '@apollo/client';
-import { CampaignCreationResponse, NewCampaignVars, CampaignState, CampaignMediaSignedUrl } from '../../types.d';
-import { NEW_CAMPAIGN } from '../../operations/mutations/campaign';
+import { CampaignCreationResponse, CampaignState, CampaignMediaSignedUrl } from '../../types.d';
 import StepsView from '../../components/NewCampaign/StepsView';
 import StepContent from '../../components/NewCampaign/StepsContent';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
@@ -14,6 +12,8 @@ import { resetCampaign } from '../../store/actions/campaign';
 import { flatten } from 'lodash';
 import { prepareMediaRequest, prepareTemplateRequest, uploadMedia } from '../../helpers/utils';
 import useStoreUserSelector from '../../hooks/useStoreUserSelector';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
 
 const NewCampaignPage: React.FC = () => {
   const userData = useStoreUserSelector();
@@ -38,7 +38,6 @@ const NewCampaignPage: React.FC = () => {
   const finalStep = steps.length - 1;
   const [activeStep, setActiveStep] = useState(firstStep);
   const campaign = useStoreCampaignSelector();
-  const [saveCampaign] = useMutation<CampaignCreationResponse, NewCampaignVars>(NEW_CAMPAIGN);
 
   const handleNext = () => {
     setActiveStep((prevState) => (prevState < finalStep ? prevState + 1 : prevState));
@@ -50,8 +49,9 @@ const NewCampaignPage: React.FC = () => {
   const createCampaign = async (data: CampaignState) => {
     try {
       showProgressModal(true);
-      const response: FetchResult<Record<string, any>, Record<string, any>> = await saveCampaign({
-        variables: {
+      const response = await axios.post(
+        `${apiURI}/v1/campaign/create-campaign`,
+        {
           name: data.name,
           coiinTotal: parseFloat(data.config.budgetType === 'raffle' ? '0' : data.config.coiinBudget),
           target: data.target,
@@ -87,9 +87,11 @@ const NewCampaignPage: React.FC = () => {
                 }
               : undefined,
         },
-      });
-      if (response.data) {
-        const newCampaign: CampaignCreationResponse = response.data.newCampaign;
+        { withCredentials: true },
+      );
+
+      if (response.data.data) {
+        const newCampaign: CampaignCreationResponse = response.data.data;
         if (newCampaign.campaignImageSignedURL) {
           await uploadMedia(newCampaign.campaignImageSignedURL, campaign.campaignImage, setCampaignUploadProgress);
         }

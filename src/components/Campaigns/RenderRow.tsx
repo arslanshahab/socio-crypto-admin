@@ -1,31 +1,65 @@
-import React from 'react';
-import { Campaign, GetCurrentTierResults, GetCampaignVars, GetTotalCampaignMetricsResults } from '../../types';
-import { useQuery } from '@apollo/client';
-import { GET_CURRENT_TIER, GET_TOTAL_CAMPAIGN_METRICS } from '../../operations/queries/campaign';
+import React, { useEffect, useState } from 'react';
+import { Campaign } from '../../types';
 import { formatFloat } from '../../helpers/formatter';
 import EditIcon from '@material-ui/icons/Edit';
 import { Tooltip } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { apiURI } from '../../clients/raiinmaker-api';
 
 interface Props {
   campaign: Campaign;
 }
+type CurrentTierTypes = {
+  campaignType: string;
+  currentTier: number;
+  currentTotal: number;
+  tokenValueCoiin: number | null;
+  tokenValueUsd: number | null;
+};
+
+type MetricsTypes = {
+  clickCount: number;
+  commentCount: number;
+  likeCount: number;
+  participantCount: number;
+  postCount: number;
+  shareCount: number;
+  submissionCount: number;
+  viewCount: number;
+};
 
 const RenderRow: React.FC<Props> = ({ campaign }) => {
   const history = useHistory();
-  const { loading: loadingStatus, data: statusData } = useQuery<GetCurrentTierResults, GetCampaignVars>(
-    GET_CURRENT_TIER,
-    {
-      variables: { campaignId: campaign.id },
-      fetchPolicy: 'network-only',
-    },
-  );
-  const { loading: loadingMetrics, data: metricsData } = useQuery<GetTotalCampaignMetricsResults, GetCampaignVars>(
-    GET_TOTAL_CAMPAIGN_METRICS,
-    {
-      variables: { campaignId: campaign.id },
-    },
-  );
+  const [statusData, setStatusData] = useState<CurrentTierTypes>();
+  const [metricsData, setMetricsData] = useState<MetricsTypes>();
+  const [statusLoading, setStatusLoading] = useState(true);
+  const [metricsLoading, setMetricsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCampaignStatus = async () => {
+      setStatusLoading(true);
+      const { data } = await axios.get(`${apiURI}/v1/campaign/current-campaign-tier?campaignId=${campaign.id}`, {
+        withCredentials: true,
+      });
+      setStatusData(data.data);
+      setStatusLoading(false);
+    };
+
+    fetchCampaignStatus();
+  }, []);
+
+  useEffect(() => {
+    const fetchCampaignMetrics = async () => {
+      setMetricsLoading(true);
+      const { data } = await axios.get(`${apiURI}/v1/campaign/campaign-metrics?campaignId=${campaign.id}`, {
+        withCredentials: true,
+      });
+      setMetricsData(data.data);
+      setMetricsLoading(false);
+    };
+    fetchCampaignMetrics();
+  }, []);
 
   const getStatus = () => {
     const endDate = new Date(campaign.endDate);
@@ -53,30 +87,25 @@ const RenderRow: React.FC<Props> = ({ campaign }) => {
       <td className="px-7 py-5 text-left capitalize">{campaign.name}</td>
       <td className="px-7 py-5 text-left">{formatFloat(budget)}</td>
       <td className="px-7 py-5 text-left">
-        {loadingStatus ? 'loading...' : `${statusData && statusData.getCurrentCampaignTier.currentTier}`}
+        {statusLoading ? 'loading...' : `${statusData && statusData.currentTier}`}
       </td>
+
       <td className="px-7 py-5 text-left">
-        {loadingMetrics
+        {metricsLoading
           ? 'loading...'
           : metricsData
-          ? metricsData.getCampaignMetrics.shareCount +
-            metricsData.getCampaignMetrics.commentCount +
-            metricsData.getCampaignMetrics.likeCount
+          ? metricsData.shareCount + metricsData.commentCount + metricsData.likeCount
           : 0}
       </td>
       <td className="px-7 py-5 text-left">
-        {loadingMetrics
+        {metricsLoading
           ? 'loading...'
           : metricsData
-          ? metricsData.getCampaignMetrics.clickCount +
-            metricsData.getCampaignMetrics.viewCount +
-            metricsData.getCampaignMetrics.submissionCount
+          ? metricsData.clickCount + metricsData.viewCount + metricsData.submissionCount
           : 0}
       </td>
       <td className="px-7 py-5 text-left">
-        {loadingStatus
-          ? 'loading...'
-          : `${formatFloat(statusData?.getCurrentCampaignTier?.currentTotal || 0)} ${campaign.symbol}`}
+        {statusLoading ? 'loading...' : `${formatFloat(statusData?.currentTotal || 0)} ${campaign.symbol}`}
       </td>
       <td className="px-7 py-5 text-left">{getStatus()}</td>
       <td className="px-7 py-5 text-left">

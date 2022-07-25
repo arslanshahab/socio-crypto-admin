@@ -2,9 +2,7 @@ import { Box, CircularProgress, LinearProgress } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { useMutation, FetchResult } from '@apollo/client';
-import { CampaignCreationResponse, CampaignState, CampaignMediaSignedUrl, UpdateCampaignVars } from '../../types';
-import { UPDATE_CAMPAIGN } from '../../operations/mutations/campaign';
+import { CampaignCreationResponse, CampaignState, CampaignMediaSignedUrl } from '../../types';
 import StepsView from '../../components/NewCampaign/StepsView';
 import StepContent from '../../components/NewCampaign/StepsContent';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
@@ -54,7 +52,6 @@ const EditCampaignPage: React.FC = () => {
   const finalStep = steps.length - 1;
   const [activeStep, setActiveStep] = useState(firstStep);
   const campaign = useStoreCampaignSelector();
-  const [saveCampaign] = useMutation<CampaignCreationResponse, UpdateCampaignVars>(UPDATE_CAMPAIGN);
   const [campaignLoading, setCampaignLoading] = useState(false);
   const [fetchedCampaign, setFetchedCampaign] = useState<Campaign | null>(null);
 
@@ -122,7 +119,6 @@ const EditCampaignPage: React.FC = () => {
       dispatch(resetCampaign());
     };
   }, [fetchedCampaign, campaignId]);
-
   const handleNext = () => {
     setActiveStep((prevState) => (prevState < finalStep ? prevState + 1 : prevState));
   };
@@ -133,8 +129,9 @@ const EditCampaignPage: React.FC = () => {
   const mutateCampaign = async (data: CampaignState) => {
     try {
       showProgressModal(true);
-      const response: FetchResult<Record<string, any>, Record<string, any>> = await saveCampaign({
-        variables: {
+      const response = await axios.post(
+        `${apiURI}/v1/campaign/update-campaign`,
+        {
           id: campaignId || '',
           name: data.name,
           coiinTotal: parseFloat(data.config.budgetType === 'raffle' ? '0' : data.config.coiinBudget),
@@ -169,9 +166,10 @@ const EditCampaignPage: React.FC = () => {
                 }
               : undefined,
         },
-      });
-      if (response.data) {
-        const updatedCampaign: CampaignCreationResponse = response.data.updateCampaign;
+        { withCredentials: true },
+      );
+      if (response.data.data) {
+        const updatedCampaign: CampaignCreationResponse = response.data.data;
         if (updatedCampaign.campaignImageSignedURL) {
           await uploadMedia(updatedCampaign.campaignImageSignedURL, campaign.campaignImage, setCampaignUploadProgress);
         }
