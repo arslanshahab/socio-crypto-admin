@@ -18,7 +18,7 @@ const VerifyEmailForm: FC = () => {
   const verifyEmail = async () => {
     try {
       setLoading(true);
-      await axios.post(`${apiURI}/v1/auth/start-verification`, {
+      await axios.post(`${apiURI}/v1/auth/start-admin-verification`, {
         email,
         type: 'PASSWORD',
       });
