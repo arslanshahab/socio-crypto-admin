@@ -645,6 +645,7 @@ export type OrganizationEmployees = {
   adminsDetails: {
     name: string;
     createdAt: string;
+    id: string;
   }[];
 };
 export interface UserTransactionHistoryTypes {

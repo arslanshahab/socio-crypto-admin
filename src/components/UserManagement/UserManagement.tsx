@@ -7,16 +7,26 @@ import PrimaryCard from '../CryptoCard/PrimaryCard';
 import { BsFillPersonCheckFill } from 'react-icons/bs';
 import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
+import { useDispatch } from 'react-redux';
+import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 
+type AdminTypes = {
+  id: string;
+  name: string;
+  createdAt: string;
+};
 export const UserManagement: React.FC = () => {
+  const dispatch = useDispatch();
   const [openUserDialog, setUserDialog] = useState(false);
-  const [filterEmployee, setFilterEmployee] = useState<{ name: string; createdAt: string }[] | undefined>([]);
+  const [filterEmployee, setFilterEmployee] = useState<AdminTypes[] | undefined>([]);
   const [searchField, setSearchField] = useState('');
   const [employees, setEmployees] = useState<OrganizationEmployees>();
   const [loading, setLoading] = useState(false);
+  const [refetch, setRefetch] = useState(false);
   const toolTipMap = {
     title: 'Employee Name',
     value: 'Active Since',
+    id: 'Employee ID',
   };
 
   useEffect(() => {
@@ -27,7 +37,7 @@ export const UserManagement: React.FC = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [refetch]);
 
   useEffect(() => {
     if (!searchField) {
@@ -43,6 +53,25 @@ export const UserManagement: React.FC = () => {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchField(e.target.value);
+  };
+
+  const removeMethod = async (adminId: string) => {
+    try {
+      setLoading(true);
+      await axios.post(
+        `${apiURI}/v1/organization/delete-user/${adminId}`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      dispatch(showSuccessAlert('User Removed Successfully'));
+      setRefetch(!refetch);
+      setLoading(false);
+    } catch (error) {
+      dispatch(showErrorAlert('Error while removing user'));
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -81,15 +110,16 @@ export const UserManagement: React.FC = () => {
           </div>
           <div className="flex gap-4 flex-wrap">
             {filterEmployee &&
-              filterEmployee.map((admin: { name: string; createdAt: string }, index: number) => (
+              filterEmployee.map((admin: AdminTypes) => (
                 <PrimaryCard
-                  key={index}
+                  key={admin.id}
                   title={admin.name}
-                  value={new Date(parseInt(admin.createdAt)).toDateString()}
+                  value={new Date(admin.createdAt).toDateString()}
                   tooltipTitle={toolTipMap['title']}
                   tooltipValue={toolTipMap['value']}
                   icon={<BsFillPersonCheckFill />}
-                  id={admin.name}
+                  id={admin.id}
+                  removeMethod={removeMethod}
                 />
               ))}
           </div>
