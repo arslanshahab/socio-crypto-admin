@@ -67,7 +67,6 @@ const UserInfo: FC<UserTypes> = ({ userId }: UserTypes) => {
     setResetLoading(true);
     await axios.put(`${apiURI}/v1/user/reset-user-password/${user?.id}`, {}, { withCredentials: true });
     setResetLoading(false);
-    debugger;
     dispatch(showSuccessAlert("User's password reset successfully!"));
   };
 

@@ -8,7 +8,7 @@ import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
 import EmptyCampaigns from './EmptyCampaigns';
 
-const CampaignTable: React.FC = () => {
+const PostCampaigns: React.FC = () => {
   const [campaigns, setCampaigns] = useState<PaginatedCampaignResultsV2>();
   const [loading, setLoading] = useState(false);
   const [skip, setSkip] = useState(0);
@@ -18,9 +18,12 @@ const CampaignTable: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const campaigns = await axios.get(`${apiURI}/v1/campaign?skip=${skip}&take=${take}&state=OPEN&status=APPROVED`, {
-        withCredentials: true,
-      });
+      const campaigns = await axios.get(
+        `${apiURI}/v1/campaign?skip=${skip}&take=${take}&state=CLOSED&status=APPROVED`,
+        {
+          withCredentials: true,
+        },
+      );
       setCampaigns(campaigns.data.data);
       setTotal(campaigns.data.data.total);
       setLoading(false);
@@ -79,4 +82,4 @@ const CampaignTable: React.FC = () => {
   );
 };
 
-export default CampaignTable;
+export default PostCampaigns;
