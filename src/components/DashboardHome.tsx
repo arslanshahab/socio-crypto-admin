@@ -40,8 +40,8 @@ export const DashboardHome: React.FC = () => {
       withCredentials: true,
     });
     const campaignStats = campaignResponse.data.data;
-    setCampaignStats(campaignStats.calculateCampaignMetrics);
-    setCampaignAggregation(campaignStats.aggregaredMetrics);
+    setCampaignStats(campaignStats.rawMetrics);
+    setCampaignAggregation(campaignStats.aggregatedMetrics);
     setLoading(false);
   };
 
@@ -149,8 +149,9 @@ export const DashboardHome: React.FC = () => {
   };
 
   return (
-    <div className="pb-1">
+    <div>
       {loading && <ProgressBar />}
+      {loading && <div className="w-full h-full fixed bg-gray-300 opacity-50 z-10 "></div>}
       <h1 className="text-center py-4 mb-8 text-blue-800 text-4xl font-semibold border-b-2">Campaign Analytics</h1>
       <div className="grid grid-cols-5 gap-4 px-4">
         {countsKey?.map((x) => (
@@ -166,19 +167,21 @@ export const DashboardHome: React.FC = () => {
         />
       </div>
 
-      {campaignId === '-1' ? (
-        <div>
-          <BarChart name="All" participationAnalytics={barChartData} />
-        </div>
-      ) : (
-        <div>
-          <LineChart
-            name={campiagnAggregation.campaignName}
-            campaignAnalytics={lineChartData}
-            options={lineChartOptions}
-          />
-        </div>
-      )}
+      <div className="pb-4">
+        {campaignId === '-1' ? (
+          <div>
+            <BarChart name="All" participationAnalytics={barChartData} />
+          </div>
+        ) : (
+          <div>
+            <LineChart
+              name={campiagnAggregation.campaignName}
+              campaignAnalytics={lineChartData}
+              options={lineChartOptions}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
