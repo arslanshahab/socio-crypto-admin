@@ -26,7 +26,7 @@
   @apply flex justify-center items-center;
 }
 .activeDate {
-  @apply text-gray-600;
+  @apply text-gray-600 text-xs;
 }
 
 .network {
