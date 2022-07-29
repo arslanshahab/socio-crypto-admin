@@ -7,8 +7,6 @@ import { apiURI, sessionLogin } from '../../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import { ChangePasswordDialog } from '../../ChangePasswordDialog';
 import styles from './login.module.css';
-// import { useQuery } from '@apollo/client';
-// import { VERIFY_SESSION } from '../../../operations/queries/firebase';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../store/actions/user';
 import AppLoader from '../../AppLoader';
@@ -67,19 +65,7 @@ const LoginForm: React.FC = () => {
     }
   }, [verifyData]);
 
-  // useEffect(() => {
-  //   if (data?.verifySession) {
-  //     dispatch(
-  //       setUserData({
-  //         ...data.verifySession,
-  //         isLoggedIn: true,
-  //       }),
-  //     );
-  //     history.push('/dashboard/campaigns');
-  //   }
-  // }, [data?.verifySession]);
-
-  const handleChange = (event: React.ChangeEvent<any>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data = { ...values };
     data[event.target.name] = event.target.value;
     setValues(data);
