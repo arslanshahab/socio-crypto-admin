@@ -39,7 +39,6 @@ const LoginForm: React.FC = () => {
   } as UserData);
   const [verifyData, setVerifyData] = useState<VerifySession>();
   const [verifyLoading, setVerifyLoading] = useState(false);
-  // const { data, loading: userDataLoading } = useQuery(VERIFY_SESSION, { skip: !hasLoggedIn });
 
   useEffect(() => {
     if (hasLoggedIn) {
