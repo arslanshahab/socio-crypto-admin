@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { GetFundingWalletResponse } from '../types';
-import { RefetchWallet } from './PaymentsAccount';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
 import { CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 import { apiURI } from '../clients/raiinmaker-api';
 
-interface Props {
-  data: GetFundingWalletResponse | undefined;
-  isLoading: boolean;
-  refetchWallet: RefetchWallet;
-}
 type CurrencyTypes = {
   action: string;
   amount: number;
@@ -19,7 +12,7 @@ type CurrencyTypes = {
   createdAt: string;
 };
 
-export const TransactionHistory: React.FC<Props> = () => {
+export const TransactionHistory: React.FC = () => {
   const [transactionHistory, setTransactionHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
