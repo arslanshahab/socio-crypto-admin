@@ -3,20 +3,25 @@ import { ErrorCard } from '../../Error';
 import CustomButton from '../../CustomButton';
 import { Box, TextField } from '@material-ui/core';
 import { fireClient, getAuthPersistence } from '../../../clients/firebase';
-import { sessionLogin } from '../../../clients/raiinmaker-api';
+import { apiURI, sessionLogin } from '../../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import { ChangePasswordDialog } from '../../ChangePasswordDialog';
 import styles from './login.module.css';
-import { useQuery } from '@apollo/client';
-import { VERIFY_SESSION } from '../../../operations/queries/firebase';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../store/actions/user';
 import AppLoader from '../../AppLoader';
+import axios from 'axios';
 
 interface UserData {
   [key: string]: string;
   email: string;
   password: string;
+}
+interface VerifySession {
+  id: string;
+  company: string;
+  role: string;
+  tempPass: boolean;
 }
 
 const LoginForm: React.FC = () => {
@@ -32,21 +37,34 @@ const LoginForm: React.FC = () => {
     email: '',
     password: '',
   } as UserData);
-  const { data, loading: userDataLoading } = useQuery(VERIFY_SESSION, { skip: !hasLoggedIn });
+  const [verifyData, setVerifyData] = useState<VerifySession>();
+  const [verifyLoading, setVerifyLoading] = useState(false);
 
   useEffect(() => {
-    if (data?.verifySession) {
+    if (hasLoggedIn) {
+      setVerifyLoading(true);
+      const verifySession = async () => {
+        const { data } = await axios.get(`${apiURI}/v1/organization/verify-session`, { withCredentials: true });
+        setVerifyData(data.data);
+        setVerifyLoading(false);
+      };
+      verifySession();
+    }
+  }, [hasLoggedIn]);
+
+  useEffect(() => {
+    if (verifyData) {
       dispatch(
         setUserData({
-          ...data.verifySession,
+          ...verifyData,
           isLoggedIn: true,
         }),
       );
       history.push('/dashboard/campaigns');
     }
-  }, [data?.verifySession]);
+  }, [verifyData]);
 
-  const handleChange = (event: React.ChangeEvent<any>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data = { ...values };
     data[event.target.name] = event.target.value;
     setValues(data);
@@ -66,14 +84,14 @@ const LoginForm: React.FC = () => {
       } else {
         throw Error('invalid login');
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log('error: ', e);
       setError(e);
       setLoading(false);
     }
   };
 
-  if (userDataLoading) return <AppLoader message="Setting up everything. Please wait!" />;
+  if (verifyLoading) return <AppLoader message="Setting up everything. Please wait!" />;
 
   return (
     <Box className={styles.loginForm}>
