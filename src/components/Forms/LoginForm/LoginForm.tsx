@@ -41,7 +41,7 @@ const LoginForm: React.FC = () => {
   const [verifyLoading, setVerifyLoading] = useState(false);
 
   useEffect(() => {
-    if (hasLoggedIn) {
+    if (hasLoggedIn && !changePassword) {
       setVerifyLoading(true);
       const verifySession = async () => {
         const { data } = await axios.get(`${apiURI}/v1/organization/verify-session`, { withCredentials: true });

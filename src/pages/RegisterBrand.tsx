@@ -44,8 +44,8 @@ export const RegisterBrand: React.FC<Props> = ({ open, setOpen }) => {
       setLoading(true);
       await axios.post(`${apiURI}/v1/organization/register`, { ...values }, { withCredentials: true });
       setLoading(false);
-      dispatch(showSuccessAlert('Organization created successfully!'));
       setOpen((open) => !open);
+      dispatch(showSuccessAlert('Organization created successfully!'));
     } catch (e) {
       console.log(e);
       dispatch(showErrorAlert('Something went wrong. Please try again!'));
