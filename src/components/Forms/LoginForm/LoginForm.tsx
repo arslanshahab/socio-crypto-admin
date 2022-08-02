@@ -79,8 +79,8 @@ const LoginForm: React.FC = () => {
       await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
       const { status, body } = await sessionLogin();
       if (status === 200) {
-        setHasLoggedIn(true);
         if (body.resetPass) setChangePassword(true);
+        setHasLoggedIn(true);
       } else {
         throw Error('invalid login');
       }
