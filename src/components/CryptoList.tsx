@@ -45,6 +45,7 @@ export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
   const [filterCurrency, dispatch] = useReducer(triggerReducer, []);
   const [fundingWallet, setFundingWallet] = useState([]);
   const [isWalletLoading, setIsWalletLoading] = useState(false);
+  const [refetch, setRefetch] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +55,7 @@ export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
       setIsWalletLoading(false);
     };
     fetchData();
-  }, []);
+  }, [refetch]);
 
   useEffect(() => {
     if (!search) {
@@ -95,7 +96,7 @@ export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
           <CustomButton
             className="text-blue-800 w-40 p-1"
             onClick={() => {
-              refetchWallet();
+              setRefetch(!refetch);
             }}
           >
             Refresh Balances

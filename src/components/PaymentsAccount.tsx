@@ -58,10 +58,10 @@ export const PaymentsAccount: React.FC = () => {
           <FundingWallet data={fundingWallet} isLoading={loading} refetchWallet={refetch} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <CampaignStatusList fundingWallet={fundingWallet} refetchWallet={refetch} />
+          <CampaignStatusList />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <TransactionHistory data={fundingWallet} isLoading={loading} refetchWallet={refetch} />
+          <TransactionHistory />
         </TabPanel>
       </Paper>
     </div>
