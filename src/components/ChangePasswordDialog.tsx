@@ -16,9 +16,11 @@ export const ChangePasswordDialog: React.FC<Props> = ({ open, email }) => {
   const history = useHistory();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
@@ -40,6 +42,7 @@ export const ChangePasswordDialog: React.FC<Props> = ({ open, email }) => {
       console.log(error);
     }
   };
+
   return (
     <div style={{ textAlign: 'center' }}>
       <Dialog open={open}>
