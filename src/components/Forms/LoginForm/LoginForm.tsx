@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../store/actions/user';
 import AppLoader from '../../AppLoader';
 import axios from 'axios';
+import useEffectSkipFirst from '../../../hooks/useEffectSkipFirst';
 
 interface UserData {
   [key: string]: string;
@@ -40,17 +41,15 @@ const LoginForm: React.FC = () => {
   const [verifyData, setVerifyData] = useState<VerifySession>();
   const [verifyLoading, setVerifyLoading] = useState(false);
 
-  useEffect(() => {
-    if (hasLoggedIn && !changePassword) {
-      setVerifyLoading(true);
-      const verifySession = async () => {
-        const { data } = await axios.get(`${apiURI}/v1/organization/verify-session`, { withCredentials: true });
-        setVerifyData(data.data);
-        setVerifyLoading(false);
-      };
-      verifySession();
-    }
-  }, [hasLoggedIn]);
+  const verifySession = async () => {
+    setVerifyLoading(true);
+    const { data } = await axios.get(`${apiURI}/v1/organization/verify-session`, { withCredentials: true });
+    setVerifyData(data.data);
+    setVerifyLoading(false);
+  };
+
+  //Verify session
+  useEffectSkipFirst(verifySession, [hasLoggedIn]);
 
   useEffect(() => {
     if (verifyData) {
@@ -80,7 +79,7 @@ const LoginForm: React.FC = () => {
       const { status, body } = await sessionLogin();
       if (status === 200) {
         if (body.resetPass) setChangePassword(true);
-        setHasLoggedIn(true);
+        if (!body.resetPass) setHasLoggedIn(true);
       } else {
         throw Error('invalid login');
       }
