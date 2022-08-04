@@ -83,6 +83,7 @@ const LoginForm: React.FC = () => {
       } else {
         throw Error('invalid login');
       }
+      setLoading(false);
     } catch (e: any) {
       console.log('error: ', e);
       setError(e);

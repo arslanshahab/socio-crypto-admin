@@ -28,7 +28,6 @@ export const ChangePasswordDialog: React.FC<Props> = ({ open, email }) => {
       if (status === 200) {
         await fireClient.auth().signInWithEmailAndPassword(email, password);
         const res = await sessionLogin();
-        setLoading(false);
         if (res.status === 200) {
           history.push('/dashboard/campaigns');
         } else {
@@ -36,10 +35,11 @@ export const ChangePasswordDialog: React.FC<Props> = ({ open, email }) => {
         }
       } else {
         throw new Error('failure changing password');
-        setLoading(false);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
