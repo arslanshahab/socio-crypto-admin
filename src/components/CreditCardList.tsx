@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import { ListPaymentMethodsResults } from '../types';
-import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
+import React, { useEffect, useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { CircularProgress } from '@material-ui/core';
-import { StripeCardItem } from './StripeCardItem';
 import AddIcon from '@material-ui/icons/Add';
 import { CardSetupForm } from './CardSetupForm';
 import { Elements } from '@stripe/react-stripe-js';
@@ -17,6 +14,8 @@ import customButtonStyle from '../assets/styles/customButton.module.css';
 import PrimaryCard from './CryptoCard/PrimaryCard';
 import { BsCreditCard2BackFill } from 'react-icons/bs';
 import { REMOVE_PAYMENT_METHOD } from '../operations/mutations/stripe';
+import axios from 'axios';
+import { apiURI } from '../clients/raiinmaker-api';
 
 const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
 const stripeKey = (stripePubKey as { [key: string]: string })[env] as any;
@@ -25,21 +24,41 @@ interface RemoveStripeWalletVars {
   paymentMethodId: string;
 }
 
+type PaymentMethodTypes = {
+  id: string;
+  brand: string;
+  last4: string;
+};
+
 export const CreditCardList: React.FC = () => {
   const [modal, setModal] = useState(false);
   const [removalId, setRemovalId] = useState('');
-  const { data, loading, refetch } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS, {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'network-only',
-  });
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodTypes[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [removePaymentMethod, { loading: removeLoading }] = useMutation<boolean, RemoveStripeWalletVars>(
     REMOVE_PAYMENT_METHOD,
   );
 
+  // Fetch list of payment methods
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.get(`${apiURI}/v1/stripe/payment-methods`, { withCredentials: true });
+        setPaymentMethods(data.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   const performDeletion = async (id: string) => {
     setRemovalId(id);
     await removePaymentMethod({ variables: { paymentMethodId: id } });
-    await refetch();
+    // await refetch();
   };
 
   const toolTipMap = {
@@ -49,7 +68,7 @@ export const CreditCardList: React.FC = () => {
 
   return (
     <div className={`${commonStyles.sectionMinHeight} mt-4`}>
-      {loading ? (
+      {isLoading ? (
         <div className={styles.loading}>
           <CircularProgress />
         </div>
@@ -64,11 +83,11 @@ export const CreditCardList: React.FC = () => {
               <AddIcon />
             </CustomButton>
           </div>
-          {data && data.listPaymentMethods.length < 1 ? (
+          {!paymentMethods ? (
             <div className={commonStyles.hasItemList}> There is no credit card found</div>
           ) : (
             <div className="flex flex-wrap gap-4">
-              {data?.listPaymentMethods?.map((payment) => (
+              {paymentMethods?.map((payment) => (
                 <PrimaryCard
                   key={payment.id}
                   title={payment.brand}
