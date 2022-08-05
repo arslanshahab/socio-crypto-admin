@@ -58,7 +58,6 @@ export const CreditCardList: React.FC = () => {
   const performDeletion = async (id: string) => {
     setRemovalId(id);
     await removePaymentMethod({ variables: { paymentMethodId: id } });
-    // await refetch();
   };
 
   const toolTipMap = {

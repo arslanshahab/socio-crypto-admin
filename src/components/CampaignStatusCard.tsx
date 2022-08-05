@@ -17,7 +17,6 @@ import { coldWallet } from './PaymentsAccount';
 interface Props {
   campaign: Campaign;
   fundingWallet: GetFundingWalletResponse | undefined;
-  // refetchWallet: RefetchWallet;
 }
 
 export const CampaignStatusCard: React.FC<Props> = ({ campaign, fundingWallet }) => {
