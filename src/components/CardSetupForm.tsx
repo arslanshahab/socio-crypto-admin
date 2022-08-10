@@ -11,7 +11,7 @@ import CustomButton from './CustomButton';
 import buttonStyles from '../assets/styles/customButton.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
 import { useDispatch } from 'react-redux';
-import { showErrorAlert } from '../store/actions/alerts';
+import { showErrorAlert, showSuccessAlert } from '../store/actions/alerts';
 
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,6 +48,7 @@ export const CardSetupForm: React.FC<Props> = ({ setModal, open }) => {
         console.log('card error: ', result.error.message);
       } else {
         console.log('successfully added payment method');
+        dispatch(showSuccessAlert('Successfully added payment method'));
       }
     } else {
       console.log('error: ', errors);
