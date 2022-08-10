@@ -3,7 +3,7 @@ import { CreditCardList } from './CreditCardList';
 import { CryptoList } from './CryptoList';
 import { GetFundingWalletResponse } from '../types';
 import { CryptoDialog } from './CryptoDialog';
-// import { PurchaseDialog } from './PurchaseDialog';
+import { PurchaseDialog } from './PurchaseDialog';
 import { RefetchWallet } from './PaymentsAccount';
 import CustomButton from './CustomButton';
 
@@ -15,11 +15,11 @@ interface Props {
 
 export const FundingWallet: React.FC<Props> = ({ data, isLoading, refetchWallet }) => {
   const [openDialog, setOpenDialog] = useState(false);
-  // const [purchaseCoiin, setPurchaseCoiin] = useState(false);
+  const [purchaseCoiin, setPurchaseCoiin] = useState(false);
 
   return (
     <div>
-      {/* <PurchaseDialog open={purchaseCoiin} setOpen={setPurchaseCoiin} refetchWallet={refetchWallet} /> */}
+      <PurchaseDialog open={purchaseCoiin} setOpen={setPurchaseCoiin} />
       <CryptoDialog
         isTokenRegistration={true}
         open={openDialog}
@@ -27,9 +27,9 @@ export const FundingWallet: React.FC<Props> = ({ data, isLoading, refetchWallet 
         refetchWallet={refetchWallet}
       />
       <div className="flex justify-end gap-4">
-        {/* <CustomButton className="bg-blue-900 text-white w-44 rounded p-1.5" onClick={() => setPurchaseCoiin(true)}>
+        <CustomButton className="bg-blue-900 text-white w-44 rounded p-1.5" onClick={() => setPurchaseCoiin(true)}>
           Purchase Coiin Points
-        </CustomButton> */}
+        </CustomButton>
         <CustomButton
           className="bg-blue-900 text-white w-44 rounded p-1.5"
           onClick={() => {
