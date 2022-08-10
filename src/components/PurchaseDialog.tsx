@@ -14,17 +14,16 @@ import card from '../assets/svg/credit-card.svg';
 import eth from '../assets/svg/eth-icon.svg';
 import { TabPanel } from './TabPanel';
 import { StripePurchaseForm } from './StripePurchaseForm';
-import { coldWallet, RefetchWallet } from './PaymentsAccount';
+import { coldWallet } from './PaymentsAccount';
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   amount?: number;
   balance?: number;
-  refetchWallet: RefetchWallet;
 }
 
-export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance, refetchWallet }) => {
+export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance }) => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -78,11 +77,7 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance
           </DialogActions>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <StripePurchaseForm
-            setOpen={setOpen}
-            givenAmount={amount && balance ? amount - balance : amount}
-            refetchWallet={refetchWallet}
-          />
+          <StripePurchaseForm setOpen={setOpen} givenAmount={amount && balance ? amount - balance : amount} />
         </TabPanel>
       </DialogContent>
     </Dialog>
