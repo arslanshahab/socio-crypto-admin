@@ -91,11 +91,20 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  const handleHasLogin = (value: boolean) => {
+    setHasLoggedIn(value);
+  };
+
   if (verifyLoading) return <AppLoader message="Setting up everything. Please wait!" />;
 
   return (
     <Box className={styles.loginForm}>
-      <ChangePasswordDialog open={changePassword} setOpen={setChangePassword} email={values.email} />
+      <ChangePasswordDialog
+        open={changePassword}
+        setOpen={setChangePassword}
+        email={values.email}
+        callback={handleHasLogin}
+      />
       <Box className="w-full">
         {error.code !== '' ? (
           <ErrorCard
