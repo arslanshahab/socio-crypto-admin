@@ -1,10 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { GetFundingWalletResponse, ListCurrenciesResult, ListSupportedCryptoResults } from '../types';
-import { RefetchWallet } from './PaymentsAccount';
 import { CryptoDialog } from './CryptoDialog';
-import AddIcon from '@material-ui/icons/Add';
-import { useQuery } from '@apollo/client';
-import { LIST_CURRENCIES, LIST_SUPPORTED_CRYPTO } from '../operations/queries/crypto';
 import GenericModal from './GenericModal';
 import DepositCryptoForm from './Forms/DepositCryptoForm';
 import CustomButton from '../components/CustomButton';
@@ -16,11 +11,6 @@ import PrimaryCard from './CryptoCard/PrimaryCard';
 import axios from 'axios';
 import { apiURI } from '../clients/raiinmaker-api';
 
-interface Props {
-  data: GetFundingWalletResponse | undefined;
-  isLoading: boolean;
-  refetchWallet: RefetchWallet;
-}
 const triggerReducer = (
   state: any,
   action: {
@@ -36,16 +26,17 @@ const triggerReducer = (
   }
 };
 
-export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
-  const { data: currencyData, loading } = useQuery<ListSupportedCryptoResults>(LIST_SUPPORTED_CRYPTO);
-  const { data: currencyList } = useQuery<ListCurrenciesResult>(LIST_CURRENCIES, { fetchPolicy: 'network-only' });
+export const CryptoList: React.FC = () => {
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
   const [search, setSearch] = useState('');
   const [filterCurrency, dispatch] = useReducer(triggerReducer, []);
   const [fundingWallet, setFundingWallet] = useState([]);
   const [isWalletLoading, setIsWalletLoading] = useState(false);
-  const [refetch, setRefetch] = useState(false);
+  const [refetch, setRefetch] = useState(0);
+  const [currencyList, setCurrencyList] = useState([]);
+  const [supportedCryptoList, setSupportedCryptoList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +47,35 @@ export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
     };
     fetchData();
   }, [refetch]);
+
+  // Fetch currency list
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const { data } = await axios(`${apiURI}/v1/tatum/supported-currencies`, { withCredentials: true });
+        setCurrencyList(data.data);
+      };
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  // Fetch supported crypto list
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        setLoading(true);
+        const { data } = await axios(`${apiURI}/v1/crypto/supported-crypto`, { withCredentials: true });
+        setSupportedCryptoList(data.data);
+      };
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!search) {
@@ -72,6 +92,10 @@ export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
     setSearch(e.target.value);
   };
 
+  const handleRefetch = () => {
+    setRefetch(new Date().getTime());
+  };
+
   const toolTipMap = {
     title: 'Token',
     value: 'Balance',
@@ -83,22 +107,16 @@ export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
         isTokenRegistration={false}
         open={openTokenRegistration}
         setOpenDialog={setOpenRegistration}
-        data={currencyData}
+        data={supportedCryptoList}
         isLoading={loading}
-        refetchWallet={refetchWallet}
       />
       <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
-        <DepositCryptoForm cryptoList={currencyList?.getSupportedCurrencies} />
+        <DepositCryptoForm cryptoList={currencyList} callback={handleRefetch} fundingWallet={fundingWallet} />
       </GenericModal>
       <div className={headingStyles.paymentHeadingWrapper}>
         <h1 className={headingStyles.headingXl}>Crypto Currencies</h1>
         <div className="flex gap-4 justify-between items-center">
-          <CustomButton
-            className="text-blue-800 w-40 p-1"
-            onClick={() => {
-              setRefetch(!refetch);
-            }}
-          >
+          <CustomButton className="text-blue-800 w-40 p-1" onClick={handleRefetch}>
             Refresh Balances
           </CustomButton>
           <input
@@ -112,9 +130,9 @@ export const CryptoList: React.FC<Props> = ({ refetchWallet }) => {
           <CustomButton className="text-blue-800 w-16 p-1" onClick={() => setOpenCrypto(true)}>
             Deposit
           </CustomButton>
-          <CustomButton className="text-blue-800 p-1" onClick={() => setOpenRegistration(true)}>
+          {/* <CustomButton className="text-blue-800 p-1" onClick={() => setOpenRegistration(true)}>
             <AddIcon />
-          </CustomButton>
+          </CustomButton> */}
         </div>
       </div>
       {isWalletLoading ? (

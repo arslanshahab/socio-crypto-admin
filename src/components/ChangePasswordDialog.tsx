@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import { fireClient } from '../clients/firebase';
 import { changePassword, sessionLogin } from '../clients/raiinmaker-api';
-import { useHistory } from 'react-router-dom';
 import CustomButton from './CustomButton';
 import buttonStyles from '../assets/styles/customButton.module.css';
 
@@ -10,10 +9,10 @@ interface Props {
   open: boolean;
   email: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  callback?: (val: boolean) => void;
 }
 
-export const ChangePasswordDialog: React.FC<Props> = ({ open, email }) => {
-  const history = useHistory();
+export const ChangePasswordDialog: React.FC<Props> = ({ open, email, callback }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -29,9 +28,7 @@ export const ChangePasswordDialog: React.FC<Props> = ({ open, email }) => {
         await fireClient.auth().signInWithEmailAndPassword(email, password);
         const res = await sessionLogin();
         if (res.status === 200) {
-          history.push('/dashboard/campaigns');
-        } else {
-          throw new Error('login failure');
+          if (callback) callback(true);
         }
       } else {
         throw new Error('failure changing password');
