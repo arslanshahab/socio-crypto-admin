@@ -5,7 +5,6 @@ import { useMutation } from '@apollo/client';
 import { AddPaymentMethod } from '../types';
 import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
 import { CircularProgress, Dialog, DialogContent } from '@material-ui/core';
-// import { reloadWindow } from '../helpers/fileHandler';
 import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
 import CustomButton from './CustomButton';
 import buttonStyles from '../assets/styles/customButton.module.css';
