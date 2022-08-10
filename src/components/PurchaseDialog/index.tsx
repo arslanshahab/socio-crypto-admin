@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, Tab, Tabs, useMediaQuery, useTheme } from '@material-ui/core';
-import card from '../assets/svg/credit-card.svg';
+import card from '../../assets/svg/credit-card.svg';
 // import eth from '../assets/svg/eth-icon.svg';
-import { TabPanel } from './TabPanel';
-import { StripePurchaseForm } from './StripePurchaseForm';
+import { TabPanel } from '../TabPanel';
+import { StripePurchaseForm } from '../StripePurchaseForm';
 
 interface Props {
   open: boolean;

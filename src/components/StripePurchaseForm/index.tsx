@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
 import { useMutation, useQuery } from '@apollo/client';
-import { ChargePaymentMethodResults, ChargePaymentMethodVars, ListPaymentMethodsResults } from '../types';
-import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
-import { capitalize } from '../helpers/formatter';
-import { CHARGE_PAYMENT_METHOD } from '../operations/mutations/stripe';
-import CustomButton from './CustomButton';
-import buttonStyles from '../assets/styles/customButton.module.css';
+import { ChargePaymentMethodResults, ChargePaymentMethodVars, ListPaymentMethodsResults } from '../../types';
+import { LIST_PAYMENT_METHODS } from '../../operations/queries/stripe';
+import { capitalize } from '../../helpers/formatter';
+import { CHARGE_PAYMENT_METHOD } from '../../operations/mutations/stripe';
+import CustomButton from '../CustomButton';
+import buttonStyles from '../../assets/styles/customButton.module.css';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
