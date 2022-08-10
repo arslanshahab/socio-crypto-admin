@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { ErrorCard } from '../../Error';
 import CustomButton from '../../CustomButton';
 import { Box, TextField } from '@material-ui/core';
 import { fireClient, getAuthPersistence } from '../../../clients/firebase';
@@ -9,9 +8,9 @@ import { ChangePasswordDialog } from '../../ChangePasswordDialog';
 import styles from './login.module.css';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../store/actions/user';
-import AppLoader from '../../AppLoader';
 import axios from 'axios';
-import useEffectSkipFirst from '../../../hooks/useEffectSkipFirst';
+import { showAppLoader } from '../../../store/actions/settings';
+import { showErrorAlert } from '../../../store/actions/alerts';
 
 interface UserData {
   [key: string]: string;
@@ -29,27 +28,19 @@ const LoginForm: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [hasLoggedIn, setHasLoggedIn] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
-  const [error, setError] = useState({
-    code: '',
-  });
   const [values, setValues] = useState({
     email: '',
     password: '',
   } as UserData);
   const [verifyData, setVerifyData] = useState<VerifySession>();
-  const [verifyLoading, setVerifyLoading] = useState(false);
 
   const verifySession = async () => {
-    setVerifyLoading(true);
+    dispatch(showAppLoader({ flag: true, message: 'Setting up everything. Please wait!' }));
     const { data } = await axios.get(`${apiURI}/v1/organization/verify-session`, { withCredentials: true });
     setVerifyData(data.data);
-    setVerifyLoading(false);
+    dispatch(showAppLoader({ flag: false, message: '' }));
   };
-
-  //Verify session
-  useEffectSkipFirst(verifySession, [hasLoggedIn]);
 
   useEffect(() => {
     if (verifyData) {
@@ -69,43 +60,28 @@ const LoginForm: React.FC = () => {
     setValues(data);
   };
 
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    setError({ code: '' });
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     try {
+      event.preventDefault();
       setLoading(true);
       await fireClient.auth().setPersistence(getAuthPersistence);
       await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
-      const { status, body } = await sessionLogin();
-      if (status === 200) {
-        if (body.resetPass) setChangePassword(true);
-        if (!body.resetPass) setHasLoggedIn(true);
+      const { body } = await sessionLogin();
+      if (body.resetPass) {
+        setChangePassword(true);
       } else {
-        throw Error('invalid login');
+        await verifySession();
       }
       setLoading(false);
-    } catch (e: any) {
-      console.log('error: ', e);
-      setError(e);
+    } catch (error) {
+      dispatch(showErrorAlert((error as Error).message));
       setLoading(false);
     }
   };
 
-  if (verifyLoading) return <AppLoader message="Setting up everything. Please wait!" />;
-
   return (
     <Box className={styles.loginForm}>
       <ChangePasswordDialog open={changePassword} setOpen={setChangePassword} email={values.email} />
-      <Box className="w-full">
-        {error.code !== '' ? (
-          <ErrorCard
-            data={'The email and password you entered does not match the information we have on file.'}
-            close={() => setError({ code: '' })}
-          ></ErrorCard>
-        ) : (
-          <div />
-        )}
-      </Box>
       <Box className="w-full pb-5">
         <TextField
           required
@@ -140,6 +116,13 @@ const LoginForm: React.FC = () => {
       </Box>
       <p className="text-md text-blue-600 cursor-pointer" onClick={() => history.push('/forget-password')}>
         Forgot Password?
+      </p>
+      <p className="text-md mt-1">
+        Want to promote your content?{' '}
+        <b className="cursor-pointer text-blue-600" onClick={() => history.push('/register')}>
+          Register
+        </b>{' '}
+        here.
       </p>
     </Box>
   );
