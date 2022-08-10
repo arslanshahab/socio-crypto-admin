@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import LoginPage from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -19,11 +19,12 @@ const App: React.FC = () => {
       <AppLoader />
       <BrowserRouter>
         <Switch>
-          <Route exact path={'/'} component={LoginPage} />
+          <Route exact path="/login" component={LoginPage} />
           <Route exact path={'/register'} component={RegisterPage} />
           <Route exact path={'/forget-password'} component={VerifyEmail} />
           <Route exact path={'/reset-password'} component={ForgetPage} />
           <ProtectedRoute path={'/dashboard'} component={Dashboard} />
+          <Redirect path="/" to="/login" />
         </Switch>
       </BrowserRouter>
     </div>
