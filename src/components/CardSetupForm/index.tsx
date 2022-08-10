@@ -1,16 +1,16 @@
 import React from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import { CardSection } from './CardSection';
+import { CardSection } from '../CardSection';
 import { useMutation } from '@apollo/client';
-import { AddPaymentMethod } from '../types';
-import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
+import { AddPaymentMethod } from '../../types';
+import { ADD_PAYMENT_METHOD } from '../../operations/mutations/stripe';
 import { CircularProgress, Dialog, DialogContent } from '@material-ui/core';
-import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
-import CustomButton from './CustomButton';
-import buttonStyles from '../assets/styles/customButton.module.css';
-import headingStyles from '../assets/styles/heading.module.css';
+import { LIST_PAYMENT_METHODS } from '../../operations/queries/stripe';
+import CustomButton from '../CustomButton';
+import buttonStyles from '../../assets/styles/customButton.module.css';
+import headingStyles from '../../assets/styles/heading.module.css';
 import { useDispatch } from 'react-redux';
-import { showErrorAlert, showSuccessAlert } from '../store/actions/alerts';
+import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
