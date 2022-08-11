@@ -36,6 +36,7 @@ const VerifyEmailForm: FC = () => {
 
   return (
     <div className={styles.verifyEmailForm}>
+      <h2 className="w-full text-3xl text-gray-600 font-semibold mb-8 text-left">Verify Email</h2>
       <div className="w-full">
         {error.code !== '' ? (
           <ErrorCard
