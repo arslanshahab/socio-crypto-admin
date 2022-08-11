@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { urls } from '../apiConfig.json';
-import { CompleteEmailVerificationPayload, RegisterBrandPayload, SuccessResponse } from '../types';
+import {
+  CampaignDaviationTypes,
+  CompleteEmailVerificationPayload,
+  RegisterBrandPayload,
+  SuccessResponse,
+} from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
 const env = process.env.REACT_APP_STAGE || 'local';
@@ -35,6 +40,17 @@ export class ApiClient {
   public static async registerBrand(payload: RegisterBrandPayload): Promise<SuccessResponse> {
     try {
       return (await this.requestInstance.post('/v1/organization/register', payload)).data;
+    } catch (error) {
+      console.log(error);
+      throw new Error((error as Error).message);
+    }
+  }
+
+  public static async getCampaignDaviation(campaignId: string): Promise<{ data: CampaignDaviationTypes }> {
+    try {
+      return await (
+        await this.requestInstance.get(`/v1/social/campaign-daviation/${campaignId}`)
+      ).data;
     } catch (error) {
       console.log(error);
       throw new Error((error as Error).message);
