@@ -5,15 +5,13 @@ import { ChargePaymentMethodResults, ChargePaymentMethodVars, ListPaymentMethods
 import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
 import { capitalize } from '../helpers/formatter';
 import { CHARGE_PAYMENT_METHOD } from '../operations/mutations/stripe';
-import { RefetchWallet } from './PaymentsAccount';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   givenAmount?: number;
-  refetchWallet: RefetchWallet;
 }
 
-export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount, refetchWallet }) => {
+export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) => {
   const [paymentMethodId, setPaymentMethodId] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [amount, setAmount] = useState(givenAmount || 0);
@@ -43,7 +41,6 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount, refe
   const handlePurchase = async () => {
     try {
       await chargeCard();
-      refetchWallet();
       setOpen(false);
     } catch (e) {
       console.log(e);
