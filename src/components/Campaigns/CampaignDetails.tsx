@@ -83,7 +83,7 @@ const CampaignDetails: FC = () => {
       push('/dashboard/admin/audit-campaigns');
     }
   };
-  console.log('deviation res-------------', deviation);
+
   return (
     <div className="p-4 w-2/4">
       <div className="flex p-2 mb-4 shadow">
