@@ -21,8 +21,6 @@ const SignupForm: React.FC = () => {
   const [verificationToken, setVerificationToken] = useState('');
   const [verifyCode, showVerifyCodeDialog] = useState(false);
 
-  console.log(errors);
-
   const startVerification = () => {
     if (validateInputs()) {
       setLoading(true);
