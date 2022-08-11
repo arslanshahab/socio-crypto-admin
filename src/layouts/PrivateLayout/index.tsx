@@ -1,13 +1,12 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
 import { ReactComponent as RaiinmakerLogo } from '../../assets/svg/raiinmaker_logo2x1.svg';
-import VerifyEmailForm from '../../components/Forms/VerifyEmailForm/VerifyEmailForm';
 
-const VerifyEmail: React.FC = () => {
+const PublicLayout: React.FC = ({ children }) => {
   return (
-    <Box className="relative flex flex-row justify-center items-center bg-gradient-to-b from-blue-900 to-gray-900 h-screen min-h-screen">
-      <Box className="flex flex-row justify-between h-3/6 w-3/6 bg-white">
-        <Box className="flex flex-col justify-center items-start w-3/6 px-12 py-10 bg-blue-800">
+    <Box className="w-full flex flex-row justify-between h-screen min-h-screen">
+      <Box className="flex flex-row justify-center items-center ">
+        <Box className="flex flex-col justify-center items-start w-3/6 px-12 py-10 bg-blue-800 bg-gradient-to-b from-blue-900 to-gray-900">
           <Box className="w-64 mb-14">
             <RaiinmakerLogo className="login-logo"></RaiinmakerLogo>
           </Box>
@@ -16,10 +15,10 @@ const VerifyEmail: React.FC = () => {
             Your personal Dashboard to manage your Campaigns and get Insights through various Data Metrics.
           </p>
         </Box>
-        <VerifyEmailForm />
       </Box>
+      <Box>{children}</Box>
     </Box>
   );
 };
 
-export default VerifyEmail;
+export default PublicLayout;

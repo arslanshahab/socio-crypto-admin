@@ -1,14 +1,14 @@
 import React from 'react';
 import { Switch } from 'react-router';
 import CampaignsPage from '../Campaigns';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import { MarketData } from '../../components/MarketData';
 // import SettingsIcon from '@material-ui/icons/Settings';
 import { PaymentsAccount } from '../../components/PaymentsAccount';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
 import { Box } from '@material-ui/core';
-import { graphqlClient, sessionLogout } from '../../clients/raiinmaker-api';
+import { sessionLogout } from '../../clients/raiinmaker-api';
 import { Admin } from '../../components/Admin';
 import { ManageWithdrawRequests } from '../../components/admin/ManageWithdrawRequests/ManageWithdrawRequests';
 import { CampaignAudit } from '../../components/admin/CampaignAudit';
@@ -28,20 +28,17 @@ import UserDetails from '../../components/UserList/UserDetails';
 import CampaignTabs from '../../components/Campaigns/CampaignTabs';
 
 const Dashboard: React.FC = (props) => {
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    dispatch(showAppLoader({ flag: true, message: 'Ending your session!' }));
     try {
+      dispatch(showAppLoader({ flag: true, message: 'Ending your session!' }));
+      dispatch(logoutUser());
       await sessionLogout();
-    } catch (e) {
-      console.log(e);
+      dispatch(showAppLoader({ flag: false, message: '' }));
+    } catch (error) {
+      dispatch(showAppLoader({ flag: false, message: '' }));
     }
-    await graphqlClient.clearStore();
-    history.push('/');
-    dispatch(logoutUser());
-    dispatch(showAppLoader({ flag: false, message: '' }));
   };
 
   return (
