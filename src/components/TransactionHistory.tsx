@@ -10,6 +10,7 @@ type CurrencyTypes = {
   amount: number;
   currency: string;
   createdAt: string;
+  transactionHash: string | null;
 };
 
 export const TransactionHistory: React.FC = () => {
@@ -44,6 +45,7 @@ export const TransactionHistory: React.FC = () => {
               <th className={styles.withdrawColumn}>Action</th>
               <th className={styles.withdrawColumn}>Amount</th>
               <th className={styles.withdrawColumn}>Currency Type</th>
+              <th className={styles.withdrawColumn}>Transaction Hash</th>
               <th className={styles.withdrawColumn}>Date</th>
             </tr>
           </thead>
@@ -55,7 +57,8 @@ export const TransactionHistory: React.FC = () => {
                   <tr className={styles.tableBodyRow} key={index}>
                     <td className={styles.withdrawColumn}>{transfer.action}</td>
                     <td className={styles.withdrawColumn}>{transfer.amount}</td>
-                    <td className={`${styles.withdrawColumn} uppercase`}>{transfer.currency || 'COIN'}</td>
+                    <td className={`${styles.withdrawColumn} uppercase`}>{transfer.currency || 'COIIN'}</td>
+                    <td className={styles.withdrawColumn}>{transfer.transactionHash || ''}</td>
                     <td className={styles.withdrawColumn}>{new Date(transfer.createdAt).toLocaleString()}</td>
                   </tr>
                 );
