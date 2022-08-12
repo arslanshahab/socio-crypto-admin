@@ -7,7 +7,7 @@ import { showErrorAlert, showSuccessAlert } from '../../../store/actions/alerts'
 import { ApiClient } from '../../../services/apiClient';
 import styles from './signup.module.css';
 import { ErrorObject } from '../../../types.d';
-import VerifyCodeForm from '../VerifyCode';
+import { VerifyCodeDialog } from '../VerifyCode';
 
 const SignupForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const SignupForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [verificationToken, setVerificationToken] = useState('');
-  const [verifyCode, showVerifyCodeDialog] = useState(false);
+  const [verifyCodeDialog, showVerifyCodeDialog] = useState(false);
 
   const startVerification = () => {
     if (validateInputs()) {
@@ -45,7 +45,7 @@ const SignupForm: React.FC = () => {
   const registerBrand = async (token: string) => {
     showVerifyCodeDialog(false);
     setVerificationToken(token);
-    console.log(token);
+    setLoading(true);
     ApiClient.registerBrand({ name, company, email, password, verificationToken: token })
       .then(() => {
         dispatch(showSuccessAlert('Organization created successfully!'));
@@ -98,7 +98,7 @@ const SignupForm: React.FC = () => {
 
   return (
     <Box className={styles.signupForm}>
-      <VerifyCodeForm email={email} open={verifyCode} onClose={handleClose} callback={registerBrand} />
+      <VerifyCodeDialog email={email} open={verifyCodeDialog} onClose={handleClose} callback={registerBrand} />
       <h2 className="w-full text-3xl text-gray-600 font-semibold mb-8 text-left">Brand Registration</h2>
       <Box className="w-full pb-5">
         <TextField

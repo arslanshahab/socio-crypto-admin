@@ -22,6 +22,7 @@ interface VerifySession {
   company: string;
   role: string;
   tempPass: boolean;
+  email: string;
 }
 
 const LoginForm: React.FC = () => {

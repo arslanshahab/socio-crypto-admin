@@ -6,6 +6,7 @@ import {
   RegisterBrandPayload,
   SuccessResponse,
   FundingWallet,
+  WithdrawPayload,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -70,6 +71,14 @@ export class ApiClient {
     } catch (error) {
       console.log(error);
       throw new Error((error as Error).message);
+    }
+  }
+
+  public static async withdrawFunds(payload: WithdrawPayload): Promise<SuccessResponse> {
+    try {
+      return (await this.requestInstance.post('/v1/tatum/admin/withdraw', payload)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }
   }
 }

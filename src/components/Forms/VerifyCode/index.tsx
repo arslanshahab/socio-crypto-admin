@@ -9,12 +9,15 @@ import GenericModal from '../../GenericModal/GenericModal';
 
 interface VerifyCodeProps {
   email: string;
-  open: boolean;
-  onClose: () => void;
   callback: (token: string) => void;
 }
 
-const VerifyCodeForm: React.FC<VerifyCodeProps> = ({ email, open, onClose, callback }) => {
+interface VerifyCodeDialogProps extends VerifyCodeProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+const VerifyCodeForm: React.FC<VerifyCodeProps> = ({ email, callback }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -36,22 +39,28 @@ const VerifyCodeForm: React.FC<VerifyCodeProps> = ({ email, open, onClose, callb
   };
 
   return (
-    <GenericModal open={open} onClose={onClose} size="small">
-      <Box className={styles.verifyCodeForm}>
-        {loading ? (
-          <CircularProgress className="loader" size={36} thickness={5} />
-        ) : (
-          <>
-            <h2 className="w-full text-3xl text-gray-600 font-semibold mb-5 text-left">Verification Code</h2>
-            <h2 className="w-full text-lg text-gray-600 mb-5 text-left font-medium">
-              Enter the code sent to you via email.
-            </h2>
-            <ReactCodeInput type="text" onComplete={verifyCode} className={styles.codeInput} />
-          </>
-        )}
-      </Box>
-    </GenericModal>
+    <Box className={styles.verifyCodeForm}>
+      {loading ? (
+        <CircularProgress className="loader" size={36} thickness={5} />
+      ) : (
+        <>
+          <h2 className="w-full text-3xl text-gray-600 font-semibold mb-5 text-left">Verification Code</h2>
+          <h2 className="w-full text-lg text-gray-600 mb-5 text-left font-medium">
+            Enter the code sent to you via email.
+          </h2>
+          <ReactCodeInput type="text" onComplete={verifyCode} className={styles.codeInput} />
+        </>
+      )}
+    </Box>
   );
 };
 
 export default VerifyCodeForm;
+
+export const VerifyCodeDialog: React.FC<VerifyCodeDialogProps> = ({ email, open, onClose, callback }) => {
+  return (
+    <GenericModal open={open} onClose={onClose} size="small">
+      <VerifyCodeForm email={email} callback={callback} />
+    </GenericModal>
+  );
+};
