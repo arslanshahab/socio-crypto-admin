@@ -1,6 +1,12 @@
 import axios, { AxiosError } from 'axios';
 import { urls } from '../apiConfig.json';
-import { CompleteEmailVerificationPayload, FundingWallet, RegisterBrandPayload, SuccessResponse } from '../types';
+import {
+  CampaignScoreTypes,
+  CompleteEmailVerificationPayload,
+  RegisterBrandPayload,
+  SuccessResponse,
+  FundingWallet,
+} from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
 const env = process.env.REACT_APP_STAGE || 'local';
@@ -44,6 +50,26 @@ export class ApiClient {
       return (await this.requestInstance.get('/v1/funding-wallet')).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getCampaignPostCount(campaignId: string): Promise<{ data: { count: number } }> {
+    try {
+      return (await this.requestInstance.get(`/v1/social/posts/${campaignId}`)).data;
+    } catch (error) {
+      console.log(error);
+      throw new Error((error as Error).message);
+    }
+  }
+
+  public static async getCampaignScore(campaignId: string): Promise<{ data: CampaignScoreTypes }> {
+    try {
+      return await (
+        await this.requestInstance.get(`/v1/social/campaign-score/${campaignId}`)
+      ).data;
+    } catch (error) {
+      console.log(error);
+      throw new Error((error as Error).message);
     }
   }
 }

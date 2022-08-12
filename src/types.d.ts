@@ -769,10 +769,27 @@ export interface CompleteEmailVerificationPayload {
 export interface SuccessResponse {
   success: boolean;
 }
-
 export interface FundingWallet {
   balance: string;
   type: string;
   network: string;
   symbolImageUrl: string;
+}
+export interface EngagementRateTypes {
+  likeRate: string;
+  commentRate: string;
+  shareRate: string;
+  viewRate: string;
+  submissionRate: string;
+  clickRate: string;
+}
+export interface CampaignScoreTypes {
+  averageClicks: string;
+  likeStandardDeviation: string;
+  commentStandardDeviation: string;
+  sharesStandardDeviation: string;
+  clicksStandardDeviation: string;
+  viewsStandardDeviation: string;
+  submissionsStandardDeviation: string;
+  engagementRates: EngagementRateTypes;
 }
