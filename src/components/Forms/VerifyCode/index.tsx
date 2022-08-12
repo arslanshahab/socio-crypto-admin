@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Dialog, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress } from '@material-ui/core';
 import styles from './verifyCode.module.css';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import ReactCodeInput from 'react-verification-code-input';
 import { ApiClient } from '../../../services/apiClient';
+import GenericModal from '../../GenericModal/GenericModal';
 
 interface VerifyCodeProps {
   email: string;
@@ -23,7 +24,7 @@ const VerifyCodeForm: React.FC<VerifyCodeProps> = ({ email, open, onClose, callb
       ApiClient.completeEmailVerification({ email, code: code.toUpperCase() })
         .then((resp) => {
           console.log(resp);
-          callback(resp.data.verificationToken);
+          callback(resp.verificationToken);
         })
         .catch((error) => {
           dispatch(showErrorAlert((error as Error).message));
@@ -35,7 +36,7 @@ const VerifyCodeForm: React.FC<VerifyCodeProps> = ({ email, open, onClose, callb
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <GenericModal open={open} onClose={onClose} size="small">
       <Box className={styles.verifyCodeForm}>
         {loading ? (
           <CircularProgress className="loader" size={36} thickness={5} />
@@ -49,7 +50,7 @@ const VerifyCodeForm: React.FC<VerifyCodeProps> = ({ email, open, onClose, callb
           </>
         )}
       </Box>
-    </Dialog>
+    </GenericModal>
   );
 };
 

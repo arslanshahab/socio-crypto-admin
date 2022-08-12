@@ -769,3 +769,10 @@ export interface CompleteEmailVerificationPayload {
 export interface SuccessResponse {
   success: boolean;
 }
+
+export interface FundingWallet {
+  balance: string;
+  type: string;
+  network: string;
+  symbolImageUrl: string;
+}
