@@ -7,6 +7,7 @@ import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { useDispatch } from 'react-redux';
 import { showSuccessAlert } from '../../store/actions/alerts';
+import { ApiClient } from '../../services/apiClient';
 
 type State = {
   campaign: Campaign;
@@ -43,18 +44,14 @@ const CampaignDetails: FC = () => {
   }, []);
 
   // Get campaign posts count
-  const getCampaignPostsCount = () => {
+  useEffect(() => {
     setPostsLoading(true);
-    axios
-      .get(`${apiURI}/v1/social/posts/${id}`, { withCredentials: true })
+    ApiClient.getCampaignPostCount(id)
       .then((response) => {
-        setPostsCount(response.data.data.count);
+        setPostsCount(response.data.count);
       })
       .catch((error) => console.log(error))
       .finally(() => setPostsLoading(false));
-  };
-  useEffect(() => {
-    getCampaignPostsCount();
   }, []);
 
   // Audit campaign
