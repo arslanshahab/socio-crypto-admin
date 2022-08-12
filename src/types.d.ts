@@ -746,3 +746,26 @@ export type CurrencyTypes = {
 export type UserTransferTypes = {
   transferUserRecord: CurrencyTypes[];
 };
+
+export interface RegisterBrandPayload {
+  name: string;
+  company: string;
+  email: string;
+  password: string;
+  verificationToken: string;
+}
+
+export interface StartEmailVerificationPayload {
+  email: string;
+  type: string;
+  admin: boolean;
+}
+
+export interface CompleteEmailVerificationPayload {
+  code: string;
+  email: string;
+}
+
+export interface SuccessResponse {
+  success: boolean;
+}

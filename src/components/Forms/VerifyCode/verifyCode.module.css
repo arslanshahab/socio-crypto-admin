@@ -1,0 +1,9 @@
+.verifyCodeForm {
+  @apply p-16 w-full flex flex-col justify-center items-center;
+  min-width: 400px;
+  min-height: 250px;
+}
+
+.codeInput * {
+  text-transform: uppercase;
+}

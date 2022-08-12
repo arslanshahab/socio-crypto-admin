@@ -8,8 +8,8 @@ const alerts = createReducer(initialState.alerts, {
     state.error.message = action.payload;
   },
 
-  [HIDE_ERROR_ALERT]: () => {
-    return initialState.alerts;
+  [HIDE_ERROR_ALERT]: (state) => {
+    state.error.open = false;
   },
 
   [SHOW_SUCCESS_ALERT]: (state, action: PayloadAction<string, string>) => {
@@ -17,8 +17,8 @@ const alerts = createReducer(initialState.alerts, {
     state.success.message = action.payload;
   },
 
-  [HIDE_SUCCESS_ALERT]: () => {
-    return initialState.alerts;
+  [HIDE_SUCCESS_ALERT]: (state) => {
+    state.success.open = false;
   },
 });
 
