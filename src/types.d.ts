@@ -778,7 +778,7 @@ export interface EngagementRateTypes {
   submissionRate: string;
   clickRate: string;
 }
-export interface CampaignDaviationTypes {
+export interface CampaignScoreTypes {
   averageClicks: string;
   likeStandardDeviation: string;
   commentStandardDeviation: string;

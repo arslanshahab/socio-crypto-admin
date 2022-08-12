@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { FC, useEffect, useState } from 'react';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { useParams, useLocation, useHistory } from 'react-router-dom';
-import { Campaign, CampaignDaviationTypes } from '../../types';
+import { Campaign, CampaignScoreTypes } from '../../types';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { useDispatch } from 'react-redux';
@@ -25,7 +25,7 @@ const CampaignDetails: FC = () => {
   const [rejectLoading, setRejectLoading] = useState(false);
   const [crypto, setCrypto] = useState('');
   const [cryptoLoading, setCryptoLoading] = useState(false);
-  const [deviation, setDeviation] = useState<CampaignDaviationTypes>();
+  const [deviation, setDeviation] = useState<CampaignScoreTypes>();
 
   useEffect(() => {
     try {
