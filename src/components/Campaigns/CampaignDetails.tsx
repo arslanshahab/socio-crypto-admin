@@ -127,64 +127,68 @@ const CampaignDetails: FC = () => {
         <h6 className="w-2/5">Paid Out Crypto:</h6>
         <p className="w-3/5 text-sm">{cryptoLoading ? 'Loading...' : crypto}</p>
       </div>
-      <div className="flex p-2 mb-4 shadow">
-        <h6 className="w-2/5">Average Clicks:</h6>
-        <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.averageClicks}</p>
-      </div>
-      <div>
-        <h4 className={`${headingStyles.headingSm} pb-2`}>Engagement Rate:</h4>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Click Rate</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.clickRate}</p>
+      {isAudit && (
+        <div>
+          <div className="flex p-2 mb-4 shadow">
+            <h6 className="w-2/5">Average Clicks:</h6>
+            <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.averageClicks}</p>
+          </div>
+          <div>
+            <h4 className={`${headingStyles.headingSm} pb-2`}>Engagement Rate:</h4>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Click Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.clickRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Like Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.likeRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Share Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.shareRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">View Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.viewRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Comment Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.commentRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Submission Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.submissionRate}</p>
+            </div>
+          </div>
+          <div>
+            <h4 className={`${headingStyles.headingSm} pb-2`}>Deviation:</h4>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Clicks:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.clicksStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Likes:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.likeStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Shares:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.sharesStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Views:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.viewsStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Comments:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.commentStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Submissions:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.submissionsStandardDeviation}</p>
+            </div>
+          </div>
         </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Like Rate</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.likeRate}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Share Rate</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.shareRate}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">View Rate</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.viewRate}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Comment Rate</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.commentRate}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Submission Rate</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.submissionRate}</p>
-        </div>
-      </div>
-      <div>
-        <h4 className={`${headingStyles.headingSm} pb-2`}>Deviation:</h4>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Clicks:</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.clicksStandardDeviation}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Likes:</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.likeStandardDeviation}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Shares:</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.sharesStandardDeviation}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Views:</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.viewsStandardDeviation}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Comments:</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.commentStandardDeviation}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Submissions:</h6>
-          <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.submissionsStandardDeviation}</p>
-        </div>
-      </div>
+      )}
 
       {isAudit && (
         <div className="flex justify-evenly items-center  shadow h-12">
