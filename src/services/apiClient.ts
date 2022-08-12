@@ -46,10 +46,10 @@ export class ApiClient {
     }
   }
 
-  public static async getCampaignDaviation(campaignId: string): Promise<{ data: CampaignDaviationTypes }> {
+  public static async getCampaignScore(campaignId: string): Promise<{ data: CampaignDaviationTypes }> {
     try {
       return await (
-        await this.requestInstance.get(`/v1/social/campaign-daviation/${campaignId}`)
+        await this.requestInstance.get(`/v1/social/campaign-score/${campaignId}`)
       ).data;
     } catch (error) {
       console.log(error);

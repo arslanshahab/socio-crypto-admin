@@ -45,7 +45,7 @@ const CampaignDetails: FC = () => {
 
   useEffect(() => {
     const fetchCampaignStats = async () => {
-      ApiClient.getCampaignDaviation(id)
+      ApiClient.getCampaignScore(id)
         .then((res) => setDeviation(res.data))
         .catch((err) => console.log(err))
         .finally(() => console.log('finally'));
