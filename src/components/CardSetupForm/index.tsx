@@ -1,14 +1,16 @@
 import React from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import { CardSection } from './CardSection';
+import { CardSection } from '../CardSection';
 import { useMutation } from '@apollo/client';
-import { AddPaymentMethod } from '../types';
-import { ADD_PAYMENT_METHOD } from '../operations/mutations/stripe';
+import { AddPaymentMethod } from '../../types';
+import { ADD_PAYMENT_METHOD } from '../../operations/mutations/stripe';
 import { CircularProgress, Dialog, DialogContent } from '@material-ui/core';
-import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
-import CustomButton from './CustomButton';
-import buttonStyles from '../assets/styles/customButton.module.css';
-import headingStyles from '../assets/styles/heading.module.css';
+import { LIST_PAYMENT_METHODS } from '../../operations/queries/stripe';
+import CustomButton from '../CustomButton';
+import buttonStyles from '../../assets/styles/customButton.module.css';
+import headingStyles from '../../assets/styles/heading.module.css';
+import { useDispatch } from 'react-redux';
+import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +18,7 @@ interface Props {
 }
 
 export const CardSetupForm: React.FC<Props> = ({ setModal, open }) => {
+  const dispatch = useDispatch();
   const [addPaymentMethod, { loading }] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD, {
     refetchQueries: [{ query: LIST_PAYMENT_METHODS }],
   });
@@ -40,9 +43,11 @@ export const CardSetupForm: React.FC<Props> = ({ setModal, open }) => {
         },
       });
       if (result.error) {
+        dispatch(showErrorAlert('The credit card you have entered is invalid'));
         console.log('card error: ', result.error.message);
       } else {
         console.log('successfully added payment method');
+        dispatch(showSuccessAlert('Successfully added payment method'));
       }
     } else {
       console.log('error: ', errors);
