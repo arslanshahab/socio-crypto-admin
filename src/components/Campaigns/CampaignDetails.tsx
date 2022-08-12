@@ -7,6 +7,7 @@ import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { useDispatch } from 'react-redux';
 import { showSuccessAlert } from '../../store/actions/alerts';
+import { ApiClient } from '../../services/apiClient';
 
 type State = {
   campaign: Campaign;
@@ -23,6 +24,8 @@ const CampaignDetails: FC = () => {
   const [rejectLoading, setRejectLoading] = useState(false);
   const [crypto, setCrypto] = useState('');
   const [cryptoLoading, setCryptoLoading] = useState(false);
+  const [postsCount, setPostsCount] = useState(0);
+  const [postsLoading, setPostsLoading] = useState(false);
 
   useEffect(() => {
     try {
@@ -38,6 +41,17 @@ const CampaignDetails: FC = () => {
     } catch (error) {
       console.log(error);
     }
+  }, []);
+
+  // Get campaign posts count
+  useEffect(() => {
+    setPostsLoading(true);
+    ApiClient.getCampaignPostCount(id)
+      .then((response) => {
+        setPostsCount(response.data.count);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setPostsLoading(false));
   }, []);
 
   // Audit campaign
@@ -71,6 +85,7 @@ const CampaignDetails: FC = () => {
       push('/dashboard/admin/audit-campaigns');
     }
   };
+
   return (
     <div className="p-4 w-2/4">
       <div className="flex p-2 mb-4 shadow">
@@ -113,6 +128,10 @@ const CampaignDetails: FC = () => {
       <div className="flex p-2 mb-4 shadow">
         <h6 className="w-2/5">Paid Out Crypto:</h6>
         <p className="w-3/5 text-sm">{cryptoLoading ? 'Loading...' : crypto}</p>
+      </div>
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Total Posts:</h6>
+        <p className="w-3/5 text-sm">{postsLoading ? 'Loading...' : postsCount}</p>
       </div>
       {isAudit && (
         <div className="flex justify-evenly items-center  shadow h-12">
