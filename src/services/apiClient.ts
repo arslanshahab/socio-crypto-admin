@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { urls } from '../apiConfig.json';
-import { CompleteEmailVerificationPayload, RegisterBrandPayload, SuccessResponse } from '../types';
+import { CampaignScoreTypes, CompleteEmailVerificationPayload, RegisterBrandPayload, SuccessResponse } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
 const env = process.env.REACT_APP_STAGE || 'local';
@@ -44,6 +44,17 @@ export class ApiClient {
   public static async getCampaignPostCount(campaignId: string): Promise<{ data: { count: number } }> {
     try {
       return (await this.requestInstance.get(`/v1/social/posts/${campaignId}`)).data;
+    } catch (error) {
+      console.log(error);
+      throw new Error((error as Error).message);
+    }
+  }
+
+  public static async getCampaignScore(campaignId: string): Promise<{ data: CampaignScoreTypes }> {
+    try {
+      return await (
+        await this.requestInstance.get(`/v1/social/campaign-score/${campaignId}`)
+      ).data;
     } catch (error) {
       console.log(error);
       throw new Error((error as Error).message);
