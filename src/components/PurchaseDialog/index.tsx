@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  Tab,
-  Tabs,
-  useMediaQuery,
-  useTheme,
-} from '@material-ui/core';
-import card from '../assets/svg/credit-card.svg';
-import eth from '../assets/svg/eth-icon.svg';
-import { TabPanel } from './TabPanel';
-import { StripePurchaseForm } from './StripePurchaseForm';
-import { coldWallet } from './PaymentsAccount';
+import { Dialog, DialogContent, Tab, Tabs, useMediaQuery, useTheme } from '@material-ui/core';
+import card from '../../assets/svg/credit-card.svg';
+// import eth from '../assets/svg/eth-icon.svg';
+import { TabPanel } from '../TabPanel';
+import { StripePurchaseForm } from '../StripePurchaseForm';
 
 interface Props {
   open: boolean;
@@ -41,7 +30,13 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance
     setOpen(false);
   };
   return (
-    <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
+    <Dialog
+      fullScreen={fullScreen}
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="responsive-dialog-title"
+      fullWidth
+    >
       <DialogContent>
         <Tabs
           value={value}
@@ -50,10 +45,10 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance
           textColor={'primary'}
           onChange={handleChange}
         >
-          <Tab label={'ETH'} icon={<img src={eth} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} />
-          <Tab label={'Card'} icon={<img src={card} height={60} width={60} alt={'USD'} />} {...a11yProps(1)} />
+          {/* <Tab label={'ETH'} icon={<img src={eth} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} /> */}
+          <Tab label={'Card'} icon={<img src={card} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} />
         </Tabs>
-        <TabPanel value={value} index={0}>
+        {/* <TabPanel value={value} index={0}>
           {amount && balance ? (
             <div>
               <DialogContentText>
@@ -75,8 +70,8 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance
               Okay
             </Button>
           </DialogActions>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
+        </TabPanel> */}
+        <TabPanel value={value} index={0}>
           <StripePurchaseForm setOpen={setOpen} givenAmount={amount && balance ? amount - balance : amount} />
         </TabPanel>
       </DialogContent>

@@ -25,6 +25,8 @@ const CampaignDetails: FC = () => {
   const [rejectLoading, setRejectLoading] = useState(false);
   const [crypto, setCrypto] = useState('');
   const [cryptoLoading, setCryptoLoading] = useState(false);
+  const [postsCount, setPostsCount] = useState(0);
+  const [postsLoading, setPostsLoading] = useState(false);
   const [deviation, setDeviation] = useState<CampaignScoreTypes>();
 
   useEffect(() => {
@@ -52,6 +54,17 @@ const CampaignDetails: FC = () => {
     };
     fetchCampaignStats();
   }, []);
+  // Get campaign posts count
+  useEffect(() => {
+    setPostsLoading(true);
+    ApiClient.getCampaignPostCount(id)
+      .then((response) => {
+        setPostsCount(response.data.count);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setPostsLoading(false));
+  }, []);
+
   // Audit campaign
   const handleSubmit = async () => {
     setSubmitLoading(true);
@@ -126,6 +139,10 @@ const CampaignDetails: FC = () => {
       <div className="flex p-2 mb-4 shadow">
         <h6 className="w-2/5">Paid Out Crypto:</h6>
         <p className="w-3/5 text-sm">{cryptoLoading ? 'Loading...' : crypto}</p>
+      </div>
+      <div className="flex p-2 mb-4 shadow">
+        <h6 className="w-2/5">Total Posts:</h6>
+        <p className="w-3/5 text-sm">{postsLoading ? 'Loading...' : postsCount}</p>
       </div>
       {isAudit && (
         <div>
