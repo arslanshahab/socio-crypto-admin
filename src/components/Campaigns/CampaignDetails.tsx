@@ -2,12 +2,13 @@ import axios from 'axios';
 import React, { FC, useEffect, useState } from 'react';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { useParams, useLocation, useHistory } from 'react-router-dom';
-import { Campaign } from '../../types';
+import { Campaign, CampaignScoreTypes } from '../../types';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { useDispatch } from 'react-redux';
 import { showSuccessAlert } from '../../store/actions/alerts';
 import { ApiClient } from '../../services/apiClient';
+import headingStyles from '../../assets/styles/heading.module.css';
 
 type State = {
   campaign: Campaign;
@@ -26,6 +27,7 @@ const CampaignDetails: FC = () => {
   const [cryptoLoading, setCryptoLoading] = useState(false);
   const [postsCount, setPostsCount] = useState(0);
   const [postsLoading, setPostsLoading] = useState(false);
+  const [deviation, setDeviation] = useState<CampaignScoreTypes>();
 
   useEffect(() => {
     try {
@@ -43,6 +45,15 @@ const CampaignDetails: FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchCampaignStats = async () => {
+      ApiClient.getCampaignScore(id)
+        .then((res) => setDeviation(res.data))
+        .catch((err) => console.log(err))
+        .finally(() => console.log('finally'));
+    };
+    fetchCampaignStats();
+  }, []);
   // Get campaign posts count
   useEffect(() => {
     setPostsLoading(true);
@@ -133,6 +144,69 @@ const CampaignDetails: FC = () => {
         <h6 className="w-2/5">Total Posts:</h6>
         <p className="w-3/5 text-sm">{postsLoading ? 'Loading...' : postsCount}</p>
       </div>
+      {isAudit && (
+        <div>
+          <div className="flex p-2 mb-4 shadow">
+            <h6 className="w-2/5">Average Clicks:</h6>
+            <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.averageClicks}</p>
+          </div>
+          <div>
+            <h4 className={`${headingStyles.headingSm} pb-2`}>Engagement Rate:</h4>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Click Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.clickRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Like Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.likeRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Share Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.shareRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">View Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.viewRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Comment Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.commentRate}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Submission Rate</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.engagementRates.submissionRate}</p>
+            </div>
+          </div>
+          <div>
+            <h4 className={`${headingStyles.headingSm} pb-2`}>Deviation:</h4>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Clicks:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.clicksStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Likes:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.likeStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Shares:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.sharesStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Views:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.viewsStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Comments:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.commentStandardDeviation}</p>
+            </div>
+            <div className="flex p-2 mb-4 shadow">
+              <h6 className="w-2/5">Submissions:</h6>
+              <p className="w-3/5 text-sm">{!deviation ? 'Loading...' : deviation.submissionsStandardDeviation}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {isAudit && (
         <div className="flex justify-evenly items-center  shadow h-12">
           <CustomButton className={buttonStyles.secondaryButton} onClick={handleDelete} loading={rejectLoading}>
