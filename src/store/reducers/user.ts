@@ -9,6 +9,7 @@ const user = createReducer(initialState.user, {
     state.tempPass = action.payload.tempPass;
     state.role = action.payload.role;
     state.company = action.payload.company;
+    state.email = action.payload.email;
     state.isLoggedIn = action.payload.isLoggedIn;
   },
 

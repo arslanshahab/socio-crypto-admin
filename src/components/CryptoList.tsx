@@ -3,19 +3,24 @@ import { CryptoDialog } from './CryptoDialog';
 import GenericModal from './GenericModal';
 import DepositCryptoForm from './Forms/DepositCryptoForm';
 import CustomButton from '../components/CustomButton';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Box } from '@material-ui/core';
 import circleStyles from './PendingCampaigns/pendingCampaigns.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
 import commonStyles from '../assets/styles/common.module.css';
 import PrimaryCard from './CryptoCard/PrimaryCard';
 import axios from 'axios';
 import { apiURI } from '../clients/raiinmaker-api';
+import { ApiClient } from '../services/apiClient';
+import { FundingWallet } from '../types';
+import { WithdrawFormModal } from './Forms/WithdrawForm';
+import { showErrorAlert } from '../store/actions/alerts';
+import { useDispatch } from 'react-redux';
 
 const triggerReducer = (
   state: any,
   action: {
     type: string;
-    payload: { type: string; symbolImageUrl: string; balance: number; id: string }[] | undefined;
+    payload: FundingWallet[] | undefined;
   },
 ) => {
   switch (action.type) {
@@ -30,20 +35,30 @@ export const CryptoList: React.FC = () => {
   const [openCrypto, setOpenCrypto] = useState(false);
   const [openTokenRegistration, setOpenRegistration] = useState(false);
   const [search, setSearch] = useState('');
-  const [filterCurrency, dispatch] = useReducer(triggerReducer, []);
-  const [fundingWallet, setFundingWallet] = useState([]);
+  const [filterCurrency, searchDispatch] = useReducer(triggerReducer, []);
+  const [fundingWallet, setFundingWallet] = useState<FundingWallet[]>([]);
   const [isWalletLoading, setIsWalletLoading] = useState(false);
   const [refetch, setRefetch] = useState(0);
   const [currencyList, setCurrencyList] = useState([]);
   const [supportedCryptoList, setSupportedCryptoList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [withdrawForm, showWithdrawForm] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState<FundingWallet | undefined>();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
       setIsWalletLoading(true);
-      const { data } = await axios(`${apiURI}/v1/funding-wallet`, { withCredentials: true });
-      setFundingWallet(data.data);
-      setIsWalletLoading(false);
+      await ApiClient.getFundingWallet()
+        .then((resp) => {
+          setFundingWallet(resp);
+        })
+        .catch((error) => {
+          dispatch(showErrorAlert(error.message));
+        })
+        .finally(() => {
+          setIsWalletLoading(false);
+        });
     };
     fetchData();
   }, [refetch]);
@@ -79,12 +94,12 @@ export const CryptoList: React.FC = () => {
 
   useEffect(() => {
     if (!search) {
-      dispatch({ type: 'CHANGE_SEARCH', payload: fundingWallet });
+      searchDispatch({ type: 'CHANGE_SEARCH', payload: fundingWallet });
     } else {
       const filter = fundingWallet.filter((x: any) => {
         return x.type.toLowerCase().includes(search.toLowerCase());
       });
-      dispatch({ type: 'CHANGE_SEARCH', payload: filter });
+      searchDispatch({ type: 'CHANGE_SEARCH', payload: filter });
     }
   }, [search, fundingWallet]);
 
@@ -94,6 +109,11 @@ export const CryptoList: React.FC = () => {
 
   const handleRefetch = () => {
     setRefetch(new Date().getTime());
+  };
+
+  const handleWithdrawModalClose = () => {
+    showWithdrawForm(false);
+    setSelectedCurrency(undefined);
   };
 
   const toolTipMap = {
@@ -113,6 +133,9 @@ export const CryptoList: React.FC = () => {
       <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
         <DepositCryptoForm cryptoList={currencyList} callback={handleRefetch} fundingWallet={fundingWallet} />
       </GenericModal>
+      {selectedCurrency && (
+        <WithdrawFormModal open={withdrawForm} onClose={handleWithdrawModalClose} currency={selectedCurrency} />
+      )}
       <div className={headingStyles.paymentHeadingWrapper}>
         <h1 className={headingStyles.headingXl}>Crypto Currencies</h1>
         <div className="flex gap-4 justify-between items-center">
@@ -143,13 +166,15 @@ export const CryptoList: React.FC = () => {
         <div>
           {fundingWallet && filterCurrency.currency ? (
             <div className="flex flex-wrap gap-4">
-              {filterCurrency.currency.map(
-                (
-                  currency: { type: string; symbolImageUrl: string; balance: number; id: string; network: string },
-                  index: number,
-                ) => (
+              {filterCurrency.currency.map((currency: FundingWallet, index: number) => (
+                <Box
+                  key={index}
+                  onClick={() => {
+                    setSelectedCurrency(currency);
+                    showWithdrawForm(true);
+                  }}
+                >
                   <PrimaryCard
-                    key={index}
                     title={currency.type}
                     network={currency.network}
                     value={currency.balance}
@@ -157,10 +182,9 @@ export const CryptoList: React.FC = () => {
                     tooltipTitle={toolTipMap.title}
                     tooltipValue={toolTipMap.value}
                     tooltipNetwork={toolTipMap.network}
-                    id={currency.id}
                   />
-                ),
-              )}
+                </Box>
+              ))}
             </div>
           ) : (
             <p>Please register or add a supported crypto currency</p>

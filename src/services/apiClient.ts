@@ -1,9 +1,17 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { urls } from '../apiConfig.json';
-import { CampaignScoreTypes, CompleteEmailVerificationPayload, RegisterBrandPayload, SuccessResponse } from '../types';
+import {
+  CampaignScoreTypes,
+  CompleteEmailVerificationPayload,
+  RegisterBrandPayload,
+  SuccessResponse,
+  FundingWallet,
+  WithdrawPayload,
+} from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
 const env = process.env.REACT_APP_STAGE || 'local';
+const SOMETHING_WENT_WRONG = 'Something went wrong!';
 
 export class ApiClient {
   private static baseUrl = process.env.REACT_APP_LOCAL_URL || ((urls as { [key: string]: string })[env] as string);
@@ -14,30 +22,35 @@ export class ApiClient {
 
   public static async startEmailVerification(payload: StartEmailVerificationPayload): Promise<SuccessResponse> {
     try {
-      return (await this.requestInstance.post('/v1/auth/start-verification', payload)).data;
+      return (await this.requestInstance.post('/v1/auth/start-verification', payload)).data.data;
     } catch (error) {
-      console.log(error);
-      throw new Error((error as Error).message);
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }
   }
 
   public static async completeEmailVerification(
     payload: CompleteEmailVerificationPayload,
-  ): Promise<{ data: { verificationToken: string } }> {
+  ): Promise<{ verificationToken: string }> {
     try {
-      return (await this.requestInstance.post('/v1/auth/complete-verification', payload)).data;
+      return (await this.requestInstance.post('/v1/auth/complete-verification', payload)).data.data;
     } catch (error) {
-      console.log(error);
-      throw new Error((error as Error).message);
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }
   }
 
   public static async registerBrand(payload: RegisterBrandPayload): Promise<SuccessResponse> {
     try {
-      return (await this.requestInstance.post('/v1/organization/register', payload)).data;
+      return (await this.requestInstance.post('/v1/organization/register', payload)).data.data;
     } catch (error) {
-      console.log(error);
-      throw new Error((error as Error).message);
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getFundingWallet(): Promise<FundingWallet[]> {
+    try {
+      return (await this.requestInstance.get('/v1/funding-wallet')).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }
   }
 
@@ -58,6 +71,14 @@ export class ApiClient {
     } catch (error) {
       console.log(error);
       throw new Error((error as Error).message);
+    }
+  }
+
+  public static async withdrawFunds(payload: WithdrawPayload): Promise<SuccessResponse> {
+    try {
+      return (await this.requestInstance.post('/v1/tatum/admin/withdraw', payload)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }
   }
 }

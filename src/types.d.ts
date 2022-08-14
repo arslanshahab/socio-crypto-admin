@@ -501,6 +501,7 @@ export interface UserData {
   id: string;
   role: string;
   company: string;
+  email: string;
   tempPass: boolean;
   isLoggedIn: boolean;
 }
@@ -769,7 +770,12 @@ export interface CompleteEmailVerificationPayload {
 export interface SuccessResponse {
   success: boolean;
 }
-
+export interface FundingWallet {
+  balance: string;
+  type: string;
+  network: string;
+  symbolImageUrl: string;
+}
 export interface EngagementRateTypes {
   likeRate: string;
   commentRate: string;
@@ -787,4 +793,12 @@ export interface CampaignScoreTypes {
   viewsStandardDeviation: string;
   submissionsStandardDeviation: string;
   engagementRates: EngagementRateTypes;
+}
+
+export interface WithdrawPayload {
+  symbol: string;
+  network: string;
+  address: string;
+  amount: number;
+  verificationToken: string;
 }
