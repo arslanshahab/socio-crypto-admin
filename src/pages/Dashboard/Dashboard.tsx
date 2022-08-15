@@ -27,7 +27,7 @@ import UserList from '../../components/UserList/UserList';
 import UserDetails from '../../components/UserList/UserDetails';
 import CampaignTabs from '../../components/Campaigns/CampaignTabs';
 import { FaUserCircle } from 'react-icons/fa';
-import ProfilePage from '../Profile';
+import Profile from '../Profile';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -105,7 +105,7 @@ const Dashboard: React.FC = (props) => {
               <CampaignTabs />
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/profile'}>
-              <ProfilePage />
+              <Profile />
             </ProtectedRoute>
           </Switch>
         </Box>

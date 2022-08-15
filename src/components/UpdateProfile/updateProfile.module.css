@@ -1,0 +1,6 @@
+.imagePreview {
+  @apply w-24 h-24  rounded-md shadow;
+}
+.image {
+  @apply w-full h-full object-contain rounded-md p-2;
+}
