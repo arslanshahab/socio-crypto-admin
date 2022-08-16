@@ -47,7 +47,11 @@ export const uploadMedia = async (
   });
 };
 
-export const uploadMediaV2 = async (url: string, file: any, progressCallback: (p: number) => void): Promise<void> => {
+export const uploadImage = async (
+  url: string,
+  file: FileObject,
+  progressCallback: (p: number) => void,
+): Promise<void> => {
   debugger;
   await axios({
     method: 'PUT',

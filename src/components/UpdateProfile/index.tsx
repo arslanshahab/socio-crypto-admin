@@ -7,8 +7,7 @@ import buttonStyles from '../../assets/styles/customButton.module.css';
 import { ApiClient } from '../../services/apiClient';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
-import { uploadMedia, uploadMediaV2 } from '../../helpers/utils';
-import { BrandLogoTypes } from '../../types';
+import { uploadImage } from '../../helpers/utils';
 
 const UpdateProfile: FC = () => {
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ const UpdateProfile: FC = () => {
       .then((res) => {
         console.log(res);
         if (res.signedOrgUrl && image) {
-          uploadMediaV2(res.signedOrgUrl, image, setUploadProgress)
+          uploadImage(res.signedOrgUrl, image, setUploadProgress)
             .then((response) => {
               debugger;
               console.log(response);
