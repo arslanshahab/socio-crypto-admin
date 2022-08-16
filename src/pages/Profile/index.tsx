@@ -12,7 +12,7 @@ import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState<AdminProfileTypes>();
   const [loading, setLoading] = useState(false);
@@ -20,23 +20,32 @@ const Profile: FC = () => {
   useEffect(() => {
     setLoading(true);
     ApiClient.getProfile()
-      .then((res) => setProfile(res.data))
+      .then((res) => {
+        setProfile(res.data);
+        setChecked(res.data.enabled);
+      })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const twoFactorEnabled = event.target.checked;
-    setChecked(twoFactorEnabled);
-    ApiClient.twoFactorAuth({ twoFactorEnabled })
+    setLoading(true);
+    ApiClient.twoFactorAuth({ twoFactorEnabled: event.target.checked })
       .then((res) => {
-        if (res.success) dispatch(showSuccessAlert('Two-factor authentication enabled'));
-        if (!res.success) dispatch(showSuccessAlert('Two-factor authentication disabled'));
+        if (res.success) {
+          setChecked(res.success);
+          dispatch(showSuccessAlert('Two-factor authentication enabled'));
+        }
+        if (!res.success) {
+          setChecked(res.success);
+          dispatch(showSuccessAlert('Two-factor authentication disabled'));
+        }
       })
       .catch((err) => {
         console.log(err.message);
         dispatch(showErrorAlert(err.message));
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -60,12 +69,16 @@ const Profile: FC = () => {
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">2FA:</h6>
           <p className="w-3/5 text-sm">
-            <Switch
-              checked={checked}
-              onChange={handleChange}
-              inputProps={{ 'aria-label': 'controlled' }}
-              color="primary"
-            />
+            {!profile || loading ? (
+              'Loading...'
+            ) : (
+              <Switch
+                checked={checked}
+                onChange={handleChange}
+                inputProps={{ 'aria-label': 'controlled' }}
+                color="primary"
+              />
+            )}
           </p>
         </div>
         <div className="flex p-2 mb-4 shadow">

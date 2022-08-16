@@ -807,6 +807,7 @@ export interface AdminProfileTypes {
   name: string;
   email: string;
   company: string;
+  enabled: boolean;
 }
 
 export interface TwoFactorAuthPayload {
