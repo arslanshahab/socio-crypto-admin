@@ -813,3 +813,14 @@ export interface AdminProfileTypes {
 export interface TwoFactorAuthPayload {
   twoFactorEnabled: boolean;
 }
+
+export interface BrandLogoTypes {
+  orgId: string;
+  brand: string;
+  signedOrgUrl: string;
+}
+
+export interface UpdateProfilePayload {
+  name: string;
+  imagePath: string;
+}
