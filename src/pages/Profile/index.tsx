@@ -7,8 +7,11 @@ import GenericModal from '../../components/GenericModal';
 import UpdateProfile from '../../components/UpdateProfile';
 import { ApiClient } from '../../services/apiClient';
 import { AdminProfileTypes } from '../../types';
+import { useDispatch } from 'react-redux';
+import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 
 const Profile: FC = () => {
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState<AdminProfileTypes>();
@@ -23,7 +26,17 @@ const Profile: FC = () => {
   }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
+    const twoFactorEnabled = event.target.checked;
+    setChecked(twoFactorEnabled);
+    ApiClient.twoFactorAuth({ twoFactorEnabled })
+      .then((res) => {
+        if (res.success) dispatch(showSuccessAlert('Two-factor authentication enabled'));
+        if (!res.success) dispatch(showSuccessAlert('Two-factor authentication disabled'));
+      })
+      .catch((err) => {
+        console.log(err.message);
+        dispatch(showErrorAlert(err.message));
+      });
   };
 
   return (
@@ -38,7 +51,7 @@ const Profile: FC = () => {
         </div>
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">Email:</h6>
-          <p className="w-3/5 text-sm">{profile ? profile.email : 'Loading...'}</p>
+          <p className="w-3/5 text-sm lowercase">{profile ? profile.email : 'Loading...'}</p>
         </div>
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">Brand Name:</h6>

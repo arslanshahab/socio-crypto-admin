@@ -8,6 +8,7 @@ import {
   FundingWallet,
   WithdrawPayload,
   AdminProfileTypes,
+  TwoFactorAuthPayload,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -86,6 +87,14 @@ export class ApiClient {
   public static async getProfile(): Promise<{ data: AdminProfileTypes }> {
     try {
       return (await this.requestInstance.get('/v1/organization/profile')).data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async twoFactorAuth(payload: TwoFactorAuthPayload): Promise<SuccessResponse> {
+    try {
+      return (await this.requestInstance.put('/v1/organization/two-factor-auth', payload)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

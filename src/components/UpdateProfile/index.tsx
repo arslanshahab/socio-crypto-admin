@@ -5,7 +5,6 @@ import headingStyles from '../../assets/styles/heading.module.css';
 
 const UpdateProfile: FC = () => {
   const [name, setName] = useState('');
-  const [brandName, setBrandName] = useState('');
   const [image, setImage] = useState(null);
 
   const handleFileChange = (e: any) => {
@@ -20,13 +19,6 @@ const UpdateProfile: FC = () => {
         value={name}
         onChange={(e) => setName(e.target.value)}
         label="User Name"
-        variant="standard"
-      />
-      <TextField
-        fullWidth
-        value={brandName}
-        onChange={(e) => setBrandName(e.target.value)}
-        label="Brand Name"
         variant="standard"
       />
       <div className="flex  mt-6 items-center justify-between">
