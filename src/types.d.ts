@@ -802,3 +802,9 @@ export interface WithdrawPayload {
   amount: number;
   verificationToken: string;
 }
+
+export interface AdminProfileTypes {
+  name: string;
+  email: string;
+  company: string;
+}

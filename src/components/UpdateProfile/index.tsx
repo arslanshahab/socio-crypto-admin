@@ -5,6 +5,7 @@ import headingStyles from '../../assets/styles/heading.module.css';
 
 const UpdateProfile: FC = () => {
   const [name, setName] = useState('');
+  const [brandName, setBrandName] = useState('');
   const [image, setImage] = useState(null);
 
   const handleFileChange = (e: any) => {
@@ -14,7 +15,20 @@ const UpdateProfile: FC = () => {
   return (
     <div className="p-4 ">
       <h2 className={headingStyles.headingSm}>Update Profile</h2>
-      <TextField fullWidth value={name} onChange={(e) => setName(e.target.value)} label="Name" variant="standard" />
+      <TextField
+        fullWidth
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        label="User Name"
+        variant="standard"
+      />
+      <TextField
+        fullWidth
+        value={brandName}
+        onChange={(e) => setBrandName(e.target.value)}
+        label="Brand Name"
+        variant="standard"
+      />
       <div className="flex  mt-6 items-center justify-between">
         <input type="file" onChange={handleFileChange} />
         <div className={styles.imagePreview}>

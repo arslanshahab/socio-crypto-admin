@@ -7,6 +7,7 @@ import {
   SuccessResponse,
   FundingWallet,
   WithdrawPayload,
+  AdminProfileTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -77,6 +78,14 @@ export class ApiClient {
   public static async withdrawFunds(payload: WithdrawPayload): Promise<SuccessResponse> {
     try {
       return (await this.requestInstance.post('/v1/tatum/admin/withdraw', payload)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getProfile(): Promise<{ data: AdminProfileTypes }> {
+    try {
+      return (await this.requestInstance.get('/v1/organization/profile')).data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }
