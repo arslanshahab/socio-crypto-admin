@@ -808,6 +808,8 @@ export interface AdminProfileTypes {
   email: string;
   company: string;
   enabled: boolean;
+  orgId: string;
+  imagePath: string;
 }
 
 export interface TwoFactorAuthPayload {

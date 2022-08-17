@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Switch } from '@material-ui/core';
 import CustomButton from '../../components/CustomButton';
 import styles from './profile.module.css';
@@ -10,7 +10,8 @@ import { AdminProfileTypes, FileObject } from '../../types';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 import FileUpload from '../../components/FileUpload';
-import { uploadMedia } from '../../helpers/utils';
+import { generateOrgMediaUrl, uploadMedia } from '../../helpers/utils';
+import { MdModeEdit } from 'react-icons/md';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const Profile: FC = () => {
   });
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  // Fetch Data
   useEffect(() => {
     setLoading(true);
     ApiClient.getProfile()
@@ -37,6 +39,22 @@ const Profile: FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (profile) {
+      setImage({
+        filename: profile.imagePath,
+        file: generateOrgMediaUrl(profile.orgId, profile.imagePath),
+        format: `image/${profile.imagePath.split('.')[0]}`,
+      });
+    }
+  }, [profile]);
+
+  // Handle OnChange
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.innerText);
+  };
+
+  // 2FA Enabled
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
     ApiClient.twoFactorAuth({ twoFactorEnabled: event.target.checked })
@@ -57,36 +75,38 @@ const Profile: FC = () => {
       .finally(() => setLoading(false));
   };
 
-  const onCampaignImageSuccess = (data: FileObject) => {
+  // On image success
+  const onOrgImageSuccess = (data: FileObject) => {
     setImage(data);
   };
 
+  // On Error
   const onError = (msg: string) => {
     dispatch(showErrorAlert(msg));
   };
 
   // Update Data
   const handleUpdate = async () => {
-    if (name || image.filename) {
-      setLoading(true);
-      ApiClient.updateProfile({ name, imagePath: image.filename })
-        .then((res) => {
-          console.log(res);
-          if (res.signedOrgUrl && image) {
-            uploadMedia(res.signedOrgUrl, image, setUploadProgress).then((response) => {
-              console.log(response);
-            });
-          }
-          dispatch(showSuccessAlert('Record updated successfully'));
-        })
-        .catch((err) => {
-          console.log(err.message);
-          dispatch(showErrorAlert(err.message));
-        })
-        .finally(() => setLoading(false));
-    } else {
-      dispatch(showErrorAlert('Please select name or image'));
-    }
+    debugger;
+    if (!name && !image.filename) return new Error('Name or image is required');
+    if (name === profile?.name && !image) return new Error('No changes made');
+    if (image.filename == profile?.imagePath && name === profile?.name) return new Error('No changes made');
+    setLoading(true);
+    ApiClient.updateProfile({ name, imagePath: image.filename })
+      .then((res) => {
+        console.log(res);
+        if (res.signedOrgUrl) {
+          uploadMedia(res.signedOrgUrl, image, setUploadProgress).then((response) => {
+            console.log(response);
+          });
+        }
+        dispatch(showSuccessAlert('Record updated successfully'));
+      })
+      .catch((err) => {
+        console.log(err.message);
+        dispatch(showErrorAlert(err.message));
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -95,9 +115,12 @@ const Profile: FC = () => {
         <UpdateProfile />
       </GenericModal>
       <div className={styles.profile}>
-        <div className="flex p-2 mb-4 shadow">
+        <div className="flex p-2 mb-4 shadow items-center cursor-pointer">
           <h6 className="w-2/5">Name:</h6>
-          <p className="w-3/5 text-sm">{profile ? profile.name : 'Loading...'}</p>
+          <p className="w-3/5 text-sm" contentEditable={true} suppressContentEditableWarning onInput={handleOnChange}>
+            {profile ? profile.name : 'Loading...'}
+          </p>
+          <MdModeEdit />
         </div>
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">Email:</h6>
@@ -129,16 +152,19 @@ const Profile: FC = () => {
             label="Add Organization Image"
             mediaType="organizationImage"
             tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-            onFileSuccess={onCampaignImageSuccess}
+            onFileSuccess={onOrgImageSuccess}
             onFileError={onError}
           />
         </div>
       </div>
-      <div>Progreqss: {uploadProgress && uploadProgress}</div>
+      <div>Progress: {uploadProgress && uploadProgress}</div>
       <div>
         <CustomButton className={buttonStyles.buttonPrimary} onClick={handleUpdate} loading={loading}>
           Update
         </CustomButton>
+      </div>
+      <div>
+        <img />
       </div>
     </div>
   );
