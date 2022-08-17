@@ -26,6 +26,8 @@ const Profile: FC = () => {
     format: '',
   });
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [mediaLoading, setMediaLoading] = useState(false);
 
   // Fetch Data
   useEffect(() => {
@@ -87,26 +89,27 @@ const Profile: FC = () => {
 
   // Update Data
   const handleUpdate = async () => {
-    debugger;
-    if (!name && !image.filename) return new Error('Name or image is required');
-    if (name === profile?.name && !image) return new Error('No changes made');
-    if (image.filename == profile?.imagePath && name === profile?.name) return new Error('No changes made');
-    setLoading(true);
-    ApiClient.updateProfile({ name, imagePath: image.filename })
-      .then((res) => {
-        console.log(res);
-        if (res.signedOrgUrl) {
-          uploadMedia(res.signedOrgUrl, image, setUploadProgress).then((response) => {
-            console.log(response);
-          });
-        }
-        dispatch(showSuccessAlert('Record updated successfully'));
-      })
-      .catch((err) => {
-        console.log(err.message);
-        dispatch(showErrorAlert(err.message));
-      })
-      .finally(() => setLoading(false));
+    if ((name && name !== profile?.name) || image.filename !== profile?.imagePath) {
+      setUpdateLoading(true);
+      ApiClient.updateProfile({ name, imagePath: image.filename })
+        .then((res) => {
+          if (res.signedOrgUrl && image.filename !== profile?.imagePath) {
+            setMediaLoading(true);
+            uploadMedia(res.signedOrgUrl, image, setUploadProgress)
+              .then(() => {
+                dispatch(showSuccessAlert('Organization image updated successfully'));
+              })
+              .catch((e) => console.log(e))
+              .finally(() => setMediaLoading(false));
+          }
+          dispatch(showSuccessAlert('Name updated successfully'));
+        })
+        .catch((err) => {
+          console.log(err.message);
+          dispatch(showErrorAlert(err.message));
+        })
+        .finally(() => setUpdateLoading(false));
+    } else dispatch(showErrorAlert('No changes made'));
   };
 
   return (
@@ -145,21 +148,29 @@ const Profile: FC = () => {
             )}
           </p>
         </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Brand Logo:</h6>
-          <FileUpload
-            value={image}
-            label="Add Organization Image"
-            mediaType="organizationImage"
-            tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-            onFileSuccess={onOrgImageSuccess}
-            onFileError={onError}
-          />
+        <div className=" p-2 mb-4 shadow">
+          <div className="flex">
+            <h6 className="w-2/5">Brand Logo:</h6>
+            <FileUpload
+              value={image}
+              label="Add Organization Image"
+              mediaType="organizationImage"
+              tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+              onFileSuccess={onOrgImageSuccess}
+              onFileError={onError}
+            />
+          </div>
+          {uploadProgress > 0 && uploadProgress < 100 && (
+            <div className="flex justify-end text-blue-800">Progress: {uploadProgress}</div>
+          )}
         </div>
       </div>
-      <div>Progress: {uploadProgress && uploadProgress}</div>
       <div>
-        <CustomButton className={buttonStyles.buttonPrimary} onClick={handleUpdate} loading={loading}>
+        <CustomButton
+          className={buttonStyles.buttonPrimary}
+          onClick={handleUpdate}
+          loading={updateLoading || mediaLoading}
+        >
           Update
         </CustomButton>
       </div>
