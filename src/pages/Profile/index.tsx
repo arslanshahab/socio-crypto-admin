@@ -4,7 +4,7 @@ import CustomButton from '../../components/CustomButton';
 import styles from './profile.module.css';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import GenericModal from '../../components/GenericModal';
-import UpdateProfile from '../../components/UpdateProfile';
+import KycForm from '../../components/Forms/KycForm';
 import { ApiClient } from '../../services/apiClient';
 import { AdminProfileTypes, FileObject } from '../../types';
 import { useDispatch } from 'react-redux';
@@ -114,8 +114,8 @@ const Profile: FC = () => {
 
   return (
     <div className={styles.profileWrapper}>
-      <GenericModal open={isOpen} onClose={() => setIsOpen(false)} size="small">
-        <UpdateProfile />
+      <GenericModal open={isOpen} onClose={() => setIsOpen(false)} size="medium">
+        <KycForm />
       </GenericModal>
       <div className={styles.profile}>
         <div className="flex p-2 mb-4 shadow items-center cursor-pointer">
@@ -147,6 +147,15 @@ const Profile: FC = () => {
               />
             )}
           </p>
+        </div>
+        <div className="flex p-2 mb-4 shadow">
+          <h6 className="w-2/5">Kyc:</h6>
+          <CustomButton
+            className="bg-blue-800 w-44 p-2 text-white rounded cursor-pointer"
+            onClick={() => setIsOpen(true)}
+          >
+            Add KYC Information
+          </CustomButton>
         </div>
         <div className=" p-2 mb-4 shadow">
           <div className="flex">

@@ -816,7 +816,7 @@ export interface TwoFactorAuthPayload {
   twoFactorEnabled: boolean;
 }
 
-export interface BrandLogoTypes {
+export interface UpdateProfileTypes {
   orgId: string;
   brand: string;
   signedOrgUrl: string;
@@ -825,4 +825,20 @@ export interface BrandLogoTypes {
 export interface UpdateProfilePayload {
   name: string;
   imagePath: string;
+}
+
+export interface KycInformationTypes {
+  [key: string]: string;
+  firstName: string;
+  middleName: string | null;
+  lastName: string;
+  email: string;
+  billingStreetAddress: string;
+  billingCity: string;
+  billingCountry: string;
+  zipCode: string;
+  gender: string;
+  dob: string;
+  phoneNumber: string;
+  ip: string | null;
 }

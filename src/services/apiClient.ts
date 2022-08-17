@@ -9,8 +9,8 @@ import {
   WithdrawPayload,
   AdminProfileTypes,
   TwoFactorAuthPayload,
-  BrandLogoTypes,
   UpdateProfilePayload,
+  UpdateProfileTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -102,7 +102,7 @@ export class ApiClient {
     }
   }
 
-  public static async updateProfile(payload: UpdateProfilePayload): Promise<BrandLogoTypes> {
+  public static async updateProfile(payload: UpdateProfilePayload): Promise<UpdateProfileTypes> {
     try {
       return (await this.requestInstance.put('/v1/organization/profile', payload)).data.data;
     } catch (error) {
