@@ -47,26 +47,6 @@ export const uploadMedia = async (
   });
 };
 
-export const uploadImage = async (
-  url: string,
-  file: FileObject,
-  progressCallback: (p: number) => void,
-): Promise<void> => {
-  debugger;
-  await axios({
-    method: 'PUT',
-    url: url,
-    data: file,
-    headers: {
-      'Content-Type': file.format,
-    },
-    onUploadProgress: (event) => {
-      const progress = ((event.loaded / event.total) * 100).toFixed(0);
-      progressCallback(parseFloat(progress));
-    },
-  });
-};
-
 export const prepareMediaRequest = (data: ChannelMediaStructure): CampaignMediaResponse[] => {
   const list: CampaignMediaResponse[] = [];
   const mediaList = flatten(Object.values(data));

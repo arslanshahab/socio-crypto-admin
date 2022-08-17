@@ -6,9 +6,11 @@ import buttonStyles from '../../assets/styles/customButton.module.css';
 import GenericModal from '../../components/GenericModal';
 import UpdateProfile from '../../components/UpdateProfile';
 import { ApiClient } from '../../services/apiClient';
-import { AdminProfileTypes } from '../../types';
+import { AdminProfileTypes, FileObject } from '../../types';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
+import FileUpload from '../../components/FileUpload';
+import { uploadMedia } from '../../helpers/utils';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -16,6 +18,13 @@ const Profile: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [profile, setProfile] = useState<AdminProfileTypes>();
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [image, setImage] = useState<FileObject>({
+    filename: '',
+    file: '',
+    format: '',
+  });
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -46,6 +55,38 @@ const Profile: FC = () => {
         dispatch(showErrorAlert(err.message));
       })
       .finally(() => setLoading(false));
+  };
+
+  const onCampaignImageSuccess = (data: FileObject) => {
+    setImage(data);
+  };
+
+  const onError = (msg: string) => {
+    dispatch(showErrorAlert(msg));
+  };
+
+  // Update Data
+  const handleUpdate = async () => {
+    if (name || image.filename) {
+      setLoading(true);
+      ApiClient.updateProfile({ name, imagePath: image.filename })
+        .then((res) => {
+          console.log(res);
+          if (res.signedOrgUrl && image) {
+            uploadMedia(res.signedOrgUrl, image, setUploadProgress).then((response) => {
+              console.log(response);
+            });
+          }
+          dispatch(showSuccessAlert('Record updated successfully'));
+        })
+        .catch((err) => {
+          console.log(err.message);
+          dispatch(showErrorAlert(err.message));
+        })
+        .finally(() => setLoading(false));
+    } else {
+      dispatch(showErrorAlert('Please select name or image'));
+    }
   };
 
   return (
@@ -83,17 +124,19 @@ const Profile: FC = () => {
         </div>
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">Brand Logo:</h6>
-          <div className="w-3/5 h-44 shadow-sm ">
-            <img
-              src="https://banksiafdn.com/wp-content/uploads/2019/10/placeholde-image.jpg"
-              alt="logo"
-              className={styles.brandImage}
-            />
-          </div>
+          <FileUpload
+            value={image}
+            label="Add Organization Image"
+            mediaType="organizationImage"
+            tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+            onFileSuccess={onCampaignImageSuccess}
+            onFileError={onError}
+          />
         </div>
       </div>
+      <div>Progreqss: {uploadProgress && uploadProgress}</div>
       <div>
-        <CustomButton className={buttonStyles.buttonPrimary} onClick={() => setIsOpen(true)}>
+        <CustomButton className={buttonStyles.buttonPrimary} onClick={handleUpdate} loading={loading}>
           Update
         </CustomButton>
       </div>

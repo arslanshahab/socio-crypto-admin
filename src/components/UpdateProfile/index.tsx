@@ -7,12 +7,18 @@ import buttonStyles from '../../assets/styles/customButton.module.css';
 import { ApiClient } from '../../services/apiClient';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
-import { uploadImage } from '../../helpers/utils';
+import { uploadMedia } from '../../helpers/utils';
+import { FileObject } from '../../types';
+import FileUpload from '../FileUpload';
 
 const UpdateProfile: FC = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const [image, setImage] = useState();
+  const [image, setImage] = useState<FileObject>({
+    filename: '',
+    file: '',
+    format: '',
+  });
   const [imagePath, setImagePath] = useState('');
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -30,12 +36,9 @@ const UpdateProfile: FC = () => {
       .then((res) => {
         console.log(res);
         if (res.signedOrgUrl && image) {
-          uploadImage(res.signedOrgUrl, image, setUploadProgress)
-            .then((response) => {
-              debugger;
-              console.log(response);
-            })
-            .catch((err) => console.log('abc error -------------------------->>>', err));
+          uploadMedia(res.signedOrgUrl, image, setUploadProgress).then((response) => {
+            console.log(response);
+          });
         }
         dispatch(showSuccessAlert('Record updated successfully'));
       })
@@ -44,6 +47,15 @@ const UpdateProfile: FC = () => {
         dispatch(showErrorAlert(err.message));
       })
       .finally(() => setLoading(false));
+  };
+
+  const onCampaignImageSuccess = (data: FileObject) => {
+    debugger;
+    setImage(data);
+  };
+
+  const onError = (msg: string) => {
+    dispatch(showErrorAlert(msg));
   };
 
   return (
@@ -57,19 +69,17 @@ const UpdateProfile: FC = () => {
         variant="standard"
       />
       <div className="flex  mt-6 items-center justify-between">
-        <input type="file" onChange={handleFileChange} />
-        <div className={styles.imagePreview}>
-          <img
-            src={
-              image
-                ? URL.createObjectURL(image)
-                : 'https://wwwtest.logistec.com/wp-content/uploads/2017/12/placeholder.png'
-            }
-            className={styles.image}
-            alt="image"
-          />
-        </div>
+        <FileUpload
+          value={image}
+          label="Add Campaign Image"
+          updateLabel="Update Campaign Image"
+          mediaType="campaignImage"
+          tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+          onFileSuccess={onCampaignImageSuccess}
+          onFileError={onError}
+        />
       </div>
+      <div>Progress: {uploadProgress && uploadProgress}</div>
       <div className="flex justify-center mt-6">
         <CustomButton className={buttonStyles.buttonPrimary} onClick={handleUpdate} loading={loading}>
           Update
