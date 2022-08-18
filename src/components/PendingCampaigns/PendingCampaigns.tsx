@@ -9,6 +9,7 @@ import buttonStyles from '../../assets/styles/customButton.module.css';
 import { useDispatch } from 'react-redux';
 import { showSuccessAlert } from '../../store/actions/alerts';
 import Pagination from '../Pagination/Pagination';
+import GenericModal from '../GenericModal';
 
 export const PendingCampaigns: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,8 @@ export const PendingCampaigns: React.FC = () => {
   const [take] = useState(20);
   const [total, setTotal] = useState(0);
   const [selectedCampaignId, setSelectedCampaignId] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +38,11 @@ export const PendingCampaigns: React.FC = () => {
     fetchData();
   }, [refetch]);
 
+  // Handle change
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+
   // Update campaign status
   const updateCampaignStatus = async (status: string, campaignId: string) => {
     setSelectedCampaignId(campaignId);
@@ -45,7 +53,6 @@ export const PendingCampaigns: React.FC = () => {
       {},
       { withCredentials: true },
     );
-
     if (status === 'APPROVED') {
       dispatch(showSuccessAlert('Campaign approved successfully!'));
       setAcceptLoading(false);
@@ -62,6 +69,10 @@ export const PendingCampaigns: React.FC = () => {
     setSkip(skip);
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   if (loading) {
     return (
       <div className={styles.loading}>
@@ -72,6 +83,26 @@ export const PendingCampaigns: React.FC = () => {
 
   return (
     <div>
+      <GenericModal open={isOpen} onClose={handleClose} size="medium">
+        <div className={styles.textarea}>
+          <textarea
+            className={styles.textareaField}
+            rows={7}
+            placeholder="Enter reason for rejection"
+            onChange={handleChange}
+            value={message}
+          />
+          <div className={styles.sendButton}>
+            <CustomButton
+              className={buttonStyles.buttonPrimary}
+              onClick={() => updateCampaignStatus('DENIED', selectedCampaignId)}
+              loading={rejectLoading}
+            >
+              Send
+            </CustomButton>
+          </div>
+        </div>
+      </GenericModal>
       <h2 className={styles.heading}>Pending Campaigns</h2>
       {campaigns?.length <= 0 ? (
         <div>No pending campaigns</div>
@@ -115,9 +146,13 @@ export const PendingCampaigns: React.FC = () => {
                 Approve
               </CustomButton>
               <CustomButton
-                onClick={() => updateCampaignStatus('DENIED', campaign.id)}
+                onClick={() => {
+                  setIsOpen(true);
+                  setSelectedCampaignId(campaign.id);
+                }}
                 className={buttonStyles.secondaryButton}
-                loading={rejectLoading && selectedCampaignId === campaign.id}
+                // onClick={() => updateCampaignStatus('DENIED', campaign.id)}
+                // loading={rejectLoading && selectedCampaignId === campaign.id}
               >
                 Deny
               </CustomButton>
