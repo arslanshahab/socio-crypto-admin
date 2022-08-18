@@ -7,22 +7,17 @@ import GenericModal from '../../components/GenericModal';
 import KycForm from '../../components/Forms/KycForm';
 import { ApiClient } from '../../services/apiClient';
 import { AdminProfileTypes, FileObject } from '../../types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 import FileUpload from '../../components/FileUpload';
 import { generateOrgMediaUrl, uploadMedia } from '../../helpers/utils';
 import { MdModeEdit } from 'react-icons/md';
+import { getProfile } from '../../store/actions/profile';
 
-interface IProfileProps {
-  profile: AdminProfileTypes | undefined;
-  is2FAEnabled: boolean;
-  loading: boolean;
-  callback: () => void;
-}
-
-const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }: IProfileProps) => {
+const Profile: FC = () => {
   const dispatch = useDispatch();
-  const [checked, setChecked] = useState<boolean>(is2FAEnabled);
+  const { profile } = useSelector((state: { profile: AdminProfileTypes }) => state);
+  const [checked, setChecked] = useState<boolean>(profile.enabled);
   const [isOpen, setIsOpen] = useState(false);
   const [is2FAloading, setis2FALoading] = useState(false);
   const [name, setName] = useState('');
@@ -58,10 +53,12 @@ const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }
         if (res.success) {
           setChecked(res.success);
           dispatch(showSuccessAlert('Two-factor authentication enabled'));
+          dispatch(getProfile({ ...profile, enabled: true }));
         }
         if (!res.success) {
           setChecked(res.success);
           dispatch(showSuccessAlert('Two-factor authentication disabled'));
+          dispatch(getProfile({ ...profile, enabled: false }));
         }
       })
       .catch((err) => {
@@ -69,7 +66,6 @@ const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }
         dispatch(showErrorAlert(err.message));
       })
       .finally(() => setis2FALoading(false));
-    callback();
   };
 
   // On image success
@@ -104,7 +100,6 @@ const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }
           dispatch(showErrorAlert(err.message));
         })
         .finally(() => setUpdateLoading(false));
-      callback();
     } else dispatch(showErrorAlert('No changes made'));
   };
 
@@ -132,11 +127,11 @@ const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">2FA:</h6>
           <p className="w-3/5 text-sm">
-            {loading || is2FAloading ? (
+            {is2FAloading ? (
               'Loading...'
             ) : (
               <Switch
-                checked={is2FAEnabled ? is2FAEnabled : checked}
+                checked={checked}
                 onChange={handleChange}
                 inputProps={{ 'aria-label': 'controlled' }}
                 color="primary"

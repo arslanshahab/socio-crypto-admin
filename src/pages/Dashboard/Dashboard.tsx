@@ -29,28 +29,18 @@ import CampaignTabs from '../../components/Campaigns/CampaignTabs';
 import { FaUserCircle } from 'react-icons/fa';
 import Profile from '../Profile';
 import { ApiClient } from '../../services/apiClient';
-import { generateOrgMediaUrl } from '../../helpers/utils';
-import { AdminProfileTypes } from '../../types';
+import { getProfile } from '../../store/actions/profile';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
-  const [orgLogo, setOrgLogo] = useState('');
-  const [is2FAEnabled, setIs2FAEnabled] = useState<boolean>(false);
-  const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState<AdminProfileTypes>();
-  const [refetch, setRefetch] = useState(0);
 
   useEffect(() => {
-    setLoading(true);
     ApiClient.getProfile()
       .then((res) => {
-        setProfile(res.data);
-        setIs2FAEnabled(res.data.enabled);
-        setOrgLogo(generateOrgMediaUrl(res.data.orgId, res.data.imagePath));
+        dispatch(getProfile(res.data));
       })
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
-  }, [refetch]);
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -62,14 +52,11 @@ const Dashboard: React.FC = (props) => {
       dispatch(showAppLoader({ flag: false, message: '' }));
     }
   };
-  const callback = () => {
-    setRefetch(new Date().getTime());
-  };
 
   return (
     <Box className="box-border w-screen flex flex-row flex-nowrap">
       <Box className={styles.side}>
-        <Sidebar orgLogo={orgLogo} />
+        <Sidebar />
       </Box>
       <Box className={styles.content}>
         <Box className={styles.topbar}>
@@ -128,7 +115,7 @@ const Dashboard: React.FC = (props) => {
               <CampaignTabs />
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/profile'}>
-              <Profile profile={profile} is2FAEnabled={is2FAEnabled} loading={loading} callback={callback} />
+              <Profile />
             </ProtectedRoute>
           </Switch>
         </Box>

@@ -1,4 +1,12 @@
-import { Alert, AlgorithmSpecs, CampaignState, StoreAlerts, StoreSettings, UserData } from '../types.d';
+import {
+  AdminProfileTypes,
+  Alert,
+  AlgorithmSpecs,
+  CampaignState,
+  StoreAlerts,
+  StoreSettings,
+  UserData,
+} from '../types.d';
 
 const initialAlgorithmState: AlgorithmSpecs = {
   pointValues: {
@@ -124,11 +132,21 @@ const user: UserData = {
   isLoggedIn: false,
 };
 
+const profile: AdminProfileTypes = {
+  name: '',
+  company: '',
+  email: '',
+  enabled: false,
+  imagePath: '',
+  orgId: '',
+};
+
 const initialState = {
   alerts: alerts,
   newCampaign: campaignInitState,
   settings: settings,
   user: user,
+  profile: profile,
 };
 
 export default initialState;

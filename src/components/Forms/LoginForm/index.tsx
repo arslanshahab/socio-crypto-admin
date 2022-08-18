@@ -38,7 +38,6 @@ const LoginForm: React.FC = () => {
   } as UserData);
   const [verifyData, setVerifyData] = useState<VerifySession>();
   const [verifyCodeDialog, showVerifyCodeDialog] = useState(false);
-  const [admin] = useState(true);
 
   const verifySession = async () => {
     dispatch(showAppLoader({ flag: true, message: 'Setting up everything. Please wait!' }));
@@ -99,10 +98,10 @@ const LoginForm: React.FC = () => {
       const { body } = await sessionLogin();
       if (body.resetPass) {
         setChangePassword(true);
-      } else if (admin) {
+      } else if (body.twoFactorEnabled) {
         startVerification();
         showVerifyCodeDialog(true);
-      } else if (!admin) {
+      } else if (!body.twoFactorEnabled) {
         await verifySession();
       }
       setLoading(false);
