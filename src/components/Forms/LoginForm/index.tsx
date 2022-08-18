@@ -10,7 +10,9 @@ import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../store/actions/user';
 import axios from 'axios';
 import { showAppLoader } from '../../../store/actions/settings';
-import { showErrorAlert } from '../../../store/actions/alerts';
+import { showErrorAlert, showSuccessAlert } from '../../../store/actions/alerts';
+import { VerifyCodeDialog } from '../VerifyCode';
+import { ApiClient } from '../../../services/apiClient';
 
 interface UserData {
   [key: string]: string;
@@ -35,6 +37,8 @@ const LoginForm: React.FC = () => {
     password: '',
   } as UserData);
   const [verifyData, setVerifyData] = useState<VerifySession>();
+  const [verifyCodeDialog, showVerifyCodeDialog] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   const verifySession = async () => {
     dispatch(showAppLoader({ flag: true, message: 'Setting up everything. Please wait!' }));
@@ -79,9 +83,41 @@ const LoginForm: React.FC = () => {
       setLoading(false);
     }
   };
+  const handleClose = () => {
+    showVerifyCodeDialog(false);
+    setLoading(false);
+  };
+  const registerBrand = async (value: string) => {
+    console.log('value----------', value);
+  };
+
+  const startVerification = () => {
+    setLoading(true);
+
+    ApiClient.startEmailVerification({ email: values.email, type: 'PASSWORD', admin: true })
+      .then(() => {
+        dispatch(showSuccessAlert('Verification email sent your added email address.'));
+        showVerifyCodeDialog(true);
+      })
+      .catch((error) => {
+        dispatch(showErrorAlert((error as Error).message));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  // const handle2FA = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   if (admin) {
+  //     startVerification();
+  //     showVerifyCodeDialog(true);
+  //     handleClose();
+  //   }
+  // };
 
   return (
     <Box className={styles.loginForm}>
+      {/* <VerifyCodeDialog email={values.email} open={verifyCodeDialog} onClose={handleClose} callback={registerBrand} /> */}
       <ChangePasswordDialog open={changePassword} setOpen={setChangePassword} email={values.email} />
       <h2 className="w-full text-3xl text-gray-600 font-semibold mb-8 text-left">Brand Login</h2>
       <Box className="w-full pb-5">

@@ -13,12 +13,19 @@ import FileUpload from '../../components/FileUpload';
 import { generateOrgMediaUrl, uploadMedia } from '../../helpers/utils';
 import { MdModeEdit } from 'react-icons/md';
 
-const Profile: FC = () => {
+interface IProfileProps {
+  profile: AdminProfileTypes | undefined;
+  is2FAEnabled: boolean;
+  loading: boolean;
+  callback: () => void;
+}
+
+const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }: IProfileProps) => {
   const dispatch = useDispatch();
-  const [checked, setChecked] = useState<boolean>(false);
+  const [checked, setChecked] = useState<boolean>(is2FAEnabled);
   const [isOpen, setIsOpen] = useState(false);
-  const [profile, setProfile] = useState<AdminProfileTypes>();
-  const [loading, setLoading] = useState(false);
+  // const [profile, setProfile] = useState<AdminProfileTypes>();
+  const [is2FAloading, setis2FALoading] = useState(false);
   const [name, setName] = useState('');
   const [image, setImage] = useState<FileObject>({
     filename: '',
@@ -30,16 +37,16 @@ const Profile: FC = () => {
   const [mediaLoading, setMediaLoading] = useState(false);
 
   // Fetch Data
-  useEffect(() => {
-    setLoading(true);
-    ApiClient.getProfile()
-      .then((res) => {
-        setProfile(res.data);
-        setChecked(res.data.enabled);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   ApiClient.getProfile()
+  //     .then((res) => {
+  //       setProfile(res.data);
+  //       setChecked(res.data.enabled);
+  //     })
+  //     .catch((err) => console.log(err))
+  //     .finally(() => setLoading(false));
+  // }, []);
 
   useEffect(() => {
     if (profile) {
@@ -58,7 +65,7 @@ const Profile: FC = () => {
 
   // 2FA Enabled
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true);
+    setis2FALoading(true);
     ApiClient.twoFactorAuth({ twoFactorEnabled: event.target.checked })
       .then((res) => {
         if (res.success) {
@@ -74,7 +81,8 @@ const Profile: FC = () => {
         console.log(err.message);
         dispatch(showErrorAlert(err.message));
       })
-      .finally(() => setLoading(false));
+      .finally(() => setis2FALoading(false));
+    callback();
   };
 
   // On image success
@@ -109,6 +117,7 @@ const Profile: FC = () => {
           dispatch(showErrorAlert(err.message));
         })
         .finally(() => setUpdateLoading(false));
+      callback();
     } else dispatch(showErrorAlert('No changes made'));
   };
 
@@ -136,7 +145,7 @@ const Profile: FC = () => {
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">2FA:</h6>
           <p className="w-3/5 text-sm">
-            {!profile || loading ? (
+            {!profile || is2FAloading ? (
               'Loading...'
             ) : (
               <Switch

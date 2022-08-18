@@ -9,12 +9,16 @@ import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import { TrendingUp } from '@material-ui/icons';
 import { NavLink } from 'react-router-dom';
 import { getRoutesMapping } from '../../helpers/routesMapping';
-import RaiinmakerLogo from '../../assets/svg/logo.svg';
+// import RaiinmakerLogo from '../../assets/svg/logo.svg';
 import styles from './Sidebar.module.scss';
 import { useHistory } from 'react-router-dom';
 import useStoreUserSelector from '../../hooks/useStoreUserSelector';
 
-const Sidebar: React.FC = () => {
+interface ISidebarProps {
+  orgLogo: string;
+}
+
+const Sidebar: React.FC<ISidebarProps> = ({ orgLogo }: ISidebarProps) => {
   const userData = useStoreUserSelector();
   const menuList = getRoutesMapping(userData);
   const history = useHistory();
@@ -46,7 +50,7 @@ const Sidebar: React.FC = () => {
     <Box className="w-full pt-20 bg-gradient-to-b from-blue-800 to-gray-900 h-screen">
       <Box className="flex flex-col justify-center items-center w-full">
         <NavLink to={'/dashboard/campaigns'}>
-          <img className="w-16" src={RaiinmakerLogo} alt="raiinmaker" />
+          <img className="w-16" src={orgLogo} alt="raiinmaker" />
         </NavLink>
         <h4 className="text-lg text-gray-300 mt-1">Raiinmaker</h4>
       </Box>
