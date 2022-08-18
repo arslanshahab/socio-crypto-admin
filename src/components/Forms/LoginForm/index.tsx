@@ -38,7 +38,7 @@ const LoginForm: React.FC = () => {
   } as UserData);
   const [verifyData, setVerifyData] = useState<VerifySession>();
   const [verifyCodeDialog, showVerifyCodeDialog] = useState(false);
-  const [admin, setAdmin] = useState(false);
+  const [admin] = useState(true);
 
   const verifySession = async () => {
     dispatch(showAppLoader({ flag: true, message: 'Setting up everything. Please wait!' }));
@@ -65,35 +65,17 @@ const LoginForm: React.FC = () => {
     setValues(data);
   };
 
-  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    try {
-      event.preventDefault();
-      setLoading(true);
-      await fireClient.auth().setPersistence(getAuthPersistence);
-      await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
-      const { body } = await sessionLogin();
-      if (body.resetPass) {
-        setChangePassword(true);
-      } else {
-        await verifySession();
-      }
-      setLoading(false);
-    } catch (error) {
-      dispatch(showErrorAlert((error as Error).message));
-      setLoading(false);
+  // handle verify callback
+  const handleVerify = async (value: string) => {
+    if (value) {
+      showVerifyCodeDialog(false);
+      await verifySession();
     }
   };
-  const handleClose = () => {
-    showVerifyCodeDialog(false);
-    setLoading(false);
-  };
-  const registerBrand = async (value: string) => {
-    console.log('value----------', value);
-  };
 
+  // start verification
   const startVerification = () => {
     setLoading(true);
-
     ApiClient.startEmailVerification({ email: values.email, type: 'PASSWORD', admin: true })
       .then(() => {
         dispatch(showSuccessAlert('Verification email sent your added email address.'));
@@ -107,17 +89,38 @@ const LoginForm: React.FC = () => {
       });
   };
 
-  // const handle2FA = async (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   if (admin) {
-  //     startVerification();
-  //     showVerifyCodeDialog(true);
-  //     handleClose();
-  //   }
-  // };
+  // handle login
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      event.preventDefault();
+      setLoading(true);
+      await fireClient.auth().setPersistence(getAuthPersistence);
+      await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
+      const { body } = await sessionLogin();
+      if (body.resetPass) {
+        setChangePassword(true);
+      } else if (admin) {
+        startVerification();
+        showVerifyCodeDialog(true);
+      } else if (!admin) {
+        await verifySession();
+      }
+      setLoading(false);
+    } catch (error) {
+      dispatch(showErrorAlert((error as Error).message));
+      setLoading(false);
+    }
+  };
+
+  // hanlde verify dialog close
+  const handleClose = () => {
+    showVerifyCodeDialog(false);
+    setLoading(false);
+  };
 
   return (
     <Box className={styles.loginForm}>
-      {/* <VerifyCodeDialog email={values.email} open={verifyCodeDialog} onClose={handleClose} callback={registerBrand} /> */}
+      <VerifyCodeDialog email={values.email} open={verifyCodeDialog} onClose={handleClose} callback={handleVerify} />
       <ChangePasswordDialog open={changePassword} setOpen={setChangePassword} email={values.email} />
       <h2 className="w-full text-3xl text-gray-600 font-semibold mb-8 text-left">Brand Login</h2>
       <Box className="w-full pb-5">

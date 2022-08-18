@@ -24,7 +24,6 @@ const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }
   const dispatch = useDispatch();
   const [checked, setChecked] = useState<boolean>(is2FAEnabled);
   const [isOpen, setIsOpen] = useState(false);
-  // const [profile, setProfile] = useState<AdminProfileTypes>();
   const [is2FAloading, setis2FALoading] = useState(false);
   const [name, setName] = useState('');
   const [image, setImage] = useState<FileObject>({
@@ -35,18 +34,6 @@ const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }
   const [uploadProgress, setUploadProgress] = useState(0);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [mediaLoading, setMediaLoading] = useState(false);
-
-  // Fetch Data
-  // useEffect(() => {
-  //   setLoading(true);
-  //   ApiClient.getProfile()
-  //     .then((res) => {
-  //       setProfile(res.data);
-  //       setChecked(res.data.enabled);
-  //     })
-  //     .catch((err) => console.log(err))
-  //     .finally(() => setLoading(false));
-  // }, []);
 
   useEffect(() => {
     if (profile) {
@@ -145,11 +132,11 @@ const Profile: FC<IProfileProps> = ({ profile, is2FAEnabled, loading, callback }
         <div className="flex p-2 mb-4 shadow">
           <h6 className="w-2/5">2FA:</h6>
           <p className="w-3/5 text-sm">
-            {!profile || is2FAloading ? (
+            {loading || is2FAloading ? (
               'Loading...'
             ) : (
               <Switch
-                checked={checked}
+                checked={is2FAEnabled ? is2FAEnabled : checked}
                 onChange={handleChange}
                 inputProps={{ 'aria-label': 'controlled' }}
                 color="primary"

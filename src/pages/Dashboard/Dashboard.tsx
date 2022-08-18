@@ -45,8 +45,8 @@ const Dashboard: React.FC = (props) => {
     ApiClient.getProfile()
       .then((res) => {
         setProfile(res.data);
-        setOrgLogo(generateOrgMediaUrl(res.data.orgId, res.data.imagePath));
         setIs2FAEnabled(res.data.enabled);
+        setOrgLogo(generateOrgMediaUrl(res.data.orgId, res.data.imagePath));
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
