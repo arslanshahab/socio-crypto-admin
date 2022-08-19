@@ -830,7 +830,7 @@ export interface UpdateProfilePayload {
 export interface KycInformationTypes {
   [key: string]: string;
   firstName: string;
-  middleName: string | null;
+  middleName: string;
   lastName: string;
   email: string;
   billingStreetAddress: string;
@@ -840,5 +840,5 @@ export interface KycInformationTypes {
   gender: string;
   dob: string;
   phoneNumber: string;
-  ip: string | null;
+  ip: string;
 }
