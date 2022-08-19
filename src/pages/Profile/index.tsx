@@ -43,7 +43,6 @@ const Profile: FC = () => {
   // Handle OnChange
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-    dispatch(getProfile({ ...profile, name: e.target.value }));
   };
 
   // 2FA Enabled
@@ -81,6 +80,8 @@ const Profile: FC = () => {
 
   // Update Data
   const handleUpdate = async () => {
+    debugger;
+
     if ((name && name !== profile?.name) || image.filename !== profile?.imagePath) {
       setUpdateLoading(true);
       ApiClient.updateProfile({ name, imagePath: image.filename })
@@ -96,6 +97,7 @@ const Profile: FC = () => {
               .catch((e) => console.log(e))
               .finally(() => setMediaLoading(false));
           }
+          dispatch(getProfile({ ...profile, name }));
           if (name !== profile.name) dispatch(showSuccessAlert('Name updated successfully'));
         })
         .catch((err) => {
