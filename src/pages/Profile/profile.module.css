@@ -7,3 +7,7 @@
 .brandImage {
   @apply w-full h-full object-cover rounded-md;
 }
+
+.buttonWrapper {
+  @apply mt-16;
+}

@@ -132,14 +132,7 @@ const KycForm: FC = () => {
           </div>
         </div>
         <div className={`${styles.inputWrapper}`}>
-          <select
-            id="gender"
-            name="gender"
-            value={kyc.gender}
-            className={`${styles.input}`}
-            // className="mt-1 border border-slate-600 w-full rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500  bg-transparent text-gray-500 sm:text-sm "
-            onChange={handleOnChange}
-          >
+          <select id="gender" name="gender" value={kyc.gender} className={`${styles.input}`} onChange={handleOnChange}>
             <option>Male</option>
             <option>Female</option>
           </select>

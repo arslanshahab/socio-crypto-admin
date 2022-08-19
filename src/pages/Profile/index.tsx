@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
-import { Switch } from '@material-ui/core';
+import { Box, CircularProgress, Switch, Typography } from '@material-ui/core';
 import CustomButton from '../../components/CustomButton';
 import styles from './profile.module.css';
 import buttonStyles from '../../assets/styles/customButton.module.css';
@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 import FileUpload from '../../components/FileUpload';
 import { generateOrgMediaUrl, uploadMedia } from '../../helpers/utils';
-import { MdModeEdit } from 'react-icons/md';
 import { getProfile } from '../../store/actions/profile';
+import textStyles from '../../assets/styles/text.module.css';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const Profile: FC = () => {
   const [checked, setChecked] = useState<boolean>(profile.enabled);
   const [isOpen, setIsOpen] = useState(false);
   const [is2FAloading, setis2FALoading] = useState(false);
-  const [name, setName] = useState('');
+  const [name, setName] = useState(profile.name);
   const [image, setImage] = useState<FileObject>({
     filename: '',
     file: '',
@@ -88,13 +88,14 @@ const Profile: FC = () => {
             setMediaLoading(true);
             uploadMedia(res.signedOrgUrl, image, setUploadProgress)
               .then(() => {
+                setUploadProgress(0);
                 dispatch(getProfile({ ...profile, imagePath: image.filename }));
                 dispatch(showSuccessAlert('Organization image updated successfully'));
               })
               .catch((e) => console.log(e))
               .finally(() => setMediaLoading(false));
           }
-          dispatch(showSuccessAlert('Name updated successfully'));
+          if (name !== profile.name) dispatch(showSuccessAlert('Name updated successfully'));
         })
         .catch((err) => {
           console.log(err.message);
@@ -109,64 +110,85 @@ const Profile: FC = () => {
       <GenericModal open={isOpen} onClose={() => setIsOpen(false)} size="medium">
         <KycForm />
       </GenericModal>
-      <div className={styles.profile}>
-        <div className="flex p-2 mb-4 shadow items-center cursor-pointer">
-          <h6 className="w-2/5">Name:</h6>
-          <p className="w-3/5 text-sm" contentEditable={true} suppressContentEditableWarning onInput={handleOnChange}>
-            {profile ? profile.name : 'Loading...'}
-          </p>
-          <MdModeEdit />
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Email:</h6>
-          <p className="w-3/5 text-sm lowercase">{profile ? profile.email : 'Loading...'}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Brand Name:</h6>
-          <p className="w-3/5 text-sm">{profile ? profile.company : 'Loading...'}</p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">2FA:</h6>
-          <p className="w-3/5 text-sm">
-            {is2FAloading ? (
-              'Loading...'
-            ) : (
-              <Switch
-                checked={checked}
-                onChange={handleChange}
-                inputProps={{ 'aria-label': 'controlled' }}
-                color="primary"
-              />
-            )}
-          </p>
-        </div>
-        <div className="flex p-2 mb-4 shadow">
-          <h6 className="w-2/5">Kyc:</h6>
-          <CustomButton
-            className="bg-blue-800 w-44 p-2 text-white rounded cursor-pointer"
-            onClick={() => setIsOpen(true)}
-          >
-            Add KYC Information
-          </CustomButton>
-        </div>
-        <div className=" p-2 mb-4 shadow">
-          <div className="flex">
-            <h6 className="w-2/5">Brand Logo:</h6>
-            <FileUpload
-              value={image}
-              label="Add Organization Image"
-              mediaType="organizationImage"
-              tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-              onFileSuccess={onOrgImageSuccess}
-              onFileError={onError}
-            />
-          </div>
+      <div className="flex gap-16 items-center">
+        <div className="w-52 h-52 inline-block">
+          <FileUpload
+            value={image}
+            label="Add Organization Image"
+            mediaType="organizationImage"
+            tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+            onFileSuccess={onOrgImageSuccess}
+            onFileError={onError}
+          />
           {uploadProgress > 0 && uploadProgress < 100 && (
-            <div className="flex justify-end text-blue-800">Progress: {uploadProgress}</div>
+            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+              <CircularProgress />
+              <Box
+                sx={{
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  right: 0,
+                  position: 'absolute',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography variant="caption" component="div" color="primary">{`${Math.round(
+                  uploadProgress,
+                )}%`}</Typography>
+              </Box>
+            </Box>
           )}
         </div>
+        <div>
+          <div className="flex p-1 items-center">
+            <h6 className="w-40">Name:</h6>
+            <input
+              type="text"
+              name="name"
+              value={name}
+              className={`${textStyles.text} pl-1`}
+              placeholder="Name"
+              onChange={handleOnChange}
+            />
+          </div>
+          <div className="flex p-1 items-center">
+            <h6 className="w-40">Email:</h6>
+            <p className={`${textStyles.text} w-56 text-sm lowercase`}>{profile ? profile.email : 'Loading...'}</p>
+          </div>
+          <div className="flex p-1 items-center">
+            <h6 className="w-40">Brand:</h6>
+            <p className={`${textStyles.text} w-56 text-sm lowercase`}>{profile ? profile.company : 'Loading...'}</p>
+          </div>
+          <div className="flex p-1 items-center">
+            <h6 className="w-40">2FA:</h6>
+            <p className="w-56 text-sm">
+              {is2FAloading ? (
+                'Loading...'
+              ) : (
+                <Switch
+                  checked={checked}
+                  onChange={handleChange}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                  color="primary"
+                />
+              )}
+            </p>
+          </div>
+          <div className="flex p-1 items-center">
+            <h6 className="w-40">Kyc:</h6>
+            <CustomButton
+              className="shadow text-blue-800 w-44 py-2 rounded cursor-pointer hover:bg-blue-800 hover:text-white"
+              onClick={() => setIsOpen(true)}
+            >
+              Add KYC Information
+            </CustomButton>
+          </div>
+        </div>
       </div>
-      <div>
+      <div className={styles.buttonWrapper}>
         <CustomButton
           className={buttonStyles.buttonPrimary}
           onClick={handleUpdate}
