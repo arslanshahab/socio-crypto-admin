@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { GetFundingWalletResponse } from '../types';
-import { RefetchWallet } from './PaymentsAccount';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
 import headingStyles from '../assets/styles/heading.module.css';
 import { CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 import { apiURI } from '../clients/raiinmaker-api';
 
-interface Props {
-  data: GetFundingWalletResponse | undefined;
-  isLoading: boolean;
-  refetchWallet: RefetchWallet;
-}
 type CurrencyTypes = {
   action: string;
   amount: number;
   currency: string;
   createdAt: string;
+  transactionHash: string | null;
 };
 
-export const TransactionHistory: React.FC<Props> = () => {
+export const TransactionHistory: React.FC = () => {
   const [transactionHistory, setTransactionHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,6 +45,7 @@ export const TransactionHistory: React.FC<Props> = () => {
               <th className={styles.withdrawColumn}>Action</th>
               <th className={styles.withdrawColumn}>Amount</th>
               <th className={styles.withdrawColumn}>Currency Type</th>
+              <th className={styles.withdrawColumn}>Transaction Hash</th>
               <th className={styles.withdrawColumn}>Date</th>
             </tr>
           </thead>
@@ -62,7 +57,8 @@ export const TransactionHistory: React.FC<Props> = () => {
                   <tr className={styles.tableBodyRow} key={index}>
                     <td className={styles.withdrawColumn}>{transfer.action}</td>
                     <td className={styles.withdrawColumn}>{transfer.amount}</td>
-                    <td className={`${styles.withdrawColumn} uppercase`}>{transfer.currency || 'COIN'}</td>
+                    <td className={`${styles.withdrawColumn} uppercase`}>{transfer.currency || 'COIIN'}</td>
+                    <td className={styles.withdrawColumn}>{transfer.transactionHash || ''}</td>
                     <td className={styles.withdrawColumn}>{new Date(transfer.createdAt).toLocaleString()}</td>
                   </tr>
                 );

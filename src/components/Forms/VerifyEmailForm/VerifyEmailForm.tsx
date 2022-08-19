@@ -18,7 +18,7 @@ const VerifyEmailForm: FC = () => {
   const verifyEmail = async () => {
     try {
       setLoading(true);
-      await axios.post(`${apiURI}/v1/auth/start-verification`, {
+      await axios.post(`${apiURI}/v1/auth/start-admin-verification`, {
         email,
         type: 'PASSWORD',
       });
@@ -36,6 +36,7 @@ const VerifyEmailForm: FC = () => {
 
   return (
     <div className={styles.verifyEmailForm}>
+      <h2 className="w-full text-3xl text-gray-600 font-semibold mb-8 text-left">Verify Email</h2>
       <div className="w-full">
         {error.code !== '' ? (
           <ErrorCard

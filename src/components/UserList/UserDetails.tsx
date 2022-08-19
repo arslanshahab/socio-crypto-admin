@@ -18,19 +18,13 @@ const UserDetails: React.FC = () => {
   const [curreny, setCurrency] = useState<CurrencyTypes[]>([]);
   const [redemptions, setRedemptions] = useState<RedemptionTypes>();
   const [value, setValue] = useState<number>(0);
-  const [transactionHistory, setTransactionHistory] = useState([]);
 
   useEffect(() => {
     const fetchUserCurrencyDetails = async () => {
       const response = await axios.get(`${apiURI}/v1/user/user-balances/${id}`, { withCredentials: true });
       setCurrency(response.data.data);
     };
-    const fetchTransactionHistory = async () => {
-      const response = await axios.get(`${apiURI}/v1/user/user-transactions-history/${id}`, { withCredentials: true });
-      setTransactionHistory(response.data.data.items);
-    };
     fetchUserCurrencyDetails();
-    fetchTransactionHistory();
   }, []);
 
   useEffect(() => {
@@ -83,7 +77,7 @@ const UserDetails: React.FC = () => {
           <RedemptionDetials redemptionDetails={redemptions} />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <UserTransactionHistory transactionHistory={transactionHistory} />
+          <UserTransactionHistory />
         </TabPanel>
         <TabPanel value={value} index={4}>
           <TransferCoiin userId={id} />

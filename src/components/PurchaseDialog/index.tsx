@@ -1,30 +1,18 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  Tab,
-  Tabs,
-  useMediaQuery,
-  useTheme,
-} from '@material-ui/core';
-import card from '../assets/svg/credit-card.svg';
-import eth from '../assets/svg/eth-icon.svg';
-import { TabPanel } from './TabPanel';
-import { StripePurchaseForm } from './StripePurchaseForm';
-import { coldWallet, RefetchWallet } from './PaymentsAccount';
+import { Dialog, DialogContent, Tab, Tabs, useMediaQuery, useTheme } from '@material-ui/core';
+import card from '../../assets/svg/credit-card.svg';
+// import eth from '../assets/svg/eth-icon.svg';
+import { TabPanel } from '../TabPanel';
+import { StripePurchaseForm } from '../StripePurchaseForm';
 
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   amount?: number;
   balance?: number;
-  refetchWallet: RefetchWallet;
 }
 
-export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance, refetchWallet }) => {
+export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance }) => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -42,7 +30,13 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance
     setOpen(false);
   };
   return (
-    <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
+    <Dialog
+      fullScreen={fullScreen}
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="responsive-dialog-title"
+      fullWidth
+    >
       <DialogContent>
         <Tabs
           value={value}
@@ -51,10 +45,10 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance
           textColor={'primary'}
           onChange={handleChange}
         >
-          <Tab label={'ETH'} icon={<img src={eth} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} />
-          <Tab label={'Card'} icon={<img src={card} height={60} width={60} alt={'USD'} />} {...a11yProps(1)} />
+          {/* <Tab label={'ETH'} icon={<img src={eth} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} /> */}
+          <Tab label={'Card'} icon={<img src={card} height={60} width={60} alt={'USD'} />} {...a11yProps(0)} />
         </Tabs>
-        <TabPanel value={value} index={0}>
+        {/* <TabPanel value={value} index={0}>
           {amount && balance ? (
             <div>
               <DialogContentText>
@@ -76,13 +70,9 @@ export const PurchaseDialog: React.FC<Props> = ({ open, setOpen, amount, balance
               Okay
             </Button>
           </DialogActions>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <StripePurchaseForm
-            setOpen={setOpen}
-            givenAmount={amount && balance ? amount - balance : amount}
-            refetchWallet={refetchWallet}
-          />
+        </TabPanel> */}
+        <TabPanel value={value} index={0}>
+          <StripePurchaseForm setOpen={setOpen} givenAmount={amount && balance ? amount - balance : amount} />
         </TabPanel>
       </DialogContent>
     </Dialog>

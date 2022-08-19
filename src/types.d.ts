@@ -501,6 +501,7 @@ export interface UserData {
   id: string;
   role: string;
   company: string;
+  email: string;
   tempPass: boolean;
   isLoggedIn: boolean;
 }
@@ -645,6 +646,7 @@ export type OrganizationEmployees = {
   adminsDetails: {
     name: string;
     createdAt: string;
+    id: string;
   }[];
 };
 export interface UserTransactionHistoryTypes {
@@ -745,3 +747,58 @@ export type CurrencyTypes = {
 export type UserTransferTypes = {
   transferUserRecord: CurrencyTypes[];
 };
+
+export interface RegisterBrandPayload {
+  name: string;
+  company: string;
+  email: string;
+  password: string;
+  verificationToken: string;
+}
+
+export interface StartEmailVerificationPayload {
+  email: string;
+  type: string;
+  admin: boolean;
+}
+
+export interface CompleteEmailVerificationPayload {
+  code: string;
+  email: string;
+}
+
+export interface SuccessResponse {
+  success: boolean;
+}
+export interface FundingWallet {
+  balance: string;
+  type: string;
+  network: string;
+  symbolImageUrl: string;
+}
+export interface EngagementRateTypes {
+  likeRate: string;
+  commentRate: string;
+  shareRate: string;
+  viewRate: string;
+  submissionRate: string;
+  clickRate: string;
+}
+export interface CampaignScoreTypes {
+  averageClicks: string;
+  likeStandardDeviation: string;
+  commentStandardDeviation: string;
+  sharesStandardDeviation: string;
+  clicksStandardDeviation: string;
+  viewsStandardDeviation: string;
+  submissionsStandardDeviation: string;
+  engagementRates: EngagementRateTypes;
+}
+
+export interface WithdrawPayload {
+  symbol: string;
+  network: string;
+  address: string;
+  amount: number;
+  verificationToken: string;
+}

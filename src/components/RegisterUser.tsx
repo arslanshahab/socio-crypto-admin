@@ -40,7 +40,6 @@ export const RegisterUser: React.FC<Props> = ({ open, setOpen }) => {
   };
 
   const handleSubmit = async () => {
-    debugger;
     try {
       setLoading(true);
       axios.post(

@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 interface Props {
   persist?: boolean;
-  size?: string;
+  size?: 'mini' | 'small' | 'medium' | 'large' | 'fullscreen';
   showCloseIcon?: boolean;
 }
 

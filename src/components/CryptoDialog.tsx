@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { useMutation } from '@apollo/client';
-import { ListSupportedCryptoResults } from '../types';
 import { ADD_CRYPTO_TO_WALLET, REGISTER_CRYPTO } from '../operations/mutations/crypto';
 import { capitalize } from '../helpers/formatter';
-import { RefetchWallet } from './PaymentsAccount';
 import { toast } from 'react-toastify';
 import headingStyles from '../assets/styles/heading.module.css';
 import CustomButton from './CustomButton';
@@ -14,19 +12,11 @@ interface Props {
   isTokenRegistration: boolean;
   open: boolean;
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
-  data?: ListSupportedCryptoResults;
+  data?: { type: string; contractAddress: string }[];
   isLoading?: boolean;
-  refetchWallet: RefetchWallet;
 }
 
-export const CryptoDialog: React.FC<Props> = ({
-  isTokenRegistration,
-  open,
-  setOpenDialog,
-  data,
-  isLoading,
-  refetchWallet,
-}) => {
+export const CryptoDialog: React.FC<Props> = ({ isTokenRegistration, open, setOpenDialog, data, isLoading }) => {
   const [addToken] = useMutation(ADD_CRYPTO_TO_WALLET);
   const [registerToken] = useMutation(REGISTER_CRYPTO);
   const [tokenName, setTokenName] = useState('');
@@ -38,7 +28,6 @@ export const CryptoDialog: React.FC<Props> = ({
       await registerToken({
         variables: { name: tokenName, contractAddress: contractAddress },
       });
-      await refetchWallet();
     } catch (e) {
       console.log(e);
       toast.error('Token already registered', {
@@ -58,7 +47,6 @@ export const CryptoDialog: React.FC<Props> = ({
       await addToken({
         variables: { contractAddress: contractAddress },
       });
-      await refetchWallet();
     } catch (e) {
       console.log('e');
       console.log(e);
@@ -114,7 +102,7 @@ export const CryptoDialog: React.FC<Props> = ({
                   renderValue={() => tokenName.toUpperCase()}
                 >
                   {data &&
-                    data.listSupportedCrypto.map((crypto, index) => {
+                    data.map((crypto, index) => {
                       return (
                         <MenuItem
                           value={crypto.type}

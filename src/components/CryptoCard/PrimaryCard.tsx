@@ -11,7 +11,7 @@ interface UserProps {
   tooltipValue?: string;
   tooltipNetwork?: string;
   removeLoading?: boolean;
-  id: string;
+  id?: string;
   network?: string;
   removeMethod?: (id: string) => void;
 }
@@ -29,7 +29,7 @@ const PrimaryCard: FC<UserProps> = ({
   removeMethod,
 }) => {
   const handleRemove = () => {
-    if (removeMethod) removeMethod(id);
+    if (id && removeMethod) removeMethod(id);
   };
   if (removeLoading) {
     return (
