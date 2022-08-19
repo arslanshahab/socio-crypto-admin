@@ -42,7 +42,8 @@ const Profile: FC = () => {
 
   // Handle OnChange
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.innerText);
+    setName(e.target.value);
+    dispatch(getProfile({ ...profile, name: e.target.value }));
   };
 
   // 2FA Enabled
