@@ -28,3 +28,12 @@
 .itemsDetails {
   @apply w-3/5 whitespace-nowrap overflow-hidden overflow-ellipsis;
 }
+.userCardWrapper {
+  @apply flex items-center gap-4;
+}
+.imageWrapper {
+  @apply w-32 h-32 rounded-full bg-gray-400 overflow-hidden;
+}
+.image {
+  @apply object-cover object-center w-full h-full;
+}
