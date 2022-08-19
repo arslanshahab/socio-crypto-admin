@@ -88,6 +88,7 @@ const Profile: FC = () => {
             setMediaLoading(true);
             uploadMedia(res.signedOrgUrl, image, setUploadProgress)
               .then(() => {
+                dispatch(getProfile({ ...profile, imagePath: image.filename }));
                 dispatch(showSuccessAlert('Organization image updated successfully'));
               })
               .catch((e) => console.log(e))

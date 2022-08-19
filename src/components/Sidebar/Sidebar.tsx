@@ -52,7 +52,7 @@ const Sidebar: React.FC = () => {
         <NavLink to={'/dashboard/campaigns'}>
           <img className="w-16" src={generateOrgMediaUrl(profile.orgId, profile.imagePath)} alt="raiinmaker" />
         </NavLink>
-        <h4 className="text-lg text-gray-300 mt-1">Raiinmaker</h4>
+        <h4 className="text-lg text-gray-300 mt-1 capitalize">{profile.company}</h4>
       </Box>
       <Box className="flex flex-col justify-center items-center pt-20 w-full">
         {menuList.map(
