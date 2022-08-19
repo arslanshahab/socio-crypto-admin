@@ -80,8 +80,6 @@ const Profile: FC = () => {
 
   // Update Data
   const handleUpdate = async () => {
-    debugger;
-
     if ((name && name !== profile?.name) || image.filename !== profile?.imagePath) {
       setUpdateLoading(true);
       ApiClient.updateProfile({ name, imagePath: image.filename })
