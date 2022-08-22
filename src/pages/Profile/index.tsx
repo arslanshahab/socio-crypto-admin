@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { Box, CircularProgress, Switch, Typography } from '@material-ui/core';
 import CustomButton from '../../components/CustomButton';
 import styles from './profile.module.css';
@@ -22,23 +22,13 @@ const Profile: FC = () => {
   const [is2FAloading, setis2FALoading] = useState(false);
   const [name, setName] = useState(profile.name);
   const [image, setImage] = useState<FileObject>({
-    filename: '',
-    file: '',
-    format: '',
+    filename: profile.imagePath,
+    file: generateOrgMediaUrl(profile.orgId, profile.imagePath),
+    format: `image/${profile.imagePath.split('.')[0]}`,
   });
   const [uploadProgress, setUploadProgress] = useState(0);
   const [updateLoading, setUpdateLoading] = useState(false);
   const [mediaLoading, setMediaLoading] = useState(false);
-
-  useEffect(() => {
-    if (profile) {
-      setImage({
-        filename: profile.imagePath,
-        file: generateOrgMediaUrl(profile.orgId, profile.imagePath),
-        format: `image/${profile.imagePath.split('.')[0]}`,
-      });
-    }
-  }, [profile]);
 
   // Handle OnChange
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
