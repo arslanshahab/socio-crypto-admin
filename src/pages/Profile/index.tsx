@@ -98,8 +98,8 @@ const Profile: FC = () => {
 
   return (
     <div className={styles.profileWrapper}>
-      <GenericModal open={isOpen} onClose={() => setIsOpen(false)} size="medium">
-        <KycForm />
+      <GenericModal open={isOpen} onClose={() => setIsOpen(false)} size="large" persist>
+        <KycForm callback={() => setIsOpen(false)} />
       </GenericModal>
       <div className="flex gap-16 items-center">
         <div className="w-52 h-52 inline-block">

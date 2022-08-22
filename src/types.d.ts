@@ -841,4 +841,9 @@ export interface KycInformationTypes {
   dob: string;
   phoneNumber: string;
   ip: string;
+  documentType: string;
+  documentCountry: string;
+  frontDocumentImage: string;
+  faceImage: string;
+  backDocumentImage: string;
 }

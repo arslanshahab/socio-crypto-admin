@@ -29,20 +29,20 @@ const FileUpload: React.FC<Props> = ({ value, label, mediaType, onFileError, onF
       format: 'image/JPG',
       size: 5,
       unit: 'MB',
-      allowedFor: ['campaignImage', 'sharedMedia', 'raffle', 'organizationImage'],
+      allowedFor: ['campaignImage', 'sharedMedia', 'raffle', 'organizationImage', 'documentImage'],
     },
     { format: 'image/GIF', size: 15, unit: 'MB', allowedFor: ['sharedMedia'] },
     {
       format: 'image/PNG',
       size: 5,
       unit: 'MB',
-      allowedFor: ['campaignImage', 'sharedMedia', 'raffle', 'organizationImage'],
+      allowedFor: ['campaignImage', 'sharedMedia', 'raffle', 'organizationImage', 'documentImage'],
     },
     {
       format: 'image/JPEG',
       size: 5,
       unit: 'MB',
-      allowedFor: ['campaignImage', 'sharedMedia', 'raffle', 'organizationImage'],
+      allowedFor: ['campaignImage', 'sharedMedia', 'raffle', 'organizationImage', 'documentImage'],
     },
     {
       format: 'image/SVG',

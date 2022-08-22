@@ -10,7 +10,7 @@ interface Props {
 }
 
 const GenericModal: React.FC<DialogProps & Props> = (props) => {
-  const { open, onClose, persist = false, children, size, showCloseIcon = true } = props;
+  const { open, onClose, persist = false, children, size } = props;
   const fullScreen = size === 'fullscreen';
 
   const closeModal = (e: any) => {
@@ -29,7 +29,7 @@ const GenericModal: React.FC<DialogProps & Props> = (props) => {
       onClose={onClose}
       open={open}
     >
-      {showCloseIcon && !persist && <CloseIcon className="closeIcon" onClick={closeModal} />}
+      <CloseIcon className="closeIcon" onClick={closeModal} />
       {children}
     </Dialog>
   );
