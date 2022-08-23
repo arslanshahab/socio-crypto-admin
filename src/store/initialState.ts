@@ -120,6 +120,7 @@ const user: UserData = {
   id: '',
   role: '',
   company: '',
+  email: '',
   isLoggedIn: false,
 };
 

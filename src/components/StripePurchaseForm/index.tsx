@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
 import { useMutation, useQuery } from '@apollo/client';
-import { ChargePaymentMethodResults, ChargePaymentMethodVars, ListPaymentMethodsResults } from '../types';
-import { LIST_PAYMENT_METHODS } from '../operations/queries/stripe';
-import { capitalize } from '../helpers/formatter';
-import { CHARGE_PAYMENT_METHOD } from '../operations/mutations/stripe';
-import { RefetchWallet } from './PaymentsAccount';
+import { ChargePaymentMethodResults, ChargePaymentMethodVars, ListPaymentMethodsResults } from '../../types';
+import { LIST_PAYMENT_METHODS } from '../../operations/queries/stripe';
+import { capitalize } from '../../helpers/formatter';
+import { CHARGE_PAYMENT_METHOD } from '../../operations/mutations/stripe';
+import CustomButton from '../CustomButton';
+import buttonStyles from '../../assets/styles/customButton.module.css';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   givenAmount?: number;
-  refetchWallet: RefetchWallet;
 }
 
-export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount, refetchWallet }) => {
+export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) => {
   const [paymentMethodId, setPaymentMethodId] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [amount, setAmount] = useState(givenAmount || 0);
@@ -43,7 +43,6 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount, refe
   const handlePurchase = async () => {
     try {
       await chargeCard();
-      refetchWallet();
       setOpen(false);
     } catch (e) {
       console.log(e);
@@ -51,31 +50,27 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount, refe
   };
 
   return (
-    <Grid container direction={'column'}>
-      <Grid container item direction={'row'}>
-        <Grid item>
-          <TextField
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-            name={'amount'}
-            label={'Amount (Coiin)'}
-            defaultValue={amount}
-            className="form-control-item"
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item>
-          <Typography style={{ paddingTop: '15px' }}>(${(amount !== 0 ? amount * 0.1 : 0).toFixed(2)})</Typography>
-        </Grid>
-      </Grid>
-      <Grid item>
-        <FormControl>
+    <div>
+      <div className="flex items-end justify-between mt-4">
+        <TextField
+          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+          name={'amount'}
+          label={'Amount (Coiin)'}
+          defaultValue={amount}
+          className="form-control-item w-10/12"
+          onChange={handleChange}
+        />
+        <Typography style={{ paddingTop: '15px' }}>(${(amount !== 0 ? amount * 0.1 : 0).toFixed(2)})</Typography>
+      </div>
+      <div className="my-6">
+        <FormControl className="w-full">
           <InputLabel>Select Card</InputLabel>
           {loading ? (
             <div />
           ) : (
             <Select
               open={openCards}
-              className="form-control-item"
+              className="form-control-item w-full"
               onClose={handleCloseCards}
               onOpen={handleOpenCards}
               value={displayName}
@@ -95,24 +90,15 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount, refe
             </Select>
           )}
         </FormControl>
-      </Grid>
-      <Grid container item direction={'row'} justify={'flex-end'} spacing={1}>
-        <Grid item>
-          <Button
-            onClick={handleCloseDialog}
-            color="primary"
-            variant={'contained'}
-            style={{ marginTop: '50px', marginLeft: '50px' }}
-          >
-            Cancel
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button onClick={handlePurchase} color="primary" variant={'contained'} style={{ marginTop: '50px' }}>
-            Purchase
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid>
+      </div>
+      <div className={buttonStyles.buttonWrapper}>
+        <CustomButton onClick={handleCloseDialog} className={buttonStyles.secondaryButton}>
+          Cancel
+        </CustomButton>
+        <CustomButton onClick={handlePurchase} className={buttonStyles.buttonPrimary}>
+          Purchase
+        </CustomButton>
+      </div>
+    </div>
   );
 };

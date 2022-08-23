@@ -2,9 +2,8 @@ import React from 'react';
 import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
 import { FundingWallet } from './FundingWallet';
 import { TransactionHistory } from './TransactionHistory';
-import { ApolloQueryResult, useQuery } from '@apollo/client';
+import { ApolloQueryResult } from '@apollo/client';
 import { GetFundingWalletResponse } from '../types';
-import { GET_FUNDING_WALLET } from '../operations/queries/fundingWallet';
 import { CampaignStatusList } from './CampaignStatusList';
 import { TabPanel } from './TabPanel';
 
@@ -19,15 +18,6 @@ export type RefetchWallet = (
 
 export const PaymentsAccount: React.FC = () => {
   const [value, setValue] = React.useState(0);
-  const {
-    loading,
-    data: fundingWallet,
-    refetch,
-  } = useQuery<GetFundingWalletResponse>(GET_FUNDING_WALLET, {
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'network-only',
-  });
-
   const handleChange = (event: any, newValue: number) => {
     setValue(newValue);
   };
@@ -55,13 +45,13 @@ export const PaymentsAccount: React.FC = () => {
       </AppBar>
       <Paper className="paper">
         <TabPanel value={value} index={0}>
-          <FundingWallet data={fundingWallet} isLoading={loading} refetchWallet={refetch} />
+          <FundingWallet />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <CampaignStatusList fundingWallet={fundingWallet} refetchWallet={refetch} />
+          <CampaignStatusList />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <TransactionHistory data={fundingWallet} isLoading={loading} refetchWallet={refetch} />
+          <TransactionHistory />
         </TabPanel>
       </Paper>
     </div>

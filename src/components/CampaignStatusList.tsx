@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { GetFundingWalletResponse } from '../types';
 import { CircularProgress } from '@material-ui/core';
-import { RefetchWallet } from './PaymentsAccount';
 import { capitalize } from '../helpers/formatter';
 import styles from './admin/PendingWithdrawList/pendingWithdrawList.module.css';
 import axios from 'axios';
 import { apiURI } from '../clients/raiinmaker-api';
 
-interface Props {
-  fundingWallet: GetFundingWalletResponse | undefined;
-  refetchWallet: RefetchWallet;
-}
-
-export const CampaignStatusList: React.FC<Props> = () => {
+export const CampaignStatusList: React.FC = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 

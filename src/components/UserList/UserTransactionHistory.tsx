@@ -1,9 +1,55 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
+import { CircularProgress } from '@material-ui/core';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import headingStyles from '../../assets/styles/heading.module.css';
-import { UserTransactionHistoryTypes, UserTransactionHistoryTypesArray } from '../../types';
+import { apiURI } from '../../clients/raiinmaker-api';
+import { UserTransactionHistoryTypes } from '../../types';
+import Pagination from '../Pagination/Pagination';
 import styles from './userList.module.css';
 
-const UserTransactionHistory: FC<UserTransactionHistoryTypesArray> = (props) => {
+const UserTransactionHistory: FC = () => {
+  const { id }: { id: string } = useParams();
+  const [transactionHistory, setTransactionHistory] = useState([]);
+  const [skip, setSkip] = useState(0);
+  const [take] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    try {
+      const fetchTransactionHistory = async () => {
+        setLoading(true);
+        const response = await axios.get(
+          `${apiURI}/v1/user/user-transactions-history?skip=${skip}&take=${take}&userId=${id}`,
+          {
+            withCredentials: true,
+          },
+        );
+        setTransactionHistory(response.data.data.items);
+        setTotal(response.data.data.total);
+        setLoading(false);
+      };
+      fetchTransactionHistory();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [skip]);
+
+  // Take paginated value from Pagination component
+  const getValue = (skip: number) => {
+    setSkip(skip);
+  };
+
+  // Loading
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <CircularProgress />
+      </div>
+    );
+  }
+
   return (
     <div>
       <h3 className={headingStyles.headingSm}>Transfer User Record</h3>
@@ -20,15 +66,18 @@ const UserTransactionHistory: FC<UserTransactionHistoryTypesArray> = (props) => 
             </tr>
           </thead>
           <tbody>
-            {props.transactionHistory.length > 0 ? (
-              props.transactionHistory.map((transaction: UserTransactionHistoryTypes) => (
+            {transactionHistory.length > 0 ? (
+              transactionHistory.map((transaction: UserTransactionHistoryTypes) => (
                 <tr className={styles.tableBodyRow} key={transaction.id}>
                   <td className={styles.tableColumn}>{transaction.action}</td>
                   <td className={styles.tableColumn}>{transaction.currency}</td>
                   <td className={styles.tableColumn}>{transaction.amount}</td>
                   <td className={styles.tableColumn}>{transaction.status}</td>
                   <td className={styles.tableColumn}>{transaction.transactionHash}</td>
-                  <td className={styles.tableColumn}>{new Date(transaction.createdAt).toDateString()}</td>
+                  <td className={styles.tableColumn}>
+                    {new Date(transaction.createdAt).toDateString()},{' '}
+                    {new Date(transaction.createdAt).toLocaleTimeString()}
+                  </td>
                 </tr>
               ))
             ) : (
@@ -37,6 +86,7 @@ const UserTransactionHistory: FC<UserTransactionHistoryTypesArray> = (props) => 
           </tbody>
         </table>
       </div>
+      {total > take && <Pagination skip={skip} take={take} total={total} getValue={getValue} />}
     </div>
   );
 };
