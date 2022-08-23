@@ -77,6 +77,11 @@ const CampaignParticipants: React.FC = () => {
     }
   };
 
+  // Search record
+  const handleSearchRecord = () => {
+    setFilter(searchData);
+  };
+
   // Handle Key Press
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -122,7 +127,7 @@ const CampaignParticipants: React.FC = () => {
             onChange={handleSearchField}
             onKeyPress={handleKeyPress}
           />
-          <CustomButton className={buttonStyles.buttonPrimary} loading={searchLoading}>
+          <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSearchRecord} loading={searchLoading}>
             Search
           </CustomButton>
         </div>
