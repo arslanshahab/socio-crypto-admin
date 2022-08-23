@@ -105,7 +105,7 @@ const CampaignParticipants: React.FC = () => {
             <div className="inset-y-0 right-0 flex items-center">
               <select
                 name="sorting"
-                className="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
+                className="h-9 py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm rounded-md"
                 onChange={handleSort}
               >
                 <option value={'desc'}>DESC</option>
