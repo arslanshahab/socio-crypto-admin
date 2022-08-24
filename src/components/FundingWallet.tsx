@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CreditCardList } from './CreditCardList';
 import { CryptoList } from './CryptoList';
 import { CryptoDialog } from './CryptoDialog';
 import { PurchaseDialog } from './PurchaseDialog';
 import CustomButton from './CustomButton';
+import { useLocation } from 'react-router-dom';
 
 export const FundingWallet: React.FC = () => {
+  const location: { state: boolean } = useLocation();
   const [openDialog, setOpenDialog] = useState(false);
   const [purchaseCoiin, setPurchaseCoiin] = useState(false);
+
+  useEffect(() => {
+    if (location.state) {
+      setPurchaseCoiin(true);
+    }
+  }, [location.state]);
 
   return (
     <div>
