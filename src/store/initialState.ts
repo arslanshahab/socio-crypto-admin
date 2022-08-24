@@ -139,6 +139,7 @@ const profile: AdminProfileTypes = {
   enabled: false,
   imagePath: '',
   orgId: '',
+  verifyStatus: '',
 };
 
 const initialState = {

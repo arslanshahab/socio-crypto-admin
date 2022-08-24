@@ -810,6 +810,7 @@ export interface AdminProfileTypes {
   enabled: boolean;
   orgId: string;
   imagePath: string;
+  verifyStatus: string;
 }
 
 export interface TwoFactorAuthPayload {
@@ -827,7 +828,7 @@ export interface UpdateProfilePayload {
   imagePath: string;
 }
 
-export interface KycInformationTypes {
+export interface VerifyKycTypes {
   [key: string]: string;
   firstName: string;
   middleName: string;
@@ -840,10 +841,15 @@ export interface KycInformationTypes {
   gender: string;
   dob: string;
   phoneNumber: string;
-  ip: string;
   documentType: string;
   documentCountry: string;
   frontDocumentImage: string;
   faceImage: string;
   backDocumentImage: string;
+}
+
+export type KycStatus = 'APPROVED' | 'PENDING' | 'REJECTED' | '';
+export interface KycResponse {
+  kycId: string;
+  status: KycStatus;
 }

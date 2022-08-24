@@ -11,6 +11,7 @@ const profile = createReducer(initialState.profile, {
     state.enabled = action.payload.enabled;
     state.imagePath = action.payload.imagePath;
     state.orgId = action.payload.orgId;
+    state.verifyStatus = action.payload.verifyStatus;
   },
 });
 

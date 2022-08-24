@@ -170,12 +170,16 @@ const Profile: FC = () => {
           </div>
           <div className="flex p-1 items-center">
             <h6 className="w-40">Kyc:</h6>
-            <CustomButton
-              className="shadow text-blue-800 w-44 py-2 rounded cursor-pointer hover:bg-blue-800 hover:text-white"
-              onClick={() => setIsOpen(true)}
-            >
-              Add KYC Information
-            </CustomButton>
+            {profile.verifyStatus === 'APPROVED' ? (
+              <p className={`${textStyles.text} w-56 text-sm`}>{profile ? profile.verifyStatus : 'Loading...'}</p>
+            ) : (
+              <CustomButton
+                className="shadow text-blue-800 w-44 py-2 rounded cursor-pointer hover:bg-blue-800 hover:text-white"
+                onClick={() => setIsOpen(true)}
+              >
+                Add KYC Information
+              </CustomButton>
+            )}
           </div>
         </div>
       </div>

@@ -3,11 +3,13 @@ import styles from './kycForm.module.css';
 import CustomButton from '../../CustomButton';
 import headingStyles from '../../../assets/styles/heading.module.css';
 import buttonStyles from '../../../assets/styles/customButton.module.css';
-import { FileObject, KycInformationTypes } from '../../../types';
+import { AdminProfileTypes, FileObject, VerifyKycTypes } from '../../../types';
 import FileUpload from '../../FileUpload';
-import { useDispatch } from 'react-redux';
-import { showErrorAlert } from '../../../store/actions/alerts';
+import { useDispatch, useSelector } from 'react-redux';
+import { showErrorAlert, showSuccessAlert } from '../../../store/actions/alerts';
 import countryList from 'react-select-country-list';
+import { ApiClient } from '../../../services/apiClient';
+import { getProfile } from '../../../store/actions/profile';
 
 interface IKycFormProps {
   callback: () => void;
@@ -25,7 +27,6 @@ const intialObject = {
   gender: '',
   dob: '',
   phoneNumber: '',
-  ip: '',
   documentType: '',
   documentCountry: '',
   frontDocumentImage: '',
@@ -35,8 +36,10 @@ const intialObject = {
 
 const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
   const dispatch = useDispatch();
+  const { profile } = useSelector((state: { profile: AdminProfileTypes }) => state);
   const options = useMemo(() => countryList().getData(), []);
-  const [kyc, setKyc] = useState<KycInformationTypes>(intialObject);
+  const [kyc, setKyc] = useState<VerifyKycTypes>(intialObject);
+  const [loading, setLoading] = useState<boolean>(false);
   const [frontDocumentImage, setFrontDocumentImage] = useState<FileObject>({
     filename: '',
     format: '',
@@ -82,8 +85,20 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
   };
 
   // Handle Submit
-  const handleSubmit = () => {
-    console.log('kyc rocord---------------', kyc);
+  const handleSubmit = async () => {
+    setLoading(true);
+    const updatedKyc = { ...kyc };
+    const dob = updatedKyc.dob.replace(/-/g, '/');
+    ApiClient.registerKyc({ ...kyc, dob })
+      .then((res) => {
+        dispatch(showSuccessAlert(`You KYC has been ${res.status}`));
+        dispatch(getProfile({ ...profile, verifyStatus: res.status }));
+      })
+      .catch((err) => dispatch(showErrorAlert(err.message)))
+      .finally(() => {
+        setLoading(false);
+        callback();
+      });
   };
 
   return (
@@ -171,7 +186,7 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
         </div>
         <div className={`${styles.inputWrapper}`}>
           <input
-            type="text"
+            type="number"
             name="zipCode"
             value={kyc.zipCode}
             className={`${styles.input}`}
@@ -206,16 +221,6 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
             value={kyc.phoneNumber}
             className={`${styles.input}`}
             placeholder="Phone Number *"
-            onChange={handleOnChange}
-          />
-        </div>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            name="ip"
-            value={kyc.ip}
-            className={`${styles.input}`}
-            placeholder="IP Address"
             onChange={handleOnChange}
           />
         </div>
@@ -280,7 +285,7 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
         <CustomButton className={buttonStyles.secondaryButton} onClick={() => callback()}>
           Close
         </CustomButton>
-        <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSubmit}>
+        <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSubmit} loading={loading}>
           Submit
         </CustomButton>
       </div>
