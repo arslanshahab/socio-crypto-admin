@@ -769,6 +769,7 @@ export interface CompleteEmailVerificationPayload {
 
 export interface SuccessResponse {
   success: boolean;
+  message: string;
 }
 export interface FundingWallet {
   balance: string;
@@ -801,4 +802,12 @@ export interface WithdrawPayload {
   address: string;
   amount: number;
   verificationToken: string;
+}
+
+export type PendingCampaignStatus = 'APPROVED' | 'DENIED';
+
+export interface PendingCampaignPayload {
+  campaignId: string;
+  status: PendingCampaignStatus;
+  reason: string;
 }

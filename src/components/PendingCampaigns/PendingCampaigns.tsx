@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Campaign } from '../../types';
+import { Campaign, PendingCampaignStatus } from '../../types';
 import { CircularProgress } from '@material-ui/core';
 import styles from './pendingCampaigns.module.css';
 import axios from 'axios';
@@ -7,9 +7,10 @@ import { apiURI } from '../../clients/raiinmaker-api';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { useDispatch } from 'react-redux';
-import { showSuccessAlert } from '../../store/actions/alerts';
+import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 import Pagination from '../Pagination/Pagination';
 import GenericModal from '../GenericModal';
+import { ApiClient } from '../../services/apiClient';
 
 export const PendingCampaigns: React.FC = () => {
   const dispatch = useDispatch();
@@ -44,25 +45,20 @@ export const PendingCampaigns: React.FC = () => {
   };
 
   // Update campaign status
-  const updateCampaignStatus = async (status: string, campaignId: string) => {
+  const updateCampaignStatus = async (status: PendingCampaignStatus, campaignId: string) => {
     setSelectedCampaignId(campaignId);
-    if (status === 'APPROVED') setAcceptLoading(true);
-    if (status === 'DENIED') setRejectLoading(true);
-    await axios.put(
-      `${apiURI}/v1/campaign/admin-update-campaign-status?status=${status}&campaignId=${campaignId}`,
-      {},
-      { withCredentials: true },
-    );
-    if (status === 'APPROVED') {
-      dispatch(showSuccessAlert('Campaign approved successfully!'));
-      setAcceptLoading(false);
-      setRefetch(!refetch);
-    }
-    if (status === 'DENIED') {
-      dispatch(showSuccessAlert('Campaign rejected successfully!'));
-      setRejectLoading(false);
-      setRefetch(!refetch);
-    }
+    status === 'APPROVED' ? setAcceptLoading(true) : setRejectLoading(true);
+    ApiClient.updatePendingCampaignStatus({ status, campaignId, reason: message })
+      .then((res) => {
+        dispatch(showSuccessAlert(res.message));
+        setRefetch(!refetch);
+      })
+      .catch((err) => dispatch(showErrorAlert(err.message)))
+      .finally(() => {
+        setAcceptLoading(false);
+        setRejectLoading(false);
+        setIsOpen(false);
+      });
   };
 
   const getValue = (skip: number) => {
