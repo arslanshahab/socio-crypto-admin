@@ -26,6 +26,10 @@ export class ApiClient {
     baseURL: ApiClient.baseUrl,
   });
 
+  public static async login(payload: { email: string; password: string }): Promise<any> {
+    return (await this.requestInstance.post('/v1/auth/admin-login', payload)).data.data;
+  }
+
   public static async startEmailVerification(payload: StartEmailVerificationPayload): Promise<SuccessResponse> {
     try {
       return (await this.requestInstance.post('/v1/auth/start-verification', payload)).data.data;
