@@ -147,8 +147,6 @@ export const PendingCampaigns: React.FC = () => {
                   setSelectedCampaignId(campaign.id);
                 }}
                 className={buttonStyles.secondaryButton}
-                // onClick={() => updateCampaignStatus('DENIED', campaign.id)}
-                // loading={rejectLoading && selectedCampaignId === campaign.id}
               >
                 Deny
               </CustomButton>
