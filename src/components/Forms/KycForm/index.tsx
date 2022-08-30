@@ -1,19 +1,38 @@
-import React, { ChangeEvent, FC, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import styles from './kycForm.module.css';
 import CustomButton from '../../CustomButton';
 import headingStyles from '../../../assets/styles/heading.module.css';
 import buttonStyles from '../../../assets/styles/customButton.module.css';
-import { AdminProfileTypes, FileObject, VerifyKycTypes } from '../../../types';
+import { AdminProfileTypes, FileObject } from '../../../types';
 import FileUpload from '../../FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../../store/actions/alerts';
 import countryList from 'react-select-country-list';
 import { ApiClient } from '../../../services/apiClient';
 import { getProfile } from '../../../store/actions/profile';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface IKycFormProps {
   callback: () => void;
 }
+type IFormInput = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  billingStreetAddress: string;
+  billingCity: string;
+  billingCountry: string;
+  zipCode: string;
+  gender: string;
+  dob: string;
+  phoneNumber: string;
+  documentType: string;
+  documentCountry: string;
+  frontDocumentImage: string;
+  faceImage: string;
+  backDocumentImage: string;
+};
 
 const intialObject = {
   firstName: '',
@@ -36,9 +55,13 @@ const intialObject = {
 
 const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
   const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>({ defaultValues: intialObject });
   const { profile } = useSelector((state: { profile: AdminProfileTypes }) => state);
   const options = useMemo(() => countryList().getData(), []);
-  const [kyc, setKyc] = useState<VerifyKycTypes>(intialObject);
   const [loading, setLoading] = useState<boolean>(false);
   const [frontDocumentImage, setFrontDocumentImage] = useState<FileObject>({
     filename: '',
@@ -56,40 +79,38 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
     format: '',
   });
 
-  // Handle OnChange
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const data = { ...kyc };
-    data[e.target.name] = e.target.value;
-    setKyc(data);
-  };
-
   // On front image success
   const onFrontImageSuccess = (data: FileObject) => {
-    setKyc({ ...kyc, frontDocumentImage: data.file });
     setFrontDocumentImage(data);
   };
   // On face image success
   const onFaceImageSuccess = (data: FileObject) => {
-    setKyc({ ...kyc, faceImage: data.file });
     setFaceImage(data);
   };
   // On back image success
   const onBackImageSuccess = (data: FileObject) => {
-    setKyc({ ...kyc, backDocumentImage: data.file });
     setBackDocumentImage(data);
   };
 
   // On Error
   const onError = (msg: string) => {
+    debugger;
     dispatch(showErrorAlert(msg));
   };
 
   // Handle Submit
-  const handleSubmit = async () => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    debugger;
     setLoading(true);
-    const updatedKyc = { ...kyc };
+    const updatedKyc = { ...data };
     const dob = updatedKyc.dob.replace(/-/g, '/');
-    ApiClient.registerKyc({ ...kyc, dob })
+    ApiClient.registerKyc({
+      ...data,
+      dob,
+      frontDocumentImage: frontDocumentImage.file,
+      faceImage: faceImage.file,
+      backDocumentImage: backDocumentImage.file,
+    })
       .then((res) => {
         dispatch(showSuccessAlert(`You KYC has been ${res.status}`));
         dispatch(getProfile({ ...profile, verifyStatus: res.status }));
@@ -105,154 +126,165 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
     <div className="p-6">
       <h2 className={headingStyles.headingSm}>Add Kyc Information</h2>
       <div className={`${styles.formWrapper}`}>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            name="firstName"
-            value={kyc.firstName}
-            className={`${styles.input}`}
-            placeholder="First Name *"
-            required={true}
-            onChange={handleOnChange}
-          />
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <input
+              type="text"
+              {...register('firstName', { required: 'First name is required' })}
+              className={`${styles.input}`}
+              placeholder="First Name *"
+            />
+          </div>
+          <p className={styles.errorMessage}>{errors.firstName?.message}</p>
         </div>
         <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            name="middleName"
-            value={kyc.middleName}
-            className={`${styles.input}`}
-            placeholder="Middle Name"
-            onChange={handleOnChange}
-          />
+          <input type="text" {...register('middleName')} className={`${styles.input}`} placeholder="Middle Name" />
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            name="lastName"
-            value={kyc.lastName}
-            className={`${styles.input}`}
-            placeholder="Last Name *"
-            onChange={handleOnChange}
-          />
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <input
+              type="text"
+              {...register('lastName', { required: 'Last name is required' })}
+              className={`${styles.input}`}
+              placeholder="Last Name *"
+            />
+          </div>
+          <p className={styles.errorMessage}>{errors.lastName?.message}</p>
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            name="email"
-            value={kyc.email}
-            className={`${styles.input}`}
-            placeholder="Email *"
-            onChange={handleOnChange}
-          />
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <input
+              type="email"
+              {...register('email', { required: 'Email is required' })}
+              className={`${styles.input}`}
+              placeholder="Email *"
+            />
+          </div>
+          <p className={styles.errorMessage}>{errors.email?.message}</p>
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            name="billingStreetAddress"
-            value={kyc.billingStreetAddress}
-            className={`${styles.input}`}
-            placeholder="Billing Street Address *"
-            onChange={handleOnChange}
-          />
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <input
+              type="text"
+              {...register('billingStreetAddress', { required: 'Billing street address is required' })}
+              className={`${styles.input}`}
+              placeholder="Billing Street Address *"
+            />
+          </div>
+          <p className={styles.errorMessage}>{errors.billingStreetAddress?.message}</p>
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            name="billingCity"
-            value={kyc.billingCity}
-            className={`${styles.input}`}
-            placeholder="Billing City *"
-            onChange={handleOnChange}
-          />
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <input
+              type="text"
+              {...register('billingCity', { required: 'Billing city is required' })}
+              className={`${styles.input}`}
+              placeholder="Billing City *"
+            />
+          </div>
+          <p className={styles.errorMessage}>{errors.billingCity?.message}</p>
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <select
-            name="billingCountry"
-            value={kyc.billingCountry}
-            className={`${styles.input}`}
-            onChange={handleOnChange}
-            placeholder="Document Country *"
-          >
-            <option value="" disabled>
-              Select Billing Country *
-            </option>
-            {options.map((x: { value: string; label: string }) => (
-              <option key={x.value} value={x.value}>
-                {x.label}
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <select
+              {...register('billingCountry', { required: 'Billing country is required' })}
+              className={`${styles.input}`}
+              placeholder="Document Country *"
+            >
+              <option value="" disabled>
+                Select Billing Country *
               </option>
-            ))}
-          </select>
+              {options.map((x: { value: string; label: string }) => (
+                <option key={x.value} value={x.value}>
+                  {x.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p className={styles.errorMessage}>{errors.billingCountry?.message}</p>
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="number"
-            name="zipCode"
-            value={kyc.zipCode}
-            className={`${styles.input}`}
-            placeholder="Zip Code *"
-            onChange={handleOnChange}
-          />
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <input
+              type="number"
+              {...register('zipCode', { required: 'Zip code is required' })}
+              className={`${styles.input}`}
+              placeholder="Zip Code *"
+            />
+          </div>
+          <p className={styles.errorMessage}>{errors.zipCode?.message}</p>
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <select id="gender" name="gender" value={kyc.gender} className={`${styles.input}`} onChange={handleOnChange}>
-            <option value="" disabled>
-              Select Gender *
-            </option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-          </select>
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <select {...register('gender', { required: 'Please select gender' })} className={`${styles.input}`}>
+              <option value="" disabled>
+                Select Gender *
+              </option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+          </div>
+          <p className={styles.errorMessage}>{errors.gender?.message}</p>
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            onFocus={(e) => (e.target.type = 'date')}
-            name="dob"
-            value={kyc.dob}
-            className={`${styles.input}`}
-            placeholder="Date of Birth *"
-            onChange={handleOnChange}
-          />
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <input
+              type="text"
+              onFocus={(e) => (e.target.type = 'date')}
+              {...register('dob', { required: 'Date of birth is required' })}
+              className={`${styles.input}`}
+              placeholder="Date of Birth *"
+            />
+          </div>
+          <p className={styles.errorMessage}>{errors.dob?.message}</p>
         </div>
-        <div className={`${styles.inputWrapper}`}>
-          <input
-            type="text"
-            name="phoneNumber"
-            value={kyc.phoneNumber}
-            className={`${styles.input}`}
-            placeholder="Phone Number *"
-            onChange={handleOnChange}
-          />
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <input
+              type="text"
+              {...register('phoneNumber', { required: 'Phone number is required' })}
+              className={`${styles.input}`}
+              placeholder="Phone Number *"
+            />
+          </div>
+          <p className={styles.errorMessage}>{errors.phoneNumber?.message}</p>
+        </div>
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <select
+              {...register('documentType', { required: 'Please select document type' })}
+              className={`${styles.input}`}
+            >
+              <option value="" disabled>
+                Select Document Type *
+              </option>
+              <option value="PP">Passport</option>
+              <option value="ID">National ID</option>
+              <option value="DL">Driver&lsquo;s License</option>
+            </select>
+          </div>
+          <p className={styles.errorMessage}>{errors.documentType?.message}</p>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div className={`${styles.inputWrapper}`}>
-          <select name="documentType" value={kyc.documentType} className={`${styles.input}`} onChange={handleOnChange}>
-            <option value="" disabled>
-              Select Document Type *
-            </option>
-            <option value="PP">Passport</option>
-            <option value="ID">National ID</option>
-            <option value="DL">Driver&lsquo;s License</option>
-          </select>
-        </div>
-        <div className={`${styles.inputWrapper}`}>
-          <select
-            name="documentCountry"
-            value={kyc.documentCountry}
-            className={`${styles.input}`}
-            onChange={handleOnChange}
-            placeholder="Document Country *"
-          >
-            <option value="" disabled>
-              Select Document Country *
-            </option>
-            {options.map((x: { value: string; label: string }) => (
-              <option key={x.value} value={x.value}>
-                {x.label}
+      <div className="grid grid-cols-1 gap-4">
+        <div>
+          <div className={`${styles.inputWrapper}`}>
+            <select
+              {...register('documentCountry', { required: 'Document country is required' })}
+              className={`${styles.input}`}
+              placeholder="Document Country *"
+            >
+              <option value="" disabled>
+                Select Document Country *
               </option>
-            ))}
-          </select>
+              {options.map((x: { value: string; label: string }) => (
+                <option key={x.value} value={x.value}>
+                  {x.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p className={styles.errorMessage}>{errors.documentCountry?.message}</p>
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4 my-6">
@@ -285,7 +317,8 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
         <CustomButton className={buttonStyles.secondaryButton} onClick={() => callback()}>
           Close
         </CustomButton>
-        <CustomButton className={buttonStyles.buttonPrimary} onClick={handleSubmit} loading={loading}>
+
+        <CustomButton className={buttonStyles.buttonPrimary} loading={loading} onClick={handleSubmit(onSubmit)}>
           Submit
         </CustomButton>
       </div>
