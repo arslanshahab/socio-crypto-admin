@@ -102,7 +102,7 @@ export class ApiClient {
 
   public static async twoFactorAuth(payload: TwoFactorAuthPayload): Promise<SuccessResponse> {
     try {
-      return (await this.requestInstance.put('/v1/organization/two-factor-auth', payload)).data.data;
+      return (await this.requestInstance.put('/v1/organization/2fa', payload)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }
