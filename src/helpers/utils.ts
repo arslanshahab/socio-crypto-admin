@@ -29,7 +29,6 @@ export const generateCampaignMediaUrl = (id: string, filename: string): string =
 };
 
 export const generateOrgMediaUrl = (id: string, filename: string): string => {
-  console.log(`generating url for ${process.env.REACT_APP_STAGE} environment`);
   return `${assetUrl}/organization/${id}/${filename}`;
 };
 
