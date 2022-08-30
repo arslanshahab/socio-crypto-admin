@@ -118,7 +118,7 @@ export class ApiClient {
 
   public static async registerKyc(payload: VerifyKycTypes): Promise<KycResponse> {
     try {
-      return (await this.requestInstance.post('/v1/kyc/verify', payload)).data.data;
+      return (await this.requestInstance.post('/v1/kyc/verify-admin', payload)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }
