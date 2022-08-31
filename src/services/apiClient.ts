@@ -7,12 +7,12 @@ import {
   SuccessResponse,
   FundingWallet,
   WithdrawPayload,
-  AdminProfileTypes,
   TwoFactorAuthPayload,
   UpdateProfilePayload,
   UpdateProfileTypes,
   KycResponse,
   VerifyKycTypes,
+  ProfileTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -92,7 +92,7 @@ export class ApiClient {
     }
   }
 
-  public static async getProfile(): Promise<{ data: AdminProfileTypes }> {
+  public static async getProfile(): Promise<{ data: ProfileTypes }> {
     try {
       return (await this.requestInstance.get('/v1/organization/profile')).data;
     } catch (error) {

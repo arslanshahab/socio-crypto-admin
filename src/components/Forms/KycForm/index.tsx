@@ -3,7 +3,7 @@ import styles from './kycForm.module.css';
 import CustomButton from '../../CustomButton';
 import headingStyles from '../../../assets/styles/heading.module.css';
 import buttonStyles from '../../../assets/styles/customButton.module.css';
-import { AdminProfileTypes, FileObject } from '../../../types';
+import { ProfileTypes, FileObject } from '../../../types';
 import FileUpload from '../../FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../../store/actions/alerts';
@@ -60,7 +60,7 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>({ defaultValues: intialObject });
-  const { profile } = useSelector((state: { profile: AdminProfileTypes }) => state);
+  const { profile } = useSelector((state: { profile: ProfileTypes }) => state);
   const options = useMemo(() => countryList().getData(), []);
   const [loading, setLoading] = useState<boolean>(false);
   const [frontDocumentImage, setFrontDocumentImage] = useState<FileObject>({

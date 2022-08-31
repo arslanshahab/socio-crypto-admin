@@ -1,12 +1,4 @@
-import {
-  AdminProfileTypes,
-  Alert,
-  AlgorithmSpecs,
-  CampaignState,
-  StoreAlerts,
-  StoreSettings,
-  UserData,
-} from '../types.d';
+import { Alert, AlgorithmSpecs, CampaignState, ProfileTypes, StoreAlerts, StoreSettings, UserData } from '../types.d';
 
 const initialAlgorithmState: AlgorithmSpecs = {
   pointValues: {
@@ -132,12 +124,12 @@ const user: UserData = {
   isLoggedIn: false,
 };
 
-const profile: AdminProfileTypes = {
+const profile: ProfileTypes = {
   name: '',
   company: '',
   email: '',
   enabled: false,
-  imagePath: '',
+  imageUrl: '',
   orgId: '',
   verifyStatus: '',
 };

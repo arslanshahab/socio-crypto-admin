@@ -28,10 +28,6 @@ export const generateCampaignMediaUrl = (id: string, filename: string): string =
   return `${assetUrl}/campaign/${id}/${filename}`;
 };
 
-export const generateOrgMediaUrl = (id: string, filename: string): string => {
-  return `${assetUrl}/organization/${id}/${filename}`;
-};
-
 export const uploadMedia = async (
   url: string,
   file: FileObject,

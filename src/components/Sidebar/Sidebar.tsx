@@ -14,11 +14,10 @@ import styles from './Sidebar.module.scss';
 import { useHistory } from 'react-router-dom';
 import useStoreUserSelector from '../../hooks/useStoreUserSelector';
 import { useSelector } from 'react-redux';
-import { AdminProfileTypes } from '../../types';
-import { generateOrgMediaUrl } from '../../helpers/utils';
+import { ProfileTypes } from '../../types';
 
 const Sidebar: React.FC = () => {
-  const { profile } = useSelector((state: { profile: AdminProfileTypes }) => state);
+  const { profile } = useSelector((state: { profile: ProfileTypes }) => state);
   const userData = useStoreUserSelector();
   const menuList = getRoutesMapping(userData);
   const history = useHistory();
@@ -51,15 +50,7 @@ const Sidebar: React.FC = () => {
     <Box className="w-full pt-20 bg-gradient-to-b from-blue-800 to-gray-900 h-screen">
       <Box className="flex flex-col justify-center items-center w-full">
         <NavLink to={'/dashboard/campaigns'}>
-          <img
-            className="w-16"
-            src={
-              profile.orgId && profile.imagePath
-                ? generateOrgMediaUrl(profile.orgId, profile.imagePath)
-                : RaiinmakerLogo
-            }
-            alt="raiinmaker"
-          />
+          <img className="w-16" src={profile.imageUrl ? profile.imageUrl : RaiinmakerLogo} alt="raiinmaker" />
         </NavLink>
         <h4 className="text-lg text-gray-300 mt-1 capitalize">{profile.company}</h4>
       </Box>

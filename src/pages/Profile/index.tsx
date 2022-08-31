@@ -6,25 +6,25 @@ import buttonStyles from '../../assets/styles/customButton.module.css';
 import GenericModal from '../../components/GenericModal';
 import KycForm from '../../components/Forms/KycForm';
 import { ApiClient } from '../../services/apiClient';
-import { AdminProfileTypes, FileObject } from '../../types';
+import { ProfileTypes, FileObject } from '../../types';
 import { useDispatch, useSelector } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 import FileUpload from '../../components/FileUpload';
-import { generateOrgMediaUrl, uploadMedia } from '../../helpers/utils';
+import { uploadMedia } from '../../helpers/utils';
 import { getProfile } from '../../store/actions/profile';
 import textStyles from '../../assets/styles/text.module.css';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
-  const { profile } = useSelector((state: { profile: AdminProfileTypes }) => state);
+  const { profile } = useSelector((state: { profile: ProfileTypes }) => state);
   const [checked, setChecked] = useState<boolean>(profile.enabled);
   const [isOpen, setIsOpen] = useState(false);
   const [is2FAloading, setis2FALoading] = useState(false);
   const [name, setName] = useState(profile.name);
   const [image, setImage] = useState<FileObject>({
-    filename: profile.imagePath,
-    file: generateOrgMediaUrl(profile.orgId, profile.imagePath),
-    format: `image/${profile.imagePath.split('.')[0]}`,
+    filename: '',
+    file: '',
+    format: '',
   });
   const [uploadProgress, setUploadProgress] = useState(0);
   const [updateLoading, setUpdateLoading] = useState(false);
@@ -70,30 +70,28 @@ const Profile: FC = () => {
 
   // Update Data
   const handleUpdate = async () => {
-    if ((name && name !== profile?.name) || image.filename !== profile?.imagePath) {
-      setUpdateLoading(true);
-      ApiClient.updateProfile({ name, imagePath: image.filename })
-        .then((res) => {
-          if (res.signedOrgUrl && image.filename !== profile?.imagePath) {
-            setMediaLoading(true);
-            uploadMedia(res.signedOrgUrl, image, setUploadProgress)
-              .then(() => {
-                setUploadProgress(0);
-                dispatch(getProfile({ ...profile, imagePath: image.filename }));
-                dispatch(showSuccessAlert('Organization image updated successfully'));
-              })
-              .catch((e) => console.log(e))
-              .finally(() => setMediaLoading(false));
-          }
-          dispatch(getProfile({ ...profile, name }));
-          if (name !== profile.name) dispatch(showSuccessAlert('Name updated successfully'));
-        })
-        .catch((err) => {
-          console.log(err.message);
-          dispatch(showErrorAlert(err.message));
-        })
-        .finally(() => setUpdateLoading(false));
-    } else dispatch(showErrorAlert('No changes made'));
+    setUpdateLoading(true);
+    ApiClient.updateProfile({ name, imagePath: image.filename })
+      .then((res) => {
+        if (res.signedOrgUrl) {
+          setMediaLoading(true);
+          uploadMedia(res.signedOrgUrl, image, setUploadProgress)
+            .then(() => {
+              setUploadProgress(0);
+              dispatch(getProfile({ ...profile, imageUrl: res.imageUrl, name: res.name }));
+              dispatch(showSuccessAlert('Organization image updated successfully'));
+            })
+            .catch((e) => console.log(e))
+            .finally(() => setMediaLoading(false));
+        }
+        dispatch(getProfile({ ...profile, name }));
+        if (name !== profile.name) dispatch(showSuccessAlert('Name updated successfully'));
+      })
+      .catch((err) => {
+        console.log(err.message);
+        dispatch(showErrorAlert(err.message));
+      })
+      .finally(() => setUpdateLoading(false));
   };
 
   return (

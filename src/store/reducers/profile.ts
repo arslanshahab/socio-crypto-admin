@@ -9,7 +9,7 @@ const profile = createReducer(initialState.profile, {
     state.company = action.payload.company;
     state.email = action.payload.email;
     state.enabled = action.payload.enabled;
-    state.imagePath = action.payload.imagePath;
+    state.imageUrl = action.payload.imageUrl;
     state.orgId = action.payload.orgId;
     state.verifyStatus = action.payload.verifyStatus;
   },

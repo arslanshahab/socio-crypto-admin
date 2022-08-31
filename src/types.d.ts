@@ -803,14 +803,14 @@ export interface WithdrawPayload {
   verificationToken: string;
 }
 
-export interface AdminProfileTypes {
+export interface ProfileTypes {
   name: string;
   email: string;
   company: string;
   enabled: boolean;
   orgId: string;
-  imagePath: string;
   verifyStatus: string;
+  imageUrl: string;
 }
 
 export interface TwoFactorAuthPayload {
@@ -818,9 +818,11 @@ export interface TwoFactorAuthPayload {
 }
 
 export interface UpdateProfileTypes {
+  name: string;
   orgId: string;
   brand: string;
   signedOrgUrl: string;
+  imageUrl: string;
 }
 
 export interface UpdateProfilePayload {
