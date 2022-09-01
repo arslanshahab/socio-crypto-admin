@@ -94,13 +94,13 @@ const KycForm: FC<IKycFormProps> = ({ callback }: IKycFormProps) => {
 
   // On Error
   const onError = (msg: string) => {
-    debugger;
     dispatch(showErrorAlert(msg));
   };
 
   // Handle Submit
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    debugger;
+    if (!faceImage.file || !frontDocumentImage.file || !backDocumentImage.file)
+      return dispatch(showErrorAlert('Please upload kyc documents'));
     setLoading(true);
     const updatedKyc = { ...data };
     const dob = updatedKyc.dob.replace(/-/g, '/');
