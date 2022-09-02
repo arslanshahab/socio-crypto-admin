@@ -804,6 +804,59 @@ export interface WithdrawPayload {
   verificationToken: string;
 }
 
+export interface ProfileTypes {
+  name: string;
+  email: string;
+  company: string;
+  enabled: boolean;
+  orgId: string;
+  verifyStatus: string;
+  imageUrl: string;
+}
+
+export interface TwoFactorAuthPayload {
+  twoFactorEnabled: boolean;
+}
+
+export interface UpdateProfileTypes {
+  name: string;
+  orgId: string;
+  brand: string;
+  signedOrgUrl: string;
+  imageUrl: string;
+}
+
+export interface UpdateProfilePayload {
+  name: string;
+  imagePath: string;
+}
+
+export interface VerifyKycTypes {
+  [key: string]: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  billingStreetAddress: string;
+  billingCity: string;
+  billingCountry: string;
+  zipCode: string;
+  gender: string;
+  dob: string;
+  phoneNumber: string;
+  documentType: string;
+  documentCountry: string;
+  frontDocumentImage: string;
+  faceImage: string;
+  backDocumentImage: string;
+}
+
+export type KycStatus = 'APPROVED' | 'PENDING' | 'REJECTED' | '';
+export interface KycResponse {
+  kycId: string;
+  status: KycStatus;
+}
+
 export type PendingCampaignStatus = 'APPROVED' | 'DENIED';
 
 export interface PendingCampaignPayload {

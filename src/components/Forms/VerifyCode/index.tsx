@@ -26,7 +26,6 @@ const VerifyCodeForm: React.FC<VerifyCodeProps> = ({ email, callback }) => {
       setLoading(true);
       ApiClient.completeEmailVerification({ email, code: code.toUpperCase() })
         .then((resp) => {
-          console.log(resp);
           callback(resp.verificationToken);
         })
         .catch((error) => {
