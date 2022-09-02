@@ -6,8 +6,9 @@ import { ChangePasswordDialog } from '../../ChangePasswordDialog';
 import styles from './login.module.css';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../store/actions/user';
-import { showErrorAlert } from '../../../store/actions/alerts';
+import { showErrorAlert, showSuccessAlert } from '../../../store/actions/alerts';
 import { ApiClient } from '../../../services/apiClient';
+import { VerifyCodeDialog } from '../VerifyCode';
 
 interface UserData {
   [key: string]: string;
@@ -24,6 +25,8 @@ const LoginForm: React.FC = () => {
     email: '',
     password: '',
   } as UserData);
+  const [verifyCodeDialog, showVerifyCodeDialog] = useState(false);
+  const [verify, setVerify] = useState<any>();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data = { ...values };
@@ -31,6 +34,37 @@ const LoginForm: React.FC = () => {
     setValues(data);
   };
 
+  // handle verify callback
+  const handleVerify = async (value: string) => {
+    if (value) {
+      showVerifyCodeDialog(false);
+      dispatch(
+        setUserData({
+          ...verify,
+          isLoggedIn: true,
+        }),
+      );
+      history.push('/dashboard/campaigns');
+    }
+  };
+
+  // start verification
+  const startVerification = () => {
+    setLoading(true);
+    ApiClient.startEmailVerification({ email: values.email, type: 'PASSWORD', admin: true })
+      .then(() => {
+        dispatch(showSuccessAlert('Verification email sent your added email address.'));
+        showVerifyCodeDialog(true);
+      })
+      .catch((error) => {
+        dispatch(showErrorAlert((error as Error).message));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  // handle login
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -38,6 +72,10 @@ const LoginForm: React.FC = () => {
       .then((resp) => {
         if (resp.resetPass) {
           setChangePassword(true);
+        } else if (resp.twoFactorEnabled) {
+          showVerifyCodeDialog(true);
+          startVerification();
+          setVerify(resp);
         } else {
           dispatch(
             setUserData({
@@ -56,8 +94,15 @@ const LoginForm: React.FC = () => {
       });
   };
 
+  // hanlde verify dialog close
+  const handleClose = () => {
+    showVerifyCodeDialog(false);
+    setLoading(false);
+  };
+
   return (
     <Box className={styles.loginForm}>
+      <VerifyCodeDialog email={values.email} open={verifyCodeDialog} onClose={handleClose} callback={handleVerify} />
       <ChangePasswordDialog open={changePassword} setOpen={setChangePassword} email={values.email} />
       <h2 className="w-full text-3xl text-gray-600 font-semibold mb-8 text-left">Brand Login</h2>
       <Box className="w-full pb-5">

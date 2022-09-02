@@ -1,0 +1,24 @@
+.imagePreview {
+  @apply w-24 h-24  rounded-md shadow;
+}
+.image {
+  @apply w-full h-full object-contain rounded-md p-2;
+}
+
+.formWrapper {
+  @apply grid grid-cols-3 gap-4 my-4;
+}
+
+.inputWrapper {
+  @apply mt-1 relative rounded-md shadow-sm border h-10;
+}
+
+.input {
+  @apply h-full focus:ring-indigo-500 focus:border-indigo-500 block w-full  sm:text-sm border-gray-300 rounded-md p-2;
+}
+.input option:disabled {
+  @apply text-gray-200;
+}
+.errorMessage {
+  @apply normal-case text-red-500;
+}

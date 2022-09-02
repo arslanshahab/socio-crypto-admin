@@ -1,0 +1,13 @@
+.profileWrapper {
+  @apply m-6 p-6 shadow;
+}
+.profile {
+  @apply w-1/2;
+}
+.brandImage {
+  @apply w-full h-full object-cover rounded-md;
+}
+
+.buttonWrapper {
+  @apply mt-16;
+}

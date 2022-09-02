@@ -17,6 +17,11 @@
   padding: 1rem;
   background: #f3f4f6;
   height: 75px;
+  .topbarIcons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
 }
 
 .main {
