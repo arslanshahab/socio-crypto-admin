@@ -79,7 +79,7 @@ export const PendingCampaigns: React.FC = () => {
 
   return (
     <div>
-      <GenericModal open={isOpen} onClose={handleClose} size="medium">
+      <GenericModal open={isOpen} onClose={handleClose} size="medium" persist>
         <div className={styles.textarea}>
           <textarea
             className={styles.textareaField}
