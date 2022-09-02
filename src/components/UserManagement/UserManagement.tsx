@@ -110,15 +110,9 @@ export const UserManagement: React.FC = () => {
           </div>
           <div className="flex gap-4 flex-wrap">
             {filterEmployee &&
-              filterEmployee.map((admin: AdminTypes, index: number) => (
+              filterEmployee.map((admin: AdminTypes) => (
                 <div key={admin.id} className={styles.userCardWrapper}>
-                  <div
-                    className={`${styles.imageWrapper} ${
-                      4 * index + 1 - 3 === index + 1 ? 'border-2 border-green-600' : ''
-                    } `}
-                  >
-                    {/* <img alt="user image" className={styles.image} /> */}
-                  </div>
+                  <div className={styles.imageWrapper}>{/* <img alt="user image" className={styles.image} /> */}</div>
                   <PrimaryCard
                     title={admin.name}
                     value={new Date(admin.createdAt).toDateString()}
