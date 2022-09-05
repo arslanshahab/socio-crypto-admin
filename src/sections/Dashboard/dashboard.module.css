@@ -2,11 +2,11 @@
   @apply border border-denimBlue rounded-3xl p-6 m-6;
 }
 .statCardWrapper {
-  @apply flex gap-10;
+  @apply flex gap-8 justify-center items-center;
 }
 .analyticsCard {
-  width: 240px;
-  height: 110px;
+  width: 210px;
+  height: 100px;
   border: 3px solid;
   @apply border-denimBlue flex flex-col justify-center pl-6 rounded-3xl;
 }
