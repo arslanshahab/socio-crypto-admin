@@ -14,6 +14,7 @@ import {
   VerifyKycTypes,
   ProfileTypes,
   PendingCampaignPayload,
+  DashboardStatsTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -128,6 +129,14 @@ export class ApiClient {
   public static async updatePendingCampaignStatus(payload: PendingCampaignPayload): Promise<SuccessResponse> {
     try {
       return (await this.requestInstance.put('/v1/campaign/pending', payload)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getDashboardStats(campaignId: string): Promise<DashboardStatsTypes> {
+    try {
+      return (await this.requestInstance.get(`/v1/campaign/dashboard-metrics/${campaignId}`)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

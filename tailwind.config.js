@@ -1,7 +1,17 @@
 module.exports = {
   purge: ['./src/**/*.ts', './src/**/*.tsx', './src/**/*.js', './src/**/*.jsx'],
+  content: ['./src/**/*.ts', './src/**/*.tsx', './src/**/*.js', './src/**/*.jsx'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    extend: {
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        white: '#ffffff',
+        denimBlue: '#1E40AF',
+        cyberYellow: '#FFD100',
+      },
+    },
     screens: {
       sm: '640px',
       // => @media (min-width: 640px) { ... }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Switch } from 'react-router';
 import CampaignsPage from '../Campaigns';
 import { Link } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { UserManagement } from '../../components/UserManagement/UserManagement';
 import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
 import Sidebar from '../../components/Sidebar';
 import styles from './Dashboard.module.scss';
-import { DashboardHome } from '../../components/DashboardHome';
+// import { DashboardHome } from '../../components/DashboardHome';
 import NewCampaignPage from '../NewCampaign';
 import { useDispatch } from 'react-redux';
 import { showAppLoader } from '../../store/actions/settings';
@@ -30,6 +30,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import Profile from '../Profile';
 import { ApiClient } from '../../services/apiClient';
 import { getProfile } from '../../store/actions/profile';
+import DashboardHome from '../DashboardHome';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -75,6 +76,9 @@ const Dashboard: React.FC = (props) => {
             <ProtectedRoute exact path={'/dashboard'}>
               <DashboardHome />
             </ProtectedRoute>
+            {/* <ProtectedRoute exact path={'dashboard/v2'}>
+              <DashboardHomeV2 />
+            </ProtectedRoute> */}
             <ProtectedRoute exact path={'/dashboard/campaigns'}>
               <CampaignsPage />
             </ProtectedRoute>

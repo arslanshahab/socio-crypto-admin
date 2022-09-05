@@ -1,0 +1,22 @@
+.dashboardSection {
+  @apply border border-denimBlue rounded-3xl p-6 m-6;
+}
+.statCardWrapper {
+  @apply flex gap-10;
+}
+.analyticsCard {
+  width: 240px;
+  height: 110px;
+  border: 3px solid;
+  @apply border-denimBlue flex flex-col justify-center pl-6 rounded-3xl;
+}
+.circle {
+  width: 35px;
+  height: 35px;
+  @apply rounded-full bg-cyberYellow flex items-center justify-center;
+}
+.analytics {
+  @apply flex gap-4  items-center;
+  font-size: 1.2rem;
+  line-height: 3rem;
+}
