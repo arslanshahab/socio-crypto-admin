@@ -10,6 +10,7 @@ module.exports = {
         white: '#ffffff',
         denimBlue: '#1E40AF',
         cyberYellow: '#FFD100',
+        orangeYellow: '#C8A818',
       },
     },
     screens: {

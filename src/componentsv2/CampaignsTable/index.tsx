@@ -1,12 +1,7 @@
 import React, { FC } from 'react';
 import styles from './campaignsTable.module.css';
 
-interface ITableProps {
-  headers: string[];
-  data: any;
-}
-
-const CampaignsTable: FC<ITableProps> = ({ headers, data }: ITableProps) => {
+const CampaignsTable: FC = () => {
   return (
     <div className={styles.tableWrapper}>
       <table>
