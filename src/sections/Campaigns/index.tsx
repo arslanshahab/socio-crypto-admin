@@ -4,7 +4,7 @@ import CampaignsTable from '../../componentsv2/CampaignsTable';
 const Campaigns: FC = () => {
   const [openTab, setOpenTab] = React.useState(1);
   return (
-    <div className="">
+    <div>
       <ul className="mb-4 shadow-md rounded-full inline-flex h-10 bg-orangeYellow" role="tablist">
         <li className="inline-block h-full">
           <a

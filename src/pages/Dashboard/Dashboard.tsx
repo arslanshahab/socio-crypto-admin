@@ -31,6 +31,7 @@ import Profile from '../Profile';
 import { ApiClient } from '../../services/apiClient';
 import { getProfile } from '../../store/actions/profile';
 import DashboardHome from '../DashboardHome';
+import CampaignAnalytics from '../CampaignAnalytics';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -81,6 +82,9 @@ const Dashboard: React.FC = (props) => {
             </ProtectedRoute> */}
             <ProtectedRoute exact path={'/dashboard/campaigns'}>
               <CampaignsPage />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/campaigns/analytics'}>
+              <CampaignAnalytics />
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/newCampaign'}>
               <NewCampaignPage {...props} />
