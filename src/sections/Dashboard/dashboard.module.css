@@ -20,3 +20,7 @@
   font-size: 1.2rem;
   line-height: 3rem;
 }
+
+.campaignSection {
+  @apply border border-denimBlue rounded-3xl p-6 m-6;
+}

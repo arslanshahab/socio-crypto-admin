@@ -1,0 +1,43 @@
+/* Table */
+.tableWrapper {
+  @apply rounded-3xl border p-4 border-denimBlue;
+}
+.tableWrapper table {
+  @apply w-full;
+}
+.tableWrapper table thead {
+  @apply text-justify;
+}
+.tableWrapper table thead tr {
+  @apply border-b-2 border-denimBlue;
+}
+.tableWrapper table thead tr th {
+  @apply font-normal py-4;
+}
+.tableWrapper table tbody tr:not(:last-child) {
+  @apply border-b-2 border-denimBlue;
+}
+.tableWrapper table tbody tr td {
+  @apply font-normal py-4;
+}
+/* Progressbar */
+progress {
+  border-radius: 3px;
+  width: 80%;
+  height: 5px;
+  margin-left: -11.5%;
+}
+progress::-webkit-progress-bar {
+  background-color: #fff;
+}
+progress::-webkit-progress-value {
+  background-color: blue;
+  border-radius: 3px;
+}
+progress::-moz-progress-bar {
+  background-color: #fff;
+}
+progress::-moz-progress-value {
+  background-color: blue;
+  border-radius: 3px;
+}
