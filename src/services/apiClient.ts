@@ -15,6 +15,7 @@ import {
   ProfileTypes,
   PendingCampaignPayload,
   DashboardStatsTypes,
+  UserStatTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -137,6 +138,22 @@ export class ApiClient {
   public static async getDashboardStats(campaignId: string): Promise<DashboardStatsTypes> {
     try {
       return (await this.requestInstance.get(`/v1/campaign/dashboard-metrics/${campaignId}`)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getUserStats(): Promise<UserStatTypes> {
+    try {
+      return (await this.requestInstance.get(`/v1/user/user-stats`)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getLiteCampaigns(): Promise<{ id: string; name: string }[]> {
+    try {
+      return (await this.requestInstance.get(`/v1/campaign/campaigns-lite`)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

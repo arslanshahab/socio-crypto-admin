@@ -10,3 +10,36 @@
 .selectField .css-b62m3t-container .css-1s2u09g-control {
   @apply border-0;
 }
+.chartSection {
+  @apply border border-denimBlue rounded-3xl p-6 m-6 h-96;
+}
+.boxSection {
+  @apply p-6 m-6;
+}
+.participationBox {
+  @apply flex gap-6 items-center mb-2;
+}
+.participationBox span {
+  @apply bg-cyberYellow w-5 h-5;
+}
+.participationBox p {
+  @apply mb-0;
+}
+.clicksBox {
+  @apply flex gap-6 items-center;
+}
+.clicksBox span {
+  @apply bg-denimBlue w-5 h-5;
+}
+.clicksBox p {
+  @apply mb-0;
+}
+.lineBar {
+  @apply h-0.5 bg-lightGray m-6;
+}
+.cardSection {
+  @apply px-6 pb-7;
+}
+.cards {
+  @apply grid grid-cols-5 gap-4;
+}

@@ -1,0 +1,11 @@
+.customCard {
+  @apply rounded-lg bg-lightGray hover:bg-gray-100 px-4 py-6;
+  width: 230px;
+  height: 100px;
+}
+.customCard p {
+  @apply text-sm text-denimBlue mb-2;
+}
+.countWrapper {
+  @apply flex justify-between items-center;
+}

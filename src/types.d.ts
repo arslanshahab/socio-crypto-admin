@@ -886,3 +886,12 @@ export interface DashboardStatsTypes {
   aggregatedMetrics: CampaignAggregationTypes;
   rawMetrics: CampaignStatTypes;
 }
+
+export interface UserStatTypes {
+  [index: string]: string;
+  totalUsers: number;
+  lastWeekUsers: number;
+  bannedUsers: number;
+  distributedTotalAmount: number;
+  redeemedTotalAmount: number;
+}
