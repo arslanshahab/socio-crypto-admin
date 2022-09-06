@@ -23,7 +23,7 @@ const CampaignsTable: FC<ITableProps> = ({ headers, data }: ITableProps) => {
         <tbody>
           <tr>
             <td>I Love Congo &#38; Raiinmaker</td>
-            <td>&uarr;</td>
+            <td className={styles.successStatus}>&uarr;</td>
             <td>6,443,195</td>
             <td>30,701</td>
             <td>505,262</td>
@@ -33,7 +33,7 @@ const CampaignsTable: FC<ITableProps> = ({ headers, data }: ITableProps) => {
           </tr>
           <tr>
             <td>I Love Congo &#38; Raiinmaker</td>
-            <td>&uarr;</td>
+            <td className={styles.failedStatus}>&darr;</td>
             <td>6,443,195</td>
             <td>30,701</td>
             <td>505,262</td>
@@ -43,7 +43,7 @@ const CampaignsTable: FC<ITableProps> = ({ headers, data }: ITableProps) => {
           </tr>
           <tr>
             <td>I Love Congo &#38; Raiinmaker</td>
-            <td>&uarr;</td>
+            <td className={styles.avgStatus}>&uarr;</td>
             <td>6,443,195</td>
             <td>30,701</td>
             <td>505,262</td>

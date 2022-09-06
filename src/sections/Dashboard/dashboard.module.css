@@ -22,5 +22,5 @@
 }
 
 .campaignSection {
-  @apply border border-denimBlue rounded-3xl p-6 m-6;
+  @apply border border-denimBlue rounded-3xl py-12 px-6 m-6 mt-16;
 }
