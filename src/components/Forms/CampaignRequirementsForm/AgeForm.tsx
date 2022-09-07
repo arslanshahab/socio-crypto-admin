@@ -4,7 +4,8 @@ import { Box, TextField } from '@material-ui/core';
 import CustomButton from '../../CustomButton/CustomButton';
 import { Autocomplete } from '@material-ui/lab';
 import { AgeRangeRequirementSpecs } from '../../../types';
-import styles from '../../CustomInput/customInput.module.css';
+import inputStyles from '../../CustomInput/customInput.module.css';
+import styles from './requirements.module.css';
 
 interface Props {
   handleSubmit: (val: string[]) => void;
@@ -42,7 +43,7 @@ const AgeForm: React.FC<Props> = ({ handleSubmit, defaultValues }) => {
               variant="outlined"
               label="Keywords"
               placeholder="Add keywords for campaign"
-              className={styles.customInput}
+              className={inputStyles.customInput}
             />
           )}
           onChange={(e, val) => {
@@ -51,10 +52,7 @@ const AgeForm: React.FC<Props> = ({ handleSubmit, defaultValues }) => {
         />
       </Box>
       <Box className="flex flex-row justify-start items-center mt-5">
-        <CustomButton
-          className="w-full h-12 rounded-md text-black text-md border-2 border-cyberYellow bg-cyberYellow"
-          onClick={() => handleSubmit(age)}
-        >
+        <CustomButton className={styles.saveButton} onClick={() => handleSubmit(age)}>
           Save
         </CustomButton>
       </Box>
