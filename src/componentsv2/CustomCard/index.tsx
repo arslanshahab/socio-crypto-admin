@@ -9,6 +9,7 @@ import { ReactComponent as ParticipantScoreIcon } from '../../assets/svg/dashboa
 import { ReactComponent as ViewIcon } from '../../assets/svg/dashboardIcons/viewIcon.svg';
 import { ReactComponent as ShareIcon } from '../../assets/svg/dashboardIcons/shareIcon.svg';
 import { ReactComponent as UsersIcon } from '../../assets/svg/dashboardIcons/usersIcon.svg';
+import { ReactComponent as LastWeekUsersIcon } from '../../assets/svg/dashboardIcons/doubleUserIcon.svg';
 
 interface ICustomCardProps {
   title: string;
@@ -35,7 +36,7 @@ const icons: { [key: string]: React.ReactNode } = {
   totalParticipants: <ParticipantsIcon />,
   participationScore: <ParticipantScoreIcon />,
   totalUsers: <UsersIcon />,
-  //   lastWeekUsers: <HiUsers />,
+  lastWeekUsers: <LastWeekUsersIcon />,
   distributedTotalAmount: <DistributedCashIcon />,
   redeemedTotalAmount: <RedeemedIcon />,
   bannedUsers: <BannedUserIcon />,
