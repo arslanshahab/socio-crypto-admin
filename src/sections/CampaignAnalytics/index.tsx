@@ -8,19 +8,13 @@ import CustomCard from '../../componentsv2/CustomCard';
 import { ApiClient } from '../../services/apiClient';
 import { CampaignAggregationTypes, UserStatTypes } from '../../types';
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
-
 const CampaignAnalytics: FC = () => {
   const [openTab, setOpenTab] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
   const [campaignId, setCamapignId] = useState('-1');
   const [campaignStats, setCampaignStats] = useState<CampaignAggregationTypes>();
   const [userStats, setUserStats] = useState<UserStatTypes>();
-  const [campaigns, setCampaigns] = useState<{ id: string; name: string }[]>([]);
+  const [campaigns, setCampaigns] = useState<{ value: string; label: string }[]>([]);
 
   useEffect(() => {
     ApiClient.getDashboardStats(campaignId)
@@ -39,7 +33,11 @@ const CampaignAnalytics: FC = () => {
   useEffect(() => {
     ApiClient.getLiteCampaigns()
       .then((res) => {
-        setCampaigns(res);
+        const result = res.map((x) => ({
+          value: x.id,
+          label: x.name,
+        }));
+        setCampaigns(result);
       })
       .catch((err) => console.log(err))
       .finally(() => console.log('finally..'));
