@@ -12,6 +12,7 @@ import { ErrorObject } from '../../../types';
 import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
+import styles from '../../CustomInput/customInput.module.css';
 
 interface Props {
   userData: {
@@ -276,6 +277,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               defaultValue={keywords}
               renderInput={(params) => (
                 <TextField
+                  className={styles.customInput}
                   required={true}
                   error={errors['keywords']}
                   {...params}
@@ -347,7 +349,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               fullWidth
               label="Campaign Start Date"
               showTodayButton
-              className="customInput"
+              className={styles.customInput}
               error={errors['beginDate']}
               disabled={campaign.config.isGlobal}
               onChange={handleBeginDateChange}
@@ -362,10 +364,10 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               disablePast
               label="Campaign End Date"
               showTodayButton
-              className="customInput"
               error={errors['endDate']}
               disabled={campaign.config.isGlobal}
               onChange={handleEndDateChange}
+              className={styles.customInput}
             />
           </Box>
         </Box>
