@@ -1,5 +1,5 @@
 import React from 'react';
-import './CustomSelect.scss';
+import styles from './customSelect.module.css';
 import {
   FormControl,
   InputLabel,
@@ -26,7 +26,7 @@ const CustomSelect: React.FC<Props & FormControlProps & SelectProps> = ({
   ...others
 }) => {
   return (
-    <FormControl variant="outlined" fullWidth className={`customSelect ${className}`} {...others}>
+    <FormControl variant="outlined" fullWidth className={`${styles.customSelect} ${className}`} {...others}>
       {label && <InputLabel id="select-label">{label}</InputLabel>}
       <Select value={value} onChange={onChange} labelId="select-label" label={label || ''}>
         {options.map((item, index) => (

@@ -12,6 +12,7 @@ module.exports = {
         cyberYellow: '#FFD100',
         orangeYellow: '#C8A818',
         lightGray: '#F9FAFB',
+        coolGray: '#9CA3AF',
       },
     },
     screens: {
