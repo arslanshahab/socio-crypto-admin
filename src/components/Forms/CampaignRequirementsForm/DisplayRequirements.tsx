@@ -10,7 +10,7 @@ interface Props {
 
 const DisplayRequirements: React.FC<Props> = ({ value, onRemove }) => {
   return (
-    <Box className="px-3 py-3 mt-1 mr-2 rounded-lg bg-gray-300 flex flex-row justify-between items-center">
+    <Box className="px-4 py-3 mt-1 mr-2 rounded-full bg-coolGray flex flex-row justify-between items-center">
       <p>{value}</p>
       <CustomButton className="text-gray-900 text-xl w-4 h-4 rounded-full ml-2" onClick={() => onRemove(value)}>
         <CloseIcon style={{ fontSize: 20 }} />
