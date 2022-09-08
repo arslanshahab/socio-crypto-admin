@@ -11,7 +11,7 @@ import InstagramIcon from '../../assets/svg/socialIcons/InstagramLogo.svg';
 import TwitterIcon from '../../assets/svg/socialIcons/TwitterLogo.svg';
 import FacebookIcon from '../../assets/svg/socialIcons/FBLogo.svg';
 import TiktokIcon from '../../assets/svg/socialIcons/TikTokLogo.svg';
-// import styles from './newCampaign.module.css';
+// import styles from './newCampaign.module.scss';
 
 const PreviewScreen: React.FC<ActionsProps> = ({
   activeStep,
