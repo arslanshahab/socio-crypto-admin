@@ -49,7 +49,7 @@ const Actions: React.FC<CampaignActionProps> = ({
           className="w-48 h-12 mr-5 rounded-md text-black text-md border border-cyberYellow bg-cyberYellow"
           onClick={handleSubmit}
         >
-          {campaignId ? 'Update Campaign' : 'Create Campaign'}
+          {campaignId ? 'Update Campaign' : 'Finalize'}
         </CustomButton>
       )}
     </Box>
