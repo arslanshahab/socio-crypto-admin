@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { ChannelMediaObject, FileObject } from '../../../types';
@@ -21,6 +21,7 @@ export interface Props {
 
 const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange }) => {
   const dispatch = useDispatch();
+  const [images, setImages] = useState<string[]>([]);
   const onSuccess = (index: number, data: FileObject) => {
     const medias = [...channelMedias];
     const id = medias?.[index]?.id;
@@ -33,8 +34,6 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
   };
 
   const addMedia = () => {
-    debugger;
-
     if (channelMedias.length < 5) {
       const medias = [...channelMedias];
       medias.push({ channel: channel, media: initialState.newCampaign.campaignImage, isDefault: false });
@@ -45,7 +44,6 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
   };
 
   const removeMedia = (index: number) => {
-    debugger;
     if (channelMedias.length > 1) {
       const medias = [...channelMedias];
       medias.splice(index, 1);
@@ -62,8 +60,21 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
     Tiktok: TiktokIcon,
   };
 
+  const addSocialMedia = (data: string) => {
+    console.log('Add social media------', data);
+    setImages([...images, data]);
+  };
+  console.log('images------------', images);
+
   return (
     <Box className="w-full flex flex-col flex-wrap">
+      {images?.map((x: string, index: number) => {
+        return (
+          <div key={index} className="w-24 h-16 object-contain">
+            <img src={x} alt={`${index}file`} />
+          </div>
+        );
+      })}
       <Box className="w-full flex flex-row justify-between items-center mb-2">
         <img src={socialIcons[channel]} alt={channel} />
         <CustomButton
@@ -87,6 +98,8 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                 onFileSuccess={(data) => onSuccess(index, data)}
                 onFileError={onError}
                 removeImage={() => removeMedia(index)}
+                callback={addSocialMedia}
+                isSocial={true}
               />
               {/* {index === 0 && <p className="text-sm text-gray-400 mt-3">Default Media</p>} */}
               {/* {index !== 0 && (

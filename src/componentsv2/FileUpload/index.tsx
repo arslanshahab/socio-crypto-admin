@@ -20,9 +20,19 @@ interface Props {
   updateLabel?: string;
   tooltip?: string;
   removeImage?: () => void | undefined;
+  callback?: (file: string) => void;
+  isSocial?: boolean;
 }
 
-const FileUpload: React.FC<Props> = ({ value, mediaType, onFileError, onFileSuccess, removeImage }) => {
+const FileUpload: React.FC<Props> = ({
+  value,
+  mediaType,
+  onFileError,
+  onFileSuccess,
+  removeImage,
+  callback,
+  isSocial = false,
+}) => {
   const inputKey = `${mediaType}-${Math.random()}`;
   const allowedFileType: Array<FileFormatSizeMap> = [
     {
@@ -54,6 +64,8 @@ const FileUpload: React.FC<Props> = ({ value, mediaType, onFileError, onFileSucc
   ];
 
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>, type: string, onSuccess: any, onError: any) => {
+    callback && callback(value.file);
+
     const files = event.target.files;
     if (files && files.length) {
       const file = files[0];
@@ -108,7 +120,7 @@ const FileUpload: React.FC<Props> = ({ value, mediaType, onFileError, onFileSucc
   return (
     <Box className="flex flex-col justify-start">
       <div className="flex items-center gap-6">
-        {value.file && value.format.includes('image') ? (
+        {!isSocial && value.file && value.format.includes('image') ? (
           <div className="w-20 h-20 bg-lightGray" onClick={() => removeImage && removeImage()}>
             <img src={value.file} alt={mediaType} className="w-full h-full rounded-md object-contain" />
           </div>
@@ -119,6 +131,7 @@ const FileUpload: React.FC<Props> = ({ value, mediaType, onFileError, onFileSucc
         ) : (
           ''
         )}
+
         <label htmlFor={inputKey} className="cursor-pointer">
           <input
             className="hidden"
