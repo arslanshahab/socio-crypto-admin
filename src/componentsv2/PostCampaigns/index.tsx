@@ -1,18 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
-import { Campaign } from '../../types';
-import styles from './campaignsTable.module.css';
+import { Campaign, PaginatedCampaignResultsV2 } from '../../types';
+import styles from './postCampaigns.module.css';
 import { useDispatch } from 'react-redux';
 
-const CampaignsTable: FC = () => {
+const PostCampaigns: FC = () => {
   const dispatch = useDispatch();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
-    ApiClient.getCampaigns({ skip: 0, take: 10, state: 'OPEN', status: 'APPROVED' })
+    ApiClient.getCampaigns({ skip: 0, take: 10, state: 'CLOSED', status: 'APPROVED' })
       .then((res) => {
         setCampaigns(res.items);
       })
@@ -52,4 +52,4 @@ const CampaignsTable: FC = () => {
   );
 };
 
-export default CampaignsTable;
+export default PostCampaigns;

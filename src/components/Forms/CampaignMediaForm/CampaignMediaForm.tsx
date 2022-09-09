@@ -58,7 +58,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     for (let index = 0; index < socialMediaType.length; index++) {
       const channel = socialMediaType[index];
       const defaultMedia = channelMedia[channel].find((item) => item.isDefault);
-      if (!defaultMedia || !defaultMedia.media.filename) {
+      if (!defaultMedia) {
         dispatch(showErrorAlert(`Default Media is required for ${channel}`));
         return (validated = false);
       }
@@ -71,8 +71,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       <Box className="w-full flex flex-col border-solid border-2 border-denimBlue p-5 rounded-3xl">
         <div className="flex items-center gap-8">
           <CampaignAvatar />
+          {campaignImage.file && (
+            <div className="w-20 h-20 bg-lightGray">
+              <img
+                src={campaignImage.file}
+                alt={campaignImage.filename}
+                className="w-full h-full rounded-md object-contain"
+              />
+            </div>
+          )}
+
           <FileUpload
-            value={campaignImage}
             label="Add Campaign Image"
             updateLabel="Update Campaign Image"
             mediaType="campaignImage"

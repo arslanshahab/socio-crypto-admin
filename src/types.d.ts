@@ -504,6 +504,8 @@ export interface UserData {
   email: string;
   tempPass: boolean;
   isLoggedIn: boolean;
+  resetPass: boolean;
+  twoFactorEnabled: boolean;
 }
 
 export interface Alert {
@@ -884,7 +886,7 @@ export interface CampaignStatTypes {
 
 export interface DashboardStatsTypes {
   aggregatedMetrics: CampaignAggregationTypes;
-  rawMetrics: CampaignStatTypes;
+  rawMetrics: CampaignStatTypes[];
 }
 
 export interface UserStatTypes {

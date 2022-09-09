@@ -12,17 +12,15 @@ interface FileFormatSizeMap {
 }
 
 interface Props {
-  value: FileObject;
   onFileSuccess: (data: FileObject, type: string) => void;
   onFileError: (msg: string) => void;
   label: string;
   mediaType: string;
   updateLabel?: string;
   tooltip?: string;
-  removeImage?: () => void | undefined;
 }
 
-const FileUpload: React.FC<Props> = ({ value, mediaType, onFileError, onFileSuccess, removeImage }) => {
+const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess }) => {
   const inputKey = `${mediaType}-${Math.random()}`;
   const allowedFileType: Array<FileFormatSizeMap> = [
     {
@@ -108,17 +106,6 @@ const FileUpload: React.FC<Props> = ({ value, mediaType, onFileError, onFileSucc
   return (
     <Box className="flex flex-col justify-start">
       <div className="flex items-center gap-6">
-        {value.file && value.format.includes('image') ? (
-          <div className="w-20 h-20 bg-lightGray" onClick={() => removeImage && removeImage()}>
-            <img src={value.file} alt={mediaType} className="w-full h-full rounded-md object-contain" />
-          </div>
-        ) : value.format.includes('video') ? (
-          <div className="w-20 h-20  bg-lightGray">
-            <video autoPlay={false} src={value.file} controls={true} className="w-full h-full object-contain" />
-          </div>
-        ) : (
-          ''
-        )}
         <label htmlFor={inputKey} className="cursor-pointer">
           <input
             className="hidden"

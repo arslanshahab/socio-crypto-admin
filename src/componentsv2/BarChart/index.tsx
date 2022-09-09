@@ -2,8 +2,12 @@ import React, { FC } from 'react';
 import styles from './barChart.module.css';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-
+import { CampaignStatTypes } from '../../types';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+interface IBarChartProps {
+  data?: CampaignStatTypes[];
+}
 
 export const options = {
   responsive: true,
@@ -26,35 +30,29 @@ export const options = {
   },
 };
 
-const labels = ['Participation Score', 'Clicks'];
+const BarChart: FC<IBarChartProps> = ({ data }: IBarChartProps) => {
+  const barChartData = {
+    labels: data?.map((x) => ''),
+    datasets: [
+      {
+        label: 'Participation Score',
+        data: data?.map((x) => x.participationScore),
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Participation Score',
-      backgroundColor: '#1E40AF',
-      data: [65, 44, 55],
-      borderDash: [10, 5],
-      barPercentage: 0.8,
-      barThickness: 16,
-      maxBarThickness: 8,
-    },
-    {
-      label: 'Clicks',
-      data: [35, 23, 77],
-      backgroundColor: '#FFD100',
-      barPercentage: 0.8,
-      barThickness: 16,
-      maxBarThickness: 8,
-    },
-  ],
-};
+        backgroundColor: '#1E40AF',
+        borderWidth: 1,
+      },
+      {
+        label: 'Clicks',
+        data: data?.map((x) => x.clickCount),
+        backgroundColor: '#FFD100',
+        borderWidth: 1,
+      },
+    ],
+  };
 
-const BarChart: FC = () => {
   return (
     <div className={styles.barChart}>
-      <Bar options={options} data={data} height="85" />
+      <Bar options={options} data={barChartData} height="85" />
     </div>
   );
 };
