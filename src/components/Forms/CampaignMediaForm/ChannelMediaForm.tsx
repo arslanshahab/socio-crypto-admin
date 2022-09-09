@@ -12,6 +12,7 @@ import InstagramIcon from '../../../assets/svg/socialIcons/InstagramLogo.svg';
 import TwitterIcon from '../../../assets/svg/socialIcons/TwitterLogo.svg';
 import FacebookIcon from '../../../assets/svg/socialIcons/FBLogo.svg';
 import TiktokIcon from '../../../assets/svg/socialIcons/TikTokLogo.svg';
+import { MdDelete } from 'react-icons/md';
 
 export interface Props {
   channel: string;
@@ -21,11 +22,13 @@ export interface Props {
 
 const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange }) => {
   const dispatch = useDispatch();
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<any>([]);
   const onSuccess = (index: number, data: FileObject) => {
     const medias = [...channelMedias];
     const id = medias?.[index]?.id;
     medias[index] = { channel: channel, id, media: data, isDefault: medias[index].isDefault };
+    setImages([...images, medias[index]]);
+
     onChange(channel, medias);
   };
 
@@ -33,15 +36,15 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
     dispatch(showErrorAlert(msg));
   };
 
-  const addMedia = () => {
-    if (channelMedias.length < 5) {
-      const medias = [...channelMedias];
-      medias.push({ channel: channel, media: initialState.newCampaign.campaignImage, isDefault: false });
-      onChange(channel, medias);
-    } else {
-      dispatch(showErrorAlert('You cannot add more than 5 media items for a social channel'));
-    }
-  };
+  // const addMedia = () => {
+  //   if (channelMedias.length < 5) {
+  //     const medias = [...channelMedias];
+  //     medias.push({ channel: channel, media: initialState.newCampaign.campaignImage, isDefault: false });
+  //     onChange(channel, medias);
+  //   } else {
+  //     dispatch(showErrorAlert('You cannot add more than 5 media items for a social channel'));
+  //   }
+  // };
 
   const removeMedia = (index: number) => {
     if (channelMedias.length > 1) {
@@ -60,49 +63,54 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
     Tiktok: TiktokIcon,
   };
 
-  const addSocialMedia = (data: string) => {
-    console.log('Add social media------', data);
-    setImages([...images, data]);
-  };
-  console.log('images------------', images);
-
   return (
     <Box className="w-full flex flex-col flex-wrap">
-      {images?.map((x: string, index: number) => {
-        return (
-          <div key={index} className="w-24 h-16 object-contain">
-            <img src={x} alt={`${index}file`} />
-          </div>
-        );
-      })}
-      <Box className="w-full flex flex-row justify-between items-center mb-2">
+      <Box className="w-full flex items-center gap-6 mb-2">
         <img src={socialIcons[channel]} alt={channel} />
-        <CustomButton
-          className="w-40 h-8 ml-5 rounded-md text-white text-md border-2 border-green-600 bg-green-600"
-          onClick={addMedia}
-        >
-          <AddIcon className="mr-2" style={{ fontSize: '18px' }} />
-          <span>Add Media</span>
-        </CustomButton>
-      </Box>
-      <Box className="w-full flex flex-row flex-wrap">
-        {channelMedias &&
-          channelMedias.map((item, index) => (
-            <Box className="flex flex-col items-center w-80 mr-5" key={index.toString()}>
-              <FileUpload
-                value={item.media}
-                label={`Add ${channel} Image`}
-                updateLabel={`Update ${channel} Image`}
-                mediaType="sharedMedia"
-                tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-                onFileSuccess={(data) => onSuccess(index, data)}
-                onFileError={onError}
-                removeImage={() => removeMedia(index)}
-                callback={addSocialMedia}
-                isSocial={true}
-              />
-              {/* {index === 0 && <p className="text-sm text-gray-400 mt-3">Default Media</p>} */}
-              {/* {index !== 0 && (
+        <div className="flex gap-4">
+          {images.map((x: any, index: number) => {
+            return (
+              <div key={index} className="relative">
+                {/* {index ? (
+                  <span className="absolute top-0 right-0">
+                    <MdDelete color="red" onClick={() => removeMedia(index)} />
+                  </span>
+                ) : (
+                  ''
+                )} */}
+                {x.media.format.includes('image') ? (
+                  <div className="w-20 h-20  bg-lightGray rounded-md">
+                    <img src={x.media.file} alt={x.media.format} className="w-full h-full rounded-md object-contain" />
+                  </div>
+                ) : (
+                  <div className="w-20 h-20  bg-lightGray rounded-md">
+                    <video
+                      autoPlay={false}
+                      src={x.media.file}
+                      controls={true}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <div className="">
+          {channelMedias &&
+            channelMedias.map((item, index) => (
+              <Box className="flex flex-col items-center" key={index.toString()}>
+                <FileUpload
+                  value={item.media}
+                  label={`Add ${channel} Image`}
+                  updateLabel={`Update ${channel} Image`}
+                  mediaType="sharedMedia"
+                  tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+                  onFileSuccess={(data) => onSuccess(index, data)}
+                  onFileError={onError}
+                />
+                {/* {index === 0 && <p className="text-sm text-gray-400 mt-3">Default Media</p>} */}
+                {/* {index !== 0 && (
                 <CustomButton
                   className="w-48 mt-3 rounded-md text-red-600 text-sm bg-transparent"
                   onClick={() => removeMedia(index)}
@@ -111,8 +119,9 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                   <span>Remove Media</span>
                 </CustomButton>
               )} */}
-            </Box>
-          ))}
+              </Box>
+            ))}
+        </div>
       </Box>
     </Box>
   );

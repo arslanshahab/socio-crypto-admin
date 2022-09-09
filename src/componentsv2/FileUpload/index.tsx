@@ -24,15 +24,7 @@ interface Props {
   isSocial?: boolean;
 }
 
-const FileUpload: React.FC<Props> = ({
-  value,
-  mediaType,
-  onFileError,
-  onFileSuccess,
-  removeImage,
-  callback,
-  isSocial = false,
-}) => {
+const FileUpload: React.FC<Props> = ({ value, mediaType, onFileError, onFileSuccess }) => {
   const inputKey = `${mediaType}-${Math.random()}`;
   const allowedFileType: Array<FileFormatSizeMap> = [
     {
@@ -64,8 +56,6 @@ const FileUpload: React.FC<Props> = ({
   ];
 
   const handleImage = (event: React.ChangeEvent<HTMLInputElement>, type: string, onSuccess: any, onError: any) => {
-    callback && callback(value.file);
-
     const files = event.target.files;
     if (files && files.length) {
       const file = files[0];
@@ -120,17 +110,23 @@ const FileUpload: React.FC<Props> = ({
   return (
     <Box className="flex flex-col justify-start">
       <div className="flex items-center gap-6">
-        {!isSocial && value.file && value.format.includes('image') ? (
-          <div className="w-20 h-20 bg-lightGray" onClick={() => removeImage && removeImage()}>
-            <img src={value.file} alt={mediaType} className="w-full h-full rounded-md object-contain" />
+        {/* {!isSocial && (
+          <div>
+            (
+            {value.file && value.format.includes('image') ? (
+              <div className="w-20 h-20 bg-lightGray" onClick={() => removeImage && removeImage()}>
+                <img src={value.file} alt={mediaType} className="w-full h-full rounded-md object-contain" />
+              </div>
+            ) : value.format.includes('video') ? (
+              <div className="w-20 h-20  bg-lightGray">
+                <video autoPlay={false} src={value.file} controls={true} className="w-full h-full object-contain" />
+              </div>
+            ) : (
+              ''
+            )}
+            )
           </div>
-        ) : value.format.includes('video') ? (
-          <div className="w-20 h-20  bg-lightGray">
-            <video autoPlay={false} src={value.file} controls={true} className="w-full h-full object-contain" />
-          </div>
-        ) : (
-          ''
-        )}
+        )} */}
 
         <label htmlFor={inputKey} className="cursor-pointer">
           <input
