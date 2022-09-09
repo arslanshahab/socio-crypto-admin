@@ -19,6 +19,7 @@ import {
   UserData,
   Campaign,
   CampaignListVars,
+  PaginatedCampaignResultsV2,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -162,7 +163,7 @@ export class ApiClient {
     }
   }
 
-  public static async getCampaigns(payload: CampaignListVars): Promise<Campaign[]> {
+  public static async getCampaigns(payload: CampaignListVars): Promise<PaginatedCampaignResultsV2> {
     try {
       return (
         await this.requestInstance.get(

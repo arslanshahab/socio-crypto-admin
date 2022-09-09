@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { ChannelMediaObject, FileObject } from '../../../types';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import FileUpload from '../../../componentsv2/FileUpload';
-import CustomButton from '../../CustomButton/CustomButton';
-import AddIcon from '@material-ui/icons/Add';
-import CloseIcon from '@material-ui/icons/Close';
-import initialState from '../../../store/initialState';
 import InstagramIcon from '../../../assets/svg/socialIcons/InstagramLogo.svg';
 import TwitterIcon from '../../../assets/svg/socialIcons/TwitterLogo.svg';
 import FacebookIcon from '../../../assets/svg/socialIcons/FBLogo.svg';
@@ -22,13 +18,12 @@ export interface Props {
 
 const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange }) => {
   const dispatch = useDispatch();
-  const [images, setImages] = useState<any>(channelMedias);
+  const [images, setImages] = useState<ChannelMediaObject[]>(channelMedias);
 
   const onSuccess = (data: FileObject) => {
     const inputKey = `${data.filename}-${Math.random()}`;
     const medias = [...images];
-    debugger;
-    medias.push({ channel: channel, id: inputKey, media: data, isDefault: medias.length > 1 ? false : true });
+    medias.push({ channel: channel, id: inputKey, media: data, isDefault: medias.length === 1 ? true : false });
     setImages(medias);
     onChange(channel, medias);
   };
