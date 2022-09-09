@@ -20,6 +20,7 @@ import {
   Campaign,
   CampaignListVars,
   PaginatedCampaignResultsV2,
+  PaymentMethodTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -170,6 +171,14 @@ export class ApiClient {
           `/v1/campaign?skip=${payload.skip}&take=${payload.take}&state=${payload.state}&status=${payload.status}`,
         )
       ).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getPaymentMethods(): Promise<PaymentMethodTypes[]> {
+    try {
+      return (await this.requestInstance.get(`/v1/stripe/payment-methods`)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

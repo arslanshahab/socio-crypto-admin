@@ -897,3 +897,9 @@ export interface UserStatTypes {
   distributedTotalAmount: number;
   redeemedTotalAmount: number;
 }
+
+export type PaymentMethodTypes = {
+  id: string;
+  brand: string;
+  last4: string;
+};
