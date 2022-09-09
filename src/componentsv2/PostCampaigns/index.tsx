@@ -34,19 +34,18 @@ const PostCampaigns: FC = () => {
           </tr>
         </thead>
         <tbody>
-          {campaigns.length &&
-            campaigns.map((campaign: Campaign) => (
-              <tr key={campaign.name}>
-                <td>{campaign.name}</td>
-                <td className={styles.successStatus}>&uarr;</td>
-                <td>{campaign.totalParticipationScore}</td>
-                <td>{campaign.participant.length}</td>
-                <td>505,262</td>
-                <td>
-                  <progress id="file" value="70" max="100" className={styles.progress} />
-                </td>
-              </tr>
-            ))}
+          {campaigns?.map((campaign: Campaign) => (
+            <tr key={campaign.name}>
+              <td>{campaign.name}</td>
+              <td className={styles.successStatus}>&uarr;</td>
+              <td>{campaign.totalParticipationScore}</td>
+              <td>{campaign.participant.length}</td>
+              <td>505,262</td>
+              <td>
+                <progress id="file" value="70" max="100" className={styles.progress} />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
