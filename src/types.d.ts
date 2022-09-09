@@ -886,7 +886,7 @@ export interface CampaignStatTypes {
 
 export interface DashboardStatsTypes {
   aggregatedMetrics: CampaignAggregationTypes;
-  rawMetrics: CampaignStatTypes;
+  rawMetrics: CampaignStatTypes[];
 }
 
 export interface UserStatTypes {

@@ -6,7 +6,7 @@ import { StylesConfig } from 'react-select';
 import BarChart from '../../componentsv2/BarChart';
 import CustomCard from '../../componentsv2/CustomCard';
 import { ApiClient } from '../../services/apiClient';
-import { CampaignAggregationTypes, UserStatTypes } from '../../types';
+import { CampaignAggregationTypes, CampaignStatTypes, DashboardStats, UserStatTypes } from '../../types';
 
 const CampaignAnalytics: FC = () => {
   const [openTab, setOpenTab] = useState(1);
@@ -15,21 +15,25 @@ const CampaignAnalytics: FC = () => {
   const [campaignStats, setCampaignStats] = useState<CampaignAggregationTypes>();
   const [userStats, setUserStats] = useState<UserStatTypes>();
   const [campaigns, setCampaigns] = useState<{ value: string; label: string }[]>([]);
+  const [graphData, setGraphData] = useState<CampaignStatTypes[]>();
 
   useEffect(() => {
     ApiClient.getDashboardStats(campaignId)
       .then((res) => {
         setCampaignStats(res.aggregatedMetrics);
+        setGraphData(res.rawMetrics);
       })
       .catch((err) => console.log(err))
       .finally(() => console.log('loading...*'));
   }, []);
+
   useEffect(() => {
     ApiClient.getUserStats()
       .then((res) => setUserStats(res))
       .catch((err) => console.log(err))
       .finally(() => console.log('finally..'));
   }, []);
+
   useEffect(() => {
     ApiClient.getLiteCampaigns()
       .then((res) => {
@@ -117,7 +121,7 @@ const CampaignAnalytics: FC = () => {
         </div>
       </div>
       <div className={styles.chartSection}>
-        <BarChart />
+        <BarChart data={graphData} />
       </div>
       <div className={styles.boxSection}>
         <div className={styles.participationBox}>
