@@ -22,13 +22,14 @@ export interface Props {
 
 const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange }) => {
   const dispatch = useDispatch();
-  const [images, setImages] = useState<any>([]);
-  const onSuccess = (index: number, data: FileObject) => {
-    const medias = [...channelMedias];
-    const id = medias?.[index]?.id;
-    medias[index] = { channel: channel, id, media: data, isDefault: medias[index].isDefault };
-    setImages([...images, medias[index]]);
+  const [images, setImages] = useState<any>(channelMedias);
 
+  const onSuccess = (data: FileObject) => {
+    const inputKey = `${data.filename}-${Math.random()}`;
+    const medias = [...images];
+    debugger;
+    medias.push({ channel: channel, id: inputKey, media: data, isDefault: medias.length > 1 ? false : true });
+    setImages(medias);
     onChange(channel, medias);
   };
 
@@ -68,7 +69,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
       <Box className="w-full flex items-center gap-6 mb-2">
         <img src={socialIcons[channel]} alt={channel} />
         <div className="flex gap-4">
-          {images.map((x: any, index: number) => {
+          {images.map((image: ChannelMediaObject, index: number) => {
             return (
               <div key={index} className="relative">
                 {/* {index ? (
@@ -78,49 +79,39 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                 ) : (
                   ''
                 )} */}
-                {x.media.format.includes('image') ? (
+                {image.media.format.includes('image') ? (
                   <div className="w-20 h-20  bg-lightGray rounded-md">
-                    <img src={x.media.file} alt={x.media.format} className="w-full h-full rounded-md object-contain" />
-                  </div>
-                ) : (
-                  <div className="w-20 h-20  bg-lightGray rounded-md">
-                    <video
-                      autoPlay={false}
-                      src={x.media.file}
-                      controls={true}
-                      className="w-full h-full object-contain"
+                    <img
+                      src={image.media.file}
+                      alt={image.media.format}
+                      className="w-full h-full rounded-md object-contain"
                     />
                   </div>
+                ) : (
+                  image.media.format.includes('video') && (
+                    <div className="w-20 h-20  bg-lightGray rounded-md">
+                      <video
+                        autoPlay={false}
+                        src={image.media.file}
+                        controls={true}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  )
                 )}
               </div>
             );
           })}
         </div>
         <div className="">
-          {channelMedias &&
-            channelMedias.map((item, index) => (
-              <Box className="flex flex-col items-center" key={index.toString()}>
-                <FileUpload
-                  value={item.media}
-                  label={`Add ${channel} Image`}
-                  updateLabel={`Update ${channel} Image`}
-                  mediaType="sharedMedia"
-                  tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-                  onFileSuccess={(data) => onSuccess(index, data)}
-                  onFileError={onError}
-                />
-                {/* {index === 0 && <p className="text-sm text-gray-400 mt-3">Default Media</p>} */}
-                {/* {index !== 0 && (
-                <CustomButton
-                  className="w-48 mt-3 rounded-md text-red-600 text-sm bg-transparent"
-                  onClick={() => removeMedia(index)}
-                >
-                  <CloseIcon className="mr-1" style={{ fontSize: '18px' }} />
-                  <span>Remove Media</span>
-                </CustomButton>
-              )} */}
-              </Box>
-            ))}
+          <FileUpload
+            label={`Add ${channel} Image`}
+            updateLabel={`Update ${channel} Image`}
+            mediaType="sharedMedia"
+            tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+            onFileSuccess={onSuccess}
+            onFileError={onError}
+          />
         </div>
       </Box>
     </Box>

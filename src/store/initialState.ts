@@ -122,6 +122,8 @@ const user: UserData = {
   company: '',
   email: '',
   isLoggedIn: false,
+  resetPass: false,
+  twoFactorEnabled: false,
 };
 
 const profile: ProfileTypes = {

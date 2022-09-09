@@ -58,7 +58,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     for (let index = 0; index < socialMediaType.length; index++) {
       const channel = socialMediaType[index];
       const defaultMedia = channelMedia[channel].find((item) => item.isDefault);
-      if (!defaultMedia || !defaultMedia.media.filename) {
+      if (!defaultMedia) {
         dispatch(showErrorAlert(`Default Media is required for ${channel}`));
         return (validated = false);
       }
@@ -82,7 +82,6 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           )}
 
           <FileUpload
-            value={campaignImage}
             label="Add Campaign Image"
             updateLabel="Update Campaign Image"
             mediaType="campaignImage"

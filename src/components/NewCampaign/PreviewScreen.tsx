@@ -62,7 +62,7 @@ const PreviewScreen: React.FC<ActionsProps> = ({
               </Box>
               <Box className="flex p-2 mb-2 items-center">
                 <h5 className="w-2/5">Social Media Channels</h5>
-                <Box className="w-3/5 capitalize">
+                <Box className="w-3/5 flex ">
                   {campaign.config.socialMediaType.map((item) => (
                     <img key={item} className="w-10 mr-3" src={getSocialIcon[item]} alt="social-icon" />
                   ))}
