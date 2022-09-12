@@ -83,7 +83,7 @@ const Dashboard: React.FC = (props) => {
             <ProtectedRoute exact path={'/dashboard/campaigns'}>
               <CampaignsPage />
             </ProtectedRoute>
-            <ProtectedRoute exact path={'/dashboard/campaigns/analytics'}>
+            <ProtectedRoute exact path={'/dashboard/analytics'}>
               <CampaignAnalytics />
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/newCampaign'}>

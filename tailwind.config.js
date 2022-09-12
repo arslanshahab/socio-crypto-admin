@@ -11,6 +11,7 @@ module.exports = {
         denimBlue: '#1E40AF',
         cyberYellow: '#FFD100',
         orangeYellow: '#C8A818',
+        lightGray: '#F9FAFB',
       },
     },
     screens: {

@@ -16,9 +16,7 @@
   @apply rounded-full bg-cyberYellow flex items-center justify-center;
 }
 .analytics {
-  @apply flex gap-4  items-center;
-  font-size: 1.2rem;
-  line-height: 3rem;
+  @apply flex gap-4  items-center cursor-pointer text-xl leading-10;
 }
 
 .campaignSection {

@@ -1,18 +1,47 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './campaignAnalytics.module.css';
 import headingStyles from '../../assets/styles/heading.module.css';
 import Select from 'react-select';
 import { StylesConfig } from 'react-select';
-
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
+import BarChart from '../../componentsv2/BarChart';
+import CustomCard from '../../componentsv2/CustomCard';
+import { ApiClient } from '../../services/apiClient';
+import { CampaignAggregationTypes, UserStatTypes } from '../../types';
 
 const CampaignAnalytics: FC = () => {
   const [openTab, setOpenTab] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [campaignId, setCamapignId] = useState('-1');
+  const [campaignStats, setCampaignStats] = useState<CampaignAggregationTypes>();
+  const [userStats, setUserStats] = useState<UserStatTypes>();
+  const [campaigns, setCampaigns] = useState<{ value: string; label: string }[]>([]);
+
+  useEffect(() => {
+    ApiClient.getDashboardStats(campaignId)
+      .then((res) => {
+        setCampaignStats(res.aggregatedMetrics);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => console.log('loading...*'));
+  }, []);
+  useEffect(() => {
+    ApiClient.getUserStats()
+      .then((res) => setUserStats(res))
+      .catch((err) => console.log(err))
+      .finally(() => console.log('finally..'));
+  }, []);
+  useEffect(() => {
+    ApiClient.getLiteCampaigns()
+      .then((res) => {
+        const result = res.map((x) => ({
+          value: x.id,
+          label: x.name,
+        }));
+        setCampaigns(result);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => console.log('finally..'));
+  }, []);
 
   const customStyles: StylesConfig = {
     control: (provided: Record<string, unknown>, state: any) => ({
@@ -30,6 +59,20 @@ const CampaignAnalytics: FC = () => {
       },
     }),
   };
+
+  const countsKey = [
+    'clickCount',
+    'viewCount',
+    'shareCount',
+    'totalParticipants',
+    'participationScore',
+    'totalUsers',
+    'lastWeekUsers',
+    'distributedTotalAmount',
+    'redeemedTotalAmount',
+    'bannedUsers',
+  ];
+  const dashboardStats = { ...campaignStats, ...userStats };
 
   return (
     <div>
@@ -70,7 +113,28 @@ const CampaignAnalytics: FC = () => {
           </li>
         </ul>
         <div className={styles.selectField}>
-          <Select defaultValue={selectedOption} options={options} styles={customStyles} />
+          <Select defaultValue={selectedOption} options={campaigns} styles={customStyles} />
+        </div>
+      </div>
+      <div className={styles.chartSection}>
+        <BarChart />
+      </div>
+      <div className={styles.boxSection}>
+        <div className={styles.participationBox}>
+          <span />
+          <p>Participation Score</p>
+        </div>
+        <div className={styles.clicksBox}>
+          <span />
+          <p>Clicks</p>
+        </div>
+      </div>
+      <div className={styles.lineBar} />
+      <div className={styles.cardSection}>
+        <div className={styles.cards}>
+          {countsKey?.map((x: string, index: number) => (
+            <CustomCard key={index} title={x} count={dashboardStats?.[x]} />
+          ))}
         </div>
       </div>
     </div>

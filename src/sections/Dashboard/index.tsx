@@ -6,8 +6,10 @@ import styles from './dashboard.module.css';
 import { ReactComponent as AnalyticsIcon } from '../../assets/svg/analyticsIcon.svg';
 import { ReactComponent as StarIcon } from '../../assets/svg/starIcon.svg';
 import Campaigns from '../Campaigns';
+import { useHistory } from 'react-router-dom';
 
 const Dashboard: FC = () => {
+  const { push } = useHistory();
   const [campaignId, setCamapignId] = useState('-1');
   const [campaignStats, setCampaignStats] = useState<CampaignAggregationTypes>();
 
@@ -30,7 +32,7 @@ const Dashboard: FC = () => {
             <StatCard key={index} name={x} count={(campaignStats && campaignStats[x]) || '0'} />
           ))}
           <div className={styles.analyticsCard}>
-            <div className={styles.analytics}>
+            <div className={styles.analytics} onClick={() => push('/dashboard/analytics')}>
               <div className={styles.circle}>
                 <AnalyticsIcon />
               </div>
