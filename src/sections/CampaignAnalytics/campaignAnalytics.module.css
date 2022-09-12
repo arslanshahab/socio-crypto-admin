@@ -1,0 +1,12 @@
+.selectFieldSection {
+  @apply border border-denimBlue rounded-3xl p-6 m-6;
+}
+.inputWrapper {
+  @apply rounded-full border border-denimBlue px-4;
+}
+.input {
+  @apply outline-none block w-full  sm:text-sm border-gray-300 rounded-md p-2;
+}
+.selectField .css-b62m3t-container .css-1s2u09g-control {
+  @apply border-0;
+}

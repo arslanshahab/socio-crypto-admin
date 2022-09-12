@@ -864,3 +864,25 @@ export interface PendingCampaignPayload {
   status: PendingCampaignStatus;
   reason: string;
 }
+
+export interface CampaignAggregationTypes {
+  [index: string]: string;
+  clickCount: number;
+  viewCount: number;
+  shareCount: number;
+  participationScore: number;
+  totalParticipants: number;
+  campaignName: string;
+}
+
+export interface CampaignStatTypes {
+  clickCount: number;
+  viewCount: number;
+  shareCount: number;
+  participationScore: number;
+}
+
+export interface DashboardStatsTypes {
+  aggregatedMetrics: CampaignAggregationTypes;
+  rawMetrics: CampaignStatTypes;
+}

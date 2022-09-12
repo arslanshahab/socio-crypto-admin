@@ -1,0 +1,17 @@
+.cardWrapper {
+  width: 210px;
+  height: 100px;
+  border: 3px solid;
+  border-radius: 23px;
+  @apply border-denimBlue flex flex-col justify-center items-center;
+}
+.titleWithIcon {
+  @apply flex gap-4 items-center;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.countWrapper {
+  @apply flex gap-4  items-center;
+  font-size: 1rem;
+}
