@@ -20,7 +20,7 @@
   @apply flex gap-6 items-center mb-2;
 }
 .participationBox span {
-  @apply bg-cyberYellow w-5 h-5;
+  @apply bg-denimBlue w-5 h-5;
 }
 .participationBox p {
   @apply mb-0;
@@ -29,7 +29,7 @@
   @apply flex gap-6 items-center;
 }
 .clicksBox span {
-  @apply bg-denimBlue w-5 h-5;
+  @apply bg-cyberYellow w-5 h-5;
 }
 .clicksBox p {
   @apply mb-0;

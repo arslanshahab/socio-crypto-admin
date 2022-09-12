@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import CampaignsTable from '../../componentsv2/CampaignsTable';
+import PostCampaigns from '../../componentsv2/PostCampaigns';
 
 const Campaigns: FC = () => {
   const [openTab, setOpenTab] = React.useState(1);
@@ -46,8 +47,7 @@ const Campaigns: FC = () => {
               <CampaignsTable />
             </div>
             <div className={openTab === 2 ? 'block' : 'hidden'} id="link3">
-              <p className="dark:text-white">Education</p>
-              Dynamically innovate resource-leveling customer service for state of the art customer service.
+              <PostCampaigns />
             </div>
           </div>
         </div>

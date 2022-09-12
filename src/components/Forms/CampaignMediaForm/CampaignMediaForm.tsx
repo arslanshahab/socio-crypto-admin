@@ -4,12 +4,13 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { ChannelMediaObject, FileObject } from '../../../types';
 import { showErrorAlert } from '../../../store/actions/alerts';
-import FileUpload from '../../FileUpload';
+import FileUpload from '../../../componentsv2/FileUpload';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import Actions from '../../NewCampaign/Actions';
 import ChannelMediaForm from './ChannelMediaForm';
 import { updateCampaign } from '../../../store/actions/campaign';
+import { ReactComponent as CampaignAvatar } from '../../../assets/svg/campaignAvatar.svg';
 
 const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     for (let index = 0; index < socialMediaType.length; index++) {
       const channel = socialMediaType[index];
       const defaultMedia = channelMedia[channel].find((item) => item.isDefault);
-      if (!defaultMedia || !defaultMedia.media.filename) {
+      if (!defaultMedia) {
         dispatch(showErrorAlert(`Default Media is required for ${channel}`));
         return (validated = false);
       }
@@ -67,11 +68,20 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
 
   return (
     <Box className="w-full flex flex-col flex-wrap p-10">
-      <Box className="w-full flex flex-col border-solid border-2 border-gray-100 p-5 rounded-md">
-        <p className="text-xl mb-2">Campaign Media</p>
-        <Box className="flex flex-col w-80">
+      <Box className="w-full flex flex-col border-solid border-2 border-denimBlue p-5 rounded-3xl">
+        <div className="flex items-center gap-8">
+          <CampaignAvatar />
+          {campaignImage.file && (
+            <div className="w-20 h-20 bg-lightGray">
+              <img
+                src={campaignImage.file}
+                alt={campaignImage.filename}
+                className="w-full h-full rounded-md object-contain"
+              />
+            </div>
+          )}
+
           <FileUpload
-            value={campaignImage}
             label="Add Campaign Image"
             updateLabel="Update Campaign Image"
             mediaType="campaignImage"
@@ -79,10 +89,10 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
             onFileSuccess={onCampaignImageSuccess}
             onFileError={onError}
           />
-        </Box>
+        </div>
       </Box>
       {socialMediaType.map((item, index) => (
-        <Box className="w-full flex flex-col border-solid border-2 border-gray-100 p-5 mt-3 rounded-md" key={index}>
+        <Box className="w-full flex flex-col border-solid border-2 border-denimBlue p-5 mt-6 rounded-3xl" key={index}>
           <ChannelMediaForm channel={item} onChange={onSuccess} channelMedias={channelMedia[item]} />
         </Box>
       ))}

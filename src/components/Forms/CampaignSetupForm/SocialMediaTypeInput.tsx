@@ -82,11 +82,11 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange, 
           <Box
             key={index}
             onClick={() => handleSocialSelect(item)}
-            className={`cursor-pointer flex flex-col justify-center items-center rounded-lg w-72 h-28 bg-gray-200 spacing-2 ${
-              socialMediaType.includes(item) ? 'bg-blue-800 text-white' : ''
+            className={`cursor-pointer flex flex-col justify-center items-center rounded-2xl w-72 h-32 border-2 border-denimBlue py-4 ${
+              socialMediaType.includes(item) ? 'bg-denimBlue text-white' : ''
             }`}
           >
-            <p className="text-lg">{item}</p>
+            <p className="text-base">{item}</p>
             <img className="w-16" src={getSocialIcon[item]} alt="social-icon" />
           </Box>
         ))}

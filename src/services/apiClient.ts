@@ -16,6 +16,10 @@ import {
   PendingCampaignPayload,
   DashboardStatsTypes,
   UserStatTypes,
+  UserData,
+  Campaign,
+  CampaignListVars,
+  PaginatedCampaignResultsV2,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -29,7 +33,7 @@ export class ApiClient {
     baseURL: ApiClient.baseUrl,
   });
 
-  public static async login(payload: { email: string; password: string }): Promise<any> {
+  public static async login(payload: { email: string; password: string }): Promise<UserData> {
     return (await this.requestInstance.post('/v1/auth/admin-login', payload)).data.data;
   }
 
@@ -154,6 +158,18 @@ export class ApiClient {
   public static async getLiteCampaigns(): Promise<{ id: string; name: string }[]> {
     try {
       return (await this.requestInstance.get(`/v1/campaign/campaigns-lite`)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getCampaigns(payload: CampaignListVars): Promise<PaginatedCampaignResultsV2> {
+    try {
+      return (
+        await this.requestInstance.get(
+          `/v1/campaign?skip=${payload.skip}&take=${payload.take}&state=${payload.state}&status=${payload.status}`,
+        )
+      ).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

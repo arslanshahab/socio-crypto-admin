@@ -1,13 +1,17 @@
 import { Box } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { ActionsProps } from './StepsContent';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
 import Actions from './Actions';
 import { campaignTypeMenu } from '../Forms/CampaignSetupForm/CampaignTypeInput';
 import { format } from 'date-fns';
 import CustomButton from '../CustomButton';
-import GenericModal from '../GenericModal';
 import { getSocialIcon } from '../Forms/CampaignSetupForm/SocialMediaTypeInput';
+import InstagramIcon from '../../assets/svg/socialIcons/InstagramLogo.svg';
+import TwitterIcon from '../../assets/svg/socialIcons/TwitterLogo.svg';
+import FacebookIcon from '../../assets/svg/socialIcons/FBLogo.svg';
+import TiktokIcon from '../../assets/svg/socialIcons/TikTokLogo.svg';
+// import styles from './newCampaign.module.scss';
 
 const PreviewScreen: React.FC<ActionsProps> = ({
   activeStep,
@@ -18,164 +22,132 @@ const PreviewScreen: React.FC<ActionsProps> = ({
   finalStep,
 }) => {
   const campaign = useStoreCampaignSelector();
-  const [previewType, setPreviewType] = useState('');
-
   const submit = () => {
     if (handleSubmit) {
       handleSubmit({ ...campaign });
     }
   };
 
-  return (
-    <Box className="w-full px-28 mt-10">
-      <h2 className="text-gray-800 text-2xl mb-5 text-center">Verify Campaign Information</h2>
-      <GenericModal open={Boolean(previewType)} onClose={() => setPreviewType('')} size="small">
-        {previewType === 'campaignImage' && (
-          <Box className="w-full p-10">
-            {
-              <img
-                src={campaign.campaignImage.file}
-                alt="campaign-media"
-                className="w-full mb-2 rounded-md object-cover"
-              />
-            }
-          </Box>
-        )}
+  const getIcon = (key: string) => {
+    switch (key.toLowerCase()) {
+      case 'facebook':
+        return FacebookIcon;
+      case 'instagram':
+        return InstagramIcon;
+      case 'tiktok':
+        return TiktokIcon;
+      case 'twitter':
+        return TwitterIcon;
+      default:
+        return TwitterIcon;
+    }
+  };
 
-        {previewType === 'media' && (
-          <Box className="w-full p-10">
-            {campaign.media.format.includes('image') ? (
-              <Box className="w-full">
-                <img src={campaign.media.file} alt="campaign-media" className="w-full mb-2 rounded-md object-cover" />
+  return (
+    <Box className="w-full mt-10">
+      <Box className="border-2 p-6 border-denimBlue rounded-3xl">
+        <h2 className="text-gray-800 text-2xl mb-5 text-center">Verify Campaign Information</h2>
+        <Box className="grid grid-cols-2 gap-4">
+          <Box>
+            <Box className="border p-6 border-denimBlue rounded-3xl">
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Title</h5>
+                <h2 className="w-3/5 capitalize">{campaign.name}</h2>
               </Box>
-            ) : (
-              <Box className="w-full">
-                <video autoPlay={false} height="100%" width="100%" src={campaign.media.file} controls={true} />
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Type</h5>
+                <h2 className="w-3/5 capitalize">
+                  {campaignTypeMenu.find((item) => item.value === campaign.config.campaignType)?.name}
+                </h2>
               </Box>
-            )}
-          </Box>
-        )}
-        {previewType === 'raffle' && (
-          <Box className="w-full">
-            {
-              <img
-                src={campaign.config.raffleImage.file}
-                alt="campaign-media"
-                className="w-full mb-2 rounded-md object-cover"
-              />
-            }
-          </Box>
-        )}
-      </GenericModal>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Campaign Title</h5>
-        <h2 className="text-gray-800 text-md">{campaign.name}</h2>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Campaign Type</h5>
-        <h2 className="w-5/6  text-gray-800 text-md">
-          {campaignTypeMenu.find((item) => item.value === campaign.config.campaignType)?.name}
-        </h2>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Social Media Channels</h5>
-        <Box className="w-5/6 flex flex-row">
-          {campaign.config.socialMediaType.map((item) => (
-            <img key={item} className="w-10 mr-3" src={getSocialIcon[item]} alt="social-icon" />
-          ))}
-        </Box>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Budget Type</h5>
-        <h2 className="w-5/6  text-gray-800 text-md capitalize">{campaign.config.type}</h2>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Total Budget</h5>
-        <h2 className="w-5/6  text-gray-800 text-md">{`${
-          campaign.config.coiinBudget
-        } ${campaign.config.cryptoSymbol.toUpperCase()}`}</h2>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Campaign Duration</h5>
-        <h2 className="text-gray-800 text-md">
-          {campaign.beginDate &&
-            campaign.endDate &&
-            `${format(new Date(campaign.beginDate), 'MMM dd YYY')} -- ${format(
-              new Date(campaign.endDate),
-              'MMM dd YYY',
-            )}`}
-        </h2>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Description</h5>
-        <h2 className="w-5/6  text-gray-800 text-md">{campaign.description}</h2>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Tagline</h5>
-        <h2 className="w-5/6  text-gray-800 text-md">{campaign.tagline}</h2>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Landing Page URL</h5>
-        <h2 className="w-5/6 text-gray-800 text-md">{campaign.target}</h2>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Campaign Media</h5>
-        <Box className="w-5/6 flex flex-row">
-          {campaign.campaignImage.file && (
-            <CustomButton
-              onClick={() => setPreviewType('campaignImage')}
-              className="w-52 h-10 mr-5 rounded-md text-white text-md bg-gray-500"
-            >
-              Preview Campaign Image
-            </CustomButton>
-          )}
-          {campaign.config.raffleImage.file && (
-            <CustomButton
-              onClick={() => setPreviewType('raffle')}
-              className="w-52 h-10 mr-5 rounded-md text-white text-md bg-gray-500"
-            >
-              Preview Raffle Media
-            </CustomButton>
-          )}
-        </Box>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Campaign Tags</h5>
-        <Box className="w-5/6 flex flex-row">
-          {campaign.suggestedTags.map((item, index) => (
-            <span
-              key={index}
-              className="px-3 py-2 mt-1 mr-2 rounded-lg bg-gray-300 flex flex-row justify-between items-center"
-            >
-              <p>{item}</p>
-            </span>
-          ))}
-        </Box>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Posting Templates</h5>
-        <Box className="w-5/6 flex flex-col">
-          {Object.keys(campaign.config.channelTemplates).map((channel, index) => (
-            <Box className="w-full flex flex-col mt-3 p-3 bg-gray-100 rounded-md" key={index}>
-              <p>{`${channel} Templates`}</p>
-              {campaign.config.channelTemplates[channel].map((template, index2) => (
-                <p key={index2} className="text-gray-800 text-sm mt-2">{`Post#${index2 + 1}: ${template.post}`}</p>
-              ))}
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Social Media Channels</h5>
+                <Box className="w-3/5 flex ">
+                  {campaign.config.socialMediaType.map((item) => (
+                    <img key={item} className="w-10 mr-3" src={getSocialIcon[item]} alt="social-icon" />
+                  ))}
+                </Box>
+              </Box>
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Budget Type</h5>
+                <h2 className="w-3/5 capitalize">{campaign.config.type}</h2>
+              </Box>
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Total Budget</h5>
+                <h2 className="w-3/5 capitalize">{`${
+                  campaign.config.coiinBudget
+                } ${campaign.config.cryptoSymbol.toUpperCase()}`}</h2>
+              </Box>
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Duration</h5>
+                <h2 className="text-gray-800 text-md">
+                  {campaign.beginDate &&
+                    campaign.endDate &&
+                    `${format(new Date(campaign.beginDate), 'MMM dd YYY')} -- ${format(
+                      new Date(campaign.endDate),
+                      'MMM dd YYY',
+                    )}`}
+                </h2>
+              </Box>
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Description</h5>
+                <h2 className="w-3/5 capitalize">{campaign.description}</h2>
+              </Box>
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Tagline</h5>
+                <h2 className="w-3/5 capitalize">{campaign.tagline}</h2>
+              </Box>
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-2/5">Landing Page URL</h5>
+                <h2 className="w-3/5 capitalize">{campaign.target}</h2>
+              </Box>
+              <Box className="flex p-2 mb-2 items-center">
+                <h5 className="w-1/6">Tags</h5>
+                <Box className="w-5/6 flex flex-row">
+                  {campaign.suggestedTags.map((item, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-2 mt-1 mr-2 rounded-full bg-coolGray flex flex-row justify-between items-center"
+                    >
+                      <p>{item}</p>
+                    </span>
+                  ))}
+                </Box>
+              </Box>
             </Box>
-          ))}
-        </Box>
-      </Box>
-      <Box className="w-full flex flex-row items-center space-x-5 mb-2">
-        <h5 className="w-1/6  text-gray-500 text-sm">Campaign Keywords</h5>
-        <Box className="w-5/6 flex flex-row">
-          {campaign.keywords.map((item, index) => (
-            <span
-              key={index}
-              className="px-3 py-2 mt-1 mr-2 rounded-lg bg-gray-300 flex flex-row justify-between items-center"
-            >
-              <p>{item}</p>
-            </span>
-          ))}
+            <Box className="border p-6 border-denimBlue rounded-3xl mt-6 flex justify-center flex-col items-center gap-4">
+              <h5>Media</h5>
+              <Box>
+                <img
+                  src={campaign.campaignImage.file}
+                  alt="campaign-media"
+                  className="bg-lightGray rounded-3xl w-60 h-44 flex items-center justify-center"
+                />
+              </Box>
+              <CustomButton className="bg-coolGray w-52 rounded-full px-4 py-2 mt-3">
+                Preview Campaign Images
+              </CustomButton>
+            </Box>
+          </Box>
+          <Box className="border p-6 border-denimBlue rounded-3xl overscroll-y-auto">
+            <h5 className="text-center mb-3">Templates</h5>
+            {Object.keys(campaign.config.channelTemplates).map((channel: string) => {
+              return (
+                <Box className="grid grid-cols-5" key={channel}>
+                  <img src={getIcon(channel)} alt={channel} />
+                  <div className="col-span-4">
+                    <div className="grid grid-cols-2 gap-8">
+                      {campaign.config.channelTemplates[channel].map((template, index2) => (
+                        <div key={index2} className="bg-lightGray h-44 py-1 px-2 rounded-md mb-6">{`Post#${
+                          index2 + 1
+                        }: ${template.post}`}</div>
+                      ))}
+                    </div>
+                  </div>
+                </Box>
+              );
+            })}
+          </Box>
         </Box>
       </Box>
       <Box className="w-full">

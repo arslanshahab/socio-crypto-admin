@@ -15,6 +15,7 @@ import InterestsForm from './InterestsForm';
 import SocialFollowersForm from './SocialFollowersForm';
 import { updateCampaign } from '../../../store/actions/campaign';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
+import styles from './requirements.module.css';
 
 const CampaignRequirementsForm: React.FC<ActionsProps> = ({
   activeStep,
@@ -123,13 +124,10 @@ const CampaignRequirementsForm: React.FC<ActionsProps> = ({
             )}
           </GenericModal>
 
-          <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
+          <Box className={styles.requirementsBox}>
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Location Requirements</p>
-              <CustomButton
-                className="bg-blue-800 text-white text-xl w-10 h-10 rounded-full"
-                onClick={() => setFormtype('location')}
-              >
+              <CustomButton className={styles.addButton} onClick={() => setFormtype('location')}>
                 +
               </CustomButton>
             </Box>
@@ -150,13 +148,10 @@ const CampaignRequirementsForm: React.FC<ActionsProps> = ({
             </Box>
           </Box>
 
-          <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
+          <Box className={styles.requirementsBox}>
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Age Requirements</p>
-              <CustomButton
-                className="bg-blue-800 text-white text-xl w-10 h-10 rounded-full"
-                onClick={() => setFormtype('age')}
-              >
+              <CustomButton className={styles.addButton} onClick={() => setFormtype('age')}>
                 +
               </CustomButton>
             </Box>
@@ -180,13 +175,10 @@ const CampaignRequirementsForm: React.FC<ActionsProps> = ({
             </Box>
           </Box>
 
-          <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
+          <Box className={styles.requirementsBox}>
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Values Requirements</p>
-              <CustomButton
-                className="bg-blue-800 text-white text-xl w-10 h-10 rounded-full"
-                onClick={() => setFormtype('values')}
-              >
+              <CustomButton className={styles.addButton} onClick={() => setFormtype('values')}>
                 +
               </CustomButton>
             </Box>
@@ -207,13 +199,10 @@ const CampaignRequirementsForm: React.FC<ActionsProps> = ({
             </Box>
           </Box>
 
-          <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
+          <Box className={styles.requirementsBox}>
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Interests Requirements</p>
-              <CustomButton
-                className="bg-blue-800 text-white text-xl w-10 h-10 rounded-full"
-                onClick={() => setFormtype('interests')}
-              >
+              <CustomButton className={styles.addButton} onClick={() => setFormtype('interests')}>
                 +
               </CustomButton>
             </Box>
@@ -234,13 +223,10 @@ const CampaignRequirementsForm: React.FC<ActionsProps> = ({
             </Box>
           </Box>
 
-          <Box className="w-full bg-gray-100 p-5 mb-3 rounded-md">
+          <Box className={styles.requirementsBox}>
             <Box className="w-full flex flex-row justify-between items-center">
               <p className="text-gray-800 text-lg">Social Media Follower Requirements</p>
-              <CustomButton
-                className="bg-blue-800 text-white text-xl w-10 h-10 rounded-full"
-                onClick={() => setFormtype('social')}
-              >
+              <CustomButton className={styles.addButton} onClick={() => setFormtype('social')}>
                 +
               </CustomButton>
             </Box>
