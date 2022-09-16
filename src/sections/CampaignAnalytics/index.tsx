@@ -112,7 +112,7 @@ const CampaignAnalytics: FC = () => {
               href="#link3"
               role="tablist"
             >
-              Post Campaigns
+              Past Campaigns
             </a>
           </li>
         </ul>
