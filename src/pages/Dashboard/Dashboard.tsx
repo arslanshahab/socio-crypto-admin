@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch } from 'react-router';
 import CampaignsPage from '../Campaigns';
 import { Link } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { UserManagement } from '../../components/UserManagement/UserManagement';
 import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
 import Sidebar from '../../components/Sidebar';
 import styles from './Dashboard.module.scss';
-import { DashboardHome } from '../../components/DashboardHome';
+// import { DashboardHome } from '../../components/DashboardHome';
 import NewCampaignPage from '../NewCampaign';
 import { useDispatch } from 'react-redux';
 import { showAppLoader } from '../../store/actions/settings';
@@ -26,9 +26,24 @@ import CoiinLogo from '../../assets/png/coiin.png';
 import UserList from '../../components/UserList/UserList';
 import UserDetails from '../../components/UserList/UserDetails';
 import CampaignTabs from '../../components/Campaigns/CampaignTabs';
+import { FaUserCircle } from 'react-icons/fa';
+import Profile from '../Profile';
+import { ApiClient } from '../../services/apiClient';
+import { getProfile } from '../../store/actions/profile';
+import DashboardHome from '../DashboardHome';
+import CampaignAnalytics from '../CampaignAnalytics';
+import Payments from '../Payments';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    ApiClient.getProfile()
+      .then((res) => {
+        dispatch(getProfile(res.data));
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -48,18 +63,29 @@ const Dashboard: React.FC = (props) => {
       </Box>
       <Box className={styles.content}>
         <Box className={styles.topbar}>
-          <Link className="mr-2 text-blue-700 cursor-pointer" to={'/dashboard/paymentsAccount'}>
-            <img src={CoiinLogo} alt="raiinmaker-logo" width="50px" height="50px" />
-          </Link>
-          <ExitToAppIcon className="text-blue-700 cursor-pointer" onClick={handleLogout} />
+          <div className={styles.topbarIcons}>
+            <Link className=" text-blue-700 cursor-pointer" to={'/dashboard/paymentsAccount'}>
+              <img src={CoiinLogo} alt="raiinmaker-logo" width="50px" />
+            </Link>
+            <Link to={'/dashboard/profile'}>
+              <FaUserCircle fontSize={26} color="gray" />
+            </Link>
+            <ExitToAppIcon className="text-blue-700 cursor-pointer" onClick={handleLogout} />
+          </div>
         </Box>
         <Box className={styles.main}>
           <Switch>
             <ProtectedRoute exact path={'/dashboard'}>
               <DashboardHome />
             </ProtectedRoute>
+            {/* <ProtectedRoute exact path={'dashboard/v2'}>
+              <DashboardHomeV2 />
+            </ProtectedRoute> */}
             <ProtectedRoute exact path={'/dashboard/campaigns'}>
               <CampaignsPage />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/analytics'}>
+              <CampaignAnalytics />
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/newCampaign'}>
               <NewCampaignPage {...props} />
@@ -71,8 +97,11 @@ const Dashboard: React.FC = (props) => {
                     <MarketData />
                   </ProtectedRoute> */}
             <ProtectedRoute exact path={'/dashboard/paymentsAccount'}>
-              <PaymentsAccount />
+              <Payments />
             </ProtectedRoute>
+            {/* <ProtectedRoute exact path={'/dashboard/paymentsAccount'}>
+              <PaymentsAccount />
+            </ProtectedRoute> */}
             <ProtectedRoute exact path={'/dashboard/admin/userManagement'}>
               <UserManagement {...props} />
             </ProtectedRoute>
@@ -96,6 +125,9 @@ const Dashboard: React.FC = (props) => {
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/campaigns/:id'}>
               <CampaignTabs />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/profile'}>
+              <Profile />
             </ProtectedRoute>
           </Switch>
         </Box>

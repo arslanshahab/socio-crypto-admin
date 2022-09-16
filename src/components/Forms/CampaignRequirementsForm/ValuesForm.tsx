@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { defaultValues } from '../../../helpers/globals';
 import CustomButton from '../../CustomButton/CustomButton';
 import { Autocomplete } from '@material-ui/lab';
+import styles from './requirements.module.css';
+import inputStyles from '../../CustomInput/customInput.module.css';
 
 interface Props {
   handleSubmit: (val: string[]) => void;
@@ -22,7 +24,13 @@ const ValuesForm: React.FC<Props> = ({ handleSubmit, defaultValue }) => {
           getOptionLabel={(option) => option}
           defaultValue={values}
           renderInput={(params) => (
-            <TextField {...params} variant="outlined" label="Keywords" placeholder="Add keywords for campaign" />
+            <TextField
+              {...params}
+              variant="outlined"
+              label="Keywords"
+              placeholder="Add keywords for campaign"
+              className={inputStyles.customInput}
+            />
           )}
           onChange={(e, val) => {
             setValues(val);
@@ -30,10 +38,7 @@ const ValuesForm: React.FC<Props> = ({ handleSubmit, defaultValue }) => {
         />
       </Box>
       <Box className="flex flex-row justify-start items-center mt-5">
-        <CustomButton
-          className="w-full h-12 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
-          onClick={() => handleSubmit(values)}
-        >
+        <CustomButton className={styles.saveButton} onClick={() => handleSubmit(values)}>
           Save
         </CustomButton>
       </Box>

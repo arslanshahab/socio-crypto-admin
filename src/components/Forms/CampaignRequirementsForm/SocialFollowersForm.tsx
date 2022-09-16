@@ -2,6 +2,8 @@ import { Box, FormControl, InputLabel, Select, MenuItem } from '@material-ui/cor
 import React, { useState } from 'react';
 import { defaultSocialFollowers } from '../../../helpers/globals';
 import CustomButton from '../../CustomButton/CustomButton';
+import styles from './requirements.module.css';
+import inputStyles from '../../CustomInput/customInput.module.css';
 
 interface Props {
   handleSubmit: (val: string) => void;
@@ -16,7 +18,11 @@ const SocialFollowersForm: React.FC<Props> = ({ handleSubmit, defaultValue }) =>
       <Box className="mb-5">
         <FormControl className="w-full customInput" variant="outlined">
           <InputLabel id="country-label">Followers Count</InputLabel>
-          <Select value={followers} onChange={(e) => setFollowers(e.target.value as string)}>
+          <Select
+            value={followers}
+            onChange={(e) => setFollowers(e.target.value as string)}
+            className={inputStyles.customInput}
+          >
             {defaultSocialFollowers.map((item) => {
               return (
                 <MenuItem key={item} value={item}>
@@ -28,10 +34,7 @@ const SocialFollowersForm: React.FC<Props> = ({ handleSubmit, defaultValue }) =>
         </FormControl>
       </Box>
       <Box className="flex flex-row justify-start items-center mt-5">
-        <CustomButton
-          className="w-full h-12 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
-          onClick={() => handleSubmit(followers)}
-        >
+        <CustomButton className={styles.saveButton} onClick={() => handleSubmit(followers)}>
           Save
         </CustomButton>
       </Box>

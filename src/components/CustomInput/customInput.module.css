@@ -1,0 +1,6 @@
+.customInput fieldset {
+  @apply border-denimBlue;
+}
+.templateField fieldset {
+  @apply border-denimBlue rounded-3xl;
+}

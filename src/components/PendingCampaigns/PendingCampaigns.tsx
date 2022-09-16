@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Campaign } from '../../types';
+import { Campaign, PendingCampaignStatus } from '../../types';
 import { CircularProgress } from '@material-ui/core';
 import styles from './pendingCampaigns.module.css';
 import axios from 'axios';
@@ -7,8 +7,10 @@ import { apiURI } from '../../clients/raiinmaker-api';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { useDispatch } from 'react-redux';
-import { showSuccessAlert } from '../../store/actions/alerts';
+import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 import Pagination from '../Pagination/Pagination';
+import GenericModal from '../GenericModal';
+import { ApiClient } from '../../services/apiClient';
 
 export const PendingCampaigns: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,6 +23,8 @@ export const PendingCampaigns: React.FC = () => {
   const [take] = useState(20);
   const [total, setTotal] = useState(0);
   const [selectedCampaignId, setSelectedCampaignId] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,31 +39,34 @@ export const PendingCampaigns: React.FC = () => {
     fetchData();
   }, [refetch]);
 
-  // Update campaign status
-  const updateCampaignStatus = async (status: string, campaignId: string) => {
-    setSelectedCampaignId(campaignId);
-    if (status === 'APPROVED') setAcceptLoading(true);
-    if (status === 'DENIED') setRejectLoading(true);
-    await axios.put(
-      `${apiURI}/v1/campaign/admin-update-campaign-status?status=${status}&campaignId=${campaignId}`,
-      {},
-      { withCredentials: true },
-    );
+  // Handle change
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
 
-    if (status === 'APPROVED') {
-      dispatch(showSuccessAlert('Campaign approved successfully!'));
-      setAcceptLoading(false);
-      setRefetch(!refetch);
-    }
-    if (status === 'DENIED') {
-      dispatch(showSuccessAlert('Campaign rejected successfully!'));
-      setRejectLoading(false);
-      setRefetch(!refetch);
-    }
+  // Update campaign status
+  const updateCampaignStatus = async (status: PendingCampaignStatus, campaignId: string) => {
+    setSelectedCampaignId(campaignId);
+    status === 'APPROVED' ? setAcceptLoading(true) : setRejectLoading(true);
+    ApiClient.updatePendingCampaignStatus({ status, campaignId, reason: message })
+      .then((res) => {
+        dispatch(showSuccessAlert(res.message));
+        setRefetch(!refetch);
+      })
+      .catch((err) => dispatch(showErrorAlert(err.message)))
+      .finally(() => {
+        setAcceptLoading(false);
+        setRejectLoading(false);
+        setIsOpen(false);
+      });
   };
 
   const getValue = (skip: number) => {
     setSkip(skip);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   if (loading) {
@@ -72,6 +79,26 @@ export const PendingCampaigns: React.FC = () => {
 
   return (
     <div>
+      <GenericModal open={isOpen} onClose={handleClose} size="medium" persist>
+        <div className={styles.textarea}>
+          <textarea
+            className={styles.textareaField}
+            rows={7}
+            placeholder="Enter reason for rejection"
+            onChange={handleChange}
+            value={message}
+          />
+          <div className={styles.sendButton}>
+            <CustomButton
+              className={buttonStyles.buttonPrimary}
+              onClick={() => updateCampaignStatus('DENIED', selectedCampaignId)}
+              loading={rejectLoading}
+            >
+              Send
+            </CustomButton>
+          </div>
+        </div>
+      </GenericModal>
       <h2 className={styles.heading}>Pending Campaigns</h2>
       {campaigns?.length <= 0 ? (
         <div>No pending campaigns</div>
@@ -115,9 +142,11 @@ export const PendingCampaigns: React.FC = () => {
                 Approve
               </CustomButton>
               <CustomButton
-                onClick={() => updateCampaignStatus('DENIED', campaign.id)}
+                onClick={() => {
+                  setIsOpen(true);
+                  setSelectedCampaignId(campaign.id);
+                }}
                 className={buttonStyles.secondaryButton}
-                loading={rejectLoading && selectedCampaignId === campaign.id}
               >
                 Deny
               </CustomButton>

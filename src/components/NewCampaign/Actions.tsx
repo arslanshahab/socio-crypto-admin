@@ -28,8 +28,8 @@ const Actions: React.FC<CampaignActionProps> = ({
   return (
     <Box className="mt-10 flex flex-row justify-between items-center">
       <CustomButton
-        className={`w-48 h-12 mr-5 rounded-md text-md border-2 bg-transparent ${
-          activeStep > firstStep ? 'border-blue-800 text-blue-800' : 'text-gray-300 border-gray-300'
+        className={`w-48 h-12 mr-5 rounded-md text-md border bg-transparent ${
+          activeStep > firstStep ? 'border-denimBlue text-coolGray' : 'text-coolGray border-coolGray'
         }`}
         onClick={handleBack}
         disabled={activeStep <= firstStep}
@@ -38,7 +38,7 @@ const Actions: React.FC<CampaignActionProps> = ({
       </CustomButton>
       {activeStep < finalStep && (
         <CustomButton
-          className="w-48 h-12 mr-5 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
+          className="w-48 h-12 mr-5 rounded-md text-black text-md border border-cyberYellow bg-cyberYellow"
           onClick={handleNext}
         >
           Next
@@ -46,10 +46,10 @@ const Actions: React.FC<CampaignActionProps> = ({
       )}
       {activeStep === finalStep && (
         <CustomButton
-          className="w-48 h-12 mr-5 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
+          className="w-48 h-12 mr-5 rounded-md text-black text-md border border-cyberYellow bg-cyberYellow"
           onClick={handleSubmit}
         >
-          {campaignId ? 'Update Campaign' : 'Create Campaign'}
+          {campaignId ? 'Update Campaign' : 'Finalize'}
         </CustomButton>
       )}
     </Box>

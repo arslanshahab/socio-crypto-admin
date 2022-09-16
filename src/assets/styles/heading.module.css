@@ -19,3 +19,7 @@
 .paymentHeadingWrapper {
   @apply flex justify-between items-center border-b-2 mb-6 w-full;
 }
+/* New Heading Styles */
+.mainHeading {
+  @apply text-4xl text-denimBlue;
+}

@@ -1,28 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CustomButton from '../../CustomButton';
 import { Box, TextField } from '@material-ui/core';
-import { fireClient, getAuthPersistence } from '../../../clients/firebase';
-import { apiURI, sessionLogin } from '../../../clients/raiinmaker-api';
 import { useHistory } from 'react-router-dom';
 import { ChangePasswordDialog } from '../../ChangePasswordDialog';
 import styles from './login.module.css';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../store/actions/user';
-import axios from 'axios';
-import { showAppLoader } from '../../../store/actions/settings';
-import { showErrorAlert } from '../../../store/actions/alerts';
+import { showErrorAlert, showSuccessAlert } from '../../../store/actions/alerts';
+import { ApiClient } from '../../../services/apiClient';
+import { VerifyCodeDialog } from '../VerifyCode';
 
 interface UserData {
   [key: string]: string;
   email: string;
   password: string;
-}
-interface VerifySession {
-  id: string;
-  company: string;
-  role: string;
-  tempPass: boolean;
-  email: string;
 }
 
 const LoginForm: React.FC = () => {
@@ -34,26 +25,8 @@ const LoginForm: React.FC = () => {
     email: '',
     password: '',
   } as UserData);
-  const [verifyData, setVerifyData] = useState<VerifySession>();
-
-  const verifySession = async () => {
-    dispatch(showAppLoader({ flag: true, message: 'Setting up everything. Please wait!' }));
-    const { data } = await axios.get(`${apiURI}/v1/organization/verify-session`, { withCredentials: true });
-    setVerifyData(data.data);
-    dispatch(showAppLoader({ flag: false, message: '' }));
-  };
-
-  useEffect(() => {
-    if (verifyData) {
-      dispatch(
-        setUserData({
-          ...verifyData,
-          isLoggedIn: true,
-        }),
-      );
-      history.push('/dashboard/campaigns');
-    }
-  }, [verifyData]);
+  const [verifyCodeDialog, showVerifyCodeDialog] = useState(false);
+  const [verify, setVerify] = useState<any>();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data = { ...values };
@@ -61,27 +34,75 @@ const LoginForm: React.FC = () => {
     setValues(data);
   };
 
-  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    try {
-      event.preventDefault();
-      setLoading(true);
-      await fireClient.auth().setPersistence(getAuthPersistence);
-      await fireClient.auth().signInWithEmailAndPassword(values.email, values.password);
-      const { body } = await sessionLogin();
-      if (body.resetPass) {
-        setChangePassword(true);
-      } else {
-        await verifySession();
-      }
-      setLoading(false);
-    } catch (error) {
-      dispatch(showErrorAlert((error as Error).message));
-      setLoading(false);
+  // handle verify callback
+  const handleVerify = async (value: string) => {
+    if (value) {
+      showVerifyCodeDialog(false);
+      dispatch(
+        setUserData({
+          ...verify,
+          isLoggedIn: true,
+        }),
+      );
+      history.push('/dashboard/campaigns');
     }
+  };
+
+  // start verification
+  const startVerification = () => {
+    setLoading(true);
+    ApiClient.startEmailVerification({ email: values.email, type: 'PASSWORD', admin: true })
+      .then(() => {
+        dispatch(showSuccessAlert('Verification email sent your added email address.'));
+        showVerifyCodeDialog(true);
+      })
+      .catch((error) => {
+        dispatch(showErrorAlert((error as Error).message));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  // handle login
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    ApiClient.login(values)
+      .then((resp) => {
+        if (resp.resetPass) {
+          setChangePassword(true);
+        } else if (resp.twoFactorEnabled) {
+          showVerifyCodeDialog(true);
+          startVerification();
+          setVerify(resp);
+        } else {
+          dispatch(
+            setUserData({
+              ...resp,
+              isLoggedIn: true,
+            }),
+          );
+          history.push('/dashboard/campaigns');
+        }
+      })
+      .catch((error) => {
+        dispatch(showErrorAlert((error as Error).message));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  // hanlde verify dialog close
+  const handleClose = () => {
+    showVerifyCodeDialog(false);
+    setLoading(false);
   };
 
   return (
     <Box className={styles.loginForm}>
+      <VerifyCodeDialog email={values.email} open={verifyCodeDialog} onClose={handleClose} callback={handleVerify} />
       <ChangePasswordDialog open={changePassword} setOpen={setChangePassword} email={values.email} />
       <h2 className="w-full text-3xl text-gray-600 font-semibold mb-8 text-left">Brand Login</h2>
       <Box className="w-full pb-5">

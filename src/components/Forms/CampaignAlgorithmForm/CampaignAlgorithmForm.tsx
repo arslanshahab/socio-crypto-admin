@@ -13,6 +13,7 @@ import { formatFloat } from '../../../helpers/formatter';
 import { updateCampaign } from '../../../store/actions/campaign';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import { showErrorAlert } from '../../../store/actions/alerts';
+import styles from './algorithm.module.css';
 
 const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
   activeStep,
@@ -112,9 +113,9 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
         <GenericModal open={modalOpen} onClose={() => toggleModal(false)} size="medium">
           <TermsAndConditions />
         </GenericModal>
-        <Box className="w-full flex flex-row mb-10 space-x-16">
-          <Box className="w-3/6">
-            <Box className="w-full flex flex-row justify-center items-center space-x-1 mb-10">
+        <Box className="grid grid-cols-2 gap-x-16">
+          <Box className={styles.algorithmBox}>
+            <Box className={styles.title}>
               <h3 className="text-2xl text-center text-gray-700">Values</h3>
 
               <Tooltip
@@ -169,8 +170,8 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
               </Box>
             </Box>
           </Box>
-          <Box className="w-3/6">
-            <Box className="w-full flex flex-row justify-center items-center space-x-1 mb-10">
+          <Box className={styles.algorithmBox}>
+            <Box className={styles.title}>
               <h3 className="text-2xl text-center text-gray-700">Rewards</h3>
               <Tooltip
                 placement="top"

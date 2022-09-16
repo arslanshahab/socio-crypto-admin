@@ -1,0 +1,7 @@
+.algorithmBox {
+  @apply p-8 border-2 border-denimBlue rounded-3xl mb-6;
+  height: 500px;
+}
+.title {
+  @apply w-full flex flex-row justify-center items-center space-x-1 mb-7;
+}

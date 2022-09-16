@@ -21,7 +21,7 @@
 }
 
 .tableBodyLoading {
-  @apply flex justify-center;
+  @apply flex justify-center items-center;
 }
 
 .searchWrapper {

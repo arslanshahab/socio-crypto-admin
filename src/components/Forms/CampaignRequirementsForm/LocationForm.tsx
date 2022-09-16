@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { defaultStates, defaultCountries } from '../../../helpers/globals';
 import { LocationRequirementSpecs } from '../../../types';
 import CustomButton from '../../CustomButton/CustomButton';
+import styles from './requirements.module.css';
+import inputStyles from '../../CustomInput/customInput.module.css';
 
 interface Props {
   handleSubmit: (val: LocationRequirementSpecs) => void;
@@ -20,7 +22,11 @@ const LocationForm: React.FC<Props> = ({ handleSubmit }) => {
         <Box className="w-full">
           <FormControl className="w-full customInput" variant="outlined">
             <InputLabel id="country-label">Country</InputLabel>
-            <Select value={country} onChange={(e) => setCountry(e.target.value as string)}>
+            <Select
+              value={country}
+              onChange={(e) => setCountry(e.target.value as string)}
+              className={inputStyles.customInput}
+            >
               {defaultCountries.map((country) => {
                 return (
                   <MenuItem key={country} value={country}>
@@ -65,7 +71,7 @@ const LocationForm: React.FC<Props> = ({ handleSubmit }) => {
       </Box>
       <Box className="flex flex-row justify-start items-center mt-5">
         <CustomButton
-          className="w-full h-12 rounded-md text-white text-md border-2 border-blue-800 bg-blue-800"
+          className={styles.saveButton}
           onClick={() => {
             const value: LocationRequirementSpecs = {};
             if (city.length) value.city = city;

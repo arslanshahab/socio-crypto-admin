@@ -1,0 +1,9 @@
+.requirementsBox {
+  @apply w-full border border-denimBlue p-5 mb-3 rounded-3xl;
+}
+.addButton {
+  @apply bg-cyberYellow text-black text-xl w-9 h-9 rounded;
+}
+.saveButton {
+  @apply w-full h-12 rounded-md text-black border-2 border-cyberYellow bg-cyberYellow;
+}

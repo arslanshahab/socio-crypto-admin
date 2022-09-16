@@ -15,14 +15,14 @@ const StepsView: React.FC<Props> = ({ list, activeStep }) => {
           key={label}
           className={`w-1/5 p-3 flex flex-row justify-center items-center bg-gray-100 rounded-md text-xs	 ${
             index < activeStep
-              ? 'bg-blue-700 text-white'
+              ? 'border-solid border-2 border-cyberYellow text-coolGray bg-lightGray'
               : index === activeStep
-              ? 'bg-blue-100 border-solid border-2 border-blue-700'
-              : 'bg-gray-50 text-gray-400'
+              ? 'bg-cyberYellow text-black'
+              : 'bg-lightGray text-coolGray'
           }`}
         >
           {label}
-          {index < activeStep && <DoneIcon className="ml-2" style={{ fontSize: '20px' }} />}
+          {index < activeStep && <DoneIcon className="ml-2 text-cyberYellow " style={{ fontSize: '20px' }} />}
         </Box>
       ))}
     </Box>

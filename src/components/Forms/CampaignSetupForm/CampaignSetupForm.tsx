@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, CircularProgress, FormControlLabel, Checkbox } from '@material-ui/core';
 import { Fade } from 'react-awesome-reveal';
-import { useDispatch } from 'react-redux';
-import { ErrorObject, FileObject } from '../../../types';
+import { useDispatch, useSelector } from 'react-redux';
+import { ErrorObject, FileObject, ProfileTypes } from '../../../types';
 import CampaignTypeInput from './CampaignTypeInput';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
 import Actions from '../../NewCampaign/Actions';
@@ -34,6 +34,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { profile } = useSelector((state: { profile: ProfileTypes }) => state);
   const campaign = useStoreCampaignSelector();
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
   const [socialMediaType, setSocialMediaType] = useState(campaign.config.socialMediaType);
@@ -176,12 +177,31 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     return (
       <Box className="p-10 w-full flex flex-col justify-center items-center">
         <p>
-          No Crypto-Currency found - Please register Crypto{' '}
+          No Crypto-Currency found - Please purchase Crypto{' '}
           <span
             className="cursor-pointer underline text-blue-800 font-semibold	"
             onClick={() => {
               dispatch(resetCampaign());
-              history.push('/dashboard/paymentsAccount');
+              history.push('/dashboard/paymentsAccount', true);
+            }}
+          >
+            here
+          </span>
+        </p>
+      </Box>
+    );
+  }
+
+  if (profile.verifyStatus !== 'APPROVED') {
+    return (
+      <Box className="p-10 w-full flex flex-col justify-center items-center">
+        <p>
+          Before create new campaign, please verify your KYC{' '}
+          <span
+            className="cursor-pointer underline text-blue-800 font-semibold	"
+            onClick={() => {
+              dispatch(resetCampaign());
+              history.push('/dashboard/profile');
             }}
           >
             here

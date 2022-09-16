@@ -111,16 +111,18 @@ export const UserManagement: React.FC = () => {
           <div className="flex gap-4 flex-wrap">
             {filterEmployee &&
               filterEmployee.map((admin: AdminTypes) => (
-                <PrimaryCard
-                  key={admin.id}
-                  title={admin.name}
-                  value={new Date(admin.createdAt).toDateString()}
-                  tooltipTitle={toolTipMap['title']}
-                  tooltipValue={toolTipMap['value']}
-                  icon={<BsFillPersonCheckFill />}
-                  id={admin.id}
-                  removeMethod={removeMethod}
-                />
+                <div key={admin.id} className={styles.userCardWrapper}>
+                  <div className={styles.imageWrapper}>{/* <img alt="user image" className={styles.image} /> */}</div>
+                  <PrimaryCard
+                    title={admin.name}
+                    value={new Date(admin.createdAt).toDateString()}
+                    tooltipTitle={toolTipMap['title']}
+                    tooltipValue={toolTipMap['value']}
+                    icon={<BsFillPersonCheckFill />}
+                    id={admin.id}
+                    removeMethod={removeMethod}
+                  />
+                </div>
               ))}
           </div>
         </div>

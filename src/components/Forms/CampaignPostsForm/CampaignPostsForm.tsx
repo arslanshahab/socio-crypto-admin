@@ -11,6 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import CustomInput from '../../CustomInput/CustomInput';
 import CloseIcon from '@material-ui/icons/Close';
+import styles from '../../CustomInput/customInput.module.css';
 
 const MAX_POST_LENGTH = 120;
 
@@ -91,11 +92,11 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       <Fade>
         <Box className="w-full flex flex-col box-border items-center">
           {socialMediaType.map((channel, index) => (
-            <Box key={index} className="w-full flex flex-col border-solid border-2 border-gray-100 p-5 rounded-md mt-5">
+            <Box key={index} className="w-full flex flex-col border-solid border border-denimBlue p-5 rounded-2xl mt-5">
               <Box className="w-full flex flex-row justify-between items-center box-border">
                 <p className="text-xl mb-2">{`${channel} Templates`}</p>
                 <CustomButton
-                  className="w-40 h-8 ml-5 rounded-md text-white text-md border-2 border-green-600 bg-green-600"
+                  className="w-40 h-10 ml-5 rounded-md text-black text-md border-2 border-cyberYellow bg-cyberYellow"
                   onClick={() => addPost(channel)}
                 >
                   <AddIcon className="mr-2" />
@@ -110,6 +111,7 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
                     multiline
                     value={item.post}
                     rows={3}
+                    className={styles.templateField}
                     onChange={(e) => {
                       handlePostChange(channel, index, e.target.value);
                     }}
@@ -125,7 +127,7 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
                         <span>Remove Post</span>
                       </CustomButton>
                     )}
-                    <span className="text-xs flex flex-row justify-end text-gray-500">
+                    <span className="flex flex-row justify-end text-coolGray font-normal">
                       Characters added {`${item.post.length}/${MAX_POST_LENGTH}`}
                     </span>
                   </div>
