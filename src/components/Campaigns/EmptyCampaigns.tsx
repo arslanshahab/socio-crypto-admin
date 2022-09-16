@@ -10,7 +10,7 @@ const EmptyCampaigns: React.FC = () => {
     <Box className="flex flex-col justify-center items-center w-full h-full">
       <p className="text-2xl mb-2">No Campaigns Found</p>
       <CustomButton
-        className="w-60 bg-blue-600 h-12 rounded text-lg text-white"
+        className="w-60 bg-cyberYellow h-12 rounded text-lg text-black"
         variant="outlined"
         color="primary"
         onClick={() => {

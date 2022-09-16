@@ -32,6 +32,7 @@ import { ApiClient } from '../../services/apiClient';
 import { getProfile } from '../../store/actions/profile';
 import DashboardHome from '../DashboardHome';
 import CampaignAnalytics from '../CampaignAnalytics';
+import Payments from '../Payments';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -96,8 +97,11 @@ const Dashboard: React.FC = (props) => {
                     <MarketData />
                   </ProtectedRoute> */}
             <ProtectedRoute exact path={'/dashboard/paymentsAccount'}>
-              <PaymentsAccount />
+              <Payments />
             </ProtectedRoute>
+            {/* <ProtectedRoute exact path={'/dashboard/paymentsAccount'}>
+              <PaymentsAccount />
+            </ProtectedRoute> */}
             <ProtectedRoute exact path={'/dashboard/admin/userManagement'}>
               <UserManagement {...props} />
             </ProtectedRoute>
