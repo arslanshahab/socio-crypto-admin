@@ -64,11 +64,17 @@ const campaignInitState: CampaignState = {
     rafflePrizeName: '',
     rafflePrizeAffiliateLink: '',
     success: false,
+    // channelMedia: {
+    //   Tiktok: [],
+    //   Twitter: [],
+    //   Instagram: [],
+    //   Facebook: [],
+    // },
     channelMedia: {
-      Tiktok: [],
-      Twitter: [],
-      Instagram: [],
-      Facebook: [],
+      Tiktok: [{ channel: 'Tiktok', media: { filename: '', file: '', format: '' }, isDefault: true }],
+      Twitter: [{ channel: 'Twitter', media: { filename: '', file: '', format: '' }, isDefault: true }],
+      Instagram: [{ channel: 'Instagram', media: { filename: '', file: '', format: '' }, isDefault: true }],
+      Facebook: [{ channel: 'Facebook', media: { filename: '', file: '', format: '' }, isDefault: true }],
     },
     channelTemplates: {
       Tiktok: [

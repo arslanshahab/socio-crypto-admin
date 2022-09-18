@@ -23,9 +23,16 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
   const onSuccess = (data: FileObject) => {
     const inputKey = `${data.filename}-${Math.random()}`;
     const medias = [...images];
-    medias.push({ channel: channel, id: inputKey, media: data, isDefault: medias.length === 1 ? true : false });
-    setImages(medias);
-    onChange(channel, medias);
+    if (images[0].media.filename === '') {
+      const defaultMedia = [...images];
+      defaultMedia.splice(0, 1, { channel: channel, id: '', media: data, isDefault: true });
+      setImages(defaultMedia);
+      onChange(channel, defaultMedia);
+    } else {
+      medias.push({ channel: channel, id: '', media: data, isDefault: false });
+      setImages(medias);
+      onChange(channel, medias);
+    }
   };
 
   const onError = (msg: string) => {
