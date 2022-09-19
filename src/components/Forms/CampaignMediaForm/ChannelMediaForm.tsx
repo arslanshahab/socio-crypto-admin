@@ -8,7 +8,6 @@ import InstagramIcon from '../../../assets/svg/socialIcons/InstagramLogo.svg';
 import TwitterIcon from '../../../assets/svg/socialIcons/TwitterLogo.svg';
 import FacebookIcon from '../../../assets/svg/socialIcons/FBLogo.svg';
 import TiktokIcon from '../../../assets/svg/socialIcons/TikTokLogo.svg';
-import { MdDelete } from 'react-icons/md';
 
 export interface Props {
   channel: string;
@@ -21,11 +20,10 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
   const [images, setImages] = useState<ChannelMediaObject[]>(channelMedias);
 
   const onSuccess = (data: FileObject) => {
-    const inputKey = `${data.filename}-${Math.random()}`;
     const medias = [...images];
     if (images[0].media.filename === '') {
       const defaultMedia = [...images];
-      defaultMedia.splice(0, 1, { channel: channel, id: '', media: data, isDefault: true });
+      defaultMedia.splice(0, 1, { channel: channel, id: medias[0].id || '', media: data, isDefault: true });
       setImages(defaultMedia);
       onChange(channel, defaultMedia);
     } else {
@@ -39,20 +37,11 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
     dispatch(showErrorAlert(msg));
   };
 
-  // const addMedia = () => {
-  //   if (channelMedias.length < 5) {
-  //     const medias = [...channelMedias];
-  //     medias.push({ channel: channel, media: initialState.newCampaign.campaignImage, isDefault: false });
-  //     onChange(channel, medias);
-  //   } else {
-  //     dispatch(showErrorAlert('You cannot add more than 5 media items for a social channel'));
-  //   }
-  // };
-
   const removeMedia = (index: number) => {
-    if (channelMedias.length > 1) {
-      const medias = [...channelMedias];
+    if (images.length > 1) {
+      const medias = [...images];
       medias.splice(index, 1);
+      setImages(medias);
       onChange(channel, medias);
     } else {
       dispatch(showErrorAlert('You need to add one media for each social channel you selected'));
@@ -74,13 +63,18 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
           {images.map((image: ChannelMediaObject, index: number) => {
             return (
               <div key={index} className="relative">
-                {/* {index ? (
-                  <span className="absolute top-0 right-0">
-                    <MdDelete color="red" onClick={() => removeMedia(index)} />
-                  </span>
-                ) : (
+                {index < 1 ? (
                   ''
-                )} */}
+                ) : (
+                  <div
+                    className="w-4 h-4 flex justify-center items-center  absolute right-0 bg-white rounded-full cursor-pointer hover:bg-cyberYellow"
+                    style={{ fontSize: '8px' }}
+                    onClick={() => removeMedia(index)}
+                  >
+                    &#10060;
+                  </div>
+                )}
+
                 {image.media.format.includes('image') ? (
                   <div className="w-20 h-20  bg-lightGray rounded-md">
                     <img
@@ -96,7 +90,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                         autoPlay={false}
                         src={image.media.file}
                         controls={true}
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain rounded-md"
                       />
                     </div>
                   )
