@@ -65,7 +65,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                   ''
                 ) : (
                   <div
-                    className="w-4 h-4 flex justify-center items-center  absolute right-0 bg-white rounded-full cursor-pointer hover:bg-cyberYellow"
+                    className="w-4 h-4 flex justify-center items-center  absolute right-0 bg-white rounded-full cursor-pointer hover:bg-cyberYellow z-10"
                     style={{ fontSize: '8px' }}
                     onClick={() => removeMedia(index)}
                   >
