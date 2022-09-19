@@ -4,7 +4,7 @@ import CampaignsPage from '../Campaigns';
 import { Link } from 'react-router-dom';
 // import { MarketData } from '../../components/MarketData';
 // import SettingsIcon from '@material-ui/icons/Settings';
-import { PaymentsAccount } from '../../components/PaymentsAccount';
+// import { PaymentsAccount } from '../../components/PaymentsAccount';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
 import { Box } from '@material-ui/core';
