@@ -37,15 +37,20 @@ const BarChart: FC<IBarChartProps> = ({ data }: IBarChartProps) => {
       {
         label: 'Participation Score',
         data: data?.map((x) => x.participationScore),
-
         backgroundColor: '#1E40AF',
-        borderWidth: 1,
+        barPercentage: 0.5,
+        barThickness: 10,
+        maxBarThickness: 8,
+        minBarLength: 8,
       },
       {
         label: 'Clicks',
         data: data?.map((x) => x.clickCount),
         backgroundColor: '#FFD100',
-        borderWidth: 1,
+        barPercentage: 0.5,
+        barThickness: 10,
+        maxBarThickness: 8,
+        minBarLength: 8,
       },
     ],
   };
