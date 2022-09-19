@@ -129,7 +129,7 @@ const PreviewScreen: React.FC<ActionsProps> = ({
               </CustomButton>
             </Box>
           </Box>
-          <Box className="border p-6 border-denimBlue rounded-3xl overscroll-y-auto">
+          <Box className="border p-6 border-denimBlue rounded-3xl  overflow-y-auto" style={{ maxHeight: '950px' }}>
             <h5 className="text-center mb-3">Templates</h5>
             {Object.keys(campaign.config.channelTemplates).map((channel: string) => {
               return (

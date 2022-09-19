@@ -18,6 +18,7 @@ export interface Props {
 const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange }) => {
   const dispatch = useDispatch();
   const [channelMedia, setChannelMedia] = useState<ChannelMediaObject[]>(channelMedias);
+
   const onSuccess = (data: FileObject) => {
     const medias = [...channelMedia];
     if (channelMedia[0].media.filename === '') {
