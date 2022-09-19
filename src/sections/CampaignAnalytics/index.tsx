@@ -46,6 +46,7 @@ const CampaignAnalytics: FC = () => {
           value: x.id,
           label: x.name,
         }));
+        result.unshift({ value: '-1', label: 'All' });
         setCampaigns(result);
       })
       .catch((err) => dispatch(showErrorAlert((err as Error).message)))
@@ -126,7 +127,12 @@ const CampaignAnalytics: FC = () => {
           </li>
         </ul>
         <div className={styles.selectField}>
-          <Select onChange={(e) => hanleSelectField(e)} defaultValue={'-1'} options={campaigns} styles={customStyles} />
+          <Select
+            onChange={(e) => hanleSelectField(e)}
+            defaultValue={'All'}
+            options={campaigns}
+            styles={customStyles}
+          />
         </div>
       </div>
       {graphLoading ? (
