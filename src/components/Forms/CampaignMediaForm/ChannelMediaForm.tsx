@@ -17,18 +17,16 @@ export interface Props {
 
 const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange }) => {
   const dispatch = useDispatch();
-  const [images, setImages] = useState<ChannelMediaObject[]>(channelMedias);
-
+  const [channelMedia, setChannelMedia] = useState<ChannelMediaObject[]>(channelMedias);
   const onSuccess = (data: FileObject) => {
-    const medias = [...images];
-    if (images[0].media.filename === '') {
-      const defaultMedia = [...images];
-      defaultMedia.splice(0, 1, { channel: channel, id: medias[0].id || '', media: data, isDefault: true });
-      setImages(defaultMedia);
-      onChange(channel, defaultMedia);
+    const medias = [...channelMedia];
+    if (channelMedia[0].media.filename === '') {
+      medias.splice(0, 1, { channel: channel, id: medias[0].id || '', media: data, isDefault: true });
+      setChannelMedia(medias);
+      onChange(channel, medias);
     } else {
       medias.push({ channel: channel, id: '', media: data, isDefault: false });
-      setImages(medias);
+      setChannelMedia(medias);
       onChange(channel, medias);
     }
   };
@@ -38,10 +36,10 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
   };
 
   const removeMedia = (index: number) => {
-    if (images.length > 1) {
-      const medias = [...images];
+    if (channelMedia.length > 1) {
+      const medias = [...channelMedia];
       medias.splice(index, 1);
-      setImages(medias);
+      setChannelMedia(medias);
       onChange(channel, medias);
     } else {
       dispatch(showErrorAlert('You need to add one media for each social channel you selected'));
@@ -60,7 +58,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
       <Box className="w-full flex items-center gap-6 mb-2">
         <img src={socialIcons[channel]} alt={channel} />
         <div className="flex gap-4">
-          {images.map((image: ChannelMediaObject, index: number) => {
+          {channelMedia.map((image: ChannelMediaObject, index: number) => {
             return (
               <div key={index} className="relative">
                 {index < 1 ? (
