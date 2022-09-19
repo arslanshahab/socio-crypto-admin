@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { TransactionHistory } from '../../components/TransactionHistory';
 import AllCampaigns from '../../componentsv2/AllCampaigns';
 import FundingWallet from '../FundingWallet';
 
@@ -67,8 +68,7 @@ const PaymentAccount: FC = () => {
               <AllCampaigns />
             </div>
             <div className={openTab === 3 ? 'block' : 'hidden'} id="link3">
-              <p className="dark:text-white">Transaction History</p>
-              Dynamically innovate resource-leveling customer service for state of the art customer service.
+              <TransactionHistory />
             </div>
           </div>
         </div>
