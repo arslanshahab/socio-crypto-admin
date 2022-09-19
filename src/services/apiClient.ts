@@ -17,10 +17,10 @@ import {
   DashboardStatsTypes,
   UserStatTypes,
   UserData,
-  Campaign,
   CampaignListVars,
   PaginatedCampaignResultsV2,
   PaymentMethodTypes,
+  CampaignMetricTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -179,6 +179,14 @@ export class ApiClient {
   public static async getPaymentMethods(): Promise<PaymentMethodTypes[]> {
     try {
       return (await this.requestInstance.get(`/v1/stripe/payment-methods`)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getCampaignMetrics(campaignId: string): Promise<CampaignMetricTypes> {
+    try {
+      return (await this.requestInstance.get(`/v1/campaign/campaign-metrics?campaignId=${campaignId}`)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

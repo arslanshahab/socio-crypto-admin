@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
-import { Campaign, PaginatedCampaignResultsV2 } from '../../types';
+import { Campaign } from '../../types';
 import styles from './postCampaigns.module.css';
 import { useDispatch } from 'react-redux';
+import RenderRow from '../RenderRow';
 
-const PostCampaigns: FC = () => {
+const PastCampaigns: FC = () => {
   const dispatch = useDispatch();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -35,16 +36,7 @@ const PostCampaigns: FC = () => {
         </thead>
         <tbody>
           {campaigns?.map((campaign: Campaign) => (
-            <tr key={campaign.name}>
-              <td>{campaign.name}</td>
-              <td className={styles.successStatus}>&uarr;</td>
-              <td>{campaign.totalParticipationScore}</td>
-              <td>{campaign.participant.length}</td>
-              <td>505,262</td>
-              <td>
-                <progress id="file" value="70" max="100" className={styles.progress} />
-              </td>
-            </tr>
+            <RenderRow key={campaign.id} campaign={campaign} />
           ))}
         </tbody>
       </table>
@@ -52,4 +44,4 @@ const PostCampaigns: FC = () => {
   );
 };
 
-export default PostCampaigns;
+export default PastCampaigns;

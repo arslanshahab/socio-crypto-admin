@@ -4,6 +4,7 @@ import { showErrorAlert } from '../../store/actions/alerts';
 import { Campaign } from '../../types';
 import styles from './campaignsTable.module.css';
 import { useDispatch } from 'react-redux';
+import RenderRow from '../RenderRow';
 
 const CampaignsTable: FC = () => {
   const dispatch = useDispatch();
@@ -35,16 +36,7 @@ const CampaignsTable: FC = () => {
         </thead>
         <tbody>
           {campaigns?.map((campaign: Campaign) => (
-            <tr key={campaign.name}>
-              <td>{campaign.name}</td>
-              <td className={styles.successStatus}>&uarr;</td>
-              <td>{campaign.totalParticipationScore}</td>
-              <td>{campaign.participant.length}</td>
-              <td>505,262</td>
-              <td>
-                <progress id="file" value="70" max="100" className={styles.progress} />
-              </td>
-            </tr>
+            <RenderRow key={campaign.id} campaign={campaign} />
           ))}
         </tbody>
       </table>

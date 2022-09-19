@@ -903,3 +903,16 @@ export type PaymentMethodTypes = {
   brand: string;
   last4: string;
 };
+
+export type CampaignMetricTypes = {
+  clickCount: number;
+  viewCount: number;
+  submissionCount: number;
+  participantCount: number;
+  likeCount: number;
+  commentCount: number;
+  shareCount: number;
+  postCount: number;
+  discoveryCount: number;
+  conversionCount: number;
+};
