@@ -21,6 +21,7 @@ import {
   PaginatedCampaignResultsV2,
   PaymentMethodTypes,
   CampaignMetricTypes,
+  SupportedCurrenciesTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -187,6 +188,14 @@ export class ApiClient {
   public static async getCampaignMetrics(campaignId: string): Promise<CampaignMetricTypes> {
     try {
       return (await this.requestInstance.get(`/v1/campaign/campaign-metrics?campaignId=${campaignId}`)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getSupportedCurrencies(): Promise<SupportedCurrenciesTypes[]> {
+    try {
+      return (await this.requestInstance.get(`/v1/tatum/supported-currencies`)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

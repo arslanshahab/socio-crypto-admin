@@ -7,10 +7,13 @@ import Divider from '../../componentsv2/Divider';
 import { ApiClient } from '../../services/apiClient';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert } from '../../store/actions/alerts';
-import { FundingWallet as FundingWalletTypes, PaymentMethodTypes } from '../../types';
+import { FundingWallet as FundingWalletTypes, PaymentMethodTypes, SupportedCurrenciesTypes } from '../../types';
 import { FiPlus } from 'react-icons/fi';
 import { BsCreditCard2BackFill } from 'react-icons/bs';
 import { CircularProgress } from '@material-ui/core';
+import { CryptoDialog } from '../../components/CryptoDialog';
+import GenericModal from '../../components/GenericModal';
+import DepositCryptoForm from '../../components/Forms/DepositCryptoForm';
 
 const FundingWallet: FC = () => {
   const dispatch = useDispatch();
@@ -21,6 +24,10 @@ const FundingWallet: FC = () => {
   const [otherCurrencies, setOtherCurrencies] = useState<FundingWalletTypes[]>([]);
   const [creditCards, setCreditCards] = useState<PaymentMethodTypes[]>([]);
   const [isWalletLoading, setIsWalletLoading] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openCrypto, setOpenCrypto] = useState(false);
+  const [refetch, setRefetch] = useState(0);
+  const [currencyList, setCurrencyList] = useState<SupportedCurrenciesTypes[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,6 +58,12 @@ const FundingWallet: FC = () => {
       .finally(() => setIsWalletLoading(false));
   }, []);
 
+  useEffect(() => {
+    ApiClient.getSupportedCurrencies()
+      .then((res) => setCurrencyList(res))
+      .catch((error) => dispatch(showErrorAlert(error.message)));
+  }, []);
+
   const toolTipMap = {
     title: 'Token',
     value: 'Balance',
@@ -61,11 +74,19 @@ const FundingWallet: FC = () => {
     value: 'Last Four Digits of Card',
   };
 
+  const handleRefetch = () => {
+    setRefetch(new Date().getTime());
+  };
+
   return (
     <div className="border-2 border-denimBlue rounded-3xl p-4">
       <h1 className="text-xl text-denimBlue">Wallet</h1>
       <Divider />
       <PurchaseDialog open={purchaseCoiin} setOpen={setPurchaseCoiin} />
+      <CryptoDialog isTokenRegistration={true} open={openDialog} setOpenDialog={setOpenDialog} />
+      <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
+        <DepositCryptoForm cryptoList={currencyList} callback={handleRefetch} fundingWallet={fundingWallet} />
+      </GenericModal>
       <CustomButton
         onClick={() => setPurchaseCoiin(true)}
         className="bg-cyberYellow rounded-full px-3 py-2 w-auto my-6"
@@ -94,13 +115,13 @@ const FundingWallet: FC = () => {
       <Divider />
       <div className="my-6 flex gap-6">
         <CustomButton
-          onClick={() => setPurchaseCoiin(true)}
+          onClick={() => setOpenCrypto(true)}
           className="bg-cyberYellow rounded-full px-3 py-2 w-auto flex items-center gap-2"
         >
           <FiPlus size={20} /> <span>Deposit Crypto</span>
         </CustomButton>
         <CustomButton
-          onClick={() => setPurchaseCoiin(true)}
+          onClick={() => setOpenDialog(true)}
           className="bg-cyberYellow rounded-full px-3 py-2 w-auto flex items-center gap-2"
         >
           <FiPlus size={20} /> <span>Register ERC20 Token</span>

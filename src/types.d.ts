@@ -916,3 +916,8 @@ export type CampaignMetricTypes = {
   discoveryCount: number;
   conversionCount: number;
 };
+
+export type SupportedCurrenciesTypes = {
+  symbol: string;
+  network: string;
+};
