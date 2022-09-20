@@ -10,20 +10,21 @@ import { showErrorAlert } from '../../store/actions/alerts';
 import { FundingWallet as FundingWalletTypes, PaymentMethodTypes } from '../../types';
 import { FiPlus } from 'react-icons/fi';
 import { BsCreditCard2BackFill } from 'react-icons/bs';
+import { CircularProgress } from '@material-ui/core';
 
 const FundingWallet: FC = () => {
   const dispatch = useDispatch();
   const [purchaseCoiin, setPurchaseCoiin] = useState(false);
   const [fundingWallet, setFundingWallet] = useState<FundingWalletTypes[]>([]);
-  const [isWalletLoading, setIsWalletLoading] = useState(false);
+  const [isCurrencyLoading, setIsCurrencyLoading] = useState(false);
   const [coiins, setCoiins] = useState<FundingWalletTypes[]>([]);
   const [otherCurrencies, setOtherCurrencies] = useState<FundingWalletTypes[]>([]);
   const [creditCards, setCreditCards] = useState<PaymentMethodTypes[]>([]);
-  const [isCreditLoading, setIsCreditLoading] = useState<boolean>(false);
+  const [isWalletLoading, setIsWalletLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsWalletLoading(true);
+      setIsCurrencyLoading(true);
       await ApiClient.getFundingWallet()
         .then((resp) => {
           const filterCoiin = resp.filter((item) => item.type === 'COIIN');
@@ -36,18 +37,18 @@ const FundingWallet: FC = () => {
           dispatch(showErrorAlert(error.message));
         })
         .finally(() => {
-          setIsWalletLoading(false);
+          setIsCurrencyLoading(false);
         });
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    setIsCreditLoading(true);
+    setIsWalletLoading(true);
     ApiClient.getPaymentMethods()
       .then((res) => setCreditCards(res))
       .catch((err) => dispatch(showErrorAlert(err.message)))
-      .finally(() => setIsCreditLoading(false));
+      .finally(() => setIsWalletLoading(false));
   }, []);
 
   const toolTipMap = {
@@ -71,20 +72,25 @@ const FundingWallet: FC = () => {
       >
         Purchase Coiin Points
       </CustomButton>
-      <div className="mb-6">
-        {coiins?.map((coiin: FundingWalletTypes) => (
-          <PrimaryCard
-            key={coiin.type}
-            title={coiin.type}
-            network={coiin.network}
-            value={coiin.balance}
-            icon={coiin.symbolImageUrl}
-            tooltipTitle={toolTipMap.title}
-            tooltipValue={toolTipMap.value}
-            tooltipNetwork={toolTipMap.network}
-          />
-        ))}
-      </div>
+      {isCurrencyLoading ? (
+        <CircularProgress size={22} />
+      ) : (
+        <div className="mb-6">
+          {coiins?.map((coiin: FundingWalletTypes) => (
+            <PrimaryCard
+              key={coiin.type}
+              title={coiin.type}
+              network={coiin.network}
+              value={coiin.balance}
+              icon={coiin.symbolImageUrl}
+              tooltipTitle={toolTipMap.title}
+              tooltipValue={toolTipMap.value}
+              tooltipNetwork={toolTipMap.network}
+            />
+          ))}
+        </div>
+      )}
+
       <Divider />
       <div className="my-6 flex gap-6">
         <CustomButton
@@ -100,20 +106,25 @@ const FundingWallet: FC = () => {
           <FiPlus size={20} /> <span>Register ERC20 Token</span>
         </CustomButton>
       </div>
-      <div className="mb-6 flex flex-wrap gap-4">
-        {otherCurrencies?.map((coiin: FundingWalletTypes) => (
-          <PrimaryCard
-            key={coiin.type}
-            title={coiin.type}
-            network={coiin.network}
-            value={coiin.balance}
-            icon={coiin.symbolImageUrl}
-            tooltipTitle={toolTipMap.title}
-            tooltipValue={toolTipMap.value}
-            tooltipNetwork={toolTipMap.network}
-          />
-        ))}
-      </div>
+      {isCurrencyLoading ? (
+        <CircularProgress size={22} />
+      ) : (
+        <div className="mb-6 flex flex-wrap gap-4">
+          {otherCurrencies?.map((coiin: FundingWalletTypes) => (
+            <PrimaryCard
+              key={coiin.type}
+              title={coiin.type}
+              network={coiin.network}
+              value={coiin.balance}
+              icon={coiin.symbolImageUrl}
+              tooltipTitle={toolTipMap.title}
+              tooltipValue={toolTipMap.value}
+              tooltipNetwork={toolTipMap.network}
+            />
+          ))}
+        </div>
+      )}
+
       <Divider />
       <div>
         <CustomButton
@@ -122,21 +133,25 @@ const FundingWallet: FC = () => {
         >
           <FiPlus size={20} /> <span>Add Credit Card</span>
         </CustomButton>
-        <div className="mb-6 flex flex-wrap gap-4">
-          {creditCards?.map((payment: PaymentMethodTypes) => (
-            <PrimaryCard
-              key={payment.id}
-              title={payment.brand}
-              value={`*${payment.last4}`}
-              tooltipTitle={toolTipForCreditCard['title']}
-              tooltipValue={toolTipForCreditCard['value']}
-              icon={<BsCreditCard2BackFill />}
-              id={payment.id}
-              // removeMethod={performDeletion}
-              // removeLoading={removeLoading && removalId === payment.id}
-            />
-          ))}
-        </div>
+        {isWalletLoading ? (
+          <CircularProgress size={22} />
+        ) : (
+          <div className="mb-6 flex flex-wrap gap-4">
+            {creditCards?.map((payment: PaymentMethodTypes) => (
+              <PrimaryCard
+                key={payment.id}
+                title={payment.brand}
+                value={`*${payment.last4}`}
+                tooltipTitle={toolTipForCreditCard['title']}
+                tooltipValue={toolTipForCreditCard['value']}
+                icon={<BsCreditCard2BackFill />}
+                id={payment.id}
+                // removeMethod={performDeletion}
+                // removeLoading={removeLoading && removalId === payment.id}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
