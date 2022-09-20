@@ -4,7 +4,7 @@ import { CardSection } from '../CardSection';
 import { useMutation } from '@apollo/client';
 import { AddPaymentMethod } from '../../types';
 import { ADD_PAYMENT_METHOD } from '../../operations/mutations/stripe';
-import { CircularProgress, Dialog, DialogContent } from '@material-ui/core';
+import { Dialog, DialogContent } from '@material-ui/core';
 import { LIST_PAYMENT_METHODS } from '../../operations/queries/stripe';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
@@ -15,9 +15,10 @@ import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
+  callback?: () => void;
 }
 
-export const CardSetupForm: React.FC<Props> = ({ setModal, open }) => {
+export const CardSetupForm: React.FC<Props> = ({ setModal, open, callback }) => {
   const dispatch = useDispatch();
   const [addPaymentMethod, { loading }] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD, {
     refetchQueries: [{ query: LIST_PAYMENT_METHODS }],
@@ -48,6 +49,7 @@ export const CardSetupForm: React.FC<Props> = ({ setModal, open }) => {
       } else {
         console.log('successfully added payment method');
         dispatch(showSuccessAlert('Successfully added payment method'));
+        callback && callback();
       }
     } else {
       console.log('error: ', errors);

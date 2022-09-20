@@ -36,6 +36,9 @@ const FundingWallet: FC = () => {
   const [refetch, setRefetch] = useState(0);
   const [currencyList, setCurrencyList] = useState<SupportedCurrenciesTypes[]>([]);
   const [isCreditCard, setIsCreditCard] = useState(false);
+  const [removalId, setRemovalId] = useState('');
+  const [isRemoveLoading, setIsRemoveLoading] = useState<boolean>(false);
+  const [walletRefetch, setWalletRefetch] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,13 +67,33 @@ const FundingWallet: FC = () => {
       .then((res) => setCreditCards(res))
       .catch((err) => dispatch(showErrorAlert(err.message)))
       .finally(() => setIsWalletLoading(false));
-  }, []);
+  }, [walletRefetch]);
 
   useEffect(() => {
     ApiClient.getSupportedCurrencies()
       .then((res) => setCurrencyList(res))
       .catch((error) => dispatch(showErrorAlert(error.message)));
   }, []);
+
+  const handleRefetch = () => {
+    setRefetch(new Date().getTime());
+  };
+
+  const handleWalletRefetch = () => {
+    setWalletRefetch(new Date().getTime());
+  };
+
+  const handleRemoveCreditCard = async (id: string) => {
+    setRemovalId(id);
+    setIsRemoveLoading(true);
+    ApiClient.removePaymentMethod({ paymentMethodId: id })
+      .then((res) => console.log(res))
+      .catch((err) => dispatch(showErrorAlert(err.message)))
+      .finally(() => {
+        setIsRemoveLoading(false);
+        handleWalletRefetch();
+      });
+  };
 
   const toolTipMap = {
     title: 'Token',
@@ -80,10 +103,6 @@ const FundingWallet: FC = () => {
   const toolTipForCreditCard = {
     title: 'Credit Card Type',
     value: 'Last Four Digits of Card',
-  };
-
-  const handleRefetch = () => {
-    setRefetch(new Date().getTime());
   };
 
   return (
@@ -96,7 +115,7 @@ const FundingWallet: FC = () => {
         <DepositCryptoForm cryptoList={currencyList} callback={handleRefetch} fundingWallet={fundingWallet} />
       </GenericModal>
       <Elements stripe={stripePromise}>
-        <CardSetupForm setModal={setIsCreditCard} open={isCreditCard} />
+        <CardSetupForm setModal={setIsCreditCard} open={isCreditCard} callback={handleWalletRefetch} />
       </Elements>
       <CustomButton
         onClick={() => setPurchaseCoiin(true)}
@@ -178,8 +197,8 @@ const FundingWallet: FC = () => {
                 tooltipValue={toolTipForCreditCard['value']}
                 icon={<BsCreditCard2BackFill />}
                 id={payment.id}
-                // removeMethod={performDeletion}
-                // removeLoading={removeLoading && removalId === payment.id}
+                removeMethod={handleRemoveCreditCard}
+                removeLoading={isRemoveLoading && removalId === payment.id}
               />
             ))}
           </div>

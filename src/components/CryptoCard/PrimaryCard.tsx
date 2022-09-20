@@ -34,7 +34,7 @@ const PrimaryCard: FC<UserProps> = ({
   if (removeLoading) {
     return (
       <div className={styles.loading}>
-        <CircularProgress />
+        <CircularProgress size={22} />
       </div>
     );
   }
