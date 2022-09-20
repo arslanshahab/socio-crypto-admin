@@ -92,10 +92,10 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
         </FormControl>
       </div>
       <div className={buttonStyles.buttonWrapper}>
-        <CustomButton onClick={handleCloseDialog} className={buttonStyles.secondaryButton}>
+        <CustomButton onClick={handleCloseDialog} className={buttonStyles.outlinedButton}>
           Cancel
         </CustomButton>
-        <CustomButton onClick={handlePurchase} className={buttonStyles.buttonPrimary}>
+        <CustomButton onClick={handlePurchase} className={buttonStyles.filledButton}>
           Purchase
         </CustomButton>
       </div>

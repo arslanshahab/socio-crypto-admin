@@ -14,6 +14,14 @@ import { CircularProgress } from '@material-ui/core';
 import { CryptoDialog } from '../../components/CryptoDialog';
 import GenericModal from '../../components/GenericModal';
 import DepositCryptoForm from '../../components/Forms/DepositCryptoForm';
+import { Elements } from '@stripe/react-stripe-js';
+import { CardSetupForm } from '../../components/CardSetupForm';
+import { loadStripe } from '@stripe/stripe-js';
+import { stripePubKey } from '../../apiConfig.json';
+
+const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
+const stripeKey = (stripePubKey as { [key: string]: string })[env] as any;
+const stripePromise = loadStripe(stripeKey);
 
 const FundingWallet: FC = () => {
   const dispatch = useDispatch();
@@ -28,6 +36,7 @@ const FundingWallet: FC = () => {
   const [openCrypto, setOpenCrypto] = useState(false);
   const [refetch, setRefetch] = useState(0);
   const [currencyList, setCurrencyList] = useState<SupportedCurrenciesTypes[]>([]);
+  const [isCreditCard, setIsCreditCard] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,6 +96,9 @@ const FundingWallet: FC = () => {
       <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
         <DepositCryptoForm cryptoList={currencyList} callback={handleRefetch} fundingWallet={fundingWallet} />
       </GenericModal>
+      <Elements stripe={stripePromise}>
+        <CardSetupForm setModal={setIsCreditCard} open={isCreditCard} />
+      </Elements>
       <CustomButton
         onClick={() => setPurchaseCoiin(true)}
         className="bg-cyberYellow rounded-full px-3 py-2 w-auto my-6"
@@ -149,7 +161,7 @@ const FundingWallet: FC = () => {
       <Divider />
       <div>
         <CustomButton
-          onClick={() => setPurchaseCoiin(true)}
+          onClick={() => setIsCreditCard(true)}
           className="bg-cyberYellow rounded-full px-3 py-2 w-auto flex items-center gap-2 my-6"
         >
           <FiPlus size={20} /> <span>Add Credit Card</span>

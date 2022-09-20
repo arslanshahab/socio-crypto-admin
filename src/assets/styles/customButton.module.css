@@ -13,3 +13,9 @@
 .successButton {
   @apply bg-green-700 text-white w-36 rounded p-1.5;
 }
+.outlinedButton {
+  @apply border border-cyberYellow text-black w-32 rounded p-1.5;
+}
+.filledButton {
+  @apply bg-cyberYellow text-black w-32 rounded p-1.5;
+}
