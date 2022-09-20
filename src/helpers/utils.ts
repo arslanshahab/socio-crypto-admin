@@ -51,14 +51,16 @@ export const prepareMediaRequest = (data: ChannelMediaStructure): CampaignMediaR
   const list: CampaignMediaResponse[] = [];
   const mediaList = flatten(Object.values(data));
   mediaList.forEach((item) => {
-    const obj: CampaignMediaResponse = {
-      ...(item.id && { id: item.id }),
-      channel: item.channel,
-      media: item.media.filename,
-      mediaFormat: item.media.format,
-      isDefault: item.isDefault,
-    };
-    list.push(obj);
+    if (item.media.file) {
+      const obj: CampaignMediaResponse = {
+        ...(item.id && { id: item.id }),
+        channel: item.channel,
+        media: item.media.filename,
+        mediaFormat: item.media.format,
+        isDefault: item.isDefault,
+      };
+      list.push(obj);
+    }
   });
   return list;
 };
@@ -84,21 +86,26 @@ export const prepareChannelMediaFromResponse = (
 ): ChannelMediaStructure => {
   if (list) {
     list.forEach((item) => {
-      const obj: ChannelMediaObject = {
-        ...(item.id && { id: item.id }),
-        isDefault: item.isDefault,
-        channel: item.channel,
-        media: { file: generateCampaignMediaUrl(id, item.media), filename: item.media, format: item.mediaFormat },
-      };
-      if (obj.isDefault) {
-        const mediaList = [...initData[item.channel]];
-        const findDefaultIndex = mediaList.findIndex((item) => item.isDefault);
-        mediaList[findDefaultIndex] = obj;
-        initData[item.channel] = mediaList;
-      } else {
+      if (item.media) {
+        const obj: ChannelMediaObject = {
+          ...(item.id && { id: item.id }),
+          isDefault: item.isDefault,
+          channel: item.channel,
+          media: { file: generateCampaignMediaUrl(id, item.media), filename: item.media, format: item.mediaFormat },
+        };
         const mediaList = [...initData[item.channel]];
         mediaList.push(obj);
         initData[item.channel] = mediaList;
+        // if (obj.isDefault) {
+        //   const mediaList = [...initData[item.channel]];
+        //   const findDefaultIndex = mediaList.findIndex((item) => item.isDefault);
+        //   mediaList[findDefaultIndex] = obj;
+        //   initData[item.channel] = mediaList;
+        // } else {
+        //   const mediaList = [...initData[item.channel]];
+        //   mediaList.push(obj);
+        //   initData[item.channel] = mediaList;
+        // }
       }
     });
   }

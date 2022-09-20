@@ -21,11 +21,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
 
   const onSuccess = (data: FileObject) => {
     const medias = [...channelMedia];
-    if (channelMedia[0].media.filename === '') {
-      medias.splice(0, 1, { channel: channel, id: '', media: data, isDefault: true });
-    } else {
-      medias.push({ channel: channel, id: '', media: data, isDefault: false });
-    }
+    medias.push({ channel: channel, media: data, isDefault: medias.length < 1 ? true : false });
     setChannelMedia(medias);
     onChange(channel, medias);
   };
@@ -38,6 +34,9 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
     if (channelMedia.length > 1) {
       const medias = [...channelMedia];
       medias.splice(index, 1);
+      if (medias[0].isDefault !== true) {
+        medias[0].isDefault = true;
+      }
       setChannelMedia(medias);
       onChange(channel, medias);
     } else {
@@ -57,20 +56,16 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
       <Box className="w-full flex items-center gap-6 mb-2">
         <img src={socialIcons[channel]} alt={channel} />
         <div className="flex gap-4">
-          {channelMedia.map((image: ChannelMediaObject, index: number) => {
+          {channelMedia?.map((image: ChannelMediaObject, index: number) => {
             return (
               <div key={index} className="relative">
-                {index < 1 ? (
-                  ''
-                ) : (
-                  <div
-                    className="w-4 h-4 flex justify-center items-center  absolute right-0 bg-white rounded-full cursor-pointer hover:bg-cyberYellow z-10"
-                    style={{ fontSize: '8px' }}
-                    onClick={() => removeMedia(index)}
-                  >
-                    &#10060;
-                  </div>
-                )}
+                <div
+                  className="w-4 h-4 flex justify-center items-center  absolute right-0 bg-white rounded-full cursor-pointer hover:bg-cyberYellow z-10"
+                  style={{ fontSize: '8px' }}
+                  onClick={() => removeMedia(index)}
+                >
+                  &#10060;
+                </div>
 
                 {image.media.format.includes('image') ? (
                   <div className="w-20 h-20  bg-lightGray rounded-md">
