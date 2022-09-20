@@ -22,14 +22,12 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
   const onSuccess = (data: FileObject) => {
     const medias = [...channelMedia];
     if (channelMedia[0].media.filename === '') {
-      medias.splice(0, 1, { channel: channel, id: medias[0].id || '', media: data, isDefault: true });
-      setChannelMedia(medias);
-      onChange(channel, medias);
+      medias.splice(0, 1, { channel: channel, id: '', media: data, isDefault: true });
     } else {
       medias.push({ channel: channel, id: '', media: data, isDefault: false });
-      setChannelMedia(medias);
-      onChange(channel, medias);
     }
+    setChannelMedia(medias);
+    onChange(channel, medias);
   };
 
   const onError = (msg: string) => {
