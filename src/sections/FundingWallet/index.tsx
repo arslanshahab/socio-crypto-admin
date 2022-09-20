@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import PrimaryCard from '../../components/CryptoCard/PrimaryCard';
-import { CryptoList } from '../../components/CryptoList';
 import CustomButton from '../../components/CustomButton';
 import { PurchaseDialog } from '../../components/PurchaseDialog';
 import Divider from '../../componentsv2/Divider';
@@ -20,7 +19,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { stripePubKey } from '../../apiConfig.json';
 
 const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
-const stripeKey = (stripePubKey as { [key: string]: string })[env] as any;
+const stripeKey = (stripePubKey as { [key: string]: string })[env];
 const stripePromise = loadStripe(stripeKey);
 
 const FundingWallet: FC = () => {
@@ -57,7 +56,7 @@ const FundingWallet: FC = () => {
         });
     };
     fetchData();
-  }, []);
+  }, [refetch]);
 
   useEffect(() => {
     setIsWalletLoading(true);
