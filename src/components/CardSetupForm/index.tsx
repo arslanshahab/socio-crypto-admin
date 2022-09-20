@@ -1,16 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { CardSection } from '../CardSection';
-import { useMutation } from '@apollo/client';
-import { AddPaymentMethod } from '../../types';
-import { ADD_PAYMENT_METHOD } from '../../operations/mutations/stripe';
 import { Dialog, DialogContent } from '@material-ui/core';
-import { LIST_PAYMENT_METHODS } from '../../operations/queries/stripe';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import headingStyles from '../../assets/styles/heading.module.css';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
+import { ApiClient } from '../../services/apiClient';
 
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,9 +17,7 @@ interface Props {
 
 export const CardSetupForm: React.FC<Props> = ({ setModal, open, callback }) => {
   const dispatch = useDispatch();
-  const [addPaymentMethod, { loading }] = useMutation<AddPaymentMethod>(ADD_PAYMENT_METHOD, {
-    refetchQueries: [{ query: LIST_PAYMENT_METHODS }],
-  });
+  const [loading, setLoading] = useState<boolean>(false);
   const stripe = useStripe();
   const elements = useElements();
 
@@ -30,15 +25,24 @@ export const CardSetupForm: React.FC<Props> = ({ setModal, open, callback }) => 
     setModal(false);
   };
 
+  const addPaymentMethod = async () => {
+    try {
+      return await ApiClient.addPaymentMethod();
+    } catch (error: any) {
+      dispatch(showErrorAlert(error.message));
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { data, errors } = await addPaymentMethod();
+    setLoading(true);
+    const data = await addPaymentMethod();
     // Make sure to disable form submission until Stripe.js has loaded.
     if (!stripe || !elements) return;
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) throw new Error('null card element');
-    if (data && data.addPaymentMethod) {
-      const result = await stripe.confirmCardSetup(data.addPaymentMethod.clientSecret, {
+    if (data?.clientSecret) {
+      const result = await stripe.confirmCardSetup(data.clientSecret, {
         payment_method: {
           card: cardElement,
         },
@@ -52,7 +56,7 @@ export const CardSetupForm: React.FC<Props> = ({ setModal, open, callback }) => 
         callback && callback();
       }
     } else {
-      console.log('error: ', errors);
+      dispatch(showErrorAlert('Something went worng'));
     }
     handleClose();
   };

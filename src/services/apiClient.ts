@@ -22,6 +22,7 @@ import {
   PaymentMethodTypes,
   CampaignMetricTypes,
   SupportedCurrenciesTypes,
+  AddPaymentMethodTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -204,6 +205,14 @@ export class ApiClient {
   public static async removePaymentMethod(payload: { paymentMethodId: string }): Promise<SuccessResponse> {
     try {
       return (await this.requestInstance.post(`/v1/stripe/remove-payment-method`, payload)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async addPaymentMethod(): Promise<AddPaymentMethodTypes> {
+    try {
+      return (await this.requestInstance.post(`/v1/stripe/add-payment-method`)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

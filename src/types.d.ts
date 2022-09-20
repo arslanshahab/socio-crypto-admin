@@ -921,3 +921,7 @@ export type SupportedCurrenciesTypes = {
   symbol: string;
   network: string;
 };
+
+export type AddPaymentMethodTypes = {
+  clientSecret: string;
+};
