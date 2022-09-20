@@ -7,6 +7,9 @@ import { capitalize } from '../../helpers/formatter';
 import { CHARGE_PAYMENT_METHOD } from '../../operations/mutations/stripe';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
+import { ApiClient } from '../../services/apiClient';
+import { showErrorAlert } from '../../store/actions/alerts';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +17,7 @@ interface Props {
 }
 
 export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) => {
+  const dispatch = useDispatch();
   const [paymentMethodId, setPaymentMethodId] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [amount, setAmount] = useState(givenAmount || 0);
@@ -42,7 +46,9 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
 
   const handlePurchase = async () => {
     try {
-      await chargeCard();
+      ApiClient.purchaseCoiin({ amount, paymentMethodId })
+        .then()
+        .catch((err) => dispatch(showErrorAlert(err.message)));
       setOpen(false);
     } catch (e) {
       console.log(e);

@@ -925,3 +925,14 @@ export type SupportedCurrenciesTypes = {
 export type AddPaymentMethodTypes = {
   clientSecret: string;
 };
+
+export type PurchaseCoiinPayload = {
+  amount: number;
+  paymentMethodId: string;
+};
+
+export type PurchaseCoiinTypes = {
+  id: string;
+  clientSecret: string;
+  amount: number;
+};
