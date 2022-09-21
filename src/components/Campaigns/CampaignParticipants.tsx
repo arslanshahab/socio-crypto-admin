@@ -160,7 +160,7 @@ const CampaignParticipants: React.FC = () => {
                   <tr className={tableStyles.tableBodyRow} key={participant.id}>
                     <td className={tableStyles.tableColumn}>{participant.username}</td>
                     <td className={tableStyles.tableColumn}>{participant.email}</td>
-                    <td className={tableStyles.tableColumn}>{participant.twitterUsername}</td>
+                    <td className={tableStyles.tableColumn}>{participant.twitterUsername || ''}</td>
                     <td className={tableStyles.tableColumn}>{participant.selfPostCount}</td>
                     <td className={tableStyles.tableColumn}>{participant.likeScore}</td>
                     <td className={tableStyles.tableColumn}>{participant.shareScore}</td>
