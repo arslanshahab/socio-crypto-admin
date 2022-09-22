@@ -6,31 +6,36 @@ import { StylesConfig } from 'react-select';
 import BarChart from '../../componentsv2/BarChart';
 import CustomCard from '../../componentsv2/CustomCard';
 import { ApiClient } from '../../services/apiClient';
-import { CampaignAggregationTypes, CampaignStatTypes, DashboardStats, UserStatTypes } from '../../types';
+import { CampaignAggregationTypes, CampaignStatTypes, UserStatTypes } from '../../types';
+import { showErrorAlert } from '../../store/actions/alerts';
+import { useDispatch } from 'react-redux';
+import { CircularProgress } from '@material-ui/core';
 
 const CampaignAnalytics: FC = () => {
+  const dispatch = useDispatch();
   const [openTab, setOpenTab] = useState(1);
-  const [selectedOption, setSelectedOption] = useState(null);
   const [campaignId, setCamapignId] = useState('-1');
   const [campaignStats, setCampaignStats] = useState<CampaignAggregationTypes>();
   const [userStats, setUserStats] = useState<UserStatTypes>();
   const [campaigns, setCampaigns] = useState<{ value: string; label: string }[]>([]);
   const [graphData, setGraphData] = useState<CampaignStatTypes[]>();
+  const [graphLoading, setGraphLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    setGraphLoading(true);
     ApiClient.getDashboardStats(campaignId)
       .then((res) => {
         setCampaignStats(res.aggregatedMetrics);
         setGraphData(res.rawMetrics);
       })
-      .catch((err) => console.log(err))
-      .finally(() => console.log('loading...*'));
-  }, []);
+      .catch((err) => dispatch(showErrorAlert((err as Error).message)))
+      .finally(() => setGraphLoading(false));
+  }, [campaignId]);
 
   useEffect(() => {
     ApiClient.getUserStats()
       .then((res) => setUserStats(res))
-      .catch((err) => console.log(err))
+      .catch((err) => dispatch(showErrorAlert((err as Error).message)))
       .finally(() => console.log('finally..'));
   }, []);
 
@@ -41,11 +46,16 @@ const CampaignAnalytics: FC = () => {
           value: x.id,
           label: x.name,
         }));
+        result.unshift({ value: '-1', label: 'All' });
         setCampaigns(result);
       })
-      .catch((err) => console.log(err))
+      .catch((err) => dispatch(showErrorAlert((err as Error).message)))
       .finally(() => console.log('finally..'));
   }, []);
+
+  const hanleSelectField = (e: any) => {
+    setCamapignId(e.value);
+  };
 
   const customStyles: StylesConfig = {
     control: (provided: Record<string, unknown>, state: any) => ({
@@ -117,22 +127,42 @@ const CampaignAnalytics: FC = () => {
           </li>
         </ul>
         <div className={styles.selectField}>
-          <Select defaultValue={selectedOption} options={campaigns} styles={customStyles} />
+          <Select
+            onChange={(e) => hanleSelectField(e)}
+            defaultValue={'All'}
+            options={campaigns}
+            styles={customStyles}
+          />
         </div>
       </div>
-      <div className={styles.chartSection}>
-        <BarChart data={graphData} />
-      </div>
-      <div className={styles.boxSection}>
-        <div className={styles.participationBox}>
-          <span />
-          <p>Participation Score</p>
+      {graphLoading ? (
+        <div className="flex justify-center p-4">
+          <CircularProgress />
         </div>
-        <div className={styles.clicksBox}>
-          <span />
-          <p>Clicks</p>
-        </div>
-      </div>
+      ) : (
+        <>
+          {graphData?.length ? (
+            <>
+              <div className={styles.chartSection}>
+                <BarChart data={graphData} />
+              </div>
+              <div className={styles.boxSection}>
+                <div className={styles.participationBox}>
+                  <span />
+                  <p>Participation Score</p>
+                </div>
+                <div className={styles.clicksBox}>
+                  <span />
+                  <p>Clicks</p>
+                </div>
+              </div>
+            </>
+          ) : (
+            ''
+          )}
+        </>
+      )}
+
       <div className={styles.lineBar} />
       <div className={styles.cardSection}>
         <div className={styles.cards}>

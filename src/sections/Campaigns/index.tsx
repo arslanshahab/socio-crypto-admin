@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import CampaignsTable from '../../componentsv2/CampaignsTable';
-import PostCampaigns from '../../componentsv2/PostCampaigns';
+import PastCampaigns from '../../componentsv2/PastCampaigns';
 
 const Campaigns: FC = () => {
   const [openTab, setOpenTab] = React.useState(1);
@@ -47,7 +47,7 @@ const Campaigns: FC = () => {
               <CampaignsTable />
             </div>
             <div className={openTab === 2 ? 'block' : 'hidden'} id="link3">
-              <PostCampaigns />
+              <PastCampaigns />
             </div>
           </div>
         </div>

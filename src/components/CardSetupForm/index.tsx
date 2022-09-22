@@ -64,11 +64,11 @@ export const CardSetupForm: React.FC<Props> = ({ setModal, open }) => {
             <CardSection />
           </div>
           <div className="flex justify-center gap-4 mb-4">
-            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'}>
-              {loading ? <CircularProgress size={22} color="inherit" /> : 'Submit'}
-            </CustomButton>
-            <CustomButton className={buttonStyles.buttonPrimary} onClick={handleClose}>
+            <CustomButton className={buttonStyles.outlinedButton} onClick={handleClose}>
               Cancel
+            </CustomButton>
+            <CustomButton className={buttonStyles.filledButton} type={'submit'} loading={loading}>
+              Submit
             </CustomButton>
           </div>
         </form>

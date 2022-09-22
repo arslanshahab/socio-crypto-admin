@@ -8,7 +8,6 @@ import InstagramIcon from '../../../assets/svg/socialIcons/InstagramLogo.svg';
 import TwitterIcon from '../../../assets/svg/socialIcons/TwitterLogo.svg';
 import FacebookIcon from '../../../assets/svg/socialIcons/FBLogo.svg';
 import TiktokIcon from '../../../assets/svg/socialIcons/TikTokLogo.svg';
-import { MdDelete } from 'react-icons/md';
 
 export interface Props {
   channel: string;
@@ -18,13 +17,12 @@ export interface Props {
 
 const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange }) => {
   const dispatch = useDispatch();
-  const [images, setImages] = useState<ChannelMediaObject[]>(channelMedias);
+  const [channelMedia, setChannelMedia] = useState<ChannelMediaObject[]>(channelMedias);
 
   const onSuccess = (data: FileObject) => {
-    const inputKey = `${data.filename}-${Math.random()}`;
-    const medias = [...images];
-    medias.push({ channel: channel, id: inputKey, media: data, isDefault: medias.length === 1 ? true : false });
-    setImages(medias);
+    const medias = [...channelMedia];
+    medias.push({ channel: channel, media: data, isDefault: medias.length < 1 ? true : false });
+    setChannelMedia(medias);
     onChange(channel, medias);
   };
 
@@ -32,20 +30,14 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
     dispatch(showErrorAlert(msg));
   };
 
-  // const addMedia = () => {
-  //   if (channelMedias.length < 5) {
-  //     const medias = [...channelMedias];
-  //     medias.push({ channel: channel, media: initialState.newCampaign.campaignImage, isDefault: false });
-  //     onChange(channel, medias);
-  //   } else {
-  //     dispatch(showErrorAlert('You cannot add more than 5 media items for a social channel'));
-  //   }
-  // };
-
   const removeMedia = (index: number) => {
-    if (channelMedias.length > 1) {
-      const medias = [...channelMedias];
+    if (channelMedia.length > 1) {
+      const medias = [...channelMedia];
       medias.splice(index, 1);
+      if (medias[0].isDefault !== true) {
+        medias[0].isDefault = true;
+      }
+      setChannelMedia(medias);
       onChange(channel, medias);
     } else {
       dispatch(showErrorAlert('You need to add one media for each social channel you selected'));
@@ -64,16 +56,17 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
       <Box className="w-full flex items-center gap-6 mb-2">
         <img src={socialIcons[channel]} alt={channel} />
         <div className="flex gap-4">
-          {images.map((image: ChannelMediaObject, index: number) => {
+          {channelMedia?.map((image: ChannelMediaObject, index: number) => {
             return (
               <div key={index} className="relative">
-                {/* {index ? (
-                  <span className="absolute top-0 right-0">
-                    <MdDelete color="red" onClick={() => removeMedia(index)} />
-                  </span>
-                ) : (
-                  ''
-                )} */}
+                <div
+                  className="w-4 h-4 flex justify-center items-center  absolute right-0 bg-white rounded-full cursor-pointer hover:bg-cyberYellow z-10"
+                  style={{ fontSize: '8px' }}
+                  onClick={() => removeMedia(index)}
+                >
+                  &#10060;
+                </div>
+
                 {image.media.format.includes('image') ? (
                   <div className="w-20 h-20  bg-lightGray rounded-md">
                     <img
@@ -89,7 +82,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                         autoPlay={false}
                         src={image.media.file}
                         controls={true}
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain rounded-md"
                       />
                     </div>
                   )

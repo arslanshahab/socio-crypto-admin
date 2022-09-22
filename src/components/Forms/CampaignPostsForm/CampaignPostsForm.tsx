@@ -62,7 +62,7 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const handlePostChange = (channel: string, index: number, data: string) => {
     const templates = { ...channelTemplates };
     const channelPosts = [...templates[channel]];
-    channelPosts[index] = { channel: channel, post: data };
+    channelPosts[index] = { channel: channel, id: channelPosts[index].id || '', post: data };
     templates[channel] = channelPosts;
     setChannelTemplates(templates);
   };

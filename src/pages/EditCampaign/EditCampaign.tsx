@@ -56,7 +56,6 @@ const EditCampaignPage: React.FC = () => {
   const [fetchedCampaign, setFetchedCampaign] = useState<Campaign | null>(null);
 
   useEffect(() => {
-    console.log('called', campaignId);
     const fetchedCampaign = async () => {
       if (campaignId) {
         setCampaignLoading(true);

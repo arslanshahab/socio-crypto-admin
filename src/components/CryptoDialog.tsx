@@ -76,11 +76,11 @@ export const CryptoDialog: React.FC<Props> = ({ isTokenRegistration, open, setOp
             </div>
           </DialogContent>
           <div className="flex gap-4 justify-center my-4">
-            <CustomButton className={buttonStyles.buttonPrimary} type={'submit'} onClick={handleRegisterToken}>
-              Submit
-            </CustomButton>
-            <CustomButton className={buttonStyles.buttonPrimary} onClick={() => setOpenDialog(false)}>
+            <CustomButton className={buttonStyles.outlinedButton} onClick={() => setOpenDialog(false)}>
               Cancel
+            </CustomButton>
+            <CustomButton className={buttonStyles.filledButton} type={'submit'} onClick={handleRegisterToken}>
+              Submit
             </CustomButton>
           </div>
         </Dialog>

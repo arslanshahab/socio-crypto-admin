@@ -45,12 +45,12 @@ progress::-moz-progress-value {
 }
 
 /* Campaign Status */
-.successStatus {
+.open {
   @apply text-green-500 text-2xl font-extrabold;
 }
 .avgStatus {
   @apply text-green-300 text-2xl font-extrabold;
 }
-.failedStatus {
+.closed {
   @apply text-red-600 text-2xl font-extrabold;
 }
