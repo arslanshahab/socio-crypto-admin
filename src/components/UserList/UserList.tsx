@@ -130,7 +130,9 @@ const UserList: React.FC = () => {
                   >
                     <td className={styles.tableColumn}>{user?.profile?.username}</td>
                     <td className={styles.tableColumn}>{user.email}</td>
-                    <td className={styles.tableColumn}>{user.social_link.length && user.social_link[0].username}</td>
+                    <td className={styles.tableColumn}>
+                      {(user.social_link.length && user.social_link[0].username) || ''}
+                    </td>
                     <td className={styles.tableColumn}>{user.kycStatus}</td>
                     <td className={styles.tableColumn}>{new Date(user.createdAt).toDateString()}</td>
                   </tr>
