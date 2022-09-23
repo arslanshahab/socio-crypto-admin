@@ -70,7 +70,16 @@ const SocialPostList: FC = () => {
               {posts ? (
                 posts.map((post: SocialPostTypes) => (
                   <tr className={tableStyles.tableRow} key={post.id}>
-                    <td className={tableStyles.tableColumn}>{post.user.screen_name}</td>
+                    <td className={tableStyles.tableColumn}>
+                      <a
+                        href={`https://twitter.com/${post.user.screen_name}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="no-underline text-blue-400 hover:text-denimBlue"
+                      >
+                        {post.user.screen_name}
+                      </a>
+                    </td>
                     <td className={tableStyles.tableColumn}>{post.text}</td>
                     <td className={tableStyles.tableColumn}>{post.user.followers_count}</td>
                     <td className={tableStyles.tableColumn}>
@@ -78,7 +87,7 @@ const SocialPostList: FC = () => {
                         href={`${post.entities?.urls?.map((x: MediaUrls) => x.expanded_url)}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="underline text-blue-400"
+                        className="underline text-blue-400 hover:text-denimBlue"
                       >
                         {post.entities?.urls?.map((x: MediaUrls) => x.expanded_url)}
                       </a>
