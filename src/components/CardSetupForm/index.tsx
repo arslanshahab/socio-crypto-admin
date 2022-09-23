@@ -50,13 +50,15 @@ export const CardSetupForm: React.FC<Props> = ({ setModal, open, callback }) => 
       if (result.error) {
         dispatch(showErrorAlert('The credit card you have entered is invalid'));
         console.log('card error: ', result.error.message);
+        setLoading(false);
       } else {
-        console.log('successfully added payment method');
+        setLoading(false);
         dispatch(showSuccessAlert('Successfully added payment method'));
         callback && callback();
       }
     } else {
       dispatch(showErrorAlert('Something went worng'));
+      setLoading(false);
     }
     handleClose();
   };
