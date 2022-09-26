@@ -722,6 +722,14 @@ export type SocialPostType = {
     userId: string;
   };
 };
+
+export type SocialLinkTypes = {
+  [key: string]: {
+    id: string;
+    username: string;
+  };
+};
+
 export type UserListType = {
   id: string;
   email: string | null;
@@ -731,6 +739,7 @@ export type UserListType = {
   active: boolean;
   profile: UserProfileType;
   social_post: SocialPostType;
+  social_link: SocialLinkTypes;
 };
 
 export type UserTypes = {
@@ -920,4 +929,19 @@ export type CampaignMetricTypes = {
 export type SupportedCurrenciesTypes = {
   symbol: string;
   network: string;
+};
+
+export type AddPaymentMethodTypes = {
+  clientSecret: string;
+};
+
+export type PurchaseCoiinPayload = {
+  amount: number;
+  paymentMethodId: string;
+};
+
+export type PurchaseCoiinTypes = {
+  id: string;
+  clientSecret: string;
+  amount: number;
 };

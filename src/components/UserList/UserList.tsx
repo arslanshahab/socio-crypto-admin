@@ -115,6 +115,7 @@ const UserList: React.FC = () => {
               <tr className={styles.tableHeadRow}>
                 <th className={styles.tableColumn}>UserName</th>
                 <th className={styles.tableColumn}>Email</th>
+                <th className={styles.tableColumn}>Twitter Username</th>
                 <th className={styles.tableColumn}>Kyc Status</th>
                 <th className={styles.tableColumn}>Active Since</th>
               </tr>
@@ -129,6 +130,9 @@ const UserList: React.FC = () => {
                   >
                     <td className={styles.tableColumn}>{user?.profile?.username}</td>
                     <td className={styles.tableColumn}>{user.email}</td>
+                    <td className={styles.tableColumn}>
+                      {(user.social_link.length && user.social_link[0].username) || ''}
+                    </td>
                     <td className={styles.tableColumn}>{user.kycStatus}</td>
                     <td className={styles.tableColumn}>{new Date(user.createdAt).toDateString()}</td>
                   </tr>

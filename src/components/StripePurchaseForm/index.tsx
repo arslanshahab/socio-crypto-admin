@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
-import { useMutation, useQuery } from '@apollo/client';
-import { ChargePaymentMethodResults, ChargePaymentMethodVars, ListPaymentMethodsResults } from '../../types';
-import { LIST_PAYMENT_METHODS } from '../../operations/queries/stripe';
+import React, { useEffect, useState } from 'react';
+import { CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import { PaymentMethodTypes } from '../../types';
 import { capitalize } from '../../helpers/formatter';
-import { CHARGE_PAYMENT_METHOD } from '../../operations/mutations/stripe';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
+import { ApiClient } from '../../services/apiClient';
+import { showErrorAlert } from '../../store/actions/alerts';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,14 +14,22 @@ interface Props {
 }
 
 export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) => {
+  const dispatch = useDispatch();
   const [paymentMethodId, setPaymentMethodId] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [amount, setAmount] = useState(givenAmount || 0);
   const [openCards, setOpenCards] = useState(false);
-  const { data, loading } = useQuery<ListPaymentMethodsResults>(LIST_PAYMENT_METHODS);
-  const [chargeCard] = useMutation<ChargePaymentMethodResults, ChargePaymentMethodVars>(CHARGE_PAYMENT_METHOD, {
-    variables: { amount: amount, paymentMethodId: paymentMethodId },
-  });
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodTypes[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    ApiClient.getPaymentMethods()
+      .then((res) => setPaymentMethods(res))
+      .catch((err) => dispatch(showErrorAlert(err.message)))
+      .finally(() => setIsLoading(false));
+  }, []);
+
   const handleCloseDialog = () => {
     setOpen(false);
   };
@@ -42,7 +50,9 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
 
   const handlePurchase = async () => {
     try {
-      await chargeCard();
+      ApiClient.purchaseCoiin({ amount, paymentMethodId })
+        .then()
+        .catch((err) => dispatch(showErrorAlert(err.message)));
       setOpen(false);
     } catch (e) {
       console.log(e);
@@ -63,11 +73,11 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
         <Typography style={{ paddingTop: '15px' }}>(${(amount !== 0 ? amount * 0.1 : 0).toFixed(2)})</Typography>
       </div>
       <div className="my-6">
-        <FormControl className="w-full">
-          <InputLabel>Select Card</InputLabel>
-          {loading ? (
-            <div />
-          ) : (
+        {isLoading ? (
+          <CircularProgress size={22} />
+        ) : (
+          <FormControl className="w-full">
+            <InputLabel>Select Card</InputLabel>
             <Select
               open={openCards}
               className="form-control-item w-full"
@@ -76,20 +86,19 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
               value={displayName}
               renderValue={() => displayName}
             >
-              {data &&
-                data.listPaymentMethods.map((wallet, index) => {
-                  return (
-                    <MenuItem
-                      onClick={() => handleClick(wallet.id, `${capitalize(wallet.brand)} (...${wallet.last4})`)}
-                      key={index}
-                    >
-                      {capitalize(wallet.brand)} {`(...${wallet.last4})`}
-                    </MenuItem>
-                  );
-                })}
+              {paymentMethods?.map((wallet, index) => {
+                return (
+                  <MenuItem
+                    onClick={() => handleClick(wallet.id, `${capitalize(wallet.brand)} (...${wallet.last4})`)}
+                    key={index}
+                  >
+                    {capitalize(wallet.brand)} {`(...${wallet.last4})`}
+                  </MenuItem>
+                );
+              })}
             </Select>
-          )}
-        </FormControl>
+          </FormControl>
+        )}
       </div>
       <div className={buttonStyles.buttonWrapper}>
         <CustomButton onClick={handleCloseDialog} className={buttonStyles.outlinedButton}>
