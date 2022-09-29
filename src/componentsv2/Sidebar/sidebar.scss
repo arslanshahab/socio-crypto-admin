@@ -1,0 +1,28 @@
+.sidebar {
+  .imageWrapper {
+    @apply flex justify-center my-8;
+    img {
+      @apply w-32 h-32 object-contain;
+    }
+  }
+  .dividerWrapper {
+    @apply px-6;
+    .divider {
+      @apply bg-silver;
+      height: 0.5px;
+    }
+  }
+  .menu {
+    @apply mt-8 mb-6 pl-10 text-xs text-silver;
+  }
+  .menuWrapper {
+    @apply mt-6 pl-10 flex gap-3 items-center;
+    img {
+      @apply w-6 h-6;
+    }
+    p {
+      @apply text-sm font-semibold;
+      color: #3a6ff8;
+    }
+  }
+}

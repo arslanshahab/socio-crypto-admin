@@ -13,6 +13,8 @@ module.exports = {
         orangeYellow: '#C8A818',
         lightGray: '#F9FAFB',
         coolGray: '#9CA3AF',
+        silver: '#ABABAB',
+        bluetiful: '#3A6FF8',
       },
     },
     screens: {

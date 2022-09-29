@@ -14,7 +14,7 @@ import { ManageWithdrawRequests } from '../../components/admin/ManageWithdrawReq
 import { CampaignAudit } from '../../components/admin/CampaignAudit';
 import { UserManagement } from '../../components/UserManagement/UserManagement';
 import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
-import Sidebar from '../../components/Sidebar';
+// import Sidebar from '../../components/Sidebar';
 import styles from './Dashboard.module.scss';
 // import { DashboardHome } from '../../components/DashboardHome';
 import NewCampaignPage from '../NewCampaign';
@@ -33,6 +33,7 @@ import { getProfile } from '../../store/actions/profile';
 import DashboardHome from '../DashboardHome';
 import CampaignAnalytics from '../CampaignAnalytics';
 import Payments from '../Payments';
+import Sidebar from '../../componentsv2/Sidebar';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
