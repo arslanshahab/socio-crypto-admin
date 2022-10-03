@@ -26,6 +26,8 @@ type Participant = {
   likeScore: number;
   createdAt: string;
   blacklist: boolean;
+  participantShare: string;
+  participantShareUSD: string;
 };
 
 const CampaignParticipants: React.FC = () => {
@@ -42,6 +44,7 @@ const CampaignParticipants: React.FC = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [reload, setReload] = useState(false);
   const [sort, setSort] = useState('desc');
+  const [campaignSymbol, setCampaignSymbol] = useState<string>('');
 
   useEffect(() => {
     const fetchCampaignParticipants = async () => {
@@ -54,6 +57,7 @@ const CampaignParticipants: React.FC = () => {
       );
       setParticipants(data.data.participants);
       setTotal(data.data.count);
+      setCampaignSymbol(data.data.campaignSymbol);
       setIsLoading(false);
       setSearchLoading(false);
     };
@@ -150,6 +154,8 @@ const CampaignParticipants: React.FC = () => {
                 <th className={`${tableStyles.tableColumn} cursor-pointer`}>Participation Score</th>
                 <th className={tableStyles.tableColumn}>Total Likes</th>
                 <th className={tableStyles.tableColumn}>Total Shares</th>
+                <th className={tableStyles.tableColumn}>{campaignSymbol}</th>
+                <th className={tableStyles.tableColumn}>USD</th>
                 <th className={tableStyles.tableColumn}>Action</th>
               </tr>
             </thead>
@@ -167,6 +173,8 @@ const CampaignParticipants: React.FC = () => {
                     <td className={tableStyles.tableColumn}>{participant.participationScore}</td>
                     <td className={tableStyles.tableColumn}>{participant.totalLikes}</td>
                     <td className={tableStyles.tableColumn}>{participant.totalShares}</td>
+                    <td className={tableStyles.tableColumn}>{participant.participantShare}</td>
+                    <td className={tableStyles.tableColumn}>{participant.participantShareUSD}</td>
                     <td className={tableStyles.tableColumn}>
                       {!participant.blacklist && (
                         <CustomButton
