@@ -15,6 +15,7 @@ module.exports = {
         coolGray: '#9CA3AF',
         silver: '#ABABAB',
         bluetiful: '#3A6FF8',
+        lavender: '#EEEFFF',
       },
     },
     screens: {

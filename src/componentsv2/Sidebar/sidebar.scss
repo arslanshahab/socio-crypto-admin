@@ -21,8 +21,10 @@
       @apply w-6 h-6;
     }
     p {
-      @apply text-sm font-semibold;
-      color: #3a6ff8;
+      @apply text-sm font-semibold text-bluetiful;
     }
+  }
+  .activeTab {
+    @apply bg-lavender py-3 rounded-tr-xl rounded-br-xl;
   }
 }
