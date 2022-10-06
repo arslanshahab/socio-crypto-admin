@@ -17,6 +17,7 @@ import FileUpload from '../../FileUpload';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { apiURI } from '../../../clients/raiinmaker-api';
+import { APPROVED, RAIINMAKER } from '../../../helpers/constants';
 
 interface Props {
   company: string;
@@ -192,7 +193,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     );
   }
 
-  if (profile.verifyStatus !== 'APPROVED' && profile.company !== 'raiinmaker') {
+  if (profile.verifyStatus !== APPROVED && profile.company !== RAIINMAKER) {
     return (
       <Box className="p-10 w-full flex flex-col justify-center items-center">
         <p>
