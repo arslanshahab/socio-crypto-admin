@@ -192,7 +192,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     );
   }
 
-  if (profile.verifyStatus !== 'APPROVED') {
+  if (profile.verifyStatus !== 'APPROVED' && profile.company !== 'raiinmaker') {
     return (
       <Box className="p-10 w-full flex flex-col justify-center items-center">
         <p>
