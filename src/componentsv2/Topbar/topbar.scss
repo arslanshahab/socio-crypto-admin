@@ -27,5 +27,8 @@
   // icons
   .iconWrapper {
     @apply flex gap-4 items-center;
+    .profile {
+      @apply cursor-pointer;
+    }
   }
 }
