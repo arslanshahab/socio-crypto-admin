@@ -1,7 +1,10 @@
 import React, { FC } from 'react';
 
-const Divider: FC = () => {
-  return <div className="h-0.5 w-full bg-coolGray" />;
+interface IDividerProps {
+  className?: string;
+}
+const Divider: FC<IDividerProps> = ({ className }) => {
+  return <div className={className ? className : 'h-0.5 w-full bg-coolGray'} />;
 };
 
 export default Divider;
