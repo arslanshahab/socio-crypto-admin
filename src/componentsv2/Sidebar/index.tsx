@@ -78,7 +78,15 @@ const Sidebar: FC = () => {
             <div key={item.name} className="menuWrapper">
               <div
                 className={`itemsWrapper ${item.to === location.pathname ? 'activeTab' : ''}`}
-                onClick={() => push(item.to)}
+                onClick={
+                  item.to
+                    ? () => {
+                        push(item.to);
+                      }
+                    : () => {
+                        window.open(item.href, '_blank');
+                      }
+                }
               >
                 <img src={SidebarIcons?.[item.icon]} alt="raiinmaker dashboard" />
                 <p>{item.name}</p>
