@@ -39,7 +39,16 @@ export const getRoutesMapping = (data: any): Array<MenuObject> => {
       icon: 'user',
       enabled: (data && data.company === 'raiinmaker') || false,
     },
-    { name: 'FAQ', to: '#', icon: 'question', enabled: false, href: faqUrl },
+    { name: 'FAQ', to: '', icon: 'question', enabled: false, href: faqUrl },
     { name: 'Contact Support', to: '', icon: 'support', enabled: false, href: supportEmail },
+  ];
+};
+
+export const geToolRoutes = () => {
+  return [
+    { name: 'Setting', to: '', icon: 'setting', enabled: true },
+    { name: 'FAQ', to: '', icon: 'faq', enabled: true, href: faqUrl },
+    { name: 'Help & Support', to: '', icon: 'support', enabled: true, href: faqUrl },
+    { name: 'Logout', to: '', icon: 'logout', enabled: true },
   ];
 };

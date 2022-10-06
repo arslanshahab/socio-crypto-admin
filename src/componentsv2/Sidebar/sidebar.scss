@@ -1,12 +1,12 @@
 .sidebar {
   .imageWrapper {
-    @apply flex justify-center my-8;
+    @apply flex justify-center mt-8;
     img {
       @apply w-32 h-32 object-contain;
     }
   }
   .dividerWrapper {
-    @apply px-6;
+    @apply px-6 mt-6;
     .divider {
       @apply bg-silver;
       height: 0.5px;
@@ -18,7 +18,7 @@
   .menuWrapper {
     @apply mt-4 h-10 w-48  items-center;
     .itemsWrapper {
-      @apply pl-10 flex gap-3 h-full  items-center cursor-pointer text-grayWeb;
+      @apply pl-10 flex gap-4 h-full  items-center cursor-pointer text-grayWeb;
       img {
         @apply w-6 h-6;
       }
