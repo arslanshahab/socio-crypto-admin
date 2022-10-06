@@ -1,0 +1,31 @@
+.topbarWrapper {
+  @apply h-16 flex items-end justify-end gap-8;
+  .searchbarWrapper {
+    @apply flex gap-4 items-center border rounded-xl w-60 h-10 pl-2;
+    img {
+      @apply w-6 h-6 object-contain;
+    }
+    .css-b62m3t-container {
+      .css-1s2u09g-control {
+        @apply border-0  w-44 shadow-none p-0;
+        .css-1hb7zxy-IndicatorsContainer {
+          span {
+            @apply hidden;
+          }
+        }
+      }
+      .css-1pahdxg-control {
+        @apply border-0 w-44 shadow-none;
+        .css-1hb7zxy-IndicatorsContainer {
+          span {
+            @apply hidden;
+          }
+        }
+      }
+    }
+  }
+  // icons
+  .iconWrapper {
+    @apply flex gap-4 items-center;
+  }
+}
