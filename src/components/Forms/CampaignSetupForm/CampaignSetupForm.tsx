@@ -196,8 +196,8 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   if (profile.verifyStatus !== APPROVED && profile.company !== RAIINMAKER) {
     return (
       <Box className="p-10 w-full flex flex-col justify-center items-center">
-        <p>
-          Before create new campaign, please verify your KYC{' '}
+        <p className="normal-case">
+          Before creating a new campaign, please verify your KYC{' '}
           <span
             className="cursor-pointer underline text-blue-800 font-semibold	"
             onClick={() => {
