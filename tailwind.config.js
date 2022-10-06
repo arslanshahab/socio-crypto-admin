@@ -16,6 +16,7 @@ module.exports = {
         silver: '#ABABAB',
         bluetiful: '#3A6FF8',
         lavender: '#EEEFFF',
+        grayWeb: '#838383',
       },
     },
     screens: {

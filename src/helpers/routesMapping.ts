@@ -13,21 +13,22 @@ export const getRoutesMapping = (data: any): Array<MenuObject> => {
     { name: 'dashboard', to: '/dashboard', icon: 'dashboard', enabled: true },
     { name: 'campaigns', to: '/dashboard/campaigns', icon: 'campaign', enabled: true },
     { name: 'market data', to: '/dashboard/marketData', icon: 'trending', enabled: false },
-    { name: 'new campaign', to: '/dashboard/newCampaign', icon: 'add', enabled: true },
+    { name: 'Add campaign', to: '/dashboard/newCampaign', icon: 'newCampaign', enabled: true },
+    { name: 'Add Crypto', to: '/dashboard/paymentsAccount', icon: 'crypto', enabled: true },
     {
       name: 'Admin',
       to: '/dashboard/admin/management',
-      icon: 'assign',
+      icon: 'admin',
       enabled: (data && data.company === 'raiinmaker') || false,
     },
+    // {
+    //   name: 'Audit campaigns',
+    //   to: '/dashboard/admin/audit-campaigns',
+    //   icon: 'assign',
+    //   enabled: (data && data.company === 'raiinmaker') || false,
+    // },
     {
-      name: 'Audit campaigns',
-      to: '/dashboard/admin/audit-campaigns',
-      icon: 'assign',
-      enabled: (data && data.company === 'raiinmaker') || false,
-    },
-    {
-      name: 'Manage Users',
+      name: 'Management',
       to: '/dashboard/admin/userManagement',
       icon: 'user',
       enabled: (data && data.company === 'raiinmaker') || false,
@@ -38,7 +39,7 @@ export const getRoutesMapping = (data: any): Array<MenuObject> => {
       icon: 'user',
       enabled: (data && data.company === 'raiinmaker') || false,
     },
-    { name: 'FAQ', to: '', icon: 'question', enabled: true, href: faqUrl },
-    { name: 'Contact Support', to: '', icon: 'support', enabled: true, href: supportEmail },
+    { name: 'FAQ', to: '#', icon: 'question', enabled: false, href: faqUrl },
+    { name: 'Contact Support', to: '', icon: 'support', enabled: false, href: supportEmail },
   ];
 };

@@ -12,19 +12,22 @@
       height: 0.5px;
     }
   }
-  .menu {
+  .title {
     @apply mt-8 mb-6 pl-10 text-xs text-silver;
   }
   .menuWrapper {
-    @apply mt-6 pl-10 flex gap-3 items-center;
-    img {
-      @apply w-6 h-6;
+    @apply mt-4 h-10 w-48  items-center;
+    .itemsWrapper {
+      @apply pl-10 flex gap-3 h-full  items-center cursor-pointer text-grayWeb;
+      img {
+        @apply w-6 h-6;
+      }
+      p {
+        @apply text-sm;
+      }
     }
-    p {
-      @apply text-sm font-semibold text-bluetiful;
+    .activeTab {
+      @apply bg-lavender h-full rounded-tr-xl rounded-br-xl text-bluetiful font-semibold;
     }
-  }
-  .activeTab {
-    @apply bg-lavender py-3 rounded-tr-xl rounded-br-xl;
   }
 }
