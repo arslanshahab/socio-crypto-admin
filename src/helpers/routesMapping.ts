@@ -47,6 +47,5 @@ export const geToolRoutes = () => {
     { name: 'Setting', to: '', icon: 'setting', enabled: true },
     { name: 'FAQ', to: '', icon: 'faq', enabled: true, href: faqUrl },
     { name: 'Help & Support', to: '', icon: 'support', enabled: true, href: supportEmail },
-    { name: 'Logout', to: '', icon: 'logout', enabled: true },
   ];
 };
