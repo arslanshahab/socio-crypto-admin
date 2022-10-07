@@ -101,7 +101,7 @@ const PreviewScreen: React.FC<ActionsProps> = ({
                 <h5 className="w-2/5">Landing Page URL</h5>
                 <h2 className="w-3/5 capitalize">{campaign.target}</h2>
               </Box>
-              <Box className="flex p-2 mb-2 items-center">
+              <Box className="flex p-2 mb-2 items-center overflow-x-scroll">
                 <h5 className="w-1/6">Tags</h5>
                 <Box className="w-5/6 flex flex-row">
                   {campaign.suggestedTags.map((item, index) => (

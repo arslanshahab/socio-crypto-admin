@@ -1,5 +1,5 @@
 .algorithmBox {
-  @apply p-8 border-2 border-denimBlue rounded-3xl mb-6;
+  @apply p-8 border-2 border-denimBlue rounded-3xl mb-6 overflow-y-scroll;
   height: 500px;
 }
 .title {
