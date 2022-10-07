@@ -11,5 +11,19 @@
         @apply h-full border-0 bg-transparent  text-bluetiful focus:ring-0  outline-none sm:text-sm;
       }
     }
+    .datePickerWrapper {
+      @apply flex gap-4;
+      .datePicker {
+        @apply border-2 px-2 rounded-md;
+        input {
+          &:hover,
+          :active,
+          :focus {
+            outline: none;
+            border: none;
+          }
+        }
+      }
+    }
   }
 }

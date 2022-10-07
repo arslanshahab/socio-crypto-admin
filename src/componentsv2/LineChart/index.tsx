@@ -62,6 +62,10 @@ const LineChart: FC = () => {
             <option>Select Range</option>
           </select>
         </div>
+        <div className="datePickerWrapper">
+          <input type="date" className="datePicker" />
+          <input type="date" className="datePicker" />
+        </div>
       </div>
       <Line options={options} data={data} />
     </div>
