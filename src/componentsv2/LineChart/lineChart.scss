@@ -1,0 +1,15 @@
+.linechartWrapper {
+  @apply border rounded-xl border-lavender p-4;
+  .headingWrapper {
+    @apply flex justify-between items-center px-4 pb-4;
+    p {
+      @apply text-lg font-semibold;
+    }
+    .dropdownWrapper {
+      @apply bg-lavender px-2 py-1 rounded;
+      .selectField {
+        @apply h-full border-0 bg-transparent  text-bluetiful focus:ring-0  outline-none sm:text-sm;
+      }
+    }
+  }
+}

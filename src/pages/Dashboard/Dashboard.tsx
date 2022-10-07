@@ -1,32 +1,19 @@
 import React, { useEffect } from 'react';
 import { Switch } from 'react-router';
 import CampaignsPage from '../Campaigns';
-import { Link } from 'react-router-dom';
-// import { MarketData } from '../../components/MarketData';
-// import SettingsIcon from '@material-ui/icons/Settings';
-// import { PaymentsAccount } from '../../components/PaymentsAccount';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
-import { Box } from '@material-ui/core';
-import { sessionLogout } from '../../clients/raiinmaker-api';
 import { Admin } from '../../components/Admin';
 import { ManageWithdrawRequests } from '../../components/admin/ManageWithdrawRequests/ManageWithdrawRequests';
 import { CampaignAudit } from '../../components/admin/CampaignAudit';
 import { UserManagement } from '../../components/UserManagement/UserManagement';
 import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
-// import Sidebar from '../../components/Sidebar';
 import './dashboard.scss';
-// import { DashboardHome } from '../../components/DashboardHome';
 import NewCampaignPage from '../NewCampaign';
 import { useDispatch } from 'react-redux';
-import { showAppLoader } from '../../store/actions/settings';
 import EditCampaignPage from '../EditCampaign/EditCampaign';
-import { logoutUser } from '../../store/actions/user';
-import CoiinLogo from '../../assets/png/coiin.png';
 import UserList from '../../components/UserList/UserList';
 import UserDetails from '../../components/UserList/UserDetails';
 import CampaignTabs from '../../components/Campaigns/CampaignTabs';
-import { FaUserCircle } from 'react-icons/fa';
 import Profile from '../Profile';
 import { ApiClient } from '../../services/apiClient';
 import { getProfile } from '../../store/actions/profile';
@@ -46,17 +33,6 @@ const Dashboard: React.FC = (props) => {
       })
       .catch((err) => console.log(err));
   }, []);
-
-  const handleLogout = async () => {
-    try {
-      dispatch(showAppLoader({ flag: true, message: 'Ending your session!' }));
-      dispatch(logoutUser());
-      await sessionLogout();
-      dispatch(showAppLoader({ flag: false, message: '' }));
-    } catch (error) {
-      dispatch(showAppLoader({ flag: false, message: '' }));
-    }
-  };
 
   return (
     <div className="dashboard">
