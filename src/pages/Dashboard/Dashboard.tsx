@@ -14,8 +14,8 @@ import { ManageWithdrawRequests } from '../../components/admin/ManageWithdrawReq
 import { CampaignAudit } from '../../components/admin/CampaignAudit';
 import { UserManagement } from '../../components/UserManagement/UserManagement';
 import { CampaignAuditList } from '../../components/admin/CampaignAuditList';
-import Sidebar from '../../components/Sidebar';
-import styles from './Dashboard.module.scss';
+// import Sidebar from '../../components/Sidebar';
+import './dashboard.scss';
 // import { DashboardHome } from '../../components/DashboardHome';
 import NewCampaignPage from '../NewCampaign';
 import { useDispatch } from 'react-redux';
@@ -33,6 +33,8 @@ import { getProfile } from '../../store/actions/profile';
 import DashboardHome from '../DashboardHome';
 import CampaignAnalytics from '../CampaignAnalytics';
 import Payments from '../Payments';
+import Sidebar from '../../componentsv2/Sidebar';
+import Topbar from '../../componentsv2/Topbar';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -57,23 +59,15 @@ const Dashboard: React.FC = (props) => {
   };
 
   return (
-    <Box className="box-border w-screen flex flex-row flex-nowrap">
-      <Box className={styles.side}>
+    <div className="dashboard">
+      <aside className="side">
         <Sidebar />
-      </Box>
-      <Box className={styles.content}>
-        <Box className={styles.topbar}>
-          <div className={styles.topbarIcons}>
-            <Link className=" text-blue-700 cursor-pointer" to={'/dashboard/paymentsAccount'}>
-              <img src={CoiinLogo} alt="raiinmaker-logo" width="50px" />
-            </Link>
-            <Link to={'/dashboard/profile'}>
-              <FaUserCircle fontSize={26} color="gray" />
-            </Link>
-            <ExitToAppIcon className="text-blue-700 cursor-pointer" onClick={handleLogout} />
-          </div>
-        </Box>
-        <Box className={styles.main}>
+      </aside>
+      <div className="content">
+        <div className="topbar">
+          <Topbar />
+        </div>
+        <div className="main">
           <Switch>
             <ProtectedRoute exact path={'/dashboard'}>
               <DashboardHome />
@@ -130,9 +124,9 @@ const Dashboard: React.FC = (props) => {
               <Profile />
             </ProtectedRoute>
           </Switch>
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 };
 
