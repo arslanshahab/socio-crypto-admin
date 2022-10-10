@@ -1,27 +1,22 @@
 .linechartWrapper {
   @apply border rounded-xl border-lavender p-4;
   .headingWrapper {
-    @apply flex justify-between items-center px-4 pb-4;
+    @apply flex justify-between;
     p {
       @apply text-lg font-semibold;
     }
-    .dropdownWrapper {
-      @apply bg-lavender px-2 py-1 rounded;
-      .selectField {
-        @apply h-full border-0 bg-transparent  text-bluetiful focus:ring-0  outline-none sm:text-sm;
-      }
-    }
-    .datePickerWrapper {
-      @apply flex gap-4;
-      .datePicker {
-        @apply border-2 px-2 rounded-md;
+    .content {
+      @apply flex h-full w-full gap-4;
+      .datePickerWrapper {
+        @apply flex gap-4;
         input {
-          &:hover,
-          :active,
-          :focus {
-            outline: none;
-            border: none;
-          }
+          @apply border-2 px-2 rounded-md outline-none;
+        }
+      }
+      .dropdownWrapper {
+        @apply bg-lavender px-2 py-1 rounded;
+        .selectField {
+          @apply h-full border-0 bg-transparent  text-bluetiful focus:ring-0  outline-none sm:text-sm;
         }
       }
     }

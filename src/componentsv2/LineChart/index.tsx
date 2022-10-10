@@ -9,6 +9,7 @@ export const options = {
   plugins: {
     legend: {
       position: 'bottom' as const,
+      display: false,
     },
     title: {
       display: false,
@@ -54,17 +55,21 @@ const LineChart: FC = () => {
     <div className="linechartWrapper">
       <div className="headingWrapper">
         <p>Engagement Report</p>
-        <div className="dropdownWrapper">
-          <select className="selectField">
-            <option>Monthly</option>
-            <option>60 Days</option>
-            <option>90 Days</option>
-            <option>Select Range</option>
-          </select>
-        </div>
-        <div className="datePickerWrapper">
-          <input type="date" className="datePicker" />
-          <input type="date" className="datePicker" />
+        <div>
+          <div className="content">
+            <div className="datePickerWrapper">
+              <input onFocus={(e) => (e.target.type = 'date')} placeholder="Select start Date" />
+              <input onFocus={(e) => (e.target.type = 'date')} placeholder="Select end Date" />
+            </div>
+            <div className="dropdownWrapper">
+              <select className="selectField">
+                <option>Monthly</option>
+                <option>60 Days</option>
+                <option>90 Days</option>
+                <option>Select Range</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
       <Line options={options} data={data} />
