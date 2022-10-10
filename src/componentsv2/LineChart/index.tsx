@@ -73,6 +73,16 @@ const LineChart: FC = () => {
         </div>
       </div>
       <Line options={options} data={data} />
+      <div className="legend">
+        <div className="participants">
+          <div className="circleBlue"></div>
+          <div>Participation</div>
+        </div>
+        <div className="clicks">
+          <div className="circleMagenta"></div>
+          <div>Clicks </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -17,6 +17,7 @@ module.exports = {
         bluetiful: '#3A6FF8',
         lavender: '#EEEFFF',
         grayWeb: '#838383',
+        magenta: '#F227EA',
       },
     },
     screens: {
