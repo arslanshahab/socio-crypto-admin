@@ -24,15 +24,21 @@
   .legend {
     @apply flex gap-4 justify-center pt-4;
     .participants {
-      @apply flex justify-between items-center gap-3 border px-3 py-0.5 border-lavender rounded;
+      @apply flex justify-between items-center gap-3 border px-3 py-1.5 border-lavender rounded;
       .circleBlue {
         @apply w-2 h-2 rounded-full bg-bluetiful;
       }
+      p {
+        @apply text-xs;
+      }
     }
     .clicks {
-      @apply flex justify-between items-center gap-3 border px-3 py-0.5 border-lavender rounded;
+      @apply flex justify-between items-center gap-3 border px-3 py-1.5 border-lavender rounded;
       .circleMagenta {
         @apply w-2 h-2 rounded-full bg-magenta;
+      }
+      p {
+        @apply text-xs;
       }
     }
   }

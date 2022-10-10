@@ -2,6 +2,12 @@
   @apply grid grid-cols-6 gap-12;
   .dashboardCol {
     @apply col-span-4;
+    .lineChartSection {
+      @apply mt-8;
+    }
+    .tierCardSection {
+      @apply mt-8;
+    }
   }
   .messagesCol {
     @apply col-span-2 border;

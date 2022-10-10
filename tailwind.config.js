@@ -18,6 +18,7 @@ module.exports = {
         lavender: '#EEEFFF',
         grayWeb: '#838383',
         magenta: '#F227EA',
+        limeGreen: '#23CC48',
       },
     },
     screens: {

@@ -76,11 +76,11 @@ const LineChart: FC = () => {
       <div className="legend">
         <div className="participants">
           <div className="circleBlue"></div>
-          <div>Participation</div>
+          <p>Participation</p>
         </div>
         <div className="clicks">
           <div className="circleMagenta"></div>
-          <div>Clicks </div>
+          <p>Clicks </p>
         </div>
       </div>
     </div>

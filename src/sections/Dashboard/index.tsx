@@ -1,12 +1,18 @@
 import React, { FC } from 'react';
 import LineChart from '../../componentsv2/LineChart';
+import TierCard from '../../componentsv2/TierCard';
 import './dashboard.scss';
 
 const Dashboard: FC = () => {
   return (
     <div className="dashboardWrapper">
       <div className="dashboardCol">
-        <LineChart />
+        <div className="lineChartSection">
+          <LineChart />
+        </div>
+        <div className="tierCardSection">
+          <TierCard />
+        </div>
       </div>
     </div>
   );
