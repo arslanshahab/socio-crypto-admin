@@ -6,7 +6,7 @@
       @apply text-lg font-semibold;
     }
     .content {
-      @apply flex h-full w-full gap-4;
+      @apply flex h-full w-full gap-4 pb-4;
       .datePickerWrapper {
         @apply flex gap-4;
         input {
