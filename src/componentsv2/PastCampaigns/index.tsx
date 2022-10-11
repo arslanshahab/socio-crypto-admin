@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
 import { Campaign } from '../../types';
-import './postCampaigns.scss';
+import '../CampaignsTable/campaignsTable.scss';
 import { useDispatch } from 'react-redux';
 import RenderRow from '../RenderRow';
 
