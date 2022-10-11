@@ -5,7 +5,7 @@ import { capitalize } from '../../helpers/formatter';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { ApiClient } from '../../services/apiClient';
-import { showErrorAlert } from '../../store/actions/alerts';
+import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 import { useDispatch } from 'react-redux';
 
 interface Props {
@@ -21,6 +21,7 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
   const [openCards, setOpenCards] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethodTypes[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [purchaseCoiinLoading, setPurchaseCoiinLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -50,12 +51,17 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
 
   const handlePurchase = async () => {
     try {
+      setPurchaseCoiinLoading(true);
       ApiClient.purchaseCoiin({ amount, paymentMethodId })
-        .then()
-        .catch((err) => dispatch(showErrorAlert(err.message)));
-      setOpen(false);
+        .then(() => {
+          setOpen(false);
+          dispatch(showSuccessAlert('Purchase coiin successfull'));
+        })
+        .catch((err) => dispatch(showErrorAlert(err.message)))
+        .finally(() => setPurchaseCoiinLoading(false));
     } catch (e) {
       console.log(e);
+      setPurchaseCoiinLoading(false);
     }
   };
 
@@ -104,7 +110,7 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
         <CustomButton onClick={handleCloseDialog} className={buttonStyles.outlinedButton}>
           Cancel
         </CustomButton>
-        <CustomButton onClick={handlePurchase} className={buttonStyles.filledButton}>
+        <CustomButton onClick={handlePurchase} className={buttonStyles.filledButton} loading={purchaseCoiinLoading}>
           Purchase
         </CustomButton>
       </div>
