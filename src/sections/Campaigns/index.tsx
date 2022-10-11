@@ -16,7 +16,7 @@ const Campaigns: FC = () => {
               setOpenTab(1);
             }}
             data-toggle="tab"
-            href="#current campaign"
+            href="#current campaigns"
             role="tablist"
           >
             Current Campaigns
@@ -30,7 +30,7 @@ const Campaigns: FC = () => {
               setOpenTab(2);
             }}
             data-toggle="tab"
-            href="#link3"
+            href="past campaigns"
             role="tablist"
           >
             Past Campaigns
@@ -39,12 +39,12 @@ const Campaigns: FC = () => {
       </ul>
       <div className="tabBody">
         {openTab === 1 && (
-          <div className={openTab === 1 ? 'block' : 'hidden'} id="link2">
+          <div className={openTab === 1 ? 'block' : 'hidden'}>
             <CampaignsTable />
           </div>
         )}
         {openTab === 2 && (
-          <div className={openTab === 2 ? 'block' : 'hidden'} id="link3">
+          <div className={openTab === 2 ? 'block' : 'hidden'}>
             <PastCampaigns />
           </div>
         )}
