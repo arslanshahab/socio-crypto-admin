@@ -178,7 +178,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     return (
       <Box className="p-10 w-full flex flex-col justify-center items-center">
         <p>
-          No Crypto-Currency found - Please purchase Crypto{' '}
+          No cryptocurrency found - Please purchase Crypto{' '}
           <span
             className="cursor-pointer underline text-blue-800 font-semibold	"
             onClick={() => {

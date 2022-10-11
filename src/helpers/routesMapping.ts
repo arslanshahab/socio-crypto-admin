@@ -13,8 +13,8 @@ export const getRoutesMapping = (data: any): Array<MenuObject> => {
     { name: 'dashboard', to: '/dashboard', icon: 'dashboard', enabled: true },
     { name: 'campaigns', to: '/dashboard/campaigns', icon: 'campaign', enabled: true },
     { name: 'market data', to: '/dashboard/marketData', icon: 'trending', enabled: false },
-    { name: 'Add campaign', to: '/dashboard/newCampaign', icon: 'newCampaign', enabled: true },
-    { name: 'Add Crypto', to: '/dashboard/paymentsAccount', icon: 'crypto', enabled: true },
+    { name: 'Create Campaign', to: '/dashboard/newCampaign', icon: 'newCampaign', enabled: true },
+    { name: 'Crypto Wallet', to: '/dashboard/paymentsAccount', icon: 'crypto', enabled: true },
     {
       name: 'Admin',
       to: '/dashboard/admin/management',
