@@ -20,6 +20,7 @@ module.exports = {
         magenta: '#F227EA',
         limeGreen: '#23CC48',
         honeydew: '#F4FFEE',
+        cultured: '#F3F3F3',
       },
     },
     screens: {

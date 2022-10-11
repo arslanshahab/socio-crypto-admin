@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
 import { Campaign } from '../../types';
-import styles from './postCampaigns.module.css';
+import './postCampaigns.scss';
 import { useDispatch } from 'react-redux';
 import RenderRow from '../RenderRow';
 
@@ -22,12 +22,11 @@ const PastCampaigns: FC = () => {
   }, []);
 
   return (
-    <div className={styles.tableWrapper}>
+    <div className="tableWrapper">
       <table>
         <thead>
           <tr>
             <th>Campaign Name</th>
-            <th>Status</th>
             <th>Participation Score</th>
             <th>Users</th>
             <th>Conversion Actions</th>
@@ -35,6 +34,7 @@ const PastCampaigns: FC = () => {
           </tr>
         </thead>
         <tbody>
+          {loading && <p>Loading...</p>}
           {campaigns?.map((campaign: Campaign) => (
             <RenderRow key={campaign.id} campaign={campaign} />
           ))}

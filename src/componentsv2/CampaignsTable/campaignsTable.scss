@@ -7,7 +7,7 @@
       @apply bg-lavender rounded-md;
       tr {
         th {
-          @apply px-4 py-2 font-normal text-bluetiful;
+          @apply px-4 py-3 font-normal text-bluetiful;
           &:first-child,
           :last-child {
             @apply text-justify;
@@ -18,7 +18,7 @@
     tbody {
       tr {
         td {
-          @apply px-4 py-2 font-normal;
+          @apply px-4 py-3 font-normal;
           &:first-child,
           :last-child {
             @apply text-justify;
@@ -27,8 +27,11 @@
             @apply text-center;
           }
         }
-        .status {
-          @apply text-limeGreen;
+        .openStatus {
+          @apply text-limeGreen bg-honeydew inline-flex px-2 py-0.5 rounded;
+        }
+        .closedStatus {
+          @apply text-silver bg-cultured inline-flex px-2 py-0.5 rounded;
         }
       }
     }

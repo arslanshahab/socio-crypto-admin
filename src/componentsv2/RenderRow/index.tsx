@@ -34,7 +34,13 @@ const RenderRow: FC<Props> = ({ campaign }: Props) => {
           ? campaignMetric.clickCount + campaignMetric.viewCount + campaignMetric.submissionCount
           : 0}
       </td>
-      <td className="status">Open</td>
+      <td>
+        {new Date(campaign.endDate) > new Date() ? (
+          <p className="openStatus">In Progress</p>
+        ) : (
+          <p className="closedStatus">Ended</p>
+        )}
+      </td>
     </tr>
   );
 };

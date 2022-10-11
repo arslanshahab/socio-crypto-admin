@@ -34,6 +34,7 @@ const CampaignsTable: FC = () => {
           </tr>
         </thead>
         <tbody>
+          {loading && <p>Loading...</p>}
           {campaigns?.map((campaign: Campaign) => (
             <RenderRow key={campaign.id} campaign={campaign} />
           ))}

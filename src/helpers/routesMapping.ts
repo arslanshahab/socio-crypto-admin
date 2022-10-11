@@ -44,8 +44,8 @@ export const getRoutesMapping = (data: any): Array<MenuObject> => {
 
 export const geToolRoutes = () => {
   return [
-    { name: 'Setting', to: '', icon: 'setting', enabled: true },
-    { name: 'FAQ', to: '', icon: 'faq', enabled: true, href: faqUrl },
+    { name: 'Setting', to: '/dashboard/profile', icon: 'setting', enabled: true },
+    // { name: 'FAQ', to: '', icon: 'faq', enabled: true, href: faqUrl },
     { name: 'Help & Support', to: '', icon: 'support', enabled: true, href: supportEmail },
   ];
 };
