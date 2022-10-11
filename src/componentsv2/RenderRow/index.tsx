@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
 import { Campaign, CampaignMetricTypes } from '../../types';
-import styles from '../CampaignsTable/campaignsTable.module.css';
+import '../CampaignsTable/campaignsTable.scss';
 import { useDispatch } from 'react-redux';
 
 interface Props {
@@ -25,11 +25,6 @@ const RenderRow: FC<Props> = ({ campaign }: Props) => {
   return (
     <tr key={campaign.name}>
       <td>{campaign.name}</td>
-      {new Date(campaign.endDate) > new Date() ? (
-        <td className={styles.open}>&uarr;</td>
-      ) : (
-        <td className={styles.closed}>&#8595;</td>
-      )}
       <td>{campaign.totalParticipationScore}</td>
       <td>{campaign.participant.length}</td>
       <td>
@@ -39,9 +34,7 @@ const RenderRow: FC<Props> = ({ campaign }: Props) => {
           ? campaignMetric.clickCount + campaignMetric.viewCount + campaignMetric.submissionCount
           : 0}
       </td>
-      <td>
-        <progress id="file" value="70" max="100" className={styles.progress} />
-      </td>
+      <td className="status">Open</td>
     </tr>
   );
 };

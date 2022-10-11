@@ -19,6 +19,7 @@ module.exports = {
         grayWeb: '#838383',
         magenta: '#F227EA',
         limeGreen: '#23CC48',
+        honeydew: '#F4FFEE',
       },
     },
     screens: {

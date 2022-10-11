@@ -1,0 +1,57 @@
+/* Table */
+.tableWrapper {
+  @apply w-full overflow-x-auto;
+  table {
+    @apply w-full table-auto text-sm;
+    thead {
+      @apply bg-lavender rounded-md;
+      tr {
+        th {
+          @apply px-4 py-2 font-normal text-bluetiful;
+          &:first-child,
+          :last-child {
+            @apply text-justify;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        td {
+          @apply px-4 py-2 font-normal;
+          &:first-child,
+          :last-child {
+            @apply text-justify;
+          }
+          &:not(:first-child, :last-child) {
+            @apply text-center;
+          }
+        }
+        .status {
+          @apply text-limeGreen;
+        }
+      }
+    }
+  }
+}
+
+// @apply w-full table-auto bg-lavender p;
+// .tableWrapper table thead tr th:first-child,
+// th:last-child {
+//   @apply text-justify;
+// }
+// .tableWrapper table thead tr th:first-child {
+//   @apply w-1/5;
+// }
+// .tableWrapper table thead tr th {
+//   @apply font-normal py-4;
+// }
+// .tableWrapper table tbody tr:not(:last-child) {
+//   @apply border-b-2 border-denimBlue;
+// }
+// .tableWrapper table tbody tr td {
+//   @apply font-normal py-4;
+// }
+// .tableWrapper table tbody tr td:not(:first-child, :last-child) {
+//   @apply text-center;
+// }
