@@ -7,6 +7,11 @@
 .brandImage {
   @apply w-full h-full object-cover rounded-md;
 }
+.editName {
+  @apply bg-right bg-no-repeat;
+  background-image: url('../../assets/png/editIcon.png');
+  background-size: 20px;
+}
 
 .buttonWrapper {
   @apply mt-16;

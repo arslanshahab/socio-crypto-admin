@@ -13,6 +13,7 @@ import FileUpload from '../../components/FileUpload';
 import { uploadMedia } from '../../helpers/utils';
 import { getProfile } from '../../store/actions/profile';
 import textStyles from '../../assets/styles/text.module.css';
+import { MdEdit } from 'react-icons/md';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -138,7 +139,7 @@ const Profile: FC = () => {
               type="text"
               name="name"
               value={name}
-              className={`${textStyles.text} pl-1`}
+              className={`${styles.editName} ${textStyles.text} pl-1`}
               placeholder="Name"
               onChange={handleOnChange}
             />
@@ -152,7 +153,7 @@ const Profile: FC = () => {
             <p className={`${textStyles.text} w-56 text-sm lowercase`}>{profile ? profile.company : 'Loading...'}</p>
           </div>
           <div className="flex p-1 items-center">
-            <h6 className="w-40">2FA:</h6>
+            <h6 className="w-40">Email 2FA:</h6>
             <p className="w-56 text-sm">
               {is2FAloading ? (
                 'Loading...'
@@ -167,7 +168,7 @@ const Profile: FC = () => {
             </p>
           </div>
           <div className="flex p-1 items-center">
-            <h6 className="w-40">Kyc:</h6>
+            <h6 className="w-40">KYC:</h6>
             {profile.verifyStatus === 'APPROVED' ? (
               <p className={`${textStyles.text} w-56 text-sm`}>{profile ? profile.verifyStatus : 'Loading...'}</p>
             ) : (
