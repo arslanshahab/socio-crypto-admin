@@ -6,6 +6,7 @@ import { DashboardStatsTypes } from '../../types';
 import { ApiClient } from '../../services/apiClient';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert } from '../../store/actions/alerts';
+import { months } from '../../helpers/constants';
 
 export const options = {
   responsive: true,
@@ -14,14 +15,16 @@ export const options = {
     legend: {
       position: 'bottom' as const,
       display: false,
+      labels: {
+        usePointStyle: true,
+        pointStyle: 'circle',
+      },
     },
     title: {
       display: false,
     },
   },
 };
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 const LineChart: FC = () => {
   const dispatch = useDispatch();
@@ -50,7 +53,7 @@ const LineChart: FC = () => {
   };
 
   const data = {
-    labels,
+    labels: months,
     datasets: [
       {
         fill: true,
@@ -79,6 +82,10 @@ const LineChart: FC = () => {
         },
       },
     ],
+  };
+
+  const handleLenged = (value: number) => {
+    // data.datasets[value].data = [];
   };
 
   return (
@@ -123,11 +130,11 @@ const LineChart: FC = () => {
       </div>
       <Line options={options} data={data} />
       <div className="legend">
-        <div className="participants">
+        <div className="participants" onClick={() => handleLenged(0)}>
           <div className="circleBlue"></div>
           <p>Participation</p>
         </div>
-        <div className="clicks">
+        <div className="clicks" onClick={() => handleLenged(1)}>
           <div className="circleMagenta"></div>
           <p>Clicks </p>
         </div>
