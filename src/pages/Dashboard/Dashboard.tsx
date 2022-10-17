@@ -22,6 +22,7 @@ import CampaignAnalytics from '../CampaignAnalytics';
 import Payments from '../Payments';
 import Sidebar from '../../componentsv2/Sidebar';
 import Topbar from '../../componentsv2/Topbar';
+import CampaignTier from '../../componentsv2/CampaignTier';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -98,6 +99,9 @@ const Dashboard: React.FC = (props) => {
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/profile'}>
               <Profile />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/tier/:slug'}>
+              <CampaignTier />
             </ProtectedRoute>
           </Switch>
         </div>
