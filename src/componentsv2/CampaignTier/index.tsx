@@ -3,42 +3,65 @@ import './campaignTier.scss';
 import activityTier from '../../assets/svg/tiers/activity.svg';
 import successIcon from '../../assets/svg/tiers/successIcon.svg';
 import participantsIcons from '../../assets/svg/tiers/participants.svg';
+import { useLocation } from 'react-router-dom';
+import { CampaignAggregationTypes } from '../../types';
+import clicksIcon from '../../assets/svg/tiers/clicksIcon.svg';
+import commentIcon from '../../assets/svg/tiers/commentsIcon.svg';
+import viewIcon from '../../assets/svg/tiers/viewsIcon.svg';
+import shareIcon from '../../assets/svg/tiers/sharesIcon.svg';
+
+interface StateTypes {
+  state: CampaignAggregationTypes;
+}
 
 const CampaignTier: FC = () => {
+  const { state }: StateTypes = useLocation();
+
+  const names = {
+    campaignName: 'All',
+    totalParticipants: 'Total Participants',
+    clickCount: 'Total Click',
+    lastWeekParticipants: 'Last Week Participants',
+    shareCount: 'Total Shares',
+    viewCount: 'Total Views',
+    commentCount: 'Total Comments',
+  };
+
+  const icons = {
+    totalParticipants: participantsIcons,
+    clickCount: clicksIcon,
+    shareCount: shareIcon,
+    viewCount: viewIcon,
+    commentCount: commentIcon,
+  };
+
   return (
-    <div className="campaignTierOutline">
-      <div className="headingWrapper">
-        <div className="iconWrapper">
-          <img src={activityTier} alt="Campaign Engagement" />
-        </div>
-        <h3>Tier 1: Campaign Engagement</h3>
-      </div>
-      <div className="titleWrapper">
-        <img src={participantsIcons} alt="" />
-        <div className="tierContent">
-          <p>Total Participants:</p>
-          <div className="counts">
-            <h3>600,000</h3>
-            <div className="successCount">
-              <p>+1981</p>
-              <img src={successIcon} alt="campaign success" />
-            </div>
+    <div className="campaignTierWrapper">
+      <div className="campaignTierOutline">
+        <div className="headingWrapper">
+          <div className="iconWrapper">
+            <img src={activityTier} alt="Campaign Engagement" />
           </div>
+          <h3>Tier 1: Campaign Engagement</h3>
         </div>
-      </div>
-      {/* ........................ */}
-      <div className="titleWrapper">
-        <img src={participantsIcons} alt="" />
-        <div className="tierContent">
-          <p>Total Participants:</p>
-          <div className="counts">
-            <h3>600,000</h3>
-            <div className="successCount">
-              <p>+1981</p>
-              <img src={successIcon} alt="campaign success" />
+        {Object.entries(state).map(([key, value], i) => {
+          if (key === 'campaignName' || key === 'participationScore' || key === 'lastWeekParticipants') return;
+          return (
+            <div className="titleWrapper" key={i}>
+              <img src={icons[key]} alt="" />
+              <div className="tierContent">
+                <p>{names[key]}:</p>
+                <div className="counts">
+                  <h3>{value}</h3>
+                  <div className="successCount">
+                    <p>+1981</p>
+                    <img src={successIcon} alt="campaign success" />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   );

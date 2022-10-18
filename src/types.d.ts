@@ -884,6 +884,8 @@ export interface CampaignAggregationTypes {
   participationScore: number;
   totalParticipants: number;
   campaignName: string;
+  lastWeekParticipants: number;
+  commentCount: number;
 }
 
 export interface CampaignStatTypes {

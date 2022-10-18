@@ -5,11 +5,19 @@ import menuIcon from '../../assets/svg/tiers/more.svg';
 import successIcon from '../../assets/svg/tiers/successIcon.svg';
 import usersIcon from '../../assets/svg/tiers/users.svg';
 import tagUser from '../../assets/svg/tiers/tagUser.svg';
+import { CampaignAggregationTypes } from '../../types';
+import { useHistory } from 'react-router';
 
-const TierCard: FC = () => {
+interface TierIProps {
+  data: CampaignAggregationTypes;
+}
+
+const TierCard: FC<TierIProps> = ({ data }: TierIProps) => {
+  const { push } = useHistory();
+
   return (
     <div className="tierCard">
-      <div className="cardOutline">
+      <div className="cardOutline" onClick={() => push('/dashboard/tier/campaignEngagement', data)}>
         <div className="iconSection">
           <div className="iconWrapper">
             <img src={tierOneIcon} alt="campaign tiers" />
@@ -17,17 +25,17 @@ const TierCard: FC = () => {
           <img src={menuIcon} alt="campaign tiers" className="menuIcon" />
         </div>
         <div className="contentWrapper">
-          <h3>609,121</h3>
+          <h3>{data.totalParticipants}</h3>
           <div className="analyticsWrapper">
             <div className="analytics">
-              <p>+190.09</p>
+              <p>+{data.lastWeekParticipants}</p>
               <img src={successIcon} alt="raiinmaker" />
             </div>
           </div>
         </div>
         <p>Tier 1: Campaign Engagement</p>
       </div>
-      <div className="cardOutline">
+      <div className="cardOutline" onClick={() => push('/dashboard/tier/userEngagement')}>
         <div className="iconSection">
           <div className="iconWrapper">
             <img src={usersIcon} alt="campaign tiers" />
