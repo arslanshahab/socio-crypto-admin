@@ -35,7 +35,7 @@ const TierCard: FC<TierIProps> = ({ data }: TierIProps) => {
         </div>
         <p>Tier 1: Campaign Engagement</p>
       </div>
-      <div className="cardOutline" onClick={() => push('/dashboard/tier/userEngagement')}>
+      <div className="cardOutline">
         <div className="iconSection">
           <div className="iconWrapper">
             <img src={usersIcon} alt="campaign tiers" />

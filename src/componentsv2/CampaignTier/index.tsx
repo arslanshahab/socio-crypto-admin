@@ -14,20 +14,27 @@ interface StateTypes {
   state: CampaignAggregationTypes;
 }
 
+interface CampaignAnalyticTypes {
+  [index: string]: string;
+  totalParticipants: string;
+  clickCount: string;
+  shareCount: string;
+  viewCount: string;
+  commentCount: string;
+}
+
 const CampaignTier: FC = () => {
   const { state }: StateTypes = useLocation();
 
-  const names = {
-    campaignName: 'All',
+  const names: CampaignAnalyticTypes = {
     totalParticipants: 'Total Participants',
     clickCount: 'Total Click',
-    lastWeekParticipants: 'Last Week Participants',
     shareCount: 'Total Shares',
     viewCount: 'Total Views',
     commentCount: 'Total Comments',
   };
 
-  const icons = {
+  const icons: CampaignAnalyticTypes = {
     totalParticipants: participantsIcons,
     clickCount: clicksIcon,
     shareCount: shareIcon,
