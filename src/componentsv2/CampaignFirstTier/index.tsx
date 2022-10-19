@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import './campaignTier.scss';
+import './campaignFirstTier.scss';
 import activityTier from '../../assets/svg/tiers/activity.svg';
 import successIcon from '../../assets/svg/tiers/successIcon.svg';
 import participantsIcons from '../../assets/svg/tiers/participants.svg';
@@ -23,7 +23,7 @@ interface CampaignAnalyticTypes {
   commentCount: string;
 }
 
-const CampaignTier: FC = () => {
+const CampaignFirstTier: FC = () => {
   const { state }: StateTypes = useLocation();
 
   const names: CampaignAnalyticTypes = {
@@ -74,4 +74,4 @@ const CampaignTier: FC = () => {
   );
 };
 
-export default CampaignTier;
+export default CampaignFirstTier;
