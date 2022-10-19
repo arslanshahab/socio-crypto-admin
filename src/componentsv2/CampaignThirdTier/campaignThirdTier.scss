@@ -1,8 +1,11 @@
-.socialTitleWrapper {
-  @apply flex gap-4 items-center my-4;
+.socialTierWrapper {
+  @apply grid grid-cols-2 gap-4;
 
-  h3 {
-    @apply font-medium;
-    font-size: 32px;
+  .socialTierContent {
+    @apply flex gap-4 mt-8 ml-8;
+    h3 {
+      @apply font-medium capitalize;
+      font-size: 32px;
+    }
   }
 }

@@ -42,16 +42,18 @@ const CampaignFirstTier: FC = () => {
   return (
     <TierDetailsLayout>
       <TierHeader title={'Tier 1: Campaign Engagement'} image={activityTier} />
-      {Object.entries(aggregates).map(([key, value], i) => {
-        if (
-          key === 'totalParticipants' ||
-          key === 'clickCount' ||
-          key === 'shareCount' ||
-          key === 'viewCount' ||
-          key === 'commentCount'
-        )
-          return <TierContent key={i} image={icons[key]} title={names[key]} value={value} />;
-      })}
+      <div className="campaignFirstTierWrapper">
+        {Object.entries(aggregates).map(([key, value], i) => {
+          if (
+            key === 'totalParticipants' ||
+            key === 'clickCount' ||
+            key === 'shareCount' ||
+            key === 'viewCount' ||
+            key === 'commentCount'
+          )
+            return <TierContent key={i} image={icons[key]} title={names[key]} value={value} />;
+        })}
+      </div>
     </TierDetailsLayout>
   );
 };

@@ -897,6 +897,7 @@ export interface CampaignStatTypes {
 }
 
 export interface SocialPostMetrics {
+  [index: string]: string;
   type: string;
   likes: number;
   shares: number;
@@ -971,4 +972,20 @@ export type CampaignAnalyticTypes = {
   shareCount: string;
   viewCount: string;
   commentCount: string;
+};
+
+export type SocialPlatforms = {
+  [index: string]: string;
+  twitter: string;
+  tiktok: string;
+  facebook: string;
+  instagram: string;
+};
+
+export type CampaignTierIconTypes = {
+  [index: string]: string;
+  type: string;
+  likes: string;
+  shares: string;
+  comments: string;
 };
