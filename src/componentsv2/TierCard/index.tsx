@@ -27,7 +27,7 @@ const TierCard: FC<TierIProps> = ({ data }: TierIProps) => {
             <h3>{data[x.name] || 0}</h3>
             <div className="analyticsWrapper">
               <div className="analytics">
-                <p>+130.09</p>
+                <p>+0</p>
                 <img src={successIcon} alt="raiinmaker" />
               </div>
             </div>

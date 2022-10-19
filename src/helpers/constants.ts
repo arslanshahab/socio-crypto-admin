@@ -38,7 +38,7 @@ export const campaignTiersData = [
     link: '',
   },
   {
-    name: 'totalPosts',
+    name: 'totalSocialPosts',
     image: tagUser,
     description: 'Tier 3: Campaign by Channel',
     link: '/dashboard/campaign/channel/engagement',

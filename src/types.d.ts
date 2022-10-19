@@ -886,6 +886,7 @@ export interface CampaignAggregationTypes {
   campaignName: string;
   lastWeekParticipants: number;
   commentCount: number;
+  totalSocialPosts: number;
 }
 
 export interface CampaignStatTypes {
@@ -895,9 +896,17 @@ export interface CampaignStatTypes {
   participationScore: number;
 }
 
+export interface SocialPostMetrics {
+  type: string;
+  likes: number;
+  shares: number;
+  comments: number;
+}
+
 export interface DashboardStatsTypes {
   aggregatedMetrics: CampaignAggregationTypes;
   rawMetrics: CampaignStatTypes[];
+  socialPostMetrics: SocialPostMetrics[];
 }
 
 export interface UserStatTypes {
@@ -953,4 +962,13 @@ export type DashboardMetricParams = {
   startDate: string;
   endDate: string;
   month: number;
+};
+
+export type CampaignAnalyticTypes = {
+  [index: string]: string;
+  totalParticipants: string;
+  clickCount: string;
+  shareCount: string;
+  viewCount: string;
+  commentCount: string;
 };
