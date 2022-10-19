@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import './campaignFirstTier.scss';
 import activityTier from '../../assets/svg/tiers/activity.svg';
-import successIcon from '../../assets/svg/tiers/successIcon.svg';
 import participantsIcons from '../../assets/svg/tiers/participants.svg';
 import { useLocation } from 'react-router-dom';
 import { CampaignAggregationTypes, CampaignAnalyticTypes } from '../../types';
@@ -9,6 +8,7 @@ import clicksIcon from '../../assets/svg/tiers/clicksIcon.svg';
 import commentIcon from '../../assets/svg/tiers/commentsIcon.svg';
 import viewIcon from '../../assets/svg/tiers/viewsIcon.svg';
 import shareIcon from '../../assets/svg/tiers/sharesIcon.svg';
+import TierDetails from '../TierDetails';
 
 interface StateTypes {
   state: CampaignAggregationTypes;
@@ -50,21 +50,7 @@ const CampaignFirstTier: FC = () => {
             key === 'viewCount' ||
             key === 'commentCount'
           )
-            return (
-              <div className="titleWrapper" key={i}>
-                <img src={icons[key]} alt="" />
-                <div className="tierContent">
-                  <p>{names[key]}:</p>
-                  <div className="counts">
-                    <h3>{value}</h3>
-                    <div className="successCount">
-                      <p>+0</p>
-                      <img src={successIcon} alt="campaign success" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
+            return <TierDetails key={i} image={icons[key]} title={names[key]} value={value} />;
         })}
       </div>
     </div>

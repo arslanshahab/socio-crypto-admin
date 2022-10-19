@@ -1,0 +1,24 @@
+.tierDetailsWrapper {
+  @apply flex items-start gap-3 my-6 ml-8;
+  p {
+    @apply text-lg font-medium;
+  }
+  .tierContent {
+    .counts {
+      @apply flex gap-4 items-center;
+      h3 {
+        @apply font-medium;
+        font-size: 32px;
+      }
+      .successCount {
+        @apply flex gap-2 text-limeGreen;
+        p {
+          @apply font-normal;
+        }
+        img {
+          @apply w-5;
+        }
+      }
+    }
+  }
+}
