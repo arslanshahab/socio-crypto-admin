@@ -1,0 +1,13 @@
+.tierHeaderWrapper {
+  @apply flex gap-4 items-center;
+  .iconWrapper {
+    @apply w-24 h-24 rounded-lg bg-lavender flex items-center justify-center;
+    img {
+      @apply w-10 h-10;
+    }
+  }
+  h3 {
+    @apply text-grayWeb;
+    font-size: 40px;
+  }
+}

@@ -9,6 +9,7 @@ import commentIcon from '../../assets/svg/tiers/commentsIcon.svg';
 import viewIcon from '../../assets/svg/tiers/viewsIcon.svg';
 import shareIcon from '../../assets/svg/tiers/sharesIcon.svg';
 import TierDetails from '../TierDetails';
+import TierHeader from '../TierHeader';
 
 interface StateTypes {
   state: CampaignAggregationTypes;
@@ -36,12 +37,7 @@ const CampaignFirstTier: FC = () => {
   return (
     <div className="campaignTierWrapper">
       <div className="campaignTierOutline">
-        <div className="headingWrapper">
-          <div className="iconWrapper">
-            <img src={activityTier} alt="Campaign Engagement" />
-          </div>
-          <h3>Tier 1: Campaign Engagement</h3>
-        </div>
+        <TierHeader title={'Tier 1: Campaign Engagement'} image={activityTier} />
         {Object.entries(state).map(([key, value], i) => {
           if (
             key === 'totalParticipants' ||
