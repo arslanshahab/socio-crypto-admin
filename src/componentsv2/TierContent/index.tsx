@@ -2,15 +2,15 @@ import React, { FC } from 'react';
 import './tierDetails.scss';
 import successIcon from '../../assets/svg/tiers/successIcon.svg';
 
-interface TierDetailsIProps {
+interface TierContentIProps {
   image: string;
   title: string;
   value: string;
 }
 
-const TierDetails: FC<TierDetailsIProps> = ({ image, title, value }: TierDetailsIProps) => {
+const TierContent: FC<TierContentIProps> = ({ image, title, value }: TierContentIProps) => {
   return (
-    <div className="tierDetailsWrapper">
+    <div className="tierContentWrapper">
       <img src={image} alt="" />
       <div className="tierContent">
         <p>{title}:</p>
@@ -26,4 +26,4 @@ const TierDetails: FC<TierDetailsIProps> = ({ image, title, value }: TierDetails
   );
 };
 
-export default TierDetails;
+export default TierContent;
