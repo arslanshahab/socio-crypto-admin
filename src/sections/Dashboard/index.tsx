@@ -18,7 +18,6 @@ const Dashboard: FC = () => {
   const [showRange, setShowRange] = useState<string>('');
 
   useEffect(() => {
-    // if (!month && startDate && !endDate) return;
     setLoading(true);
     ApiClient.getDashboardStats({ campaignId: '-1', startDate, endDate, month })
       .then((res) => setAnalytics(res))
@@ -79,7 +78,11 @@ const Dashboard: FC = () => {
           </div>
           {analytics && <LineChart analytics={analytics.rawMetrics} />}
         </div>
-        <div className="tierCardSection">{analytics && <CampaignTiers data={analytics?.aggregatedMetrics} />}</div>
+        <div className="tierCardSection">
+          {analytics && (
+            <CampaignTiers aggregates={analytics.aggregatedMetrics} socialPostMetrics={analytics.socialPostMetrics} />
+          )}
+        </div>
         <div className="campaignTableWrapper">
           <Campaigns />
         </div>

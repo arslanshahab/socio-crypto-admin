@@ -13,7 +13,9 @@ import TierContent from '../TierContent';
 import TierDetailsLayout from '../../sections/TierDetailsLayout';
 
 interface StateTypes {
-  state: CampaignAggregationTypes;
+  state: {
+    aggregates: CampaignAggregationTypes;
+  };
 }
 
 const names: CampaignAnalyticTypes = {
@@ -33,12 +35,14 @@ const icons: CampaignAnalyticTypes = {
 };
 
 const CampaignFirstTier: FC = () => {
-  const { state }: StateTypes = useLocation();
+  const {
+    state: { aggregates },
+  }: StateTypes = useLocation();
 
   return (
     <TierDetailsLayout>
       <TierHeader title={'Tier 1: Campaign Engagement'} image={activityTier} />
-      {Object.entries(state).map(([key, value], i) => {
+      {Object.entries(aggregates).map(([key, value], i) => {
         if (
           key === 'totalParticipants' ||
           key === 'clickCount' ||

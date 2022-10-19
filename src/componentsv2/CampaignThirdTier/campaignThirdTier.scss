@@ -1,0 +1,8 @@
+.socialTitleWrapper {
+  @apply flex gap-4 items-center my-4;
+
+  h3 {
+    @apply font-medium;
+    font-size: 32px;
+  }
+}
