@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import './tierCard.scss';
+import './campaignTiers.scss';
 import menuIcon from '../../assets/svg/tiers/more.svg';
 import successIcon from '../../assets/svg/tiers/successIcon.svg';
 import { CampaignAggregationTypes } from '../../types';
@@ -10,11 +10,11 @@ interface TierIProps {
   data: CampaignAggregationTypes;
 }
 
-const TierCard: FC<TierIProps> = ({ data }: TierIProps) => {
+const CampaignTiers: FC<TierIProps> = ({ data }: TierIProps) => {
   const { push } = useHistory();
 
   return (
-    <div className="tierCard">
+    <div className="campaignTiers">
       {campaignTiersData.map((x) => (
         <div className="cardOutline" key={x.description} onClick={() => push(x.link, data)}>
           <div className="iconSection">
@@ -39,4 +39,4 @@ const TierCard: FC<TierIProps> = ({ data }: TierIProps) => {
   );
 };
 
-export default TierCard;
+export default CampaignTiers;

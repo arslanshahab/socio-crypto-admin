@@ -23,7 +23,7 @@ const CampaignAnalytics: FC = () => {
 
   useEffect(() => {
     setGraphLoading(true);
-    ApiClient.getDashboardStats(campaignId)
+    ApiClient.getDashboardStats({ campaignId })
       .then((res) => {
         setCampaignStats(res.aggregatedMetrics);
         setGraphData(res.rawMetrics);

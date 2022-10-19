@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import LineChart from '../../componentsv2/LineChart';
-import TierCard from '../../componentsv2/TierCard';
+import CampaignTiers from '../../componentsv2/CampaignTiers';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
 import { DashboardStatsTypes } from '../../types';
@@ -79,7 +79,7 @@ const Dashboard: FC = () => {
           </div>
           {analytics && <LineChart analytics={analytics.rawMetrics} />}
         </div>
-        <div className="tierCardSection">{analytics && <TierCard data={analytics?.aggregatedMetrics} />}</div>
+        <div className="tierCardSection">{analytics && <CampaignTiers data={analytics?.aggregatedMetrics} />}</div>
         <div className="campaignTableWrapper">
           <Campaigns />
         </div>
