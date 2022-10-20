@@ -3,7 +3,7 @@ import TierDetailsLayout from '../../sections/TierDetailsLayout';
 import TierHeader from '../TierHeader';
 import './campaignDemographics.scss';
 import usersIcon from '../../assets/svg/tiers/users.svg';
-import { CampaignUsersTypes, UserDemographicsTypes } from '../../types';
+import { CampaignUsersTypes } from '../../types';
 import { useLocation } from 'react-router-dom';
 
 interface DemographicsStateTypes {

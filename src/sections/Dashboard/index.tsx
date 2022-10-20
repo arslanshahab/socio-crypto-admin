@@ -7,6 +7,8 @@ import { showErrorAlert } from '../../store/actions/alerts';
 import { DashboardStatsTypes, UserDemographicsTypes } from '../../types';
 import Campaigns from '../Campaigns';
 import './dashboard.scss';
+import ReactSelect, { SingleValue } from 'react-select';
+import ProgressBar from '../../components/ProgressBar/ProgressBar';
 
 const Dashboard: FC = () => {
   const dispatch = useDispatch();
@@ -16,28 +18,52 @@ const Dashboard: FC = () => {
   const [endDate, setEndDate] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [showRange, setShowRange] = useState<string>('');
-  const [demographicLoadin, setDemographicLoading] = useState<boolean>(false);
+  const [demographicLoading, setDemographicLoading] = useState<boolean>(false);
   const [demographics, setDemographics] = useState<UserDemographicsTypes>();
+  const [campaigns, setCampaigns] = useState<{ value: string; label: string }[]>();
+  const [campaignId, setCampaignId] = useState('-1');
+  const [campaignLoading, setCampaignLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
-    ApiClient.getDashboardStats({ campaignId: '-1', startDate, endDate, month })
+    ApiClient.getDashboardStats({ campaignId, startDate, endDate, month })
       .then((res) => setAnalytics(res))
       .catch((error) => dispatch(showErrorAlert(error)))
       .finally(() => setLoading(false));
-  }, [month, startDate, endDate]);
+  }, [month, startDate, endDate, campaignId]);
 
   useEffect(() => {
     setDemographicLoading(true);
-    ApiClient.getDemographics({ campaignId: '-1', startDate, endDate, month })
+    ApiClient.getDemographics({ campaignId, startDate, endDate, month })
       .then((res) => setDemographics(res))
       .catch((error) => dispatch(showErrorAlert(error)))
-      .finally(() => setLoading(false));
-  }, [month, startDate, endDate]);
+      .finally(() => setDemographicLoading(false));
+  }, [month, startDate, endDate, campaignId]);
+
+  useEffect(() => {
+    setCampaignLoading(true);
+    ApiClient.getLiteCampaigns()
+      .then((res) => {
+        const result = res.map((x) => ({ value: x.id, label: x.name }));
+        setCampaigns([{ value: '-1', label: 'All' }, ...result]);
+      })
+      .catch((error) => dispatch(showErrorAlert(error)))
+      .finally(() => setCampaignLoading(false));
+  }, []);
 
   const handleSelectField = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === 'showRange') return setShowRange('showRange');
-    setMonth(parseInt(e.target.value));
+    if (e.target.value !== 'Select') {
+      setMonth(parseInt(e.target.value));
+      setStartDate('');
+      setEndDate('');
+      setShowRange('');
+    }
+  };
+
+  const handleSelectCampaign = (event: SingleValue<{ value: string; label: string }>) => {
+    if (event) setCampaignId(event.value);
+    setMonth(0);
     setStartDate('');
     setEndDate('');
     setShowRange('');
@@ -46,8 +72,16 @@ const Dashboard: FC = () => {
   return (
     <div className="dashboardWrapper">
       <div className="dashboardCol">
+        {(loading || demographicLoading || campaignLoading) && (
+          <div className="loadingBar">
+            <ProgressBar />
+          </div>
+        )}
+
         <div className="lineChartSection">
-          <div className="lineChartOutline"></div>
+          <div className="searchField">
+            <ReactSelect placeholder="Search Campaign" options={campaigns} onChange={handleSelectCampaign} />
+          </div>
           <div className="headingWrapper">
             <p>Engagement Report</p>
             <div>
@@ -76,7 +110,7 @@ const Dashboard: FC = () => {
                 )}
                 <div className="dropdownWrapper">
                   <select className="selectField" onChange={handleSelectField} value={month}>
-                    <option value={0}>All</option>
+                    <option>Select</option>
                     <option value={1}>Monthly</option>
                     <option value={2}>60 Days</option>
                     <option value={3}>90 Days</option>
@@ -86,7 +120,7 @@ const Dashboard: FC = () => {
               </div>
             </div>
           </div>
-          {analytics && <LineChart analytics={analytics.rawMetrics} />}
+          <LineChart analytics={analytics?.rawMetrics} />
         </div>
         <div className="tierCardSection">
           {demographics && analytics && (

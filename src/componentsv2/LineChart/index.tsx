@@ -6,7 +6,7 @@ import { months } from '../../helpers/constants';
 import { CampaignStatTypes } from '../../types';
 
 interface ChartIProps {
-  analytics: CampaignStatTypes[];
+  analytics?: CampaignStatTypes[];
 }
 
 export const options = {
@@ -29,7 +29,7 @@ export const options = {
 
 const LineChart: FC<ChartIProps> = ({ analytics }: ChartIProps) => {
   const data = {
-    labels: months,
+    labels: analytics?.map((x) => ''),
     datasets: [
       {
         fill: true,
