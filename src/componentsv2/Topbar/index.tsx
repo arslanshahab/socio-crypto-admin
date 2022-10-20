@@ -39,7 +39,7 @@ const Topbar: FC = () => {
         </div> */}
         <div className="coiinValue">
           <img src={coiinIcon} />
-          <p>{coiin || ''}</p>
+          <p>{coiin || ''} USD</p>
         </div>
         <div className="profile" onClick={() => push('/dashboard/profile')}>
           <img src={profileIcon} />
