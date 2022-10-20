@@ -4,7 +4,7 @@ import LineChart from '../../componentsv2/LineChart';
 import CampaignTiers from '../../componentsv2/CampaignTiers';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
-import { DashboardStatsTypes } from '../../types';
+import { DashboardStatsTypes, UserDemographicsTypes } from '../../types';
 import Campaigns from '../Campaigns';
 import './dashboard.scss';
 
@@ -16,11 +16,21 @@ const Dashboard: FC = () => {
   const [endDate, setEndDate] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [showRange, setShowRange] = useState<string>('');
+  const [demographicLoadin, setDemographicLoading] = useState<boolean>(false);
+  const [demographics, setDemographics] = useState<UserDemographicsTypes>();
 
   useEffect(() => {
     setLoading(true);
     ApiClient.getDashboardStats({ campaignId: '-1', startDate, endDate, month })
       .then((res) => setAnalytics(res))
+      .catch((error) => dispatch(showErrorAlert(error)))
+      .finally(() => setLoading(false));
+  }, [month, startDate, endDate]);
+
+  useEffect(() => {
+    setDemographicLoading(true);
+    ApiClient.getDemographics({ campaignId: '-1', startDate, endDate, month })
+      .then((res) => setDemographics(res))
       .catch((error) => dispatch(showErrorAlert(error)))
       .finally(() => setLoading(false));
   }, [month, startDate, endDate]);
@@ -79,8 +89,12 @@ const Dashboard: FC = () => {
           {analytics && <LineChart analytics={analytics.rawMetrics} />}
         </div>
         <div className="tierCardSection">
-          {analytics && (
-            <CampaignTiers aggregates={analytics.aggregatedMetrics} socialPostMetrics={analytics.socialPostMetrics} />
+          {demographics && analytics && (
+            <CampaignTiers
+              aggregates={analytics.aggregatedMetrics}
+              socialPostMetrics={analytics.socialPostMetrics}
+              demographics={demographics}
+            />
           )}
         </div>
         <div className="campaignTableWrapper">

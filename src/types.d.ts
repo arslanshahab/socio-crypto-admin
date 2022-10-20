@@ -989,3 +989,21 @@ export type CampaignTierIconTypes = {
   shares: string;
   comments: string;
 };
+
+export type CampaignUsersTypes = {
+  id: string;
+  user: {
+    profile: {
+      username: string;
+      ageRange: string;
+      city: string;
+      state: string;
+      country: string;
+    };
+  };
+};
+
+export type UserDemographicsTypes = {
+  count: number;
+  participants: CampaignUsersTypes[];
+};

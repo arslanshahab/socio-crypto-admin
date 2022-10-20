@@ -3,7 +3,7 @@ import TierHeader from '../TierHeader';
 import tagUserIcon from '../../assets/svg/tiers/tagUser.svg';
 import TierDetailsLayout from '../../sections/TierDetailsLayout';
 import { useLocation } from 'react-router-dom';
-import { CampaignAggregationTypes, CampaignTierIconTypes, SocialPlatforms, SocialPostMetrics } from '../../types';
+import { CampaignTierIconTypes, SocialPlatforms, SocialPostMetrics } from '../../types';
 import twitterIcon from '../../assets/svg/socialIcons/TwitterLogo.svg';
 import tiktokIcon from '../../assets/svg/socialIcons/TikTokLogo.svg';
 import facebookIcon from '../../assets/svg/socialIcons/FBLogo.svg';
@@ -16,10 +16,7 @@ import './campaignChannelEngagement.scss';
 import TierContent from '../TierContent';
 
 interface StateTypes {
-  state: {
-    aggregates: CampaignAggregationTypes;
-    socialPostMetrics: SocialPostMetrics[];
-  };
+  state: SocialPostMetrics[];
 }
 
 const titles: CampaignTierIconTypes = {
@@ -44,15 +41,13 @@ const tierIcons: CampaignTierIconTypes = {
 };
 
 const CampaignChannelEngagement: FC = () => {
-  const {
-    state: { socialPostMetrics },
-  }: StateTypes = useLocation();
+  const { state }: StateTypes = useLocation();
 
   return (
     <TierDetailsLayout>
       <TierHeader title={'Tier 3: Campaign By Channel '} image={tagUserIcon} />
       <div className="socialTierWrapper">
-        {socialPostMetrics.map((x: SocialPostMetrics) => {
+        {state.map((x: SocialPostMetrics) => {
           return (
             <div key={x.comments} className="socialTierContent">
               <div>

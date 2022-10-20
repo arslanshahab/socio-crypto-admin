@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import './tierDetailsLayout.scss';
 
-const TierDetails: FC = ({ children }) => {
+const TierDetailsLayout: FC = ({ children }) => {
   return (
     <div className="tierDetailsWrapper">
       <div className="tierOutline">{children}</div>
@@ -9,4 +9,4 @@ const TierDetails: FC = ({ children }) => {
   );
 };
 
-export default TierDetails;
+export default TierDetailsLayout;
