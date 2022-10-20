@@ -35,7 +35,7 @@ export const campaignTiersData = [
     name: 'totalUsers',
     image: usersIcon,
     description: 'Tier 2: Campaign Demographics',
-    link: '/dashboard/#',
+    link: '/dashboard/campaign/demographics',
   },
   {
     name: 'totalSocialPosts',

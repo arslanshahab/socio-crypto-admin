@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import './campaignFirstTier.scss';
+import './campaignEngagement.scss';
 import activityTier from '../../assets/svg/tiers/activity.svg';
 import participantsIcons from '../../assets/svg/tiers/participants.svg';
 import { useLocation } from 'react-router-dom';
@@ -34,7 +34,7 @@ const icons: CampaignAnalyticTypes = {
   commentCount: commentIcon,
 };
 
-const CampaignFirstTier: FC = () => {
+const CampaignEngagement: FC = () => {
   const {
     state: { aggregates },
   }: StateTypes = useLocation();
@@ -42,7 +42,7 @@ const CampaignFirstTier: FC = () => {
   return (
     <TierDetailsLayout>
       <TierHeader title={'Tier 1: Campaign Engagement'} image={activityTier} />
-      <div className="campaignFirstTierWrapper">
+      <div className="campaignEngagementWrapper">
         {Object.entries(aggregates).map(([key, value], i) => {
           if (
             key === 'totalParticipants' ||
@@ -58,4 +58,4 @@ const CampaignFirstTier: FC = () => {
   );
 };
 
-export default CampaignFirstTier;
+export default CampaignEngagement;

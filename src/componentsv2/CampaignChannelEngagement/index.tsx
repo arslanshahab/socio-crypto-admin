@@ -12,7 +12,7 @@ import clicksIcon from '../../assets/svg/tiers/clicksIcon.svg';
 import commentIcon from '../../assets/svg/tiers/commentsIcon.svg';
 import viewIcon from '../../assets/svg/tiers/viewsIcon.svg';
 import shareIcon from '../../assets/svg/tiers/sharesIcon.svg';
-import './campaignThirdTier.scss';
+import './campaignChannelEngagement.scss';
 import TierContent from '../TierContent';
 
 interface StateTypes {
@@ -43,7 +43,7 @@ const tierIcons: CampaignTierIconTypes = {
   comments: commentIcon,
 };
 
-const CampaignThirdTier: FC = () => {
+const CampaignChannelEngagement: FC = () => {
   const {
     state: { socialPostMetrics },
   }: StateTypes = useLocation();
@@ -73,4 +73,4 @@ const CampaignThirdTier: FC = () => {
   );
 };
 
-export default CampaignThirdTier;
+export default CampaignChannelEngagement;
