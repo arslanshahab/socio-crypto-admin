@@ -27,6 +27,7 @@ import {
   PurchaseCoiinTypes,
   DashboardMetricParams,
   UserDemographicsTypes,
+  CoiinValueType,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -240,9 +241,17 @@ export class ApiClient {
     try {
       return (
         await this.requestInstance.get(
-          `http://localhost:4000/v1/participant/demographic?campaignId=${campaignId}&month=${month}&startDate=${startDate}&endDate=${endDate}`,
+          `/v1/participant/demographic?campaignId=${campaignId}&month=${month}&startDate=${startDate}&endDate=${endDate}`,
         )
       ).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getCoiinValue(): Promise<CoiinValueType> {
+    try {
+      return (await this.requestInstance.get(`/v1/crypto/coiin-value`)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

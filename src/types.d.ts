@@ -1007,3 +1007,7 @@ export type UserDemographicsTypes = {
   count: number;
   participants: CampaignUsersTypes[];
 };
+
+export type CoiinValueType = {
+  coiin: string;
+};

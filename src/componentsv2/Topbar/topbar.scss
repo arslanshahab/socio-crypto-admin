@@ -37,5 +37,14 @@
     .profile {
       @apply cursor-pointer;
     }
+    .coiinValue {
+      @apply flex gap-2 items-center;
+      img {
+        @apply w-10;
+      }
+      p {
+        @apply font-medium text-sm text-bluetiful;
+      }
+    }
   }
 }
