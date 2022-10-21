@@ -1,8 +1,8 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC } from 'react';
 import './lineChart.scss';
 import { ScriptableContext } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { months } from '../../helpers/constants';
+// import { months } from '../../helpers/constants';
 import { CampaignStatTypes } from '../../types';
 
 interface ChartIProps {
@@ -60,9 +60,9 @@ const LineChart: FC<ChartIProps> = ({ analytics }: ChartIProps) => {
     ],
   };
 
-  const handleLenged = (value: number) => {
-    console.log(value);
-  };
+  // const handleLenged = (value: number) => {
+  //   console.log(value);
+  // };
 
   return (
     <div className="linechartWrapper">
