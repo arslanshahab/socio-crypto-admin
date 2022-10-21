@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import './lineChart.scss';
 import { ScriptableContext } from 'chart.js';
 import { Line } from 'react-chartjs-2';
@@ -9,13 +9,13 @@ interface ChartIProps {
   analytics?: CampaignStatTypes[];
 }
 
-export const options = {
+const options = {
   responsive: true,
   tension: '.4',
   plugins: {
     legend: {
       position: 'bottom' as const,
-      display: false,
+      display: true,
       labels: {
         usePointStyle: true,
         pointStyle: 'circle',
@@ -33,7 +33,7 @@ const LineChart: FC<ChartIProps> = ({ analytics }: ChartIProps) => {
     datasets: [
       {
         fill: true,
-        label: 'Participation Score',
+        label: 'Participation',
         data: analytics?.map((x) => x.participationScore),
         borderColor: '#3A6FF8',
         backgroundColor: (context: ScriptableContext<'line'>): CanvasGradient => {
@@ -61,13 +61,13 @@ const LineChart: FC<ChartIProps> = ({ analytics }: ChartIProps) => {
   };
 
   const handleLenged = (value: number) => {
-    // data.datasets[value].data = [];
+    console.log(value);
   };
 
   return (
     <div className="linechartWrapper">
       <Line options={options} data={data} />
-      <div className="legend">
+      {/* <div className="legend">
         <div className="participants" onClick={() => handleLenged(0)}>
           <div className="circleBlue"></div>
           <p>Participation</p>
@@ -76,7 +76,7 @@ const LineChart: FC<ChartIProps> = ({ analytics }: ChartIProps) => {
           <div className="circleMagenta"></div>
           <p>Clicks </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
