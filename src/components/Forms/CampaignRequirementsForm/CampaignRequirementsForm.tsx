@@ -16,6 +16,7 @@ import SocialFollowersForm from './SocialFollowersForm';
 import { updateCampaign } from '../../../store/actions/campaign';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import styles from './requirements.module.css';
+import './campaignRequirementsForm.scss';
 
 const CampaignRequirementsForm: React.FC<ActionsProps> = ({
   activeStep,
@@ -76,7 +77,7 @@ const CampaignRequirementsForm: React.FC<ActionsProps> = ({
   };
 
   return (
-    <Box className="w-full px-28 mt-10">
+    <Box className="campaignRequirementsFormWrapper">
       <Fade>
         <Box className="w-full">
           <GenericModal open={Boolean(formType)} onClose={() => setFormtype('')} size="small">
