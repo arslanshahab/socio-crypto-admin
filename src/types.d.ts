@@ -1011,3 +1011,11 @@ export type UserDemographicsTypes = {
 export type CoiinValueType = {
   coiin: string;
 };
+
+export type CryptoTransferTypes = {
+  amount: string;
+  userId: string;
+  action: string;
+  symbol: string;
+  network: string;
+};

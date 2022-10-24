@@ -3,10 +3,9 @@ import styles from './userList.module.css';
 import headingStyles from '../../assets/styles/heading.module.css';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import CustomButton from '../CustomButton';
-import { apiURI } from '../../clients/raiinmaker-api';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
+import { ApiClient } from '../../services/apiClient';
 
 type IProps = {
   userId: string;
@@ -25,36 +24,24 @@ const TransferCoiin: FC<IProps> = ({ userId }: IProps) => {
 
   //Handle addCoiin
   const handleAddCoiin = async () => {
-    try {
-      setAddLoading(true);
-      await axios.post(
-        `${apiURI}/v1/user/transfer-user-coiin`,
-        { coiin, userId, action: 'ADD' },
-        { withCredentials: true },
-      );
-      dispatch(showSuccessAlert('Coiin added successfully!'));
-      setAddLoading(false);
-    } catch (e) {
-      dispatch(showErrorAlert('Something went wrong!'));
-      setAddLoading(false);
-    }
+    setAddLoading(true);
+    ApiClient.cryptoTransfers({ amount: coiin, userId, action: 'ADD', symbol: 'COIIN', network: 'BSC' })
+      .then((res) => {
+        dispatch(showSuccessAlert(res.message));
+      })
+      .catch((err) => dispatch(showErrorAlert(err.message)))
+      .finally(() => setAddLoading(false));
   };
 
   //Handle removeCoiin
   const handleRemoveCoiin = async () => {
-    try {
-      setRemoveLoading(true);
-      await axios.post(
-        `${apiURI}/v1/user/transfer-user-coiin`,
-        { coiin, userId, action: 'REMOVE' },
-        { withCredentials: true },
-      );
-      dispatch(showSuccessAlert('Coiin removed successfully!'));
-      setRemoveLoading(false);
-    } catch (error) {
-      dispatch(showErrorAlert('Something went wrong!'));
-      setRemoveLoading(false);
-    }
+    setRemoveLoading(true);
+    ApiClient.cryptoTransfers({ amount: coiin, userId, action: 'REMOVE', symbol: 'COIIN', network: 'BSC' })
+      .then((res) => {
+        dispatch(showSuccessAlert(res.message));
+      })
+      .catch((err) => dispatch(showErrorAlert(err.message)))
+      .finally(() => setRemoveLoading(false));
   };
 
   return (
