@@ -26,8 +26,8 @@ const TransferCoiin: FC<IProps> = ({ userId }: IProps) => {
   const handleAddCoiin = async () => {
     setAddLoading(true);
     ApiClient.cryptoTransfers({ amount: coiin, userId, action: 'ADD', symbol: 'COIIN', network: 'BSC' })
-      .then((res) => {
-        dispatch(showSuccessAlert(res.message));
+      .then(() => {
+        dispatch(showSuccessAlert('Transferred coiin successfully'));
       })
       .catch((err) => dispatch(showErrorAlert(err.message)))
       .finally(() => setAddLoading(false));
@@ -37,8 +37,8 @@ const TransferCoiin: FC<IProps> = ({ userId }: IProps) => {
   const handleRemoveCoiin = async () => {
     setRemoveLoading(true);
     ApiClient.cryptoTransfers({ amount: coiin, userId, action: 'REMOVE', symbol: 'COIIN', network: 'BSC' })
-      .then((res) => {
-        dispatch(showSuccessAlert(res.message));
+      .then(() => {
+        dispatch(showSuccessAlert('Removed coiin successfully'));
       })
       .catch((err) => dispatch(showErrorAlert(err.message)))
       .finally(() => setRemoveLoading(false));
