@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { apiURI } from '../../../clients/raiinmaker-api';
 import { APPROVED, RAIINMAKER } from '../../../helpers/constants';
+import './campaignSetupForm.scss';
 
 interface Props {
   company: string;
@@ -213,7 +214,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   }
 
   return (
-    <Box className="w-full px-28">
+    <Box className="campaignSetupFormWrapper">
       <Fade triggerOnce>
         <SocialMediaTypeInput
           selectAllByDefault={isGlobal}
