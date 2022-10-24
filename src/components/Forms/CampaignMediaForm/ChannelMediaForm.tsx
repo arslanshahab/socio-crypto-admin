@@ -66,7 +66,6 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                 >
                   &#10060;
                 </div>
-
                 {image.media.format.includes('image') ? (
                   <div className="w-20 h-20  bg-lightGray rounded-md">
                     <img

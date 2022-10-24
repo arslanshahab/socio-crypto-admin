@@ -1011,3 +1011,11 @@ export type UserDemographicsTypes = {
 export type CoiinValueType = {
   coiin: string;
 };
+
+export type MediaInstructionTypes = {
+  [index: string]: string;
+  Tiktok: string;
+  Twitter: string;
+  Facebook: string;
+  Instagram: string;
+};

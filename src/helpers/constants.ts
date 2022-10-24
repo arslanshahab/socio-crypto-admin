@@ -1,3 +1,5 @@
+import { MediaInstructionTypes } from '../types';
+
 export const ADMIN_PANEL_TITLE = 'Raiinmaker Admin Panel';
 export const ADMIN_PANEL_TAGLINE =
   'Your personal Dashboard to manage your Campaigns and get Insights through various Data Metrics.';
@@ -19,3 +21,13 @@ export const months = [
   'November',
   'December',
 ];
+
+export const mediaInstructions: MediaInstructionTypes = {
+  Tiktok:
+    'Aspect ratio: 9:16 or 1:1 with sidebars, Recommended dimensions: 1080 x 1920 pixels, Video orientation: vertical, Maximum file size: 20 MB.',
+  Twitter: 'Aspect ratio: 16:9, Recommended dimensions: 1200 x 675 pixels, Maximum file size: 20 MB.',
+  Facebook:
+    'Aspect ratio: 1.91:1 (Horizontal), 1:1 (Square), 4:5 (Vertical), Recommended dimensions: 2048 x 1149 pixels (Horizontal),  2048 x 2048 pixels (Square), 2048 x 3072 pixels (Portrait), Maximum file size: 20 MB.',
+  Instagram:
+    'Aspect ratio: 16:9 (Horizontal), 1:1 (Square), 4:5 (Vertical), Recommended dimensions: 1080 x 608 pixels (Horizontal),  1080 x 1080 pixels (Square), 1080 x 1350 pixels (Portrait), Maximum file size: 20 MB.',
+};

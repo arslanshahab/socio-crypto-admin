@@ -11,6 +11,7 @@ import Actions from '../../NewCampaign/Actions';
 import ChannelMediaForm from './ChannelMediaForm';
 import { updateCampaign } from '../../../store/actions/campaign';
 import { ReactComponent as CampaignAvatar } from '../../../assets/svg/campaignAvatar.svg';
+import { mediaInstructions } from '../../../helpers/constants';
 
 const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const dispatch = useDispatch();
@@ -92,9 +93,12 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         </div>
       </Box>
       {socialMediaType.map((item, index) => (
-        <Box className="w-full flex flex-col border-solid border-2 border-denimBlue p-5 mt-6 rounded-3xl" key={index}>
-          <ChannelMediaForm channel={item} onChange={onSuccess} channelMedias={channelMedia[item]} />
-        </Box>
+        <div key={index}>
+          <Box className="w-full flex flex-col border-solid border-2 border-denimBlue p-5 mt-6 rounded-3xl">
+            <ChannelMediaForm channel={item} onChange={onSuccess} channelMedias={channelMedia[item]} />
+          </Box>
+          <p className="text-sm text-grayWeb mt-1 px-4">Instructions: {mediaInstructions[item]}</p>
+        </div>
       ))}
       <Box className="w-full">
         <Actions
