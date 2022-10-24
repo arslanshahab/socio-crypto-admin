@@ -15,7 +15,7 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange }) 
   const menu: Array<MenuItem> = [
     { name: 'Crypto', value: 'crypto', enabled: true },
     { name: 'Raffle (Coming Soon)', value: 'raffle', enabled: false },
-    { name: 'Social Engagement', value: 'social-engagement', enabled: false },
+    { name: 'Social Engagement (Coming Soon)', value: 'social-engagement', enabled: false },
   ];
 
   return (
@@ -30,7 +30,7 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange }) 
                 handleChange(item.value);
               }
             }}
-            className={`cursor-pointer flex flex-row justify-center items-center rounded-full w-56 h-16 border-2 border-denimBlue spacing-2 ${
+            className={`cursor-pointer flex flex-row justify-center items-center rounded-full w-56 h-16 border-2 border-denimBlue spacing-2 px-2 text-center ${
               budgetType === item.value ? 'bg-denimBlue text-white' : ''
             }`}
           >
