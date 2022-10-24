@@ -8,6 +8,7 @@ import InstagramIcon from '../../../assets/svg/socialIcons/InstagramLogo.svg';
 import TwitterIcon from '../../../assets/svg/socialIcons/TwitterLogo.svg';
 import FacebookIcon from '../../../assets/svg/socialIcons/FBLogo.svg';
 import TiktokIcon from '../../../assets/svg/socialIcons/TikTokLogo.svg';
+import './campaignMediaForm.scss';
 
 export interface Props {
   channel: string;
@@ -52,7 +53,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
   };
 
   return (
-    <Box className="w-full flex flex-col flex-wrap">
+    <Box className="channelMediaFormWrapper">
       <Box className="w-full flex items-center gap-6 mb-2">
         <img src={socialIcons[channel]} alt={channel} />
         <div className="flex gap-4">
@@ -91,16 +92,14 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
             );
           })}
         </div>
-        <div className="">
-          <FileUpload
-            label={`Add ${channel} Image`}
-            updateLabel={`Update ${channel} Image`}
-            mediaType="sharedMedia"
-            tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-            onFileSuccess={onSuccess}
-            onFileError={onError}
-          />
-        </div>
+        <FileUpload
+          label={`Add ${channel} Image`}
+          updateLabel={`Update ${channel} Image`}
+          mediaType="sharedMedia"
+          tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
+          onFileSuccess={onSuccess}
+          onFileError={onError}
+        />
       </Box>
     </Box>
   );

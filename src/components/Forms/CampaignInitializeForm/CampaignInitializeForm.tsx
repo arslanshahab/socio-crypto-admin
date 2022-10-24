@@ -13,6 +13,7 @@ import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import styles from '../../CustomInput/customInput.module.css';
+import './campaignInitializeForm.scss';
 
 interface Props {
   userData: {
@@ -184,7 +185,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
 
   return (
     <Fade>
-      <Box className="w-full flex flex-row justify-center flex-wrap px-28 mt-10">
+      <Box className="campaignInitializeFormWrapper">
         <Box className="box-border w-5/6 flex flex-row flex-wrap">
           <Box className="w-full box-border pr-4 mt-5">
             <CustomInput
