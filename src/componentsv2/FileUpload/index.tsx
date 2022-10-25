@@ -21,7 +21,7 @@ interface Props {
   tooltip?: string;
 }
 
-const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess }) => {
+const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess, label }) => {
   const inputKey = `${mediaType}-${Math.random()}`;
   const allowedFileType: Array<FileFormatSizeMap> = [
     {
@@ -116,7 +116,7 @@ const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess }) 
           />
           <Box className="contentWrapper">
             <div className="text">
-              <FiPlus /> <p>Add Campaign Image</p>
+              <FiPlus /> <p>{label}</p>
             </div>
           </Box>
         </label>
