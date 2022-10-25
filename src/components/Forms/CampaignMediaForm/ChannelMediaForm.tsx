@@ -65,12 +65,12 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                 </div>
 
                 {image.media.format.includes('image') ? (
-                  <div className="imageWrapper">
+                  <div className="mediaWrapper">
                     <img src={image.media.file} alt={image.media.format} className="image" />
                   </div>
                 ) : (
                   image.media.format.includes('video') && (
-                    <div className="imageWrapper">
+                    <div className="mediaWrapper">
                       <video autoPlay={false} src={image.media.file} controls={true} className="video " />
                     </div>
                   )
