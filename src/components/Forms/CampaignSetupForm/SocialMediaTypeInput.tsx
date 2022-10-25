@@ -5,6 +5,7 @@ import TiktonIcon from '../../../assets/png/tiktok.png';
 import TwitterIcon from '../../../assets/png/twitter.png';
 import FacebookIcon from '../../../assets/png/facebook.png';
 import useEffectSkipFirst from '../../../hooks/useEffectSkipFirst';
+import './campaignSetupForm.scss';
 
 interface Props {
   socialMediaType: string[];
@@ -60,9 +61,9 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange, 
   };
 
   return (
-    <Box className="w-full mt-10">
-      <p className="mb-3 text-center text-2xl">Choose the social media platform to promote your campaign!</p>
-      <Box className="w-full flex flex-row justify-start items-center">
+    <Box className="socialMediaTypeInputWrapper">
+      <p>Choose the social media platform to promote your campaign!</p>
+      <Box className="checkboxWrapper">
         <FormControlLabel
           control={
             <Checkbox
@@ -77,17 +78,15 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange, 
           label="All channels"
         />
       </Box>
-      <Box className="flex flex-row justify-between space-x-4">
+      <Box className="socialMediaListWrapper">
         {socialMediaTypeMenu.map((item, index) => (
           <Box
             key={index}
             onClick={() => handleSocialSelect(item)}
-            className={`cursor-pointer flex flex-col justify-center items-center rounded-2xl w-72 h-32 border-2 border-denimBlue py-4 ${
-              socialMediaType.includes(item) ? 'bg-denimBlue text-white' : ''
-            }`}
+            className={`socialMedia  ${socialMediaType.includes(item) ? 'selectedField' : ''}`}
           >
-            <p className="text-base">{item}</p>
-            <img className="w-16" src={getSocialIcon[item]} alt="social-icon" />
+            <p>{item}</p>
+            <img src={getSocialIcon[item]} alt="social-icon" />
           </Box>
         ))}
       </Box>

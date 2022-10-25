@@ -169,7 +169,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   if (isLoading) {
     return (
-      <Box className="p-10 w-full flex flex-col justify-center items-center">
+      <Box className="setupFormMessage">
         <CircularProgress size={30} color="primary" className="mt-3" />
       </Box>
     );
@@ -177,11 +177,10 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   if (!fundingWallet?.length) {
     return (
-      <Box className="p-10 w-full flex flex-col justify-center items-center">
+      <Box className="setupFormMessage">
         <p>
           No cryptocurrency found - Please purchase Crypto{' '}
           <span
-            className="cursor-pointer underline text-blue-800 font-semibold	"
             onClick={() => {
               dispatch(resetCampaign());
               history.push('/dashboard/paymentsAccount', true);
@@ -196,11 +195,10 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   if (profile.verifyStatus !== APPROVED && profile.company !== RAIINMAKER) {
     return (
-      <Box className="p-10 w-full flex flex-col justify-center items-center">
-        <p className="normal-case">
+      <Box className="setupFormMessage">
+        <p>
           Before creating a new campaign, please verify your KYC{' '}
           <span
-            className="cursor-pointer underline text-blue-800 font-semibold	"
             onClick={() => {
               dispatch(resetCampaign());
               history.push('/dashboard/profile');
@@ -228,14 +226,14 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
       {campaignType && (
         <Fade triggerOnce>
-          <Box className="w-full mt-10">
+          <Box className="campaignBudgets">
             <CampaignBudgetTypeInput budgetType={budgetType} company={company} handleChange={handleBudgetType} />
             {budgetType && (
-              <Box className="w-full mt-10">
+              <Box className="selectFieldsWrapper">
                 {budgetType == 'crypto' && (
                   <Fade triggerOnce>
-                    <Box className="flex flex-row justify-start w-full">
-                      <Box className="w-2/6 box-border pr-4">
+                    <Box className="selectField">
+                      <Box className="selectFieldOutline">
                         <CustomSelect
                           required={true}
                           value={cryptoSymbol}
@@ -251,7 +249,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                           disabled={Boolean(campaign.id)}
                         />
                       </Box>
-                      <Box className="w-2/6 box-border pr-4">
+                      <Box className="selectFieldOutline">
                         <CustomInput
                           required={true}
                           value={coiinBudget}
@@ -263,12 +261,12 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                           disabled={Boolean(campaign.id)}
                         />
                       </Box>
-                      <Box className="w-2/6 flex flex-row justify-center box-border pr-4">
+                      <Box className="checkboxWrapper">
                         <FormControlLabel
                           control={
                             <Checkbox
                               checked={isGlobal}
-                              style={{ color: '#3f51b5' }}
+                              className="checkbox"
                               name="Brand Agreement"
                               onChange={(e, checked) => {
                                 setIsGlobal(checked);
@@ -283,9 +281,9 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                 )}
 
                 {budgetType === 'raffle' && (
-                  <Box className="flex flex-row justify-between w-full">
-                    <Box className="w-2/6 pr-3">
-                      <Box className="mb-4 w-full">
+                  <Box className="raffleInputFieldWrapper">
+                    <Box className="raffleInputPosition">
+                      <Box className="inputFieldWrapper">
                         <CustomInput
                           required={true}
                           value={rafflePrizeName}
@@ -299,7 +297,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                           error={errors['rafflePrizeName']}
                         />
                       </Box>
-                      <Box className="w-full">
+                      <Box className="inputFieldWrapper">
                         <CustomInput
                           required={true}
                           value={rafflePrizeLink}
@@ -313,12 +311,12 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                           error={errors['rafflePrizeLink']}
                         />
                       </Box>
-                      <Box className="w-full box-border mt-5">
+                      <Box className="checkboxWrapper">
                         <FormControlLabel
                           control={
                             <Checkbox
                               checked={isGlobal}
-                              style={{ color: '#3f51b5' }}
+                              className="checkbox"
                               name="Brand Agreement"
                               onChange={(e, checked) => {
                                 setIsGlobal(checked);
@@ -329,7 +327,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
                         />
                       </Box>
                     </Box>
-                    <Box className="flex flex-col justify-start w-2/6 pl-3">
+                    <Box className="uploadloadFileWrapper">
                       <FileUpload
                         value={raffleImage}
                         label="Upload Raffle Image"

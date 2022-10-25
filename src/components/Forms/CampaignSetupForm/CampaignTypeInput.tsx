@@ -19,16 +19,14 @@ export const campaignTypeMenu: Array<MenuItem> = [
 
 const CampaignTypeInput: React.FC<Props> = ({ campaignType, handleChange }) => {
   return (
-    <Box className="w-full mt-10">
-      <p className="mb-4 text-center text-2xl">What will this campaign prioritize?</p>
-      <Box className="flex flex-row justify-between space-x-4">
+    <Box className="campaignTypeInputWrapper">
+      <p>What will this campaign prioritize?</p>
+      <Box className="campaignTypeListWrapper">
         {campaignTypeMenu.map((item, index) => (
           <Box
             key={index}
             onClick={() => handleChange(item.value)}
-            className={`cursor-pointer flex flex-row justify-center items-center rounded-full w-72 h-16 border-2 border-denimBlue spacing-2 ${
-              campaignType === item.value ? 'bg-denimBlue text-white' : ''
-            }`}
+            className={`selectField ${campaignType === item.value ? 'selectedField' : ''}`}
           >
             <p className="text-base">{item.name}</p>
           </Box>

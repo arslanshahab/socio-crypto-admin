@@ -1,3 +1,111 @@
+// campaign setup form styles
 .campaignSetupFormWrapper {
   @apply w-full px-0 lg:px-8 xl:px-28;
+  .campaignBudgets {
+    @apply w-full mt-10;
+    .selectFieldsWrapper {
+      @apply w-full mt-10;
+      .selectField {
+        @apply flex flex-row justify-start w-full;
+        .selectFieldOutline {
+          @apply w-2/6 box-border pr-4;
+        }
+        .checkboxWrapper {
+          @apply w-2/6 flex flex-row justify-center box-border pr-4;
+        }
+        .checkbox {
+          @apply text-denimBlue;
+        }
+      }
+    }
+    .raffleInputFieldWrapper {
+      @apply flex flex-row justify-between w-full;
+      .raffleInputPosition {
+        @apply w-2/6 pr-3;
+        .inputFieldWrapper {
+          @apply mb-4 w-full;
+        }
+        .checkboxWrapper {
+          @apply w-full box-border mt-5;
+          .checkbox {
+            @apply text-denimBlue;
+          }
+        }
+      }
+      .uploadloadFileWrapper {
+        @apply flex flex-col justify-start w-2/6 pl-3;
+      }
+    }
+  }
+  // social media type input styles
+  .socialMediaTypeInputWrapper {
+    @apply w-full mt-10;
+    p {
+      @apply mb-3 text-center text-2xl;
+    }
+    .checkboxWrapper {
+      @apply w-full flex flex-row justify-start items-center;
+    }
+    .socialMediaListWrapper {
+      @apply flex flex-row justify-between space-x-4;
+      .socialMedia {
+        @apply cursor-pointer flex flex-col justify-center items-center rounded-2xl w-72 h-32 border-2 border-denimBlue py-4;
+        p {
+          @apply text-base;
+        }
+        img {
+          @apply w-16;
+        }
+      }
+    }
+  }
+
+  // campaign type input styles
+  .campaignTypeInputWrapper {
+    @apply w-full mt-10;
+    p {
+      @apply mb-4 text-center text-2xl;
+    }
+    .campaignTypeListWrapper {
+      @apply flex flex-row justify-between space-x-4;
+      .selectField {
+        @apply cursor-pointer flex flex-row justify-center items-center rounded-full w-72 h-16 border-2 border-denimBlue space-y-2;
+        p {
+          @apply text-base m-0;
+        }
+      }
+    }
+  }
+
+  // campaign budget type input styles
+  .campaignBudgetTypesWrapper {
+    @apply w-full mt-10;
+    p {
+      @apply mb-4 text-center text-2xl;
+    }
+    .campaignBudgetTypeList {
+      @apply flex flex-row justify-center space-x-4;
+      .selectField {
+        @apply cursor-pointer flex flex-row justify-center items-center rounded-full w-56 h-16 border-2 border-denimBlue px-2 text-center;
+        p {
+          @apply text-base m-0;
+        }
+      }
+    }
+  }
+
+  .selectedField {
+    @apply bg-denimBlue text-white;
+  }
+}
+
+// campaign setup messages
+.setupFormMessage {
+  @apply p-10 w-full flex flex-col justify-center items-center;
+  p {
+    @apply normal-case;
+    span {
+      @apply cursor-pointer underline text-blue-800 font-semibold;
+    }
+  }
 }
