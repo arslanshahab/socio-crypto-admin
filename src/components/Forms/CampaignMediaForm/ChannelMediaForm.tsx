@@ -54,37 +54,24 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
 
   return (
     <Box className="channelMediaFormWrapper">
-      <Box className="w-full flex items-center gap-6 mb-2">
+      <Box className="channelMediaOutline">
         <img src={socialIcons[channel]} alt={channel} />
-        <div className="flex gap-4">
+        <div className="contentSpace">
           {channelMedia?.map((image: ChannelMediaObject, index: number) => {
             return (
-              <div key={index} className="relative">
-                <div
-                  className="w-4 h-4 flex justify-center items-center  absolute right-0 bg-white rounded-full cursor-pointer hover:bg-cyberYellow z-10"
-                  style={{ fontSize: '8px' }}
-                  onClick={() => removeMedia(index)}
-                >
+              <div key={index} className="uploadedImageWrapper">
+                <div className="removeIcon" onClick={() => removeMedia(index)}>
                   &#10060;
                 </div>
 
                 {image.media.format.includes('image') ? (
-                  <div className="w-20 h-20  bg-lightGray rounded-md">
-                    <img
-                      src={image.media.file}
-                      alt={image.media.format}
-                      className="w-full h-full rounded-md object-contain"
-                    />
+                  <div className="imageWrapper">
+                    <img src={image.media.file} alt={image.media.format} className="image" />
                   </div>
                 ) : (
                   image.media.format.includes('video') && (
-                    <div className="w-20 h-20  bg-lightGray rounded-md">
-                      <video
-                        autoPlay={false}
-                        src={image.media.file}
-                        controls={true}
-                        className="w-full h-full object-contain rounded-md"
-                      />
+                    <div className="imageWrapper">
+                      <video autoPlay={false} src={image.media.file} controls={true} className="video " />
                     </div>
                   )
                 )}

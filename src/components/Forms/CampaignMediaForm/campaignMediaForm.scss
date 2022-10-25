@@ -1,3 +1,25 @@
 .channelMediaFormWrapper {
   @apply w-full flex flex-col flex-wrap overflow-x-scroll;
+  .channelMediaOutline {
+    @apply w-full flex items-center gap-6 mb-2;
+    .contentSpace {
+      @apply flex gap-4;
+      .uploadedImageWrapper {
+        @apply relative;
+        .removeIcon {
+          @apply w-4 h-4 flex justify-center items-center  absolute right-0 bg-white rounded-full cursor-pointer hover:bg-cyberYellow z-10;
+          font-size: 8px;
+        }
+        .imageWrapper {
+          @apply w-20 h-20  bg-lightGray rounded-md;
+          .image {
+            @apply w-full h-full rounded-md object-contain;
+          }
+          .video {
+            @apply w-full h-full object-contain rounded-md;
+          }
+        }
+      }
+    }
+  }
 }
