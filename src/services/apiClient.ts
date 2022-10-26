@@ -28,6 +28,7 @@ import {
   DashboardMetricParams,
   UserDemographicsTypes,
   CoiinValueType,
+  CryptoTransferTypes,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -252,6 +253,14 @@ export class ApiClient {
   public static async getCoiinValue(): Promise<CoiinValueType> {
     try {
       return (await this.requestInstance.get(`/v1/crypto/coiin-value`)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async cryptoTransfers(payload: CryptoTransferTypes): Promise<{ message: string }> {
+    try {
+      return (await this.requestInstance.post(`/v1/tatum/transfer-crypto`, payload)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

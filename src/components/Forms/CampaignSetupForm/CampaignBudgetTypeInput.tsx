@@ -1,5 +1,6 @@
 import { Box } from '@material-ui/core';
 import React from 'react';
+import './campaignSetupForm.scss';
 
 interface Props {
   budgetType: string;
@@ -15,13 +16,13 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange }) 
   const menu: Array<MenuItem> = [
     { name: 'Crypto', value: 'crypto', enabled: true },
     { name: 'Raffle (Coming Soon)', value: 'raffle', enabled: false },
-    { name: 'Social Engagement', value: 'social-engagement', enabled: false },
+    { name: 'Social Engagement (Coming Soon)', value: 'social-engagement', enabled: false },
   ];
 
   return (
-    <Box className="w-full mt-10">
-      <p className="mb-4 text-center text-2xl">How will this campaign reward participants?</p>
-      <Box className="flex flex-row justify-center space-x-4">
+    <Box className="campaignBudgetTypesWrapper">
+      <p>How will this campaign reward participants?</p>
+      <Box className="campaignBudgetTypeList">
         {menu.map((item, index) => (
           <Box
             key={index}
@@ -30,11 +31,9 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange }) 
                 handleChange(item.value);
               }
             }}
-            className={`cursor-pointer flex flex-row justify-center items-center rounded-full w-56 h-16 border-2 border-denimBlue spacing-2 ${
-              budgetType === item.value ? 'bg-denimBlue text-white' : ''
-            }`}
+            className={`selectField  ${budgetType === item.value ? 'selectedField' : ''}`}
           >
-            <p className="text-base">{item.name}</p>
+            <p>{item.name}</p>
           </Box>
         ))}
       </Box>

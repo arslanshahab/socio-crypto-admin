@@ -1,0 +1,15 @@
+.fileUploadWrapper {
+  @apply flex flex-col justify-start;
+  .buttonWrapper {
+    @apply w-52;
+    label {
+      @apply cursor-pointer;
+      .contentWrapper {
+        @apply flex flex-row justify-center items-center bg-coolGray rounded-full p-2;
+        .text {
+          @apply flex items-center gap-4;
+        }
+      }
+    }
+  }
+}

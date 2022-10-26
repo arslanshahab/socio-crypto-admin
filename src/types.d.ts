@@ -1020,6 +1020,14 @@ export type MediaInstructionTypes = {
   Instagram: string;
 };
 
+export type CryptoTransferTypes = {
+  amount: string;
+  userId: string;
+  action: string;
+  symbol: string;
+  network: string;
+};
+
 export type CoiinReducerTypes = {
   coiinValue: string;
   loading: boolean;

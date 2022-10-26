@@ -1,0 +1,40 @@
+.campaignPostFormWrapper {
+  @apply w-full mt-10 px-0 lg:px-8 xl:px-28;
+  .campaignPostForm {
+    @apply w-full flex flex-col box-border items-center;
+    .outline {
+      @apply w-full flex flex-col border-solid border border-denimBlue p-5 rounded-2xl mt-5;
+      .headWrapper {
+        @apply w-full flex flex-row justify-between items-center box-border;
+        p {
+          @apply text-xl mb-2;
+        }
+        .addTempButton {
+          @apply w-40 h-10 ml-5 rounded-md text-black text-base border-2 border-cyberYellow bg-cyberYellow;
+        }
+      }
+      .inputWrapper {
+        @apply w-full box-border pr-4 mt-6;
+        .templateInfo {
+          @apply w-full flex flex-row justify-between items-center;
+          p {
+            @apply text-sm text-gray-400 mt-1;
+          }
+          .removeContent {
+            @apply w-32 mt-1 rounded-md text-red-600 text-sm bg-transparent;
+            .closeIcon {
+              @apply mr-1 text-lg;
+            }
+          }
+          .textLimit {
+            @apply flex flex-row justify-end text-coolGray font-normal;
+          }
+        }
+      }
+    }
+  }
+
+  .postFormActions {
+    @apply w-full mt-10;
+  }
+}

@@ -14,6 +14,7 @@ import { updateCampaign } from '../../../store/actions/campaign';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import styles from './algorithm.module.css';
+import './campaignAlgorithmForm.scss';
 
 const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
   activeStep,
@@ -109,7 +110,7 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
 
   return (
     <Fade>
-      <Box className="w-full px-28 mt-10">
+      <Box className="campaignAlgorithmFormWrapper">
         <GenericModal open={modalOpen} onClose={() => toggleModal(false)} size="medium">
           <TermsAndConditions />
         </GenericModal>

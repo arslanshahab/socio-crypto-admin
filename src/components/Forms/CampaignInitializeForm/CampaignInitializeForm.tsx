@@ -13,6 +13,7 @@ import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import styles from '../../CustomInput/customInput.module.css';
+import './campaignInitializeForm.scss';
 
 interface Props {
   userData: {
@@ -184,9 +185,9 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
 
   return (
     <Fade>
-      <Box className="w-full flex flex-row justify-center flex-wrap px-28 mt-10">
-        <Box className="box-border w-5/6 flex flex-row flex-wrap">
-          <Box className="w-full box-border pr-4 mt-5">
+      <Box className="campaignInitializeFormWrapper">
+        <Box className="campaignInitializeFormOutline">
+          <Box className="inputFieldLg">
             <CustomInput
               required={true}
               value={name}
@@ -199,7 +200,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
-          <Box className="w-3/6 box-border pr-4 mt-5">
+          <Box className="inputField">
             <CustomInput
               required={true}
               value={target}
@@ -212,7 +213,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
-          <Box className="w-3/6 box-border pr-4 mt-5">
+          <Box className="inputField">
             <CustomInput
               label="Landing Page Video URL"
               placeholder="Video URL"
@@ -224,7 +225,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
-          <Box className="w-3/6 box-border pr-4 mt-5">
+          <Box className="inputField">
             <CustomInput
               required={true}
               label="How many Reward Tiers would you like to provide? (1-10)"
@@ -237,7 +238,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
             />
           </Box>
 
-          <Box className="w-3/6 box-border pr-4 mt-5">
+          <Box className="inputField">
             <FormControlLabel
               control={
                 <Checkbox
@@ -253,7 +254,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
             />
           </Box>
 
-          <Box className="w-3/6 box-border pr-4 mt-5">
+          <Box className="inputField">
             <CustomInput
               required={true}
               label="Campaign Tagline"
@@ -266,9 +267,9 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
-          <Box className="w-3/6 box-border pr-4 mt-5">
+          <Box className="inputField">
             <Autocomplete
-              className="w-full customInput"
+              className="autoComplete"
               id="keywords"
               freeSolo={true}
               multiple={true}
@@ -277,7 +278,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               defaultValue={keywords}
               renderInput={(params) => (
                 <TextField
-                  className={styles.customInput}
+                  className="textField"
                   required={true}
                   error={errors['keywords']}
                   {...params}
@@ -292,7 +293,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
-          <Box className="w-full box-border pr-4 mt-3">
+          <Box className="inputFieldLg">
             <CustomInput
               required={true}
               value={tags}
@@ -304,15 +305,11 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
                 updateErrors('tags', e.target.value);
               }}
             />
-            <span
-              className={`w-full text-xs flex flex-row justify-end ${
-                errors['tags'] ? 'text-red-500' : 'text-gray-500'
-              }`}
-            >
+            <span className={`tagStyles  ${errors['tags'] ? 'errorText' : 'grayText'}`}>
               Characters added {`${tags.length}/${MAX_TAGS_LENGTH}`}
             </span>
           </Box>
-          <Box className="w-full box-border pr-4 mt-5">
+          <Box className="inputFieldLg">
             <CustomInput
               required={true}
               label="Description"
@@ -326,7 +323,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
-          <Box className="w-full box-border pr-4 mt-5">
+          <Box className="inputFieldLg">
             <CustomInput
               required={true}
               label="Campaign instructions"
@@ -340,7 +337,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               }}
             />
           </Box>
-          <Box className="w-3/6 box-border pr-4 mt-5">
+          <Box className="inputField">
             <DateTimePicker
               required={true}
               value={beginDate || null}
@@ -355,7 +352,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               onChange={handleBeginDateChange}
             />
           </Box>
-          <Box className="w-3/6 box-border pr-4 mt-5">
+          <Box className="inputField">
             <DateTimePicker
               required={true}
               inputVariant="outlined"

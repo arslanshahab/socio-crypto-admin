@@ -3,6 +3,7 @@ import { Box } from '@material-ui/core';
 import { FileObject } from '../../types';
 import { generateRandomId } from '../../helpers/utils';
 import { FiPlus } from 'react-icons/fi';
+import './fileUpload.scss';
 
 interface FileFormatSizeMap {
   format: string;
@@ -20,7 +21,7 @@ interface Props {
   tooltip?: string;
 }
 
-const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess }) => {
+const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess, label }) => {
   const inputKey = `${mediaType}-${Math.random()}`;
   const allowedFileType: Array<FileFormatSizeMap> = [
     {
@@ -104,18 +105,18 @@ const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess }) 
     });
 
   return (
-    <Box className="flex flex-col justify-start">
-      <div className="flex items-center gap-6">
-        <label htmlFor={inputKey} className="cursor-pointer">
+    <Box className="fileUploadWrapper">
+      <div className="buttonWrapper">
+        <label htmlFor={inputKey}>
           <input
             className="hidden"
             type="file"
             id={inputKey}
             onChange={(e) => handleImage(e, mediaType, onFileSuccess, onFileError)}
           />
-          <Box className="flex flex-row justify-center items-center bg-coolGray rounded-full p-2">
-            <div className="flex items-center gap-4">
-              <FiPlus /> <p>Add Campaign Image</p>
+          <Box className="contentWrapper">
+            <div className="text">
+              <FiPlus /> <p>{label}</p>
             </div>
           </Box>
         </label>

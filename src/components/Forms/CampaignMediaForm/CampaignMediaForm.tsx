@@ -12,6 +12,7 @@ import ChannelMediaForm from './ChannelMediaForm';
 import { updateCampaign } from '../../../store/actions/campaign';
 import { ReactComponent as CampaignAvatar } from '../../../assets/svg/campaignAvatar.svg';
 import { mediaInstructions } from '../../../helpers/constants';
+import './campaignMediaForm.scss';
 
 const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const dispatch = useDispatch();
@@ -68,17 +69,13 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   };
 
   return (
-    <Box className="w-full flex flex-col flex-wrap p-10">
-      <Box className="w-full flex flex-col border-solid border-2 border-denimBlue p-5 rounded-3xl">
-        <div className="flex items-center gap-8">
+    <Box className="campaignMediaFormWrapper">
+      <Box className="campaignMediaFormOutline">
+        <div className="mediaContent">
           <CampaignAvatar />
           {campaignImage.file && (
-            <div className="w-20 h-20 bg-lightGray">
-              <img
-                src={campaignImage.file}
-                alt={campaignImage.filename}
-                className="w-full h-full rounded-md object-contain"
-              />
+            <div className="imageWrapper">
+              <img src={campaignImage.file} alt={campaignImage.filename} className="image" />
             </div>
           )}
 
@@ -94,7 +91,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       </Box>
       {socialMediaType.map((item, index) => (
         <div key={index}>
-          <Box className="w-full flex flex-col border-solid border-2 border-denimBlue p-5 mt-6 rounded-3xl">
+          <Box className="channelMedias">
             <ChannelMediaForm channel={item} onChange={onSuccess} channelMedias={channelMedia[item]} />
           </Box>
           <p className="text-sm text-grayWeb mt-1 px-4">Instructions: {mediaInstructions[item]}</p>
