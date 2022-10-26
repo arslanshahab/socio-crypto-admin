@@ -1,0 +1,6 @@
+.tierDetailsWrapper {
+  @apply grid grid-cols-6 gap-12 mt-8;
+  .tierOutline {
+    @apply border border-lavender rounded-xl p-4 col-span-4;
+  }
+}

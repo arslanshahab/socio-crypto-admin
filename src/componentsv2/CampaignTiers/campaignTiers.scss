@@ -1,7 +1,7 @@
-.tierCard {
+.campaignTiers {
   @apply grid grid-cols-3 gap-x-14 gap-y-6;
   .cardOutline {
-    @apply border border-lavender rounded-xl p-3;
+    @apply border border-lavender rounded-xl p-3 cursor-pointer;
     .iconSection {
       @apply flex justify-between items-center pb-3;
       .iconWrapper {

@@ -22,6 +22,9 @@ import CampaignAnalytics from '../CampaignAnalytics';
 import Payments from '../Payments';
 import Sidebar from '../../componentsv2/Sidebar';
 import Topbar from '../../componentsv2/Topbar';
+import CampaignEngagement from '../../componentsv2/CampaignEngagement';
+import CampaignChannelEngagement from '../../componentsv2/CampaignChannelEngagement';
+import CampaignDemographics from '../../componentsv2/CampaignDemographics';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -98,6 +101,15 @@ const Dashboard: React.FC = (props) => {
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/profile'}>
               <Profile />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/campaign/engagement'}>
+              <CampaignEngagement />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/campaign/channel/engagement'}>
+              <CampaignChannelEngagement />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/campaign/demographics'}>
+              <CampaignDemographics />
             </ProtectedRoute>
           </Switch>
         </div>

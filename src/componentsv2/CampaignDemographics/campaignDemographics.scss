@@ -1,0 +1,43 @@
+// Table styles are applying from campaignsTable.scss file
+.campaignDemographics {
+  @apply mt-6;
+  .tableWrapper {
+    @apply w-full overflow-x-auto mt-2;
+    table {
+      @apply w-full table-auto text-sm;
+      min-height: 25vh;
+      thead {
+        tr {
+          th {
+            @apply px-4 p-0.5 font-normal text-bluetiful bg-lavender w-40 py-3;
+            &:first-child {
+              @apply text-justify rounded-l-md;
+            }
+            &:last-child {
+              @apply text-right rounded-r-md;
+            }
+            &:not(:first-child, :last-child) {
+              @apply text-justify w-2/12;
+            }
+          }
+        }
+      }
+      tbody {
+        tr {
+          td {
+            @apply px-4 py-3 font-normal w-40;
+            &:first-child {
+              @apply text-justify;
+            }
+            &:last-child {
+              @apply text-right;
+            }
+            &:not(:first-child, :last-child) {
+              @apply text-justify;
+            }
+          }
+        }
+      }
+    }
+  }
+}

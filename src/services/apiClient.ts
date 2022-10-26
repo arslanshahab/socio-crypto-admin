@@ -26,6 +26,8 @@ import {
   PurchaseCoiinPayload,
   PurchaseCoiinTypes,
   DashboardMetricParams,
+  UserDemographicsTypes,
+  CoiinValueType,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -229,6 +231,27 @@ export class ApiClient {
   public static async purchaseCoiin(payload: PurchaseCoiinPayload): Promise<PurchaseCoiinTypes> {
     try {
       return (await this.requestInstance.post(`/v1/stripe/purchase-coiin`, payload)).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getDemographics(payload: DashboardMetricParams): Promise<UserDemographicsTypes> {
+    const { campaignId, endDate, month, startDate } = payload;
+    try {
+      return (
+        await this.requestInstance.get(
+          `/v1/participant/demographic?campaignId=${campaignId}&month=${month}&startDate=${startDate}&endDate=${endDate}`,
+        )
+      ).data.data;
+    } catch (error) {
+      throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
+    }
+  }
+
+  public static async getCoiinValue(): Promise<CoiinValueType> {
+    try {
+      return (await this.requestInstance.get(`/v1/crypto/coiin-value`)).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

@@ -4,3 +4,18 @@ export const ADMIN_PANEL_TAGLINE =
 
 export const RAIINMAKER = 'raiinmaker';
 export const APPROVED = 'APPROVED';
+
+export const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];

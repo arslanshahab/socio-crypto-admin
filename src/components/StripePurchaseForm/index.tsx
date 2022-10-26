@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core';
-import { PaymentMethodTypes } from '../../types';
+import { CoiinReducerTypes, PaymentMethodTypes } from '../../types';
 import { capitalize } from '../../helpers/formatter';
 import CustomButton from '../CustomButton';
 import buttonStyles from '../../assets/styles/customButton.module.css';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCoiinValue } from '../../store/middlewares';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +16,7 @@ interface Props {
 
 export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) => {
   const dispatch = useDispatch();
+  const { coiinValue, loading } = useSelector((state: { coiin: CoiinReducerTypes }) => state.coiin);
   const [paymentMethodId, setPaymentMethodId] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [amount, setAmount] = useState(givenAmount || 0);
@@ -29,6 +31,9 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
       .then((res) => setPaymentMethods(res))
       .catch((err) => dispatch(showErrorAlert(err.message)))
       .finally(() => setIsLoading(false));
+  }, []);
+  useEffect(() => {
+    dispatch(fetchCoiinValue());
   }, []);
 
   const handleCloseDialog = () => {
@@ -50,6 +55,8 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
   };
 
   const handlePurchase = async () => {
+    if (amount * parseFloat(coiinValue) < 0.5)
+      return dispatch(showErrorAlert('The minimum amount limit is $0.50 or equivalent currency'));
     try {
       setPurchaseCoiinLoading(true);
       ApiClient.purchaseCoiin({ amount, paymentMethodId })
@@ -75,8 +82,13 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
           defaultValue={amount}
           className="form-control-item w-10/12"
           onChange={handleChange}
+          placeholder="The minimum amount limit is $0.50 or equivalent currency"
         />
-        <Typography style={{ paddingTop: '15px' }}>(${(amount !== 0 ? amount * 0.1 : 0).toFixed(2)})</Typography>
+        {coiinValue && !loading && (
+          <Typography style={{ paddingTop: '15px' }}>
+            (${(amount !== 0 ? amount * parseFloat(coiinValue) : 0).toFixed(2)})
+          </Typography>
+        )}
       </div>
       <div className="my-6">
         {isLoading ? (

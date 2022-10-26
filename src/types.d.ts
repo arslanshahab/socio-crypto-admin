@@ -884,6 +884,9 @@ export interface CampaignAggregationTypes {
   participationScore: number;
   totalParticipants: number;
   campaignName: string;
+  lastWeekParticipants: number;
+  commentCount: number;
+  totalSocialPosts: number;
 }
 
 export interface CampaignStatTypes {
@@ -893,9 +896,18 @@ export interface CampaignStatTypes {
   participationScore: number;
 }
 
+export interface SocialPostMetrics {
+  [index: string]: string;
+  type: string;
+  likes: number;
+  shares: number;
+  comments: number;
+}
+
 export interface DashboardStatsTypes {
   aggregatedMetrics: CampaignAggregationTypes;
   rawMetrics: CampaignStatTypes[];
+  socialPostMetrics: SocialPostMetrics[];
 }
 
 export interface UserStatTypes {
@@ -951,4 +963,56 @@ export type DashboardMetricParams = {
   startDate: string;
   endDate: string;
   month: number;
+};
+
+export type CampaignAnalyticTypes = {
+  [index: string]: string;
+  totalParticipants: string;
+  clickCount: string;
+  shareCount: string;
+  viewCount: string;
+  commentCount: string;
+};
+
+export type SocialPlatforms = {
+  [index: string]: string;
+  twitter: string;
+  tiktok: string;
+  facebook: string;
+  instagram: string;
+};
+
+export type CampaignTierIconTypes = {
+  [index: string]: string;
+  type: string;
+  likes: string;
+  shares: string;
+  comments: string;
+};
+
+export type CampaignUsersTypes = {
+  id: string;
+  user: {
+    profile: {
+      username: string;
+      ageRange: string;
+      city: string;
+      state: string;
+      country: string;
+    };
+  };
+};
+
+export type UserDemographicsTypes = {
+  count: number;
+  participants: CampaignUsersTypes[];
+};
+
+export type CoiinValueType = {
+  coiin: string;
+};
+
+export type CoiinReducerTypes = {
+  coiinValue: string;
+  loading: boolean;
 };
