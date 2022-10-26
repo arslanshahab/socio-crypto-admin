@@ -1,0 +1,33 @@
+.sidebar {
+  .imageWrapper {
+    @apply flex justify-center mt-8;
+    img {
+      @apply w-32 h-32 object-contain;
+    }
+  }
+  .dividerWrapper {
+    @apply px-6 mt-6;
+    .divider {
+      @apply bg-silver;
+      height: 0.5px;
+    }
+  }
+  .title {
+    @apply mt-8 mb-6 pl-10 text-xs text-silver;
+  }
+  .menuWrapper {
+    @apply mt-4 h-10 w-48  items-center;
+    .itemsWrapper {
+      @apply pl-10 flex gap-4 h-full  items-center cursor-pointer text-grayWeb;
+      img {
+        @apply w-6 h-6;
+      }
+      p {
+        @apply text-sm;
+      }
+    }
+    .activeTab {
+      @apply bg-lavender h-full rounded-tr-xl rounded-br-xl text-bluetiful font-semibold;
+    }
+  }
+}
