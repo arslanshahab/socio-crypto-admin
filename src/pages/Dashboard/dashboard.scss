@@ -1,0 +1,23 @@
+.dashboard {
+  @apply flex;
+  .side {
+    width: 250px;
+    min-height: 100vh;
+  }
+  .content {
+    @apply h-screen;
+    width: calc(100% - 250px);
+    .topbar {
+      @apply pr-10;
+    }
+    .main {
+      width: 100%;
+      height: calc(100% - 75px);
+      overflow-y: scroll;
+      overflow-x: hidden;
+      // > div:first-child {
+      //   height: 100%;
+      // }
+    }
+  }
+}
