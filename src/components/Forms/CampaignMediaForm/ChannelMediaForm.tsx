@@ -63,7 +63,6 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
                 <div className="removeIcon" onClick={() => removeMedia(index)}>
                   &#10060;
                 </div>
-
                 {image.media.format.includes('image') ? (
                   <div className="mediaWrapper">
                     <img src={image.media.file} alt={image.media.format} className="image" />
