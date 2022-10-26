@@ -12,6 +12,7 @@ import { showErrorAlert } from '../../../store/actions/alerts';
 import CustomInput from '../../CustomInput/CustomInput';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '../../CustomInput/customInput.module.css';
+import './campaignPostForm.scss';
 
 const MAX_POST_LENGTH = 120;
 
@@ -88,23 +89,20 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   };
 
   return (
-    <Box className="w-full mt-10 px-28">
+    <Box className="campaignPostFormWrapper">
       <Fade>
-        <Box className="w-full flex flex-col box-border items-center">
+        <Box className="campaignPostForm">
           {socialMediaType.map((channel, index) => (
-            <Box key={index} className="w-full flex flex-col border-solid border border-denimBlue p-5 rounded-2xl mt-5">
-              <Box className="w-full flex flex-row justify-between items-center box-border">
-                <p className="text-xl mb-2">{`${channel} Templates`}</p>
-                <CustomButton
-                  className="w-40 h-10 ml-5 rounded-md text-black text-md border-2 border-cyberYellow bg-cyberYellow"
-                  onClick={() => addPost(channel)}
-                >
+            <Box key={index} className="outline">
+              <Box className="headWrapper">
+                <p>{`${channel} Templates`}</p>
+                <CustomButton className="addTempButton" onClick={() => addPost(channel)}>
                   <AddIcon className="mr-2" />
                   <span>Add Template</span>
                 </CustomButton>
               </Box>
               {channelTemplates[channel].map((item, index) => (
-                <Box className="w-full box-border pr-4 mt-6" key={index.toString()}>
+                <Box className="inputWrapper" key={index.toString()}>
                   <CustomInput
                     required={true}
                     label={`Template ${index + 1}`}
@@ -116,27 +114,22 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
                       handlePostChange(channel, index, e.target.value);
                     }}
                   />
-                  <div className="w-full flex flex-row justify-between items-center">
-                    {index < 2 && <p className="text-sm text-gray-400 mt-1">Default Template</p>}
+                  <div className="templateInfo">
+                    {index < 2 && <p>Default Template</p>}
                     {index >= 2 && (
-                      <CustomButton
-                        className="w-32 mt-1 rounded-md text-red-600 text-sm bg-transparent"
-                        onClick={() => removePost(channel, index)}
-                      >
-                        <CloseIcon className="mr-1" style={{ fontSize: '18px' }} />
+                      <CustomButton className="removeContent" onClick={() => removePost(channel, index)}>
+                        <CloseIcon className="closeIcon" />
                         <span>Remove Post</span>
                       </CustomButton>
                     )}
-                    <span className="flex flex-row justify-end text-coolGray font-normal">
-                      Characters added {`${item.post.length}/${MAX_POST_LENGTH}`}
-                    </span>
+                    <span className="textLimit ">Characters added {`${item.post.length}/${MAX_POST_LENGTH}`}</span>
                   </div>
                 </Box>
               ))}
             </Box>
           ))}
         </Box>
-        <Box className="w-full mt-10">
+        <Box className="postFormActions">
           <Actions
             activeStep={activeStep}
             firstStep={firstStep}

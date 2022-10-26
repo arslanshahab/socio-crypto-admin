@@ -1,0 +1,28 @@
+.campaignInitializeFormWrapper {
+  @apply w-full flex flex-row justify-center flex-wrap  mt-10 px-0 lg:px-8 xl:px-28;
+  .campaignInitializeFormOutline {
+    @apply box-border w-5/6 flex flex-row flex-wrap;
+    .inputFieldLg {
+      @apply w-full box-border pr-4 mt-5;
+      .tagStyles {
+        @apply w-full text-xs flex flex-row justify-end;
+      }
+    }
+    .inputField {
+      @apply w-3/6 box-border pr-4 mt-5;
+      .autoComplete {
+        .textField {
+          fieldset {
+            @apply w-full border-denimBlue;
+          }
+        }
+      }
+    }
+    .errorText {
+      @apply text-red-500;
+    }
+    .grayText {
+      @apply text-gray-500;
+    }
+  }
+}
