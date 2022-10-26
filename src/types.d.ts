@@ -1019,3 +1019,8 @@ export type CryptoTransferTypes = {
   symbol: string;
   network: string;
 };
+
+export type CoiinReducerTypes = {
+  coiinValue: string;
+  loading: boolean;
+};
