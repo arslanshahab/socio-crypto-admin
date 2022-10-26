@@ -55,6 +55,8 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
   };
 
   const handlePurchase = async () => {
+    if (amount * parseFloat(coiinValue) < 0.5)
+      return dispatch(showErrorAlert('The minimum amount limit is $0.50 or equivalent currency'));
     try {
       setPurchaseCoiinLoading(true);
       ApiClient.purchaseCoiin({ amount, paymentMethodId })
@@ -80,6 +82,7 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
           defaultValue={amount}
           className="form-control-item w-10/12"
           onChange={handleChange}
+          placeholder="The minimum amount limit is $0.50 or equivalent currency"
         />
         {coiinValue && !loading && (
           <Typography style={{ paddingTop: '15px' }}>
