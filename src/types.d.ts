@@ -1011,3 +1011,8 @@ export type UserDemographicsTypes = {
 export type CoiinValueType = {
   coiin: string;
 };
+
+export type CoiinReducerTypes = {
+  coiinValue: string;
+  loading: boolean;
+};

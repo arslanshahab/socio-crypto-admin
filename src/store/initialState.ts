@@ -136,12 +136,19 @@ const profile: ProfileTypes = {
   verifyStatus: '',
 };
 
+const coiin = {
+  coiinValue: '0',
+  loading: false,
+  error: {},
+};
+
 const initialState = {
   alerts: alerts,
   newCampaign: campaignInitState,
   settings: settings,
   user: user,
   profile: profile,
+  coiin,
 };
 
 export default initialState;
