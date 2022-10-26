@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
 import ReactSelect from 'react-select';
-import { useSelector } from 'react-redux';
-import { ProfileTypes } from '../../types';
 import { useHistory } from 'react-router-dom';
 import './topbar.scss';
 import raiinmakerLogo from '../../assets/png/raiinmaker.png';
@@ -10,13 +8,12 @@ import notificationIcon from '../../assets/svg/topbar/notification.svg';
 import profileIcon from '../../assets/svg/topbar/profileIcon.svg';
 
 const Topbar: FC = () => {
-  const { profile } = useSelector((state: { profile: ProfileTypes }) => state);
   const { push } = useHistory();
 
   return (
     <div className="topbarWrapper">
       <div className="searchbarWrapper">
-        <img src={profile.imageUrl || raiinmakerLogo} alt="Raiinmaker" />
+        <img src={raiinmakerLogo} alt="Raiinmaker" />
         <ReactSelect placeholder="Search" />
       </div>
       <div className="iconWrapper">
