@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import ReactSelect from 'react-select';
 import { useSelector } from 'react-redux';
-import { CoiinReducerTypes, ProfileTypes } from '../../types';
+import { CoiinReducerTypes } from '../../types';
 import { useHistory } from 'react-router-dom';
 import './topbar.scss';
 import raiinmakerLogo from '../../assets/png/raiinmaker.png';
@@ -12,13 +12,12 @@ import coiinIcon from '../../assets/png/coiin.png';
 
 const Topbar: FC = () => {
   const { coiinValue } = useSelector((state: { coiin: CoiinReducerTypes }) => state.coiin);
-  const { profile } = useSelector((state: { profile: ProfileTypes }) => state);
   const { push } = useHistory();
 
   return (
     <div className="topbarWrapper">
       <div className="searchbarWrapper">
-        <img src={profile.imageUrl || raiinmakerLogo} alt="Raiinmaker" />
+        <img src={raiinmakerLogo} alt="Raiinmaker" />
         <ReactSelect placeholder="Search" />
       </div>
       <div className="iconWrapper">
