@@ -1019,3 +1019,8 @@ export type MediaInstructionTypes = {
   Facebook: string;
   Instagram: string;
 };
+
+export type CoiinReducerTypes = {
+  coiinValue: string;
+  loading: boolean;
+};
