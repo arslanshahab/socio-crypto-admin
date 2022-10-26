@@ -25,6 +25,7 @@ import {
   AddPaymentMethodTypes,
   PurchaseCoiinPayload,
   PurchaseCoiinTypes,
+  DashboardMetricParams,
 } from '../types';
 import { StartEmailVerificationPayload } from '../types.d';
 
@@ -144,9 +145,14 @@ export class ApiClient {
     }
   }
 
-  public static async getDashboardStats(campaignId: string): Promise<DashboardStatsTypes> {
+  public static async getDashboardStats(params: DashboardMetricParams): Promise<DashboardStatsTypes> {
     try {
-      return (await this.requestInstance.get(`/v1/campaign/dashboard-metrics/${campaignId}`)).data.data;
+      const { campaignId, startDate, endDate, month } = params;
+      return (
+        await this.requestInstance.get(
+          `/v1/campaign/dashboard-metrics?campaignId=${campaignId}&startDate=${startDate}&endDate=${endDate}&month=${month}`,
+        )
+      ).data.data;
     } catch (error) {
       throw new Error((error as AxiosError).response?.data.message || SOMETHING_WENT_WRONG);
     }

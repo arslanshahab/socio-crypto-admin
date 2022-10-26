@@ -945,3 +945,10 @@ export type PurchaseCoiinTypes = {
   clientSecret: string;
   amount: number;
 };
+
+export type DashboardMetricParams = {
+  campaignId: string;
+  startDate: string;
+  endDate: string;
+  month: number;
+};
