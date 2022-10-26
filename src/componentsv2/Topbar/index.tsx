@@ -3,8 +3,8 @@ import ReactSelect from 'react-select';
 import { useHistory } from 'react-router-dom';
 import './topbar.scss';
 import raiinmakerLogo from '../../assets/png/raiinmaker.png';
-import searchIcon from '../../assets/svg/topbar/searchNormal.svg';
-import notificationIcon from '../../assets/svg/topbar/notification.svg';
+// import searchIcon from '../../assets/svg/topbar/searchNormal.svg';
+// import notificationIcon from '../../assets/svg/topbar/notification.svg';
 import profileIcon from '../../assets/svg/topbar/profileIcon.svg';
 
 const Topbar: FC = () => {
@@ -17,12 +17,12 @@ const Topbar: FC = () => {
         <ReactSelect placeholder="Search" />
       </div>
       <div className="iconWrapper">
-        <div className="search">
+        {/* <div className="search">
           <img src={searchIcon} />
         </div>
         <div className="notification">
           <img src={notificationIcon} />
-        </div>
+        </div> */}
         <div className="profile" onClick={() => push('/dashboard/profile')}>
           <img src={profileIcon} />
         </div>

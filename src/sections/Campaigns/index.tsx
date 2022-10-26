@@ -1,56 +1,53 @@
 import React, { FC } from 'react';
 import CampaignsTable from '../../componentsv2/CampaignsTable';
 import PastCampaigns from '../../componentsv2/PastCampaigns';
+import './campaigns.scss';
 
 const Campaigns: FC = () => {
   const [openTab, setOpenTab] = React.useState(1);
   return (
-    <div>
-      <ul className="mb-4 shadow-md rounded-full inline-flex h-10 bg-orangeYellow" role="tablist">
-        <li className="inline-block h-full">
+    <div className="campaignSection">
+      <ul role="tablist">
+        <li>
           <a
-            className={`uppercase rounded-full block text-black h-full py-2 px-6 text-sm ${
-              openTab === 1 ? 'bg-cyberYellow' : 'bg-orangeYellow'
-            }`}
+            className={openTab === 1 ? 'activeTab' : 'inactiveTab'}
             onClick={(e) => {
               e.preventDefault();
               setOpenTab(1);
             }}
             data-toggle="tab"
-            href="#current campaign"
+            href="#current campaigns"
             role="tablist"
           >
             Current Campaigns
           </a>
         </li>
-        <li className="inline-block h-full">
+        <li>
           <a
-            className={`uppercase rounded-full block text-black h-full py-2 px-6 text-sm ${
-              openTab === 2 ? 'bg-cyberYellow' : 'bg-orangeYellow'
-            }`}
+            className={openTab === 2 ? 'activeTab' : 'inactiveTab'}
             onClick={(e) => {
               e.preventDefault();
               setOpenTab(2);
             }}
             data-toggle="tab"
-            href="#link3"
+            href="past campaigns"
             role="tablist"
           >
             Past Campaigns
           </a>
         </li>
       </ul>
-      <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-0 shadow-md rounded -z-1 dark:bg-gray-700 dark:z-1">
-        <div className="px-4 py-5 flex-auto">
-          <div className="tab-content tab-space">
-            <div className={openTab === 1 ? 'block' : 'hidden'} id="link2">
-              <CampaignsTable />
-            </div>
-            <div className={openTab === 2 ? 'block' : 'hidden'} id="link3">
-              <PastCampaigns />
-            </div>
+      <div className="tabBody">
+        {openTab === 1 && (
+          <div className={openTab === 1 ? 'block' : 'hidden'}>
+            <CampaignsTable />
           </div>
-        </div>
+        )}
+        {openTab === 2 && (
+          <div className={openTab === 2 ? 'block' : 'hidden'}>
+            <PastCampaigns />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 import React, { FC, useEffect, useState } from 'react';
 import RenderRow from '../RenderRow';
-import styles from '../CampaignsTable/campaignsTable.module.css';
 import { useDispatch } from 'react-redux';
 import { Campaign } from '../../types';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
+import '../CampaignsTable/campaignsTable.scss';
 
 const AllCampaigns: FC = () => {
   const dispatch = useDispatch();
@@ -22,12 +22,11 @@ const AllCampaigns: FC = () => {
   }, []);
 
   return (
-    <div className={styles.tableWrapper}>
+    <div className="tableWrapper">
       <table>
         <thead>
           <tr>
             <th>Campaign Name</th>
-            <th>Status</th>
             <th>Participation Score</th>
             <th>Users</th>
             <th>Conversion Actions</th>
@@ -35,6 +34,7 @@ const AllCampaigns: FC = () => {
           </tr>
         </thead>
         <tbody>
+          {loading && <p>Loading...</p>}
           {campaigns?.map((campaign: Campaign) => (
             <RenderRow key={campaign.id} campaign={campaign} />
           ))}

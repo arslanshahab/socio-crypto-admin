@@ -61,15 +61,21 @@ const PaymentAccount: FC = () => {
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-0  rounded -z-1 dark:bg-gray-700 dark:z-1">
         <div className="px-4 py-5 flex-auto">
           <div className="tab-content tab-space">
-            <div className={openTab === 1 ? 'block' : 'hidden'} id="link2">
-              <FundingWallet />
-            </div>
-            <div className={openTab === 2 ? 'block' : 'hidden'} id="link3">
-              <AllCampaigns />
-            </div>
-            <div className={openTab === 3 ? 'block' : 'hidden'} id="link3">
-              <TransactionHistory />
-            </div>
+            {openTab === 1 && (
+              <div className={openTab === 1 ? 'block' : 'hidden'} id="link2">
+                <FundingWallet />
+              </div>
+            )}
+            {openTab === 2 && (
+              <div className={openTab === 2 ? 'block' : 'hidden'} id="link3">
+                <AllCampaigns />
+              </div>
+            )}
+            {openTab === 3 && (
+              <div className={openTab === 3 ? 'block' : 'hidden'} id="link3">
+                <TransactionHistory />
+              </div>
+            )}
           </div>
         </div>
       </div>

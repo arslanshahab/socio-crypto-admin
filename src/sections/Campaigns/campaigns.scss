@@ -1,0 +1,21 @@
+.campaignSection {
+  @apply border rounded-xl border-lavender p-8;
+  ul {
+    @apply mb-4 rounded-full inline-flex h-10 w-80 bg-orangeYellow;
+    li {
+      @apply inline-block w-1/2 h-full text-center;
+      a {
+        @apply flex justify-center items-center rounded-full text-black h-full py-2 text-sm font-semibold;
+      }
+      .activeTab {
+        @apply bg-cyberYellow;
+      }
+      .inactiveTab {
+        @apply bg-orangeYellow;
+      }
+    }
+  }
+  .tabBody {
+    @apply relative flex flex-col min-w-0 break-words bg-white w-full mb-0 rounded z-10;
+  }
+}

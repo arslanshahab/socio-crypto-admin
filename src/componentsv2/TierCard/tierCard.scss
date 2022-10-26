@@ -1,0 +1,36 @@
+.tierCard {
+  @apply grid grid-cols-3 gap-x-14 gap-y-6;
+  .cardOutline {
+    @apply border border-lavender rounded-xl p-3;
+    .iconSection {
+      @apply flex justify-between items-center pb-3;
+      .iconWrapper {
+        @apply w-12 h-12 bg-lavender rounded-xl flex  justify-center items-center;
+      }
+      .menuIcon {
+        @apply cursor-pointer;
+      }
+    }
+    .contentWrapper {
+      @apply flex gap-5 pb-2;
+      h3 {
+        @apply text-lg font-medium;
+      }
+      .analyticsWrapper {
+        @apply flex items-end;
+        .analytics {
+          @apply flex gap-3 items-center;
+          p {
+            @apply text-xs text-limeGreen;
+          }
+          img {
+            @apply w-3;
+          }
+        }
+      }
+    }
+    p {
+      @apply text-xs text-grayWeb;
+    }
+  }
+}

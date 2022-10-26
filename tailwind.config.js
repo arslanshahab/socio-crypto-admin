@@ -17,6 +17,10 @@ module.exports = {
         bluetiful: '#3A6FF8',
         lavender: '#EEEFFF',
         grayWeb: '#838383',
+        magenta: '#F227EA',
+        limeGreen: '#23CC48',
+        honeydew: '#F4FFEE',
+        cultured: '#F3F3F3',
       },
     },
     screens: {
