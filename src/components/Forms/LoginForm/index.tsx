@@ -64,9 +64,9 @@ const LoginForm: React.FC = () => {
       });
   };
 
-  // handle login
-  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  //login api
+  const login = () => {
+    if (!values.email || !values.password) return dispatch(showErrorAlert('Please enter valid credentials'));
     setLoading(true);
     ApiClient.login(values)
       .then((resp) => {
@@ -94,6 +94,19 @@ const LoginForm: React.FC = () => {
       });
   };
 
+  // handle login
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    login();
+  };
+
+  // Handle Key Press
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      login();
+    }
+  };
+
   // hanlde verify dialog close
   const handleClose = () => {
     showVerifyCodeDialog(false);
@@ -115,6 +128,7 @@ const LoginForm: React.FC = () => {
           onChange={handleChange}
           variant="outlined"
           fullWidth
+          onKeyPress={handleKeyPress}
         />
       </Box>
       <Box className="w-full pb-5">
@@ -126,6 +140,7 @@ const LoginForm: React.FC = () => {
           variant="outlined"
           onChange={handleChange}
           fullWidth
+          onKeyPress={handleKeyPress}
         />
       </Box>
       <Box className="relative w-full mb-3">
