@@ -38,7 +38,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   const [target, setTarget] = useState(campaign.target);
   const [targetVideo, setTargetVideo] = useState(campaign.targetVideo);
   const [numOfTiers, setTiers] = useState(!campaign.config.isGlobal ? campaign.config.numOfTiers : '1');
-  const [tagline, setTagline] = useState(campaign.tagline);
+  //   const [tagline, setTagline] = useState(campaign.tagline);
   const [keywords, setKeywords] = useState(campaign.keywords);
   const [description, setDescription] = useState(campaign.description);
   const [instructions, setInstructions] = useState(campaign.instructions);
@@ -108,7 +108,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
         name,
         description,
         instructions,
-        tagline,
+        // tagline,
         target,
         targetVideo,
         keywords,
@@ -148,10 +148,10 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       setErrors((prev) => ({ ...prev, numOfTiers: true }));
       return (validated = false);
     }
-    if (!tagline) {
-      setErrors((prev) => ({ ...prev, tagline: true }));
-      return (validated = false);
-    }
+    // if (!tagline) {
+    //   setErrors((prev) => ({ ...prev, tagline: true }));
+    //   return (validated = false);
+    // }
     if (!keywords || !keywords.length) {
       setErrors((prev) => ({ ...prev, keywords: true }));
       return (validated = false);
@@ -274,8 +274,23 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               freeSolo={true}
               multiple={true}
               options={keywords}
+              value={keywords}
               getOptionLabel={(option) => option}
               defaultValue={keywords}
+              onChange={(event, newValue) => {
+                setKeywords(newValue);
+              }}
+              onInputChange={(event, newInputValue) => {
+                const options = newInputValue.split(',');
+                if (options.length > 1) {
+                  setKeywords(
+                    keywords
+                      .concat(options)
+                      .map((x) => x.trim())
+                      .filter((x) => x),
+                  );
+                }
+              }}
               renderInput={(params) => (
                 <TextField
                   className="textField"
@@ -287,10 +302,6 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
                   placeholder="Add keywords for campaign and press enter"
                 />
               )}
-              onChange={(e, val) => {
-                setKeywords(val);
-                updateErrors('keywords', val.length ? val : '');
-              }}
             />
           </Box>
           <Box className="inputFieldLg">

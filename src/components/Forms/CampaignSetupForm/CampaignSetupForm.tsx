@@ -89,7 +89,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   };
 
   const next = () => {
-    if (coiinBudget < '1') return dispatch(showErrorAlert('Please add campaign budget'));
+    if (parseFloat(coiinBudget) < 1) return dispatch(showErrorAlert('Please add campaign budget'));
     if (validateInputs()) {
       const augmentedCampaign = {
         ...campaign,
