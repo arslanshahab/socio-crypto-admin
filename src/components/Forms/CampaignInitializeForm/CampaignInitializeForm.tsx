@@ -254,7 +254,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
             />
           </Box>
 
-          <Box className="inputField">
+          {/* <Box className="inputField">
             <CustomInput
               required={true}
               label="Campaign Tagline"
@@ -266,8 +266,8 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
                 updateErrors('tagline', e.target.value);
               }}
             />
-          </Box>
-          <Box className="inputField">
+          </Box> */}
+          <Box className="keyworkdInputFieldLg">
             <Autocomplete
               className="autoComplete"
               id="keywords"
@@ -297,8 +297,8 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
             <CustomInput
               required={true}
               value={tags}
-              placeholder="tags"
-              label="Tags (Comma seperated values)"
+              placeholder="#"
+              label="Hashtags (Comma seperated values)"
               error={errors['tags']}
               onChange={(e) => {
                 setTags(e.target.value);

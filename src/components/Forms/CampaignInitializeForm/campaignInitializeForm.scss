@@ -18,6 +18,16 @@
         }
       }
     }
+    .keyworkdInputFieldLg {
+      @apply w-full box-border pr-4 mt-5;
+      .autoComplete {
+        .textField {
+          fieldset {
+            @apply w-full border-denimBlue;
+          }
+        }
+      }
+    }
     .errorText {
       @apply text-red-500;
     }
