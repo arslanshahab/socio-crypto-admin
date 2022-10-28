@@ -74,6 +74,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   };
 
   const handleCoiinBudgetChange = (event: React.ChangeEvent<any>) => {
+    if (event.target.value < 0) return;
     if (fundingWallet) {
       const token = fundingWallet.find((item) => `${item.type}-${item.network}` === cryptoSymbol);
       if (token) {
@@ -88,6 +89,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   };
 
   const next = () => {
+    if (coiinBudget < '1') return dispatch(showErrorAlert('Please add campaign budget'));
     if (validateInputs()) {
       const augmentedCampaign = {
         ...campaign,
