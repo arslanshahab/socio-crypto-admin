@@ -68,7 +68,10 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       updateErrors('beginDate', '');
     }
     if (dateIsoString) {
+      const date = new Date(dateIsoString);
+      const nextMonth = new Date(date.setMonth(date.getMonth() + 1));
       setBeginDate(dateIsoString);
+      setEndDate(nextMonth.toISOString());
     }
     updateErrors('beginDate', dateIsoString);
   };
