@@ -10,7 +10,7 @@ import { ActionsProps } from '../../NewCampaign/StepsContent';
 import Actions from '../../NewCampaign/Actions';
 import ChannelMediaForm from './ChannelMediaForm';
 import { updateCampaign } from '../../../store/actions/campaign';
-import { ReactComponent as CampaignAvatar } from '../../../assets/svg/campaignAvatar.svg';
+import CampaignAvatar from '../../../assets/svg/campaignAvatar.svg';
 import { mediaInstructions } from '../../../helpers/constants';
 import './campaignMediaForm.scss';
 
@@ -72,7 +72,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     <Box className="campaignMediaFormWrapper">
       <Box className="campaignMediaFormOutline">
         <div className="mediaContent">
-          <CampaignAvatar />
+          <img src={CampaignAvatar} alt={'campaign media'} />
           {campaignImage.file && (
             <div className="imageWrapper">
               <img src={campaignImage.file} alt={campaignImage.filename} className="image" />

@@ -5,6 +5,9 @@
     @apply w-full flex flex-col border-solid border-2 border-denimBlue p-5 rounded-3xl;
     .mediaContent {
       @apply flex items-center gap-8;
+      img {
+        @apply w-16 h-16 object-contain;
+      }
       .imageWrapper {
         @apply w-20 h-20 bg-lightGray;
         .image {
@@ -23,6 +26,9 @@
   @apply w-full flex flex-col flex-wrap overflow-x-scroll;
   .channelMediaOutline {
     @apply w-full flex items-center gap-6 mb-2;
+    img {
+      @apply w-16 h-16 object-contain;
+    }
     .contentSpace {
       @apply flex gap-4;
       .uploadedImageWrapper {
