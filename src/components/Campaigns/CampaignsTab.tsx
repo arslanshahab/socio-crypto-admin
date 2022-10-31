@@ -3,6 +3,7 @@ import { AppBar, Paper, Tab, Tabs } from '@material-ui/core';
 import { TabPanel } from '../TabPanel';
 import CampaignTable from './CampaignTable';
 import PostCampaigns from './PostCampaigns';
+import PendingCampaigns from '../../componentsv2/PendingCampaigns';
 
 const CampaignsTab: FC = () => {
   const [value, setValue] = useState<number>(0);
@@ -30,6 +31,7 @@ const CampaignsTab: FC = () => {
           >
             <Tab label="Current Campaigns" {...a11yProps(0)} className="focus:outline-none" />
             <Tab label="Past Campaigns" {...a11yProps(1)} className="focus:outline-none" />
+            <Tab label="Pending Campaigns" {...a11yProps(2)} className="focus:outline-none" />
           </Tabs>
         </AppBar>
       </div>
@@ -40,6 +42,9 @@ const CampaignsTab: FC = () => {
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PostCampaigns />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <PendingCampaigns />
         </TabPanel>
       </Paper>
     </div>

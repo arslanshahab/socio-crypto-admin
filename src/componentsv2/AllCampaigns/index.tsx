@@ -25,7 +25,7 @@ const AllCampaigns: FC = () => {
     <div className="tableWrapper">
       <table>
         <thead>
-          <tr>
+          <tr className="tableRow">
             <th>Campaign Name</th>
             <th>Participation Score</th>
             <th>Users</th>
@@ -36,7 +36,7 @@ const AllCampaigns: FC = () => {
         <tbody>
           {loading && <p>Loading...</p>}
           {campaigns?.map((campaign: Campaign) => (
-            <RenderRow key={campaign.id} campaign={campaign} />
+            <RenderRow key={campaign.id} campaign={campaign} status={'ALL'} />
           ))}
         </tbody>
       </table>

@@ -19,6 +19,11 @@
           }
         }
       }
+      .tableRow {
+        th {
+          @apply p-4;
+        }
+      }
     }
     tbody {
       tr {
@@ -36,7 +41,7 @@
           @apply text-limeGreen bg-honeydew inline-flex px-2 py-0.5 rounded;
         }
         .closedStatus {
-          @apply text-silver bg-cultured inline-flex px-2 py-0.5 rounded;
+          @apply text-silver bg-cultured inline-flex px-2 py-0.5 rounded capitalize;
         }
       }
     }

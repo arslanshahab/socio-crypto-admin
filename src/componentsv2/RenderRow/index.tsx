@@ -7,9 +7,10 @@ import { useDispatch } from 'react-redux';
 
 interface Props {
   campaign: Campaign;
+  status: string;
 }
 
-const RenderRow: FC<Props> = ({ campaign }: Props) => {
+const RenderRow: FC<Props> = ({ campaign, status }: Props) => {
   const dispatch = useDispatch();
   const [campaignMetric, setCampaignMetric] = useState<CampaignMetricTypes>();
   const [metricLoading, setMetricLoading] = useState<boolean>(false);
@@ -35,11 +36,7 @@ const RenderRow: FC<Props> = ({ campaign }: Props) => {
           : 0}
       </td>
       <td>
-        {new Date(campaign.endDate) > new Date() ? (
-          <p className="openStatus">In Progress</p>
-        ) : (
-          <p className="closedStatus">Ended</p>
-        )}
+        <p className="closedStatus">{status}</p>
       </td>
     </tr>
   );

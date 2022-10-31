@@ -1,19 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert } from '../../store/actions/alerts';
 import { Campaign } from '../../types';
-import '../CampaignsTable/campaignsTable.scss';
-import { useDispatch } from 'react-redux';
 import RenderRow from '../RenderRow';
+import '../CampaignsTable/campaignsTable.scss';
 
-const PastCampaigns: FC = () => {
+const PendingCampaigns: FC = () => {
   const dispatch = useDispatch();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
-    ApiClient.getCampaigns({ skip: 0, take: 10, state: 'CLOSED', status: 'APPROVED' })
+    ApiClient.getCampaigns({ skip: 0, take: 10, state: 'ALL', status: 'PENDING' })
       .then((res) => {
         setCampaigns(res.items);
       })
@@ -25,7 +25,7 @@ const PastCampaigns: FC = () => {
     <div className="tableWrapper">
       <table>
         <thead>
-          <tr>
+          <tr className="tableRow">
             <th>Campaign Name</th>
             <th>Participation Score</th>
             <th>Users</th>
@@ -36,7 +36,7 @@ const PastCampaigns: FC = () => {
         <tbody>
           {loading && <p>Loading...</p>}
           {campaigns?.map((campaign: Campaign) => (
-            <RenderRow key={campaign.id} campaign={campaign} status={'Ended'} />
+            <RenderRow key={campaign.id} campaign={campaign} status={'PENDING'} />
           ))}
         </tbody>
       </table>
@@ -44,4 +44,4 @@ const PastCampaigns: FC = () => {
   );
 };
 
-export default PastCampaigns;
+export default PendingCampaigns;
