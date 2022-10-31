@@ -44,7 +44,7 @@ const EditCampaignPage: React.FC = () => {
     'Purpose and Budget',
     'Campaign Information',
     'Campaign Media',
-    'Posting Templates',
+    'Campaign Templates',
     // 'Campaign Requirements',
     'Algorithm',
     'Preview',

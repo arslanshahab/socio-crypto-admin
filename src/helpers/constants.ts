@@ -31,3 +31,6 @@ export const mediaInstructions: MediaInstructionTypes = {
   Instagram:
     'Aspect ratio: 16:9 (Horizontal), 1:1 (Square), 4:5 (Vertical), Recommended dimensions: 1080 x 608 pixels (Horizontal),  1080 x 1080 pixels (Square), 1080 x 1350 pixels (Portrait), Maximum file size: 20 MB.',
 };
+
+export const brandManual = 'https://docs.google.com/document/d/1y7K89yUtLZgUr-ig79UP6YlOCnKjapEr6ngezMhBjC0/edit';
+export const generalFaqs = 'https://raiinmaker.zendesk.com/hc/en-us/sections/5704814468628-FAQ';

@@ -1,4 +1,5 @@
 import { faqUrl, supportEmail } from './affiliateURLs';
+import { brandManual, generalFaqs } from './constants';
 
 interface MenuObject {
   name: string;
@@ -47,5 +48,7 @@ export const geToolRoutes = () => {
     { name: 'Setting', to: '/dashboard/profile', icon: 'setting', enabled: true },
     // { name: 'FAQ', to: '', icon: 'faq', enabled: true, href: faqUrl },
     { name: 'Help & Support', to: '', icon: 'support', enabled: true, href: supportEmail },
+    { name: 'General FAQ', to: '', icon: 'faq', enabled: true, href: generalFaqs },
+    { name: 'Raiinmaker Brand Manual', to: '', icon: 'support', enabled: true, href: brandManual },
   ];
 };
