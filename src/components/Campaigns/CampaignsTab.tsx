@@ -4,9 +4,11 @@ import { TabPanel } from '../TabPanel';
 import CampaignTable from './CampaignTable';
 import PostCampaigns from './PostCampaigns';
 import PendingCampaigns from '../../componentsv2/PendingCampaigns';
+import { useLocation } from 'react-router-dom';
 
 const CampaignsTab: FC = () => {
-  const [value, setValue] = useState<number>(0);
+  const location: { state: number } = useLocation();
+  const [value, setValue] = useState<number>(location.state ? location.state : 0);
 
   const handleChange = (event: any, newValue: number) => {
     setValue(newValue);

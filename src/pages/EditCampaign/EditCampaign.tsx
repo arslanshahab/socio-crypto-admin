@@ -23,6 +23,7 @@ import useStoreUserSelector from '../../hooks/useStoreUserSelector';
 import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
 import { Campaign } from '../../types.d';
+import { showSuccessAlert } from '../../store/actions/alerts';
 
 interface PageParams {
   campaignId?: string;
@@ -44,7 +45,7 @@ const EditCampaignPage: React.FC = () => {
     'Campaign Information',
     'Campaign Media',
     'Posting Templates',
-    'Campaign Requirements',
+    // 'Campaign Requirements',
     'Algorithm',
     'Preview',
   ];
@@ -193,8 +194,9 @@ const EditCampaignPage: React.FC = () => {
       }
       setTimeout(() => {
         showProgressModal(false);
+        dispatch(showSuccessAlert('Campaign updated successfully and pending for approval'));
         dispatch(resetCampaign());
-        history.push('/dashboard/campaigns');
+        history.push('/dashboard/campaigns', 2);
       }, 1000);
     } catch (e) {
       showProgressModal(false);

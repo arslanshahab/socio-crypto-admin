@@ -86,7 +86,7 @@ const StepContent: React.FC<Props & ActionsProps> = ({
     //       handleNext={handleNext}
     //     />
     //   );
-    case 5:
+    case 4:
       return (
         <CampaignAlgorithmForm
           activeStep={activeStep}
@@ -97,7 +97,7 @@ const StepContent: React.FC<Props & ActionsProps> = ({
           handleSubmit={handleSubmit}
         />
       );
-    case 6:
+    case 5:
       return (
         <PreviewScreen
           activeStep={activeStep}

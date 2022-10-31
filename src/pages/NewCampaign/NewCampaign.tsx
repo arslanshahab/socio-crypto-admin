@@ -14,6 +14,7 @@ import { prepareMediaRequest, prepareTemplateRequest, uploadMedia } from '../../
 import useStoreUserSelector from '../../hooks/useStoreUserSelector';
 import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
+import { showSuccessAlert } from '../../store/actions/alerts';
 
 const NewCampaignPage: React.FC = () => {
   const userData = useStoreUserSelector();
@@ -30,7 +31,7 @@ const NewCampaignPage: React.FC = () => {
     'Campaign Information',
     'Campaign Media',
     'Posting Templates',
-    'Campaign Requirements',
+    // 'Campaign Requirements',
     'Algorithm',
     'Preview',
   ];
@@ -116,8 +117,9 @@ const NewCampaignPage: React.FC = () => {
       }
       setTimeout(() => {
         showProgressModal(false);
+        dispatch(showSuccessAlert('Campaign created successfully and pending for approval'));
         dispatch(resetCampaign());
-        history.push('/dashboard/campaigns');
+        history.push('/dashboard/campaigns', 2);
       }, 1000);
     } catch (e) {
       showProgressModal(false);
