@@ -17,6 +17,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { CardSetupForm } from '../../components/CardSetupForm';
 import { loadStripe } from '@stripe/stripe-js';
 import { stripePubKey } from '../../apiConfig.json';
+import { WithdrawFormModal } from '../../components/Forms/WithdrawForm';
 
 const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
 const stripeKey = (stripePubKey as { [key: string]: string })[env];
@@ -39,6 +40,8 @@ const FundingWallet: FC = () => {
   const [removalId, setRemovalId] = useState('');
   const [isRemoveLoading, setIsRemoveLoading] = useState<boolean>(false);
   const [walletRefetch, setWalletRefetch] = useState(0);
+  const [selectedCurrency, setSelectedCurrency] = useState<FundingWalletTypes | undefined>();
+  const [withdrawForm, showWithdrawForm] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,6 +98,11 @@ const FundingWallet: FC = () => {
       });
   };
 
+  const handleWithdrawModalClose = () => {
+    showWithdrawForm(false);
+    setSelectedCurrency(undefined);
+  };
+
   const toolTipMap = {
     title: 'Token',
     value: 'Balance',
@@ -114,6 +122,9 @@ const FundingWallet: FC = () => {
       <GenericModal open={openCrypto} onClose={() => setOpenCrypto(false)} size="small">
         <DepositCryptoForm cryptoList={currencyList} callback={handleRefetch} fundingWallet={fundingWallet} />
       </GenericModal>
+      {selectedCurrency && (
+        <WithdrawFormModal open={withdrawForm} onClose={handleWithdrawModalClose} currency={selectedCurrency} />
+      )}
       <Elements stripe={stripePromise}>
         <CardSetupForm setModal={setIsCreditCard} open={isCreditCard} callback={handleWalletRefetch} />
       </Elements>
@@ -128,16 +139,24 @@ const FundingWallet: FC = () => {
       ) : (
         <div className="mb-6">
           {coiins?.map((coiin: FundingWalletTypes) => (
-            <PrimaryCard
+            <div
               key={coiin.type}
-              title={coiin.type}
-              network={coiin.network}
-              value={coiin.balance}
-              icon={coiin.symbolImageUrl}
-              tooltipTitle={toolTipMap.title}
-              tooltipValue={toolTipMap.value}
-              tooltipNetwork={toolTipMap.network}
-            />
+              onClick={() => {
+                setSelectedCurrency(coiin);
+                showWithdrawForm(true);
+              }}
+            >
+              <PrimaryCard
+                key={coiin.type}
+                title={coiin.type}
+                network={coiin.network}
+                value={coiin.balance}
+                icon={coiin.symbolImageUrl}
+                tooltipTitle={toolTipMap.title}
+                tooltipValue={toolTipMap.value}
+                tooltipNetwork={toolTipMap.network}
+              />
+            </div>
           ))}
         </div>
       )}
@@ -162,20 +181,26 @@ const FundingWallet: FC = () => {
       ) : (
         <div className="mb-6 flex flex-wrap gap-4">
           {otherCurrencies?.map((coiin: FundingWalletTypes) => (
-            <PrimaryCard
+            <div
               key={coiin.type}
-              title={coiin.type}
-              network={coiin.network}
-              value={coiin.balance}
-              icon={coiin.symbolImageUrl}
-              tooltipTitle={toolTipMap.title}
-              tooltipValue={toolTipMap.value}
-              tooltipNetwork={toolTipMap.network}
-            />
+              onClick={() => {
+                setSelectedCurrency(coiin);
+                showWithdrawForm(true);
+              }}
+            >
+              <PrimaryCard
+                title={coiin.type}
+                network={coiin.network}
+                value={coiin.balance}
+                icon={coiin.symbolImageUrl}
+                tooltipTitle={toolTipMap.title}
+                tooltipValue={toolTipMap.value}
+                tooltipNetwork={toolTipMap.network}
+              />
+            </div>
           ))}
         </div>
       )}
-
       <Divider />
       <div>
         <CustomButton
