@@ -18,6 +18,7 @@ import { CardSetupForm } from '../../components/CardSetupForm';
 import { loadStripe } from '@stripe/stripe-js';
 import { stripePubKey } from '../../apiConfig.json';
 import { WithdrawFormModal } from '../../components/Forms/WithdrawForm';
+import './fundingWallet.scss';
 
 const env = process.env.REACT_APP_STAGE === undefined ? 'local' : process.env.REACT_APP_STAGE;
 const stripeKey = (stripePubKey as { [key: string]: string })[env];
@@ -145,6 +146,7 @@ const FundingWallet: FC = () => {
                 setSelectedCurrency(coiin);
                 showWithdrawForm(true);
               }}
+              className="coiinCardWrap"
             >
               <PrimaryCard
                 key={coiin.type}
