@@ -80,7 +80,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           )}
 
           <FileUpload
-            label="Add Campaign Image"
+            label="Add Campaign Content"
             updateLabel="Update Campaign Image"
             mediaType="campaignImage"
             tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"

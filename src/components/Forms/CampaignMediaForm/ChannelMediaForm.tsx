@@ -79,7 +79,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
           })}
         </div>
         <FileUpload
-          label={`Add ${channel} Image`}
+          label={`Add ${channel} Content`}
           updateLabel={`Update ${channel} Image`}
           mediaType="sharedMedia"
           tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
