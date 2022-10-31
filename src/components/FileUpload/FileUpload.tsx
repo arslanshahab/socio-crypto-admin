@@ -20,9 +20,19 @@ interface Props {
   mediaType: string;
   updateLabel?: string;
   tooltip?: string;
+  imageUrl?: string;
 }
 
-const FileUpload: React.FC<Props> = ({ value, label, mediaType, onFileError, onFileSuccess, updateLabel, tooltip }) => {
+const FileUpload: React.FC<Props> = ({
+  value,
+  label,
+  mediaType,
+  onFileError,
+  onFileSuccess,
+  updateLabel,
+  tooltip,
+  imageUrl,
+}) => {
   const inputKey = `${mediaType}-${Math.random()}`;
   const allowedFileType: Array<FileFormatSizeMap> = [
     {
@@ -109,19 +119,25 @@ const FileUpload: React.FC<Props> = ({ value, label, mediaType, onFileError, onF
     <Box className="flex flex-col justify-start w-full">
       <label htmlFor={inputKey} className="cursor-pointer">
         <Box className="flex flex-col justify-center items-center w-full h-44 bg-gray-100 rounded-lg">
-          {value.file ? (
-            value.format.includes('image') ? (
-              <Box className="w-full">
-                <img src={value.file} alt={mediaType} className="w-full h-44 rounded-md object-cover" />
-              </Box>
-            ) : (
-              <Box className="w-full">
-                <video autoPlay={false} src={value.file} controls={true} className="h-44 w-full" />
-              </Box>
-            )
+          {imageUrl && !value.file ? (
+            <img src={imageUrl} alt={mediaType} className="w-full h-44 rounded-md object-contain p-2" />
           ) : (
             <>
-              <img src={icon} alt={mediaType} className="w-24" />
+              {value.file ? (
+                value.format.includes('image') ? (
+                  <Box className="w-full">
+                    <img src={value.file} alt={mediaType} className="w-full h-44 rounded-md object-cover" />
+                  </Box>
+                ) : (
+                  <Box className="w-full">
+                    <video autoPlay={false} src={value.file} controls={true} className="h-44 w-full" />
+                  </Box>
+                )
+              ) : (
+                <>
+                  <img src={icon} alt={mediaType} className="w-24" />
+                </>
+              )}
             </>
           )}
         </Box>

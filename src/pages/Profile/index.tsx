@@ -13,7 +13,6 @@ import FileUpload from '../../components/FileUpload';
 import { uploadMedia } from '../../helpers/utils';
 import { getProfile } from '../../store/actions/profile';
 import textStyles from '../../assets/styles/text.module.css';
-import { MdEdit } from 'react-icons/md';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -109,6 +108,7 @@ const Profile: FC = () => {
             tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
             onFileSuccess={onOrgImageSuccess}
             onFileError={onError}
+            imageUrl={profile.imageUrl}
           />
           {uploadProgress > 0 && uploadProgress < 100 && (
             <Box sx={{ position: 'relative', display: 'inline-flex' }}>
