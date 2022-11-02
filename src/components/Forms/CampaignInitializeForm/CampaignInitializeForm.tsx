@@ -8,15 +8,12 @@ import { Autocomplete } from '@material-ui/lab';
 import Actions from '../../NewCampaign/Actions';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { useState } from 'react';
-import { ErrorObject, FileObject } from '../../../types';
+import { ErrorObject } from '../../../types';
 import { updateCampaign } from '../../../store/actions/campaign';
 import CustomInput from '../../CustomInput';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import styles from '../../CustomInput/customInput.module.css';
 import './campaignInitializeForm.scss';
-import CampaignMediaForm from './CampaignMediaForm/CampaignMediaForm';
-import { showErrorAlert } from '../../../store/actions/alerts';
-import FileUpload from '../../../componentsv2/FileUpload';
 
 interface Props {
   userData: {
@@ -64,7 +61,6 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   );
   const [tags, setTags] = useState(campaign.suggestedTags.join(','));
   const [errors, setErrors] = useState<ErrorObject>({});
-  const [campaignImage, setCampaignImage] = useState<FileObject>(campaign.campaignImage);
 
   const handleBeginDateChange = (date: MaterialUiPickersDate) => {
     const dateIsoString = date?.toISOString();
@@ -122,7 +118,6 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
         beginDate,
         endDate,
         suggestedTags: getTagValue(),
-        campaignImage,
         config: {
           ...campaign.config,
           numOfTiers,
@@ -140,14 +135,6 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       item = item.trim();
       return item ? (item.includes('#') ? `${item}` : `#${item}`) : '';
     });
-  };
-
-  const onCampaignImageSuccess = (data: FileObject) => {
-    setCampaignImage(data);
-  };
-
-  const onError = (msg: string) => {
-    dispatch(showErrorAlert(msg));
   };
 
   const validateInputs = (): boolean => {
@@ -194,10 +181,6 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
     }
     if (!endDate) {
       setErrors((prev) => ({ ...prev, endDate: true }));
-      return (validated = false);
-    }
-    if (!campaignImage.filename) {
-      dispatch(showErrorAlert('Campaign image is required'));
       return (validated = false);
     }
     return validated;
@@ -398,19 +381,6 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               className={styles.customInput}
             />
           </Box>
-          <div className="campaignMediaWrapper">
-            <div className="campaignMediaOutline">
-              <CampaignMediaForm campaignMedia={campaignImage} />
-              <FileUpload
-                label={`${campaignImage.filename ? 'Update' : 'Add'} Campaign Content`}
-                updateLabel="Update Campaign Image"
-                mediaType="campaignImage"
-                tooltip="Only Image files (JPG, JPEG, PNG, SVG) are allowed and Please provide an image of following dimensions, 1200px X 675px or aspect ratio of 16:9"
-                onFileSuccess={onCampaignImageSuccess}
-                onFileError={onError}
-              />
-            </div>
-          </div>
         </Box>
         <Box className="w-full">
           <Actions

@@ -5,7 +5,7 @@ import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
 import Actions from './Actions';
 import { campaignTypeMenu } from '../Forms/CampaignSetupForm/CampaignTypeInput';
 import { format } from 'date-fns';
-import CustomButton from '../CustomButton';
+// import CustomButton from '../CustomButton';
 import { getSocialIcon } from '../Forms/CampaignSetupForm/SocialMediaTypeInput';
 import InstagramIcon from '../../assets/svg/socialIcons/InstagramLogo.svg';
 import TwitterIcon from '../../assets/svg/socialIcons/TwitterLogo.svg';
@@ -124,9 +124,9 @@ const PreviewScreen: React.FC<ActionsProps> = ({
                   className="bg-lightGray rounded-3xl w-60 h-44 flex items-center justify-center"
                 />
               </Box>
-              <CustomButton className="bg-coolGray w-52 rounded-full px-4 py-2 mt-3">
+              {/* <CustomButton className="bg-coolGray w-52 rounded-full px-4 py-2 mt-3">
                 Preview Campaign Images
-              </CustomButton>
+              </CustomButton> */}
             </Box>
           </Box>
           <Box className="border p-6 border-denimBlue rounded-3xl  overflow-y-auto" style={{ maxHeight: '950px' }}>
