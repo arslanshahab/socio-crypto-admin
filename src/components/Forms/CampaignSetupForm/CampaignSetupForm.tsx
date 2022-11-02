@@ -19,6 +19,7 @@ import axios from 'axios';
 import { apiURI } from '../../../clients/raiinmaker-api';
 import { APPROVED, RAIINMAKER } from '../../../helpers/constants';
 import './campaignSetupForm.scss';
+import ContentSteps from './ContentSteps';
 
 interface Props {
   company: string;
@@ -50,6 +51,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const [errors, setErrors] = useState<ErrorObject>({});
   const [fundingWallet, setFundingWallet] = useState<FundingWalletTypes[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [steps, setSteps] = useState<number>(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +91,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   };
 
   const next = () => {
-    if (parseFloat(coiinBudget) <= 0) return dispatch(showErrorAlert('Please add campaign budget'));
+    if (parseFloat(coiinBudget) <= 0 && steps >= 3) return dispatch(showErrorAlert('Please add campaign budget'));
     if (validateInputs()) {
       const augmentedCampaign = {
         ...campaign,
@@ -109,7 +111,10 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      handleNext();
+      if (steps >= 3) handleNext();
+      else {
+        setSteps(steps + 1);
+      }
     }
   };
 
@@ -127,11 +132,11 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
       dispatch(showErrorAlert('Please select atleast one social channel'));
       return (validated = false);
     }
-    if (!campaignType) {
+    if (!campaignType && steps >= 3) {
       dispatch(showErrorAlert('Please select type of campaign'));
       return (validated = false);
     }
-    if (!budgetType) {
+    if (!budgetType && steps > 3) {
       dispatch(showErrorAlert('Please select budget type of your campaign campaign'));
       return (validated = false);
     }
@@ -215,7 +220,15 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   return (
     <Box className="campaignSetupFormWrapper">
-      <Fade triggerOnce>
+      <ContentSteps
+        isGlobal={isGlobal}
+        campaignType={campaignType}
+        handleCampaignType={handleCampaignType}
+        handleSocialMediaType={handleSocialMediaType}
+        socialMediaType={socialMediaType}
+        steps={steps}
+      />
+      {/* <Fade triggerOnce>
         <SocialMediaTypeInput
           selectAllByDefault={isGlobal}
           socialMediaType={socialMediaType}
@@ -344,7 +357,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
             )}
           </Box>
         </Fade>
-      )}
+      )} */}
       <Actions
         activeStep={activeStep}
         firstStep={firstStep}

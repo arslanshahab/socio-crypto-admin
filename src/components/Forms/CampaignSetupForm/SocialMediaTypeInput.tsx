@@ -1,11 +1,15 @@
 import { Box, FormControlLabel, Checkbox } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import InstaIcon from '../../../assets/png/instagram.png';
 import TiktonIcon from '../../../assets/png/tiktok.png';
 import TwitterIcon from '../../../assets/png/twitter.png';
 import FacebookIcon from '../../../assets/png/facebook.png';
 import useEffectSkipFirst from '../../../hooks/useEffectSkipFirst';
 import './campaignSetupForm.scss';
+import TwitterPhone from '../../../assets/png/socialPlatForms/TwitterPhone.png';
+import InstagramPhone from '../../../assets/png/socialPlatForms/IGPhone.png';
+import TiktokPhone from '../../../assets/png/socialPlatForms/TikTokPhone.png';
+import FacebookPhone from '../../../assets/png/socialPlatForms/FBPhone.png';
 
 interface Props {
   socialMediaType: string[];
@@ -22,10 +26,10 @@ interface IconsObject {
 }
 
 export const getSocialIcon: IconsObject = {
-  Twitter: TwitterIcon,
-  Instagram: InstaIcon,
-  Tiktok: TiktonIcon,
-  Facebook: FacebookIcon,
+  Twitter: TwitterPhone,
+  Instagram: InstagramPhone,
+  Tiktok: TiktokPhone,
+  Facebook: FacebookPhone,
 };
 
 export const socialMediaTypeMenu: string[] = ['Twitter', 'Instagram', 'Tiktok', 'Facebook'];
@@ -61,36 +65,39 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange, 
   };
 
   return (
-    <Box className="socialMediaTypeInputWrapper">
+    <div className="socialMediaTypeInputWrapper">
       <p>Choose the social media platform to promote your campaign!</p>
-      <Box className="checkboxWrapper">
+      <div className="socialMediaListWrapper">
+        {socialMediaTypeMenu.map((item, index) => (
+          <div key={index} className="socialPlatForms">
+            <div
+              onClick={() => handleSocialSelect(item)}
+              className={`socialMedia  ${socialMediaType.includes(item) ? 'selectedField' : ''}`}
+            >
+              <div className="imageWrapper">
+                <img src={getSocialIcon[item]} alt="social-icon" />
+              </div>
+            </div>
+            <p>{item}</p>
+          </div>
+        ))}
+      </div>
+      <div className="checkboxWrapper">
         <FormControlLabel
           control={
             <Checkbox
               checked={all || selectAllByDefault}
-              style={{ color: '#3f51b5' }}
+              style={{ color: '#000', transform: 'scale(1.6)' }}
               name="Brand Agreement"
               onChange={(e, checked) => {
                 setAll(checked);
               }}
             />
           }
-          label="All channels"
+          label={<p className="allChannelsTitle">All Channels</p>}
         />
-      </Box>
-      <Box className="socialMediaListWrapper">
-        {socialMediaTypeMenu.map((item, index) => (
-          <Box
-            key={index}
-            onClick={() => handleSocialSelect(item)}
-            className={`socialMedia  ${socialMediaType.includes(item) ? 'selectedField' : ''}`}
-          >
-            <p>{item}</p>
-            <img src={getSocialIcon[item]} alt="social-icon" />
-          </Box>
-        ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

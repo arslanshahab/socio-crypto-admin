@@ -27,8 +27,9 @@
         }
         .checkboxWrapper {
           @apply w-full box-border mt-5;
+
           .checkbox {
-            @apply text-denimBlue;
+            @apply text-bluetiful;
           }
         }
       }
@@ -41,20 +42,32 @@
   .socialMediaTypeInputWrapper {
     @apply w-full mt-10;
     p {
-      @apply mb-3 text-center text-2xl;
+      @apply mt-6 text-center text-2xl;
     }
     .checkboxWrapper {
-      @apply w-full flex flex-row justify-start items-center;
+      @apply w-full flex flex-row justify-center items-center mt-10;
+      .allChannelsTitle {
+        @apply m-0 text-xl font-semibold;
+      }
     }
     .socialMediaListWrapper {
-      @apply flex flex-row justify-between space-x-4;
-      .socialMedia {
-        @apply cursor-pointer flex flex-col justify-center items-center rounded-2xl w-72 h-32 border-2 border-denimBlue py-4;
-        p {
-          @apply text-base;
-        }
-        img {
-          @apply w-16;
+      @apply flex flex-row justify-between space-x-4 mt-8;
+      .socialPlatForms {
+        @apply flex flex-col;
+        .socialMedia {
+          @apply cursor-pointer flex  justify-center items-center  h-full;
+          border-radius: 2rem;
+          width: 192px;
+          height: 370px;
+          p {
+            @apply text-base;
+          }
+          .imageWrapper {
+            width: 170px;
+            img {
+              @apply w-full;
+            }
+          }
         }
       }
     }
@@ -95,7 +108,7 @@
   }
 
   .selectedField {
-    @apply bg-denimBlue text-white;
+    @apply border-2 border-bluetiful;
   }
 }
 
