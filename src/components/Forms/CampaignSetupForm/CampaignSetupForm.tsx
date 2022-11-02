@@ -174,6 +174,12 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     setErrors(newErrors);
   };
 
+  const handleSelectToken = (event: React.ChangeEvent<any>) => {
+    setCryptoSymbol(event.target.value);
+    setCoiinBudget('');
+    updateErrors('cryptoSymbol', event.target.value);
+  };
+
   if (isLoading) {
     return (
       <Box className="setupFormMessage">
@@ -227,6 +233,16 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
         handleSocialMediaType={handleSocialMediaType}
         socialMediaType={socialMediaType}
         steps={steps}
+        budgetType={budgetType}
+        campaign={campaign}
+        coiinBudget={coiinBudget}
+        coiinOptions={coiinOptions}
+        company={company}
+        cryptoSymbol={cryptoSymbol}
+        errors={errors}
+        handleBudgetType={handleBudgetType}
+        handleCoiinBudgetChange={handleCoiinBudgetChange}
+        handleSelectToken={handleSelectToken}
       />
       {/* <Fade triggerOnce>
         <SocialMediaTypeInput

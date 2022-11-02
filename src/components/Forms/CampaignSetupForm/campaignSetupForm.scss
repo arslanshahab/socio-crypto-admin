@@ -2,11 +2,11 @@
 .campaignSetupFormWrapper {
   @apply w-full px-0 lg:px-8 xl:px-28;
   .campaignBudgets {
-    @apply w-full mt-10;
+    @apply w-full mt-12;
     .selectFieldsWrapper {
-      @apply w-full mt-10;
+      @apply w-full mt-12;
       .selectField {
-        @apply flex flex-row justify-start w-full;
+        @apply flex  justify-center w-full;
         .selectFieldOutline {
           @apply w-2/6 box-border pr-4;
         }
@@ -75,31 +75,38 @@
 
   // campaign type input styles
   .campaignTypeInputWrapper {
-    @apply w-full mt-10;
+    @apply w-full mt-12;
     p {
       @apply mb-4 text-center text-2xl;
     }
     .campaignTypeListWrapper {
-      @apply flex flex-row justify-between space-x-4;
+      @apply flex flex-row justify-between space-x-4 mt-14;
       .selectField {
-        @apply cursor-pointer flex flex-row justify-center items-center rounded-full w-72 h-16 border-2 border-denimBlue space-y-2;
-        p {
-          @apply text-base m-0;
+        @apply cursor-pointer flex justify-center items-center w-56 h-48 space-y-2;
+        border-radius: 2rem;
+        .imageWrapper {
+          @apply w-44 h-44;
+          img {
+            @apply w-full h-full object-contain;
+          }
         }
+      }
+      p {
+        @apply text-xl font-normal mt-8;
       }
     }
   }
 
   // campaign budget type input styles
   .campaignBudgetTypesWrapper {
-    @apply w-full mt-10;
+    @apply w-full mt-12;
     p {
       @apply mb-4 text-center text-2xl;
     }
     .campaignBudgetTypeList {
-      @apply flex flex-row justify-center space-x-4;
+      @apply flex flex-row justify-center gap-4 space-x-4 mt-12;
       .selectField {
-        @apply cursor-pointer flex flex-row justify-center items-center rounded-full w-56 h-16 border-2 border-denimBlue px-2 text-center;
+        @apply cursor-pointer flex flex-row justify-center items-center rounded-2xl w-64 h-16 border-2 px-2 text-center;
         p {
           @apply text-base m-0;
         }
