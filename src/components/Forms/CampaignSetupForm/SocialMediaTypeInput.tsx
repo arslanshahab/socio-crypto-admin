@@ -66,7 +66,9 @@ const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange, 
 
   return (
     <div className="socialMediaTypeInputWrapper">
-      <p>Choose the social media platform to promote your campaign!</p>
+      <p>
+        <span>1/3</span> Choose the social media platform to promote your campaign!
+      </p>
       <div className="socialMediaListWrapper">
         {socialMediaTypeMenu.map((item, index) => (
           <div key={index} className="socialPlatForms">

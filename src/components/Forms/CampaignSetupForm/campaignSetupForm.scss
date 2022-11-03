@@ -43,6 +43,9 @@
     @apply w-full mt-10;
     p {
       @apply mt-6 text-center text-2xl;
+      span {
+        @apply text-grayWeb mr-4;
+      }
     }
     .checkboxWrapper {
       @apply w-full flex flex-row justify-center items-center mt-10;
@@ -78,6 +81,9 @@
     @apply w-full mt-12;
     p {
       @apply mb-4 text-center text-2xl;
+      span {
+        @apply text-grayWeb mr-4;
+      }
     }
     .campaignTypeListWrapper {
       @apply flex flex-row justify-between space-x-4 mt-14;
@@ -102,6 +108,9 @@
     @apply w-full mt-12;
     p {
       @apply mb-4 text-center text-2xl;
+      span {
+        @apply text-grayWeb mr-4;
+      }
     }
     .campaignBudgetTypeList {
       @apply flex flex-row justify-center gap-4 space-x-4 mt-12;

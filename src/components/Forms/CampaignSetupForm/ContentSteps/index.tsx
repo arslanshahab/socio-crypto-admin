@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import { Campaign, ErrorObject } from '../../../../types';
+import React, { FC } from 'react';
+import { ErrorObject } from '../../../../types';
 import CampaignBudget from '../CampaignBudget';
 import CampaignTypeInput from '../CampaignTypeInput';
 import SocialMediaTypeInput from '../SocialMediaTypeInput';
@@ -21,6 +21,7 @@ interface ContentStepsIProps {
   errors: ErrorObject;
   campaign: any;
   coiinBudget: string;
+  handleIsGlobal: () => void;
 }
 
 const ContentSteps: FC<ContentStepsIProps> = ({
@@ -40,9 +41,8 @@ const ContentSteps: FC<ContentStepsIProps> = ({
   errors,
   campaign,
   coiinBudget,
+  handleIsGlobal,
 }: ContentStepsIProps) => {
-  //   const [steps, setSteps] = useState<number>(1);
-
   switch (steps) {
     case 1:
       return (
@@ -67,6 +67,8 @@ const ContentSteps: FC<ContentStepsIProps> = ({
           handleBudgetType={handleBudgetType}
           handleCoiinBudgetChange={handleCoiinBudgetChange}
           handleSelectToken={handleSelectToken}
+          isGlobal={isGlobal}
+          handleIsGlobal={handleIsGlobal}
         />
       );
     default:

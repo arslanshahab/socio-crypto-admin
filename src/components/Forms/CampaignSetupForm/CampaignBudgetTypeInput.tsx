@@ -21,7 +21,9 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange }) 
 
   return (
     <Box className="campaignBudgetTypesWrapper">
-      <p>How will this campaign reward participants?</p>
+      <p>
+        <span>3/3</span> How will this campaign reward participants?
+      </p>
       <Box className="campaignBudgetTypeList">
         {menu.map((item, index) => (
           <Box

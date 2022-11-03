@@ -1,4 +1,3 @@
-import { Box } from '@material-ui/core';
 import React from 'react';
 import videoViews from '../../../assets/svg/prioritize/videoViews.svg';
 import brandAwareness from '../../../assets/svg/prioritize/brandAwareness.png';
@@ -33,7 +32,9 @@ const prioritizeIcons = {
 const CampaignTypeInput: React.FC<Props> = ({ campaignType, handleChange }) => {
   return (
     <div className="campaignTypeInputWrapper">
-      <p>What will this campaign prioritize?</p>
+      <p>
+        <span>2/3</span>What will this campaign prioritize?
+      </p>
       <div className="campaignTypeListWrapper">
         {campaignTypeMenu.map((item, index) => (
           <div key={index}>

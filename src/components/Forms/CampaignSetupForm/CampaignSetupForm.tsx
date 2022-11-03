@@ -27,6 +27,8 @@ interface Props {
 
 type FundingWalletTypes = { type: string; symbolImageUrl: string; balance: number; id: string; network: string };
 
+const stepsList = ['platform', 'prioritize', 'budget'];
+
 const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   company,
   activeStep,
@@ -52,6 +54,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const [fundingWallet, setFundingWallet] = useState<FundingWalletTypes[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [steps, setSteps] = useState<number>(1);
+  //   const totalSteps = stepsList.length - 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +121,13 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     }
   };
 
+  const back = () => {
+    if (steps > 3) handleBack();
+    else {
+      setSteps(steps - 1);
+    }
+  };
+
   const onFileSuccess = (data: FileObject) => {
     setRaffleImage(data);
   };
@@ -132,7 +142,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
       dispatch(showErrorAlert('Please select atleast one social channel'));
       return (validated = false);
     }
-    if (!campaignType && steps >= 3) {
+    if (!campaignType && steps >= 2) {
       dispatch(showErrorAlert('Please select type of campaign'));
       return (validated = false);
     }
@@ -178,6 +188,10 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     setCryptoSymbol(event.target.value);
     setCoiinBudget('');
     updateErrors('cryptoSymbol', event.target.value);
+  };
+
+  const handleIsGlobal = () => {
+    setIsGlobal(true);
   };
 
   if (isLoading) {
@@ -243,6 +257,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
         handleBudgetType={handleBudgetType}
         handleCoiinBudgetChange={handleCoiinBudgetChange}
         handleSelectToken={handleSelectToken}
+        handleIsGlobal={handleIsGlobal}
       />
       {/* <Fade triggerOnce>
         <SocialMediaTypeInput
@@ -378,7 +393,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
         activeStep={activeStep}
         firstStep={firstStep}
         finalStep={finalStep}
-        handleBack={handleBack}
+        handleBack={back}
         handleNext={next}
       />
     </Box>

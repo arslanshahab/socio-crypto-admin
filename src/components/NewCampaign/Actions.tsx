@@ -32,7 +32,7 @@ const Actions: React.FC<CampaignActionProps> = ({
           activeStep > firstStep ? 'border-denimBlue text-coolGray' : 'text-coolGray border-coolGray'
         }`}
         onClick={handleBack}
-        disabled={activeStep <= firstStep}
+        disabled={activeStep < firstStep}
       >
         Back
       </CustomButton>

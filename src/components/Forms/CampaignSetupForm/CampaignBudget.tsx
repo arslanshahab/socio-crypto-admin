@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import React, { FC } from 'react';
-import { Campaign, ErrorObject } from '../../../types';
+import { ErrorObject } from '../../../types';
 import CustomInput from '../../CustomInput';
 import CustomSelect from '../../CustomSelect';
 import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
@@ -16,6 +16,8 @@ interface CampaignBudget {
   errors: ErrorObject;
   campaign: any;
   coiinBudget: string;
+  isGlobal: boolean;
+  handleIsGlobal: () => void;
 }
 
 const CampaignBudget: FC<CampaignBudget> = ({
@@ -29,6 +31,8 @@ const CampaignBudget: FC<CampaignBudget> = ({
   errors,
   campaign,
   coiinBudget,
+  isGlobal,
+  handleIsGlobal,
 }: CampaignBudget) => {
   return (
     <div className="campaignBudgets">
@@ -61,21 +65,19 @@ const CampaignBudget: FC<CampaignBudget> = ({
                   disabled={Boolean(campaign.id)}
                 />
               </div>
-              {/* <div className="checkboxWrapper">
+              <div className="checkboxWrapper">
                 <FormControlLabel
                   control={
                     <Checkbox
                       checked={isGlobal}
                       className="checkbox"
                       name="Brand Agreement"
-                      onChange={(e, checked) => {
-                        setIsGlobal(checked);
-                      }}
+                      onChange={handleIsGlobal}
                     />
                   }
                   label="Is Global Campaign"
                 />
-              </div> */}
+              </div>
             </div>
           )}
 
