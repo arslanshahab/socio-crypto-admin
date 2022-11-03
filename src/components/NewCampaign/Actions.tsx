@@ -7,6 +7,7 @@ export interface CampaignActionProps {
   activeStep: number;
   firstStep: number;
   finalStep: number;
+  subStep?: number;
   handleNext: () => void;
   handleBack: () => void;
   handleSubmit?: () => void;
@@ -20,6 +21,7 @@ const Actions: React.FC<CampaignActionProps> = ({
   firstStep,
   finalStep,
   activeStep,
+  subStep,
   handleBack,
   handleNext,
   handleSubmit,
@@ -32,7 +34,7 @@ const Actions: React.FC<CampaignActionProps> = ({
           activeStep > firstStep ? 'border-denimBlue text-coolGray' : 'text-coolGray border-coolGray'
         }`}
         onClick={handleBack}
-        disabled={activeStep < firstStep}
+        disabled={activeStep <= firstStep && subStep === 1}
       >
         Back
       </CustomButton>

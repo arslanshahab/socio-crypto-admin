@@ -127,6 +127,9 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
       setSteps(steps - 1);
     }
   };
+  const handleSubBack = () => {
+    setSteps(steps - 1);
+  };
 
   const onFileSuccess = (data: FileObject) => {
     setRaffleImage(data);
@@ -151,11 +154,11 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
       return (validated = false);
     }
     if (budgetType == 'crypto') {
-      if (!cryptoSymbol) {
+      if (!cryptoSymbol && steps > 1) {
         setErrors((prev) => ({ ...prev, cryptoSymbol: true }));
         return (validated = false);
       }
-      if (!parseFloat(coiinBudget)) {
+      if (!parseFloat(coiinBudget) && steps > 2) {
         setErrors((prev) => ({ ...prev, coiinBudget: true }));
         return (validated = false);
       }
@@ -395,6 +398,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
         finalStep={finalStep}
         handleBack={back}
         handleNext={next}
+        subStep={steps}
       />
     </Box>
   );
