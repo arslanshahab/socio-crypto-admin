@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Fade } from 'react-awesome-reveal';
+// import { Fade } from 'react-awesome-reveal';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { Box } from '@material-ui/core';
 import Actions from '../../NewCampaign/Actions';
 import { updateCampaign } from '../../../store/actions/campaign';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
-import CustomButton from '../../CustomButton/CustomButton';
-import AddIcon from '@material-ui/icons/Add';
+// import CustomButton from '../../CustomButton/CustomButton';
+// import AddIcon from '@material-ui/icons/Add';
 import { showErrorAlert } from '../../../store/actions/alerts';
-import CustomInput from '../../CustomInput/CustomInput';
-import CloseIcon from '@material-ui/icons/Close';
-import styles from '../../CustomInput/customInput.module.css';
+// import CustomInput from '../../CustomInput/CustomInput';
+// import CloseIcon from '@material-ui/icons/Close';
+// import styles from '../../CustomInput/customInput.module.css';
 import './campaignPostForm.scss';
+import TemplateSteps from './TemplateSteps';
 
 const MAX_POST_LENGTH = 120;
 
 const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const campaign = useStoreCampaignSelector();
-  const socialMediaType = campaign.config.socialMediaType;
+  //   const socialMediaType = campaign.config.socialMediaType;
   const dispatch = useDispatch();
   const [channelTemplates, setChannelTemplates] = useState(campaign.config.channelTemplates);
+  const [steps, setSteps] = useState<number>(1);
 
   const next = () => {
     if (validateInputs()) {
@@ -32,7 +34,17 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      handleNext();
+      if (steps >= 4) handleNext();
+      else {
+        setSteps((prev) => prev + 1);
+      }
+    }
+  };
+
+  const back = () => {
+    if (steps >= 4) handleBack();
+    else {
+      setSteps((prev) => prev - 1);
     }
   };
 
@@ -70,6 +82,7 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
 
   const validateInputs = (): boolean => {
     let validated = true;
+    if (steps < 4) validated;
     const { socialMediaType } = campaign.config;
     for (let index = 0; index < socialMediaType.length; index++) {
       const channel = socialMediaType[index];
@@ -90,8 +103,14 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
 
   return (
     <Box className="campaignPostFormWrapper">
-      <Fade>
-        <Box className="campaignPostForm">
+      <TemplateSteps
+        steps={steps}
+        channelTemplates={channelTemplates}
+        addPost={addPost}
+        handlePostChange={handlePostChange}
+        removePost={removePost}
+      />
+      {/* <Box className="campaignPostForm">
           {socialMediaType.map((channel, index) => (
             <Box key={index} className="outline">
               <Box className="headWrapper">
@@ -128,17 +147,16 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
               ))}
             </Box>
           ))}
-        </Box>
-        <Box className="postFormActions">
-          <Actions
-            activeStep={activeStep}
-            firstStep={firstStep}
-            finalStep={finalStep}
-            handleBack={handleBack}
-            handleNext={next}
-          />
-        </Box>
-      </Fade>
+        </Box> */}
+      <Box className="postFormActions">
+        <Actions
+          activeStep={activeStep}
+          firstStep={firstStep}
+          finalStep={finalStep}
+          handleBack={back}
+          handleNext={next}
+        />
+      </Box>
     </Box>
   );
 };

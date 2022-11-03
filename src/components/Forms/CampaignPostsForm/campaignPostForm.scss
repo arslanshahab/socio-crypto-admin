@@ -38,3 +38,50 @@
     @apply w-full mt-10;
   }
 }
+
+// Campaign template design
+.campaignTemplateWrapper {
+  .templateGrid {
+    @apply grid grid-cols-2 gap-6;
+    .imageSection {
+      @apply flex flex-col gap-8 items-center;
+      .phoneImage {
+        height: 340px;
+        img {
+          @apply w-full h-full object-contain;
+        }
+      }
+      p {
+        @apply text-2xl;
+      }
+    }
+    .contentSection {
+      @apply overflow-y-auto;
+      height: 62vh;
+      .templateFieldWrapper {
+        @apply rounded-3xl mb-8;
+        textarea {
+          @apply border border-bluetiful w-full h-44 rounded-3xl p-4 resize-none focus:outline-none;
+        }
+        .templateContentWrapper {
+          @apply flex items-center justify-between;
+          .remove {
+            @apply w-32 mt-1 rounded-md text-red-600 text-sm bg-transparent;
+            .closeIcon {
+              @apply mr-1 text-lg;
+            }
+          }
+          p {
+            @apply text-right text-grayWeb;
+          }
+        }
+      }
+      .addButtonWrapper {
+        @apply flex justify-end mb-4;
+        .addTempButton {
+          @apply w-40 h-10 ml-5 rounded-md text-black text-base border-2 border-cyberYellow bg-cyberYellow;
+        }
+      }
+    }
+  }
+}
