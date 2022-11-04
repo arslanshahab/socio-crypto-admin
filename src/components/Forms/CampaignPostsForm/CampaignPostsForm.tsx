@@ -19,10 +19,11 @@ const MAX_POST_LENGTH = 120;
 
 const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const campaign = useStoreCampaignSelector();
-  //   const socialMediaType = campaign.config.socialMediaType;
+  const socialMedias = campaign.config.socialMediaType;
   const dispatch = useDispatch();
   const [channelTemplates, setChannelTemplates] = useState(campaign.config.channelTemplates);
   const [steps, setSteps] = useState<number>(1);
+  const [activeChannel, setActiveChannel] = useState<string>('');
 
   const next = () => {
     if (validateInputs()) {
@@ -34,7 +35,7 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      if (steps >= 4) handleNext();
+      if (steps >= socialMedias.length) handleNext();
       else {
         setSteps((prev) => prev + 1);
       }
@@ -42,7 +43,7 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   };
 
   const back = () => {
-    if (steps >= 4) handleBack();
+    if (steps === 1) handleBack();
     else {
       setSteps((prev) => prev - 1);
     }
@@ -73,6 +74,7 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   };
 
   const handlePostChange = (channel: string, index: number, data: string) => {
+    setActiveChannel(channel);
     const templates = { ...channelTemplates };
     const channelPosts = [...templates[channel]];
     channelPosts[index] = { channel: channel, id: channelPosts[index].id || '', post: data };
@@ -82,13 +84,13 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
 
   const validateInputs = (): boolean => {
     let validated = true;
-    if (steps < 4) validated;
+    if (steps < socialMedias.length) validated;
     const { socialMediaType } = campaign.config;
     for (let index = 0; index < socialMediaType.length; index++) {
       const channel = socialMediaType[index];
       for (let index2 = 0; index2 < channelTemplates[channel].length; index2++) {
         const template = channelTemplates[channel][index2];
-        if (!template.post) {
+        if (!template.post && activeChannel === channel) {
           dispatch(showErrorAlert(`Template posts are required`));
           return (validated = false);
         }
