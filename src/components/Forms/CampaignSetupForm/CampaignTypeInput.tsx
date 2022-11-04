@@ -46,7 +46,7 @@ const CampaignTypeInput: React.FC<Props> = ({ campaignType, handleChange }) => {
           <div key={index}>
             <div
               onClick={() => handleChange(item.value)}
-              className={`selectField ${campaignType === item.value ? 'selectedField' : ''}`}
+              className={`selectField ${campaignType === item.value ? 'selectedField' : 'select'}`}
             >
               <div className="imageWrapper">
                 <img src={prioritizeIcons[item.icon]} />

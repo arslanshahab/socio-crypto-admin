@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import ReactSelect from 'react-select';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CoiinReducerTypes } from '../../types';
 import { useHistory } from 'react-router-dom';
 import './topbar.scss';
@@ -9,10 +9,16 @@ import raiinmakerLogo from '../../assets/png/raiinmaker.png';
 // import notificationIcon from '../../assets/svg/topbar/notification.svg';
 import profileIcon from '../../assets/svg/topbar/profileIcon.svg';
 import coiinIcon from '../../assets/png/coiin.png';
+import { fetchCoiinValue } from '../../store/middlewares';
 
 const Topbar: FC = () => {
+  const dispatch = useDispatch();
   const { coiinValue } = useSelector((state: { coiin: CoiinReducerTypes }) => state.coiin);
   const { push } = useHistory();
+
+  useEffect(() => {
+    dispatch(fetchCoiinValue());
+  }, []);
 
   return (
     <div className="topbarWrapper">

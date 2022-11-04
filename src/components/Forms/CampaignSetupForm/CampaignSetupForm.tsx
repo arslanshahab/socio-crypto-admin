@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Box, CircularProgress, FormControlLabel, Checkbox } from '@material-ui/core';
-import { Fade } from 'react-awesome-reveal';
+import { Box, CircularProgress } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ErrorObject, FileObject, ProfileTypes } from '../../../types';
-import CampaignTypeInput from './CampaignTypeInput';
-import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
+// import CampaignTypeInput from './CampaignTypeInput';
+// import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
 import Actions from '../../NewCampaign/Actions';
 import { resetCampaign, updateCampaign } from '../../../store/actions/campaign';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
-import CustomSelect from '../../CustomSelect/CustomSelect';
-import CustomInput from '../../CustomInput';
+// import CustomSelect from '../../CustomSelect/CustomSelect';
+// import CustomInput from '../../CustomInput';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
-import SocialMediaTypeInput from './SocialMediaTypeInput';
-import FileUpload from '../../FileUpload';
+// import SocialMediaTypeInput from './SocialMediaTypeInput';
+// import FileUpload from '../../FileUpload';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { apiURI } from '../../../clients/raiinmaker-api';
@@ -26,8 +25,6 @@ interface Props {
 }
 
 type FundingWalletTypes = { type: string; symbolImageUrl: string; balance: number; id: string; network: string };
-
-const stepsList = ['platform', 'prioritize', 'budget'];
 
 const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   company,
@@ -94,7 +91,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   };
 
   const next = () => {
-    if (parseFloat(coiinBudget) <= 0 && steps >= 3) return dispatch(showErrorAlert('Please add campaign budget'));
+    // if (parseFloat(coiinBudget) <= 0 && steps >= 3) return dispatch(showErrorAlert('Please add campaign budget'));
     if (validateInputs()) {
       const augmentedCampaign = {
         ...campaign,
@@ -127,17 +124,14 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
       setSteps(steps - 1);
     }
   };
-  const handleSubBack = () => {
-    setSteps(steps - 1);
-  };
 
-  const onFileSuccess = (data: FileObject) => {
-    setRaffleImage(data);
-  };
+  //   const onFileSuccess = (data: FileObject) => {
+  //     setRaffleImage(data);
+  //   };
 
-  const onFileError = (msg: string) => {
-    dispatch(showErrorAlert(msg));
-  };
+  //   const onFileError = (msg: string) => {
+  //     dispatch(showErrorAlert(msg));
+  //   };
 
   const validateInputs = (): boolean => {
     let validated = true;
@@ -154,16 +148,17 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
       return (validated = false);
     }
     if (budgetType == 'crypto') {
-      if (!cryptoSymbol && steps > 1) {
+      if (!cryptoSymbol && steps >= 3) {
         setErrors((prev) => ({ ...prev, cryptoSymbol: true }));
         return (validated = false);
       }
-      if (!parseFloat(coiinBudget) && steps > 2) {
+      if (!parseFloat(coiinBudget) || (parseFloat(coiinBudget) <= 0 && steps > 2)) {
         setErrors((prev) => ({ ...prev, coiinBudget: true }));
         return (validated = false);
       }
     } else if (budgetType === 'raffle') {
       if (!rafflePrizeName) {
+        dispatch(showErrorAlert('Please add campaign budget'));
         setErrors((prev) => ({ ...prev, rafflePrizeName: true }));
         return (validated = false);
       }

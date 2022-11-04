@@ -33,7 +33,7 @@ const CampaignBudgetTypeInput: React.FC<Props> = ({ budgetType, handleChange }) 
                 handleChange(item.value);
               }
             }}
-            className={`selectField  ${budgetType === item.value ? 'selectedField' : ''}`}
+            className={`selectField  ${budgetType === item.value ? 'selectedField' : 'select'}`}
           >
             <p>{item.name}</p>
           </Box>

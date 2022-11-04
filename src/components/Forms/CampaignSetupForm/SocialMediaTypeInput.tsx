@@ -1,9 +1,9 @@
-import { Box, FormControlLabel, Checkbox } from '@material-ui/core';
-import React, { Fragment, useState } from 'react';
-import InstaIcon from '../../../assets/png/instagram.png';
-import TiktonIcon from '../../../assets/png/tiktok.png';
-import TwitterIcon from '../../../assets/png/twitter.png';
-import FacebookIcon from '../../../assets/png/facebook.png';
+import { FormControlLabel, Checkbox } from '@material-ui/core';
+import React, { useState } from 'react';
+// import InstaIcon from '../../../assets/png/instagram.png';
+// import TiktonIcon from '../../../assets/png/tiktok.png';
+// import TwitterIcon from '../../../assets/png/twitter.png';
+// import FacebookIcon from '../../../assets/png/facebook.png';
 import useEffectSkipFirst from '../../../hooks/useEffectSkipFirst';
 import './campaignSetupForm.scss';
 import TwitterPhone from '../../../assets/png/socialPlatForms/TwitterPhone.png';

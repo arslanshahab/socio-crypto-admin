@@ -7,7 +7,7 @@ import buttonStyles from '../../assets/styles/customButton.module.css';
 import { ApiClient } from '../../services/apiClient';
 import { showErrorAlert, showSuccessAlert } from '../../store/actions/alerts';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCoiinValue } from '../../store/middlewares';
+// import { fetchCoiinValue } from '../../store/middlewares';
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,9 +32,10 @@ export const StripePurchaseForm: React.FC<Props> = ({ setOpen, givenAmount }) =>
       .catch((err) => dispatch(showErrorAlert(err.message)))
       .finally(() => setIsLoading(false));
   }, []);
-  useEffect(() => {
-    dispatch(fetchCoiinValue());
-  }, []);
+
+  //   useEffect(() => {
+  //     dispatch(fetchCoiinValue());
+  //   }, []);
 
   const handleCloseDialog = () => {
     setOpen(false);

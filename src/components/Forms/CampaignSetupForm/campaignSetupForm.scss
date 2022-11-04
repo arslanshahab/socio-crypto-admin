@@ -115,7 +115,7 @@
     .campaignBudgetTypeList {
       @apply flex flex-row justify-center gap-4 space-x-4 mt-12;
       .selectField {
-        @apply cursor-pointer flex flex-row justify-center items-center rounded-2xl w-64 h-16 border-2 px-2 text-center;
+        @apply cursor-pointer flex flex-row justify-center items-center rounded-2xl w-64 h-16 px-2 text-center;
         p {
           @apply text-base m-0;
         }
@@ -125,6 +125,9 @@
 
   .selectedField {
     @apply border-2 border-bluetiful;
+  }
+  .select {
+    @apply border-2 border-lavender;
   }
 }
 
