@@ -9,10 +9,16 @@ interface Props {
   handleChange: (val: string) => void;
 }
 interface MenuItem {
-  [index: string]: string;
   name: string;
   value: string;
   icon: string;
+}
+interface PrioritizeIconTypes {
+  [index: string]: string;
+  videoViews: string;
+  brandAwareness: string;
+  socialEngagement: string;
+  conversion: string;
 }
 
 export const campaignTypeMenu: Array<MenuItem> = [
@@ -22,7 +28,7 @@ export const campaignTypeMenu: Array<MenuItem> = [
   { name: 'Conversion', value: 'conversion', icon: 'conversion' },
 ];
 
-const prioritizeIcons = {
+const prioritizeIcons: PrioritizeIconTypes = {
   videoViews: videoViews,
   brandAwareness: brandAwareness,
   socialEngagement: socialEngagement,
