@@ -13,6 +13,7 @@ import { updateCampaign } from '../../../store/actions/campaign';
 import CampaignAvatar from '../../../assets/svg/campaignAvatar.svg';
 import { mediaInstructions } from '../../../helpers/constants';
 import './campaignMediaForm.scss';
+import MediaSteps from './MediaSteps';
 
 const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const dispatch = useDispatch();
@@ -70,7 +71,16 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
 
   return (
     <Box className="campaignMediaFormWrapper">
-      <Box className="campaignMediaFormOutline">
+      <MediaSteps
+        steps={1}
+        campaignImage={campaignImage}
+        channelMedia={channelMedia}
+        onCampaignImageSuccess={onCampaignImageSuccess}
+        socialMediaType={socialMediaType}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
+      {/* <Box className="campaignMediaFormOutline">
         <div className="mediaContent">
           <img src={CampaignAvatar} alt={'campaign media'} />
           {campaignImage.file && (
@@ -96,16 +106,15 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           </Box>
           <p className="text-sm text-grayWeb mt-1 px-4">Instructions: {mediaInstructions[item]}</p>
         </div>
-      ))}
-      <Box className="w-full">
-        <Actions
-          activeStep={activeStep}
-          firstStep={firstStep}
-          finalStep={finalStep}
-          handleBack={handleBack}
-          handleNext={next}
-        />
-      </Box>
+      ))} */}
+
+      <Actions
+        activeStep={activeStep}
+        firstStep={firstStep}
+        finalStep={finalStep}
+        handleBack={handleBack}
+        handleNext={next}
+      />
     </Box>
   );
 };

@@ -21,6 +21,7 @@ module.exports = {
         limeGreen: '#23CC48',
         honeydew: '#F4FFEE',
         cultured: '#F3F3F3',
+        gainsBoro: '#D9D9D9',
       },
     },
     screens: {

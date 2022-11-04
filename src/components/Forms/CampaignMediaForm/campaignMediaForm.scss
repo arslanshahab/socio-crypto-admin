@@ -50,3 +50,15 @@
     }
   }
 }
+
+// Campaign media styles
+.campaignMediaWrapper {
+  @apply text-center;
+  .imageContent {
+    @apply flex justify-center mt-8;
+    .imageWrapper {
+      @apply w-56 relative;
+      height: 30rem;
+    }
+  }
+}
