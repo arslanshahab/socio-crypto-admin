@@ -59,8 +59,17 @@
     .imageWrapper {
       @apply w-56 relative;
       height: 30rem;
-      .image {
-        @apply p-2;
+      .imageSize {
+        margin-top: 85px;
+        height: 202px;
+        width: 200px;
+        margin-left: 12px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .mobileImage {
+        @apply absolute top-0;
       }
     }
   }
@@ -109,6 +118,9 @@
         img {
           @apply w-full h-full object-cover;
         }
+      }
+      .mobileImage {
+        @apply absolute top-0;
       }
     }
   }

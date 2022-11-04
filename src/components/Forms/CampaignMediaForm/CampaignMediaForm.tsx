@@ -18,9 +18,11 @@ import MediaSteps from './MediaSteps';
 const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const dispatch = useDispatch();
   const campaign = useStoreCampaignSelector();
+  //   const socialMedias = campaign.config.socialMediaType;
   const socialMediaType = campaign.config.socialMediaType;
   const [campaignImage, setCampaignImage] = useState(campaign.campaignImage);
   const [channelMedia, setChannelMedia] = useState(campaign.config.channelMedia);
+  const [steps, setSteps] = useState<number>(1);
 
   const onCampaignImageSuccess = (data: FileObject) => {
     setCampaignImage(data);
@@ -47,7 +49,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      handleNext();
+      if (steps >= socialMediaType.length + 1) handleNext();
+      else {
+        setSteps((pre) => pre + 1);
+      }
+    }
+  };
+
+  const back = () => {
+    if (steps === 1) handleBack();
+    else {
+      setSteps((pre) => pre - 1);
     }
   };
 
@@ -61,7 +73,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     for (let index = 0; index < socialMediaType.length; index++) {
       const channel = socialMediaType[index];
       const defaultMedia = channelMedia[channel].find((item) => item.isDefault);
-      if (!defaultMedia) {
+      if (!defaultMedia && !steps) {
         dispatch(showErrorAlert(`Default Media is required for ${channel}`));
         return (validated = false);
       }
@@ -72,7 +84,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   return (
     <Box className="campaignMediaFormWrapper">
       <MediaSteps
-        steps={5}
+        steps={steps}
         campaignImage={campaignImage}
         channelMedia={channelMedia}
         onCampaignImageSuccess={onCampaignImageSuccess}
@@ -112,7 +124,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         activeStep={activeStep}
         firstStep={firstStep}
         finalStep={finalStep}
-        handleBack={handleBack}
+        handleBack={back}
         handleNext={next}
       />
     </Box>

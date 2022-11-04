@@ -26,6 +26,8 @@ const MediaSteps: FC<MediaStepsIProps> = ({
   onSuccess,
   socialMediaType,
 }) => {
+  console.log('media step-------------------------***', channelMedia.Instagram);
+
   switch (steps) {
     case 1:
       return (
@@ -85,7 +87,14 @@ const MediaSteps: FC<MediaStepsIProps> = ({
         />
       );
     default:
-      return <div>Campaign Media</div>;
+      return (
+        <CampaignMedia
+          steps={steps}
+          campaignImage={campaignImage}
+          onCampaignImageSuccess={onCampaignImageSuccess}
+          onError={onError}
+        />
+      );
   }
 };
 

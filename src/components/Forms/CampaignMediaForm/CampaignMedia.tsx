@@ -20,15 +20,10 @@ const CampaignMedia: FC<MediaStepsIProps> = ({ onCampaignImageSuccess, campaignI
       <p>Upload your campaign image cover for the raiinmaker app</p>
       <div className="imageContent">
         <div className="imageWrapper">
-          <div style={{ padding: '8px' }}>
-            <img style={{ height: '208px', objectFit: 'cover', marginTop: '75px' }} src={campaignImage.file} />
+          <div className="imageSize">
+            <img src={campaignImage.file} />
           </div>
-          <div
-            style={{
-              position: 'absolute',
-              top: '0',
-            }}
-          >
+          <div className="mobileImage">
             <img src={campaignMediaPhone} alt="campaign media phone" />
           </div>
         </div>
