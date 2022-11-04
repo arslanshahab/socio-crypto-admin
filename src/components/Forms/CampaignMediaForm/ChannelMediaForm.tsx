@@ -21,6 +21,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
   const [channelMedia, setChannelMedia] = useState<ChannelMediaObject[]>(channelMedias);
 
   const onSuccess = (data: FileObject) => {
+    debugger;
     const medias = [...channelMedia];
     medias.push({ channel: channel, media: data, isDefault: medias.length < 1 ? true : false });
     setChannelMedia(medias);

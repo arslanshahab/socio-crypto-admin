@@ -4,14 +4,14 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { ChannelMediaObject, FileObject } from '../../../types';
 import { showErrorAlert } from '../../../store/actions/alerts';
-import FileUpload from '../../../componentsv2/FileUpload';
+// import FileUpload from '../../../componentsv2/FileUpload';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import Actions from '../../NewCampaign/Actions';
-import ChannelMediaForm from './ChannelMediaForm';
+// import ChannelMediaForm from './ChannelMediaForm';
 import { updateCampaign } from '../../../store/actions/campaign';
-import CampaignAvatar from '../../../assets/svg/campaignAvatar.svg';
-import { mediaInstructions } from '../../../helpers/constants';
+// import CampaignAvatar from '../../../assets/svg/campaignAvatar.svg';
+// import { mediaInstructions } from '../../../helpers/constants';
 import './campaignMediaForm.scss';
 import MediaSteps from './MediaSteps';
 
@@ -72,7 +72,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   return (
     <Box className="campaignMediaFormWrapper">
       <MediaSteps
-        steps={1}
+        steps={5}
         campaignImage={campaignImage}
         channelMedia={channelMedia}
         onCampaignImageSuccess={onCampaignImageSuccess}

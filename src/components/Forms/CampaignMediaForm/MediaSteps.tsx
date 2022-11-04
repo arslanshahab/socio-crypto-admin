@@ -1,6 +1,11 @@
 import React, { FC } from 'react';
-import { ChannelMediaObject, FileObject } from '../../../types';
+import { ChannelMediaObject, ChannelMediaStructure, FileObject } from '../../../types';
 import CampaignMedia from './CampaignMedia';
+import ChannelMedia from './ChannelMedia';
+import instagramPhone from '../../../assets/png/medias/instagram.png';
+import tiktokPhone from '../../../assets/png/medias/tiktok.png';
+import twitterPhone from '../../../assets/png/medias/twitter.png';
+import facebookPhone from '../../../assets/png/medias/facebook.png';
 
 interface MediaStepsIProps {
   steps: number;
@@ -9,10 +14,18 @@ interface MediaStepsIProps {
   onCampaignImageSuccess: (data: FileObject) => void;
   onError: (msg: string) => void;
   onSuccess: (channel: string, list: ChannelMediaObject[]) => void;
-  channelMedia: any;
+  channelMedia: ChannelMediaStructure;
 }
 
-const MediaSteps: FC<MediaStepsIProps> = ({ steps, campaignImage, onCampaignImageSuccess, onError }) => {
+const MediaSteps: FC<MediaStepsIProps> = ({
+  steps,
+  campaignImage,
+  onCampaignImageSuccess,
+  onError,
+  channelMedia,
+  onSuccess,
+  socialMediaType,
+}) => {
   switch (steps) {
     case 1:
       return (
@@ -24,13 +37,53 @@ const MediaSteps: FC<MediaStepsIProps> = ({ steps, campaignImage, onCampaignImag
         />
       );
     case 2:
-      return <div>Twitter Media</div>;
+      return (
+        <ChannelMedia
+          steps={steps}
+          channelMedia={channelMedia.Twitter}
+          onSuccess={onSuccess}
+          onError={onError}
+          socialMediaType={socialMediaType}
+          channelName={'Twitter'}
+          socialPlatFormImage={twitterPhone}
+        />
+      );
     case 3:
-      return <div>Instagram Media</div>;
+      return (
+        <ChannelMedia
+          steps={steps}
+          channelMedia={channelMedia.Instagram}
+          onSuccess={onSuccess}
+          onError={onError}
+          socialMediaType={socialMediaType}
+          channelName={'Instagram'}
+          socialPlatFormImage={instagramPhone}
+        />
+      );
     case 4:
-      return <div>Facebook Media</div>;
+      return (
+        <ChannelMedia
+          steps={steps}
+          channelMedia={channelMedia.Facebook}
+          onSuccess={onSuccess}
+          onError={onError}
+          socialMediaType={socialMediaType}
+          channelName={'Facebook'}
+          socialPlatFormImage={facebookPhone}
+        />
+      );
     case 5:
-      return <div>Tiktok Media</div>;
+      return (
+        <ChannelMedia
+          steps={steps}
+          channelMedia={channelMedia.Tiktok}
+          onSuccess={onSuccess}
+          onError={onError}
+          socialMediaType={socialMediaType}
+          channelName={'Tiktok'}
+          socialPlatFormImage={tiktokPhone}
+        />
+      );
     default:
       return <div>Campaign Media</div>;
   }

@@ -1,11 +1,11 @@
 .fileUploadWrapper {
   @apply flex flex-col justify-start;
   .buttonWrapper {
-    // min-width: 200px;
+    min-width: 180px;
     label {
       @apply cursor-pointer;
       .contentWrapper {
-        @apply flex flex-row justify-center items-center bg-gainsBoro rounded-md px-4 py-2;
+        @apply flex flex-row justify-center items-center bg-gainsBoro rounded-md px-1 py-2 text-bluetiful;
         .text {
           @apply flex items-center gap-1.5;
         }

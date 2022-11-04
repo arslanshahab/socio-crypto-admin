@@ -59,6 +59,57 @@
     .imageWrapper {
       @apply w-56 relative;
       height: 30rem;
+      .image {
+        @apply p-2;
+      }
+    }
+  }
+}
+
+// Channel media styles
+.channelMediaWrapper {
+  @apply text-center;
+  .imageContent {
+    @apply flex justify-center mt-8;
+    .imageWrapper {
+      @apply w-56 relative;
+      height: 30rem;
+      .imageTwitter {
+        margin-top: 195px;
+        height: 157px;
+        width: 158px;
+        margin-left: 47px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .imageInstagram {
+        margin-top: 106px;
+        height: 200px;
+        width: 202px;
+        margin-left: 11px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .imageFacebook {
+        margin-top: 70px;
+        height: 200px;
+        width: 202px;
+        margin-left: 11px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .imageTiktok {
+        margin-top: 33px;
+        height: 355px;
+        width: 201px;
+        margin-left: 11px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+      }
     }
   }
 }
