@@ -26,8 +26,6 @@ const MediaSteps: FC<MediaStepsIProps> = ({
   onSuccess,
   socialMediaType,
 }) => {
-  console.log('media step-------------------------***', channelMedia.Instagram);
-
   switch (steps) {
     case 1:
       return (

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useReducer, useState } from 'react';
 import FileUpload from '../../../componentsv2/FileUpload';
 import { ChannelMediaObject, FileObject } from '../../../types';
 
@@ -12,15 +12,23 @@ interface MediaStepsIProps {
   socialPlatFormImage: string;
 }
 
-const ChannelMedia: FC<MediaStepsIProps> = ({ onSuccess, onError, channelMedia, channelName, socialPlatFormImage }) => {
-  const [medias, setMedias] = useState<ChannelMediaObject[]>(channelMedia);
+const ChannelMedia: FC<MediaStepsIProps> = ({
+  onSuccess,
+  onError,
+  channelMedia,
+  channelName,
+  socialPlatFormImage,
+  steps,
+}) => {
+  //   const [medias, setMedias] = useState<ChannelMediaObject[]>(() => channelMedia);
+  //   console.log('step-----', steps);
+  //   console.log('channel media----------', channelMedia);
+  //   //   console.log('media----------', medias);
 
   const handleChannelMedia = (data: FileObject) => {
     const updatedMedia = [...channelMedia];
-    if (channelMedia.length) channelMedia.pop();
     updatedMedia.push({ channel: channelName, media: data, isDefault: updatedMedia.length < 1 ? true : false });
-    setMedias(updatedMedia);
-    onSuccess('Twitter', updatedMedia);
+    onSuccess(channelName, updatedMedia);
   };
 
   return (
@@ -28,8 +36,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({ onSuccess, onError, channelMedia, 
       <p>Upload media you want users to view & share on {channelName}</p>
       <div className="imageContent">
         <div className="imageWrapper">
-          {medias.length &&
-            medias.map((item, i) => (
+          {channelMedia.length &&
+            channelMedia.map((item, i) => (
               <div className={`image${channelName}`} key={i}>
                 <img src={item.media.file} />
               </div>

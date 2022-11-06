@@ -49,7 +49,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      if (steps >= socialMediaType.length + 1) handleNext();
+      if (steps >= 5) handleNext();
       else {
         setSteps((pre) => pre + 1);
       }
