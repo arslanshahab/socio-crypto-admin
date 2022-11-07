@@ -75,7 +75,7 @@
   }
 }
 
-// Channel media styles
+// Channel media 1x1 styles
 .channelMediaWrapper {
   @apply text-center;
   .imageContent {
@@ -86,18 +86,24 @@
       .imageTwitter {
         margin-top: 195px;
         height: 157px;
-        width: 158px;
-        margin-left: 47px;
+        width: 159px;
+        margin-left: 46px;
         img {
+          @apply w-full h-full object-cover;
+        }
+        video {
           @apply w-full h-full object-cover;
         }
       }
       .imageInstagram {
-        margin-top: 106px;
-        height: 200px;
-        width: 202px;
-        margin-left: 11px;
+        margin-top: 105px;
+        height: 201px;
+        width: 203px;
+        margin-left: 10px;
         img {
+          @apply w-full h-full object-cover;
+        }
+        video {
           @apply w-full h-full object-cover;
         }
       }
@@ -109,6 +115,9 @@
         img {
           @apply w-full h-full object-cover;
         }
+        video {
+          @apply w-full h-full object-cover;
+        }
       }
       .imageTiktok {
         margin-top: 33px;
@@ -116,6 +125,123 @@
         width: 201px;
         margin-left: 11px;
         img {
+          @apply w-full h-full object-cover;
+        }
+        video {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .mobileImage {
+        @apply absolute top-0;
+      }
+    }
+  }
+}
+
+// Channel media 3x4 styles
+.channelMediaWrapper {
+  @apply text-center;
+  .imageContent {
+    @apply flex justify-center mt-8;
+    .imageWrapper {
+      @apply w-56 relative;
+      height: 30rem;
+      .image3x4Twitter {
+        margin-top: 123px;
+        height: 207px;
+        width: 157px;
+        margin-left: 47px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+        video {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .image3x4Instagram {
+        margin-top: 93px;
+        height: 248px;
+        width: 200px;
+        margin-left: 12px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+        video {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .image3x4Facebook {
+        margin-top: 75px;
+        height: 298px;
+        width: 201px;
+        margin-left: 12px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+        video {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .imageTiktok {
+        margin-top: 33px;
+        height: 355px;
+        width: 201px;
+        margin-left: 11px;
+        img {
+          @apply w-full h-full object-cover;
+        }
+        video {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .mobileImage {
+        @apply absolute top-0;
+      }
+    }
+  }
+}
+
+// Channel horizontal styles
+.channelMediaWrapper {
+  @apply text-center;
+  .imageContent {
+    @apply flex justify-center mt-8;
+    .imageWrapper {
+      @apply w-56 relative;
+      height: 30rem;
+      .videoTwitter {
+        margin-top: 72px;
+        height: 90px;
+        width: 157px;
+        margin-left: 47px;
+        video {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .videoInstagram {
+        margin-top: 61px;
+        height: 314px;
+        width: 201px;
+        margin-left: 12px;
+        video {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .videoFacebook {
+        margin-top: 195px;
+        height: 111px;
+        width: 198px;
+        margin-left: 13px;
+        video {
+          @apply w-full h-full object-cover;
+        }
+      }
+      .videoTiktok {
+        margin-top: 33px;
+        height: 355px;
+        width: 201px;
+        margin-left: 11px;
+        video {
           @apply w-full h-full object-cover;
         }
       }

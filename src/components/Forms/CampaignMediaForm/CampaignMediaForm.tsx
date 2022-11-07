@@ -23,12 +23,16 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const [campaignImage, setCampaignImage] = useState(campaign.campaignImage);
   const [channelMedia, setChannelMedia] = useState(campaign.config.channelMedia);
   const [steps, setSteps] = useState<number>(1);
+  const [firstChannelMedia, setFirstChannelMedia] = useState<ChannelMediaObject[]>([]);
+  const [secondChannelMedia, setSecondChannelMedia] = useState<ChannelMediaObject[]>([]);
+  const [thirdChannelMedia, setThirdChannelMedia] = useState<ChannelMediaObject[]>([]);
 
   const onCampaignImageSuccess = (data: FileObject) => {
     setCampaignImage(data);
   };
 
   const onSuccess = (channel: string, list: ChannelMediaObject[]) => {
+    // debugger;
     const allChannels = { ...channelMedia };
     allChannels[channel] = list;
     setChannelMedia(allChannels);

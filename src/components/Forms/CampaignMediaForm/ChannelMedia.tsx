@@ -28,10 +28,35 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
   //   console.log('step-----', steps);
   //   console.log('channel media----------', channelMedia);
   //   //   console.log('media----------', medias);
+  const [firstChannelMedia, setFirstChannelMedia] = useState<ChannelMediaObject[]>([]);
+  const [secondChannelMedia, setSecondChannelMedia] = useState<ChannelMediaObject[]>([]);
+  const [thirdChannelMedia, setThirdChannelMedia] = useState<ChannelMediaObject[]>([]);
+
+  //   useEffect(() => {
+  //     return () => {
+  //       setFirstChannelMedia([]);
+  //       setSecondChannelMedia([]);
+  //     };
+  //   }, [steps]);
 
   const handleChannelMedia = (data: FileObject) => {
+    const updatedMedia = [...firstChannelMedia];
+    updatedMedia.push({ channel: channelName, media: data, isDefault: updatedMedia.length < 1 ? true : false });
+    setFirstChannelMedia(updatedMedia);
+    onSuccess(channelName, updatedMedia);
+  };
+
+  const handleSecondChannelMedia = (data: FileObject) => {
     const updatedMedia = [...channelMedia];
     updatedMedia.push({ channel: channelName, media: data, isDefault: updatedMedia.length < 1 ? true : false });
+    setSecondChannelMedia(updatedMedia);
+    onSuccess(channelName, updatedMedia);
+  };
+
+  const handleThirdChannelMedia = (data: FileObject) => {
+    const updatedMedia = [...channelMedia];
+    updatedMedia.push({ channel: channelName, media: data, isDefault: updatedMedia.length < 1 ? true : false });
+    setThirdChannelMedia(updatedMedia);
     onSuccess(channelName, updatedMedia);
   };
 
@@ -43,10 +68,14 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
         <div>
           <div className="imageContent">
             <div className="imageWrapper">
-              {channelMedia.length &&
-                channelMedia.map((item, i) => (
+              {firstChannelMedia.length &&
+                firstChannelMedia.map((item, i) => (
                   <div className={`image${channelName}`} key={i}>
-                    <img src={item.media.file} />
+                    {item.media.format.includes('image') ? (
+                      <img src={item.media.file} />
+                    ) : (
+                      <video autoPlay={false} src={item.media.file} controls={true} />
+                    )}
                   </div>
                 ))}
               <div className="mobileImage">
@@ -58,7 +87,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <FileUpload
               label="1&#215;1 Photo/Video"
               updateLabel="Update Campaign Image"
-              mediaType="campaignImage"
+              mediaType="sharedMedia"
               onFileSuccess={handleChannelMedia}
               onFileError={onError}
             />
@@ -70,10 +99,14 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <div>
               <div className="imageContent">
                 <div className="imageWrapper">
-                  {channelMedia.length &&
-                    channelMedia.map((item, i) => (
-                      <div className={`image${channelName}`} key={i}>
-                        <img src={item.media.file} />
+                  {secondChannelMedia.length &&
+                    secondChannelMedia.map((item, i) => (
+                      <div className={`image3x4${channelName}`} key={i}>
+                        {item.media.format.includes('image') ? (
+                          <img src={item.media.file} />
+                        ) : (
+                          <video autoPlay={false} src={item.media.file} controls={true} />
+                        )}
                       </div>
                     ))}
                   <div className="mobileImage">
@@ -85,8 +118,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                 <FileUpload
                   label="3&#215;4 Photo/Video"
                   updateLabel="Update Campaign Image"
-                  mediaType="campaignImage"
-                  onFileSuccess={handleChannelMedia}
+                  mediaType="sharedMedia"
+                  onFileSuccess={handleSecondChannelMedia}
                   onFileError={onError}
                 />
               </div>
@@ -95,10 +128,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <div>
               <div className="imageContent">
                 <div className="imageWrapper">
-                  {channelMedia.length &&
-                    channelMedia.map((item, i) => (
-                      <div className={`image${channelName}`} key={i}>
-                        <img src={item.media.file} />
+                  {thirdChannelMedia.length &&
+                    thirdChannelMedia.map((item, i) => (
+                      <div className={`video${channelName}`} key={i}>
+                        <video autoPlay={false} src={item.media.file} controls={true} />
                       </div>
                     ))}
                   <div className="mobileImage">
@@ -110,8 +143,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                 <FileUpload
                   label="Horizontal Video"
                   updateLabel="Update Campaign Image"
-                  mediaType="campaignImage"
-                  onFileSuccess={handleChannelMedia}
+                  mediaType="sharedMedia"
+                  onFileSuccess={handleThirdChannelMedia}
                   onFileError={onError}
                 />
               </div>
