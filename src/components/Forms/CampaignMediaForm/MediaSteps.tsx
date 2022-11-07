@@ -6,6 +6,12 @@ import instagramPhone from '../../../assets/png/medias/instagram.png';
 import tiktokPhone from '../../../assets/png/medias/tiktok.png';
 import twitterPhone from '../../../assets/png/medias/twitter.png';
 import facebookPhone from '../../../assets/png/medias/facebook.png';
+import facebookPhone2 from '../../../assets/png/medias/facebook3x4.png';
+import twitterPhone2 from '../../../assets/png/medias/twitter3x4.png';
+import instagramPhone2 from '../../../assets/png/medias/instagram3x4.png';
+import instagramHz from '../../../assets/png/medias/instagramHz.png';
+import facebookHz from '../../../assets/png/medias/facebookHz.png';
+import twitterHz from '../../../assets/png/medias/twitterHz.png';
 
 interface MediaStepsIProps {
   steps: number;
@@ -46,6 +52,8 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialMediaType={socialMediaType}
           channelName={'Twitter'}
           socialPlatFormImage={twitterPhone}
+          secondMobileImage={twitterPhone2}
+          horizontalVideo={twitterHz}
         />
       );
     case 3:
@@ -58,6 +66,8 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialMediaType={socialMediaType}
           channelName={'Instagram'}
           socialPlatFormImage={instagramPhone}
+          secondMobileImage={instagramPhone2}
+          horizontalVideo={instagramHz}
         />
       );
     case 4:
@@ -70,6 +80,8 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialMediaType={socialMediaType}
           channelName={'Facebook'}
           socialPlatFormImage={facebookPhone}
+          secondMobileImage={facebookPhone2}
+          horizontalVideo={facebookHz}
         />
       );
     case 5:
@@ -82,6 +94,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialMediaType={socialMediaType}
           channelName={'Tiktok'}
           socialPlatFormImage={tiktokPhone}
+          //   secondMobileImage={}
         />
       );
     default:
