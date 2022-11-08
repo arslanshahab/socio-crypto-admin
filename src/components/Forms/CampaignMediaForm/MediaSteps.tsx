@@ -21,6 +21,17 @@ interface MediaStepsIProps {
   onError: (msg: string) => void;
   onSuccess: (channel: string, list: ChannelMediaObject[]) => void;
   channelMedia: ChannelMediaStructure;
+  handleFirstMedia: (channel: string, size: string, data: FileObject) => void;
+  firstTwitterMedia: ChannelMediaObject[];
+  secondTwitterMedia: ChannelMediaObject[];
+  thirdTwitterMedia: ChannelMediaObject[];
+  firstInstagramMedia?: ChannelMediaObject[];
+  secondInstagramMedia: ChannelMediaObject[];
+  thirdInstagramMedia: ChannelMediaObject[];
+  firstFacebookMedia: ChannelMediaObject[];
+  secondFacebookMedia: ChannelMediaObject[];
+  thirdFacebookMedia: ChannelMediaObject[];
+  tiktokMedia: ChannelMediaObject[];
 }
 
 const MediaSteps: FC<MediaStepsIProps> = ({
@@ -31,6 +42,17 @@ const MediaSteps: FC<MediaStepsIProps> = ({
   channelMedia,
   onSuccess,
   socialMediaType,
+  handleFirstMedia,
+  firstTwitterMedia,
+  secondTwitterMedia,
+  thirdTwitterMedia,
+  firstInstagramMedia,
+  secondInstagramMedia,
+  thirdInstagramMedia,
+  firstFacebookMedia,
+  secondFacebookMedia,
+  thirdFacebookMedia,
+  tiktokMedia,
 }) => {
   switch (steps) {
     case 1:
@@ -54,6 +76,10 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialPlatFormImage={twitterPhone}
           secondMobileImage={twitterPhone2}
           horizontalVideo={twitterHz}
+          handleFirstMedia={handleFirstMedia}
+          firstTwitterMedia={firstTwitterMedia}
+          secondTwitterMedia={secondTwitterMedia}
+          thirdTwitterMedia={thirdTwitterMedia}
         />
       );
     case 3:
@@ -68,6 +94,10 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialPlatFormImage={instagramPhone}
           secondMobileImage={instagramPhone2}
           horizontalVideo={instagramHz}
+          handleFirstMedia={handleFirstMedia}
+          firstInstagramMedia={firstInstagramMedia}
+          secondInstagramMedia={secondInstagramMedia}
+          thirdInstagramMedia={thirdInstagramMedia}
         />
       );
     case 4:
@@ -82,6 +112,10 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialPlatFormImage={facebookPhone}
           secondMobileImage={facebookPhone2}
           horizontalVideo={facebookHz}
+          handleFirstMedia={handleFirstMedia}
+          firstFacebookMedia={firstFacebookMedia}
+          secondFacebookMedia={secondFacebookMedia}
+          thirdFacebookMedia={thirdFacebookMedia}
         />
       );
     case 5:
@@ -94,7 +128,8 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialMediaType={socialMediaType}
           channelName={'Tiktok'}
           socialPlatFormImage={tiktokPhone}
-          //   secondMobileImage={}
+          handleFirstMedia={handleFirstMedia}
+          tiktokMedia={tiktokMedia}
         />
       );
     default:

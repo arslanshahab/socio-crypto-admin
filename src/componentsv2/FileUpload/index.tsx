@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@material-ui/core';
 import { FileObject } from '../../types';
 import { generateRandomId } from '../../helpers/utils';
@@ -23,6 +23,7 @@ interface Props {
 
 const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess, label }) => {
   const inputKey = `${mediaType}-${Math.random()}`;
+  const [fileKey, setFileKey] = useState<number>(new Date().getTime());
   const allowedFileType: Array<FileFormatSizeMap> = [
     {
       format: 'image/JPG',
@@ -105,14 +106,17 @@ const FileUpload: React.FC<Props> = ({ mediaType, onFileError, onFileSuccess, la
     });
 
   return (
-    <Box className="fileUploadWrapper">
+    <Box className="fileUploadWrapper" key={fileKey}>
       <div className="buttonWrapper">
         <label htmlFor={inputKey}>
           <input
             className="hidden"
             type="file"
             id={inputKey}
-            onChange={(e) => handleImage(e, mediaType, onFileSuccess, onFileError)}
+            onChange={(e) => {
+              handleImage(e, mediaType, onFileSuccess, onFileError);
+              setFileKey(new Date().getTime());
+            }}
           />
           <Box className="contentWrapper">
             <div className="text">

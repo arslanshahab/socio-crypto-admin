@@ -23,19 +23,119 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const [campaignImage, setCampaignImage] = useState(campaign.campaignImage);
   const [channelMedia, setChannelMedia] = useState(campaign.config.channelMedia);
   const [steps, setSteps] = useState<number>(1);
-  const [firstChannelMedia, setFirstChannelMedia] = useState<ChannelMediaObject[]>([]);
-  const [secondChannelMedia, setSecondChannelMedia] = useState<ChannelMediaObject[]>([]);
-  const [thirdChannelMedia, setThirdChannelMedia] = useState<ChannelMediaObject[]>([]);
+  const [firstTwitterMedia, setFirstTwitterMedia] = useState<ChannelMediaObject[]>([]);
+  const [firstInstagramMedia, setFirstInsagramMedia] = useState<ChannelMediaObject[]>([]);
+  const [firstFacebookMedia, setFirstFacebookMedia] = useState<ChannelMediaObject[]>([]);
+  const [secondTwitterMedia, setSecondTwitterMedia] = useState<ChannelMediaObject[]>([]);
+  const [secondInstagramMedia, setSecondInstagramMedia] = useState<ChannelMediaObject[]>([]);
+  const [secondFacebookMedia, setSecondFacebookMedia] = useState<ChannelMediaObject[]>([]);
+  const [thirdTwitterMedia, setThirdTwitterMedia] = useState<ChannelMediaObject[]>([]);
+  const [thirdInstagramMedia, setThirdInstagramMedia] = useState<ChannelMediaObject[]>([]);
+  const [thirdFacebookMedia, setThirdFacebookMedia] = useState<ChannelMediaObject[]>([]);
+  const [tiktokMedia, setTiktokMedia] = useState<ChannelMediaObject[]>([]);
 
   const onCampaignImageSuccess = (data: FileObject) => {
     setCampaignImage(data);
   };
 
   const onSuccess = (channel: string, list: ChannelMediaObject[]) => {
-    // debugger;
     const allChannels = { ...channelMedia };
     allChannels[channel] = list;
     setChannelMedia(allChannels);
+  };
+
+  const handleChannelMedias = (channel: string, size: string, data: FileObject) => {
+    let updatedMedia: ChannelMediaObject[] = [];
+    let updatedChannelMedia: ChannelMediaObject[] = [];
+
+    if (size === '1x1') {
+      if (channel === 'Twitter') {
+        updatedMedia = [...firstTwitterMedia];
+        updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
+        const media = { channel: channel, media: data, isDefault: channelMedia.Twitter.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setFirstTwitterMedia(updatedMedia);
+      }
+      if (channel === 'Instagram') {
+        updatedChannelMedia = [...firstInstagramMedia, ...secondInstagramMedia, ...thirdInstagramMedia];
+        updatedMedia = [...firstInstagramMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Instagram.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setFirstInsagramMedia(updatedMedia);
+      }
+      if (channel === 'Facebook') {
+        updatedMedia = [...firstFacebookMedia];
+        updatedChannelMedia = [...firstFacebookMedia, ...secondFacebookMedia, ...thirdFacebookMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Facebook.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setFirstFacebookMedia(updatedMedia);
+      }
+      if (channel === 'Tiktok') {
+        updatedMedia = [...tiktokMedia];
+        updatedChannelMedia = [...tiktokMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Facebook.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setTiktokMedia(updatedMedia);
+      }
+    }
+    if (size === '3x4') {
+      if (channel === 'Twitter') {
+        updatedMedia = [...secondTwitterMedia];
+        updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Twitter.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+
+        setSecondTwitterMedia(updatedMedia);
+      }
+      if (channel === 'Instagram') {
+        updatedMedia = [...secondInstagramMedia];
+        updatedChannelMedia = [...firstInstagramMedia, ...secondInstagramMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Instagram.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setSecondInstagramMedia(updatedMedia);
+      }
+      if (channel === 'Facebook') {
+        updatedMedia = [...firstFacebookMedia];
+        updatedChannelMedia = [...firstFacebookMedia, ...secondFacebookMedia, ...thirdFacebookMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Facebook.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setSecondFacebookMedia(updatedMedia);
+      }
+    }
+    if (size === 'hz') {
+      if (channel === 'Twitter') {
+        updatedMedia = [...thirdTwitterMedia];
+        updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Instagram.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setThirdTwitterMedia(updatedMedia);
+      }
+      if (channel === 'Instagram') {
+        updatedMedia = [...thirdInstagramMedia];
+        updatedChannelMedia = [...firstInstagramMedia, ...secondInstagramMedia, ...thirdInstagramMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Instagram.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setThirdInstagramMedia(updatedMedia);
+      }
+      if (channel === 'Facebook') {
+        updatedMedia = [...firstFacebookMedia];
+        updatedChannelMedia = [...firstFacebookMedia, ...secondFacebookMedia, ...thirdFacebookMedia];
+        const media = { channel, media: data, isDefault: channelMedia.Facebook.length < 1 ? true : false };
+        updatedMedia.push(media);
+        updatedChannelMedia.push(media);
+        setThirdFacebookMedia(updatedMedia);
+      }
+    }
+    onSuccess(channel, updatedChannelMedia);
   };
 
   const onError = (msg: string) => {
@@ -95,6 +195,18 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         socialMediaType={socialMediaType}
         onSuccess={onSuccess}
         onError={onError}
+        firstTwitterMedia={firstTwitterMedia}
+        handleFirstMedia={handleChannelMedias}
+        firstInstagramMedia={firstInstagramMedia}
+        // handleSecondMedia={handleChannelMedias}
+        secondTwitterMedia={secondTwitterMedia}
+        secondInstagramMedia={secondInstagramMedia}
+        thirdTwitterMedia={thirdTwitterMedia}
+        thirdInstagramMedia={thirdInstagramMedia}
+        firstFacebookMedia={firstFacebookMedia}
+        secondFacebookMedia={secondFacebookMedia}
+        thirdFacebookMedia={thirdFacebookMedia}
+        tiktokMedia={tiktokMedia}
       />
       {/* <Box className="campaignMediaFormOutline">
         <div className="mediaContent">

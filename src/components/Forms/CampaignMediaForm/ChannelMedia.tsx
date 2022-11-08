@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState } from 'react';
+import React, { FC, Fragment } from 'react';
 import FileUpload from '../../../componentsv2/FileUpload';
 import { ChannelMediaObject, FileObject } from '../../../types';
 import 'slick-carousel/slick/slick.css';
@@ -15,6 +15,17 @@ interface MediaStepsIProps {
   socialPlatFormImage: string;
   secondMobileImage?: string;
   horizontalVideo?: string;
+  handleFirstMedia: (channel: string, size: string, data: FileObject) => void;
+  firstTwitterMedia?: ChannelMediaObject[];
+  secondTwitterMedia?: ChannelMediaObject[];
+  thirdTwitterMedia?: ChannelMediaObject[];
+  firstInstagramMedia?: ChannelMediaObject[];
+  secondInstagramMedia?: ChannelMediaObject[];
+  thirdInstagramMedia?: ChannelMediaObject[];
+  firstFacebookMedia?: ChannelMediaObject[];
+  secondFacebookMedia?: ChannelMediaObject[];
+  thirdFacebookMedia?: ChannelMediaObject[];
+  tiktokMedia?: ChannelMediaObject[];
 }
 
 const settings = {
@@ -26,49 +37,39 @@ const settings = {
 };
 
 const ChannelMedia: FC<MediaStepsIProps> = ({
-  onSuccess,
+  //   onSuccess,
   onError,
-  channelMedia,
   channelName,
   socialPlatFormImage,
   steps,
   secondMobileImage,
   horizontalVideo,
+  firstTwitterMedia,
+  handleFirstMedia,
+  firstInstagramMedia,
+  secondTwitterMedia,
+  secondInstagramMedia,
+  thirdTwitterMedia,
+  thirdInstagramMedia,
+  firstFacebookMedia,
+  secondFacebookMedia,
+  thirdFacebookMedia,
+  tiktokMedia,
 }) => {
-  //   const [medias, setMedias] = useState<ChannelMediaObject[]>(() => channelMedia);
-  //   console.log('step-----', steps);
-  //   console.log('channel media----------', channelMedia);
-  //   //   console.log('media----------', medias);
-  const [firstChannelMedia, setFirstChannelMedia] = useState<ChannelMediaObject[]>([]);
-  const [secondChannelMedia, setSecondChannelMedia] = useState<ChannelMediaObject[]>([]);
-  const [thirdChannelMedia, setThirdChannelMedia] = useState<ChannelMediaObject[]>([]);
-
-  //   useEffect(() => {
-  //     return () => {
-  //       setFirstChannelMedia([]);
-  //       setSecondChannelMedia([]);
-  //     };
-  //   }, [steps]);
-
-  const handleChannelMedia = (data: FileObject) => {
-    const updatedMedia = [...firstChannelMedia];
-    updatedMedia.push({ channel: channelName, media: data, isDefault: updatedMedia.length < 1 ? true : false });
-    setFirstChannelMedia(updatedMedia);
-    onSuccess(channelName, updatedMedia);
+  const handleTwitterMedia = (data: FileObject) => {
+    debugger;
+    if (handleFirstMedia) handleFirstMedia(channelName, '1x1', data);
   };
 
-  const handleSecondChannelMedia = (data: FileObject) => {
-    const updatedMedia = [...channelMedia];
-    updatedMedia.push({ channel: channelName, media: data, isDefault: updatedMedia.length < 1 ? true : false });
-    setSecondChannelMedia(updatedMedia);
-    onSuccess(channelName, updatedMedia);
+  const handle3by4Media = (data: FileObject) => {
+    debugger;
+    if (handleFirstMedia) handleFirstMedia(channelName, '3x4', data);
   };
 
-  const handleThirdChannelMedia = (data: FileObject) => {
-    const updatedMedia = [...channelMedia];
-    updatedMedia.push({ channel: channelName, media: data, isDefault: updatedMedia.length < 1 ? true : false });
-    setThirdChannelMedia(updatedMedia);
-    onSuccess(channelName, updatedMedia);
+  const handleHzMedia = (data: FileObject) => {
+    debugger;
+    if (!data.format.includes('video')) return onError('Invalid Format');
+    if (handleFirstMedia) handleFirstMedia(channelName, 'hz', data);
   };
 
   return (
@@ -79,21 +80,70 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
         <div>
           <div className="imageContent">
             <div className={`imageWrapper${channelName}`}>
-              <Slider {...settings}>
-                {firstChannelMedia.length &&
-                  firstChannelMedia.map((item, i) => (
-                    <div key={i}>
-                      <div className={`image${channelName}`}>
-                        {item.media.format.includes('image') ? (
-                          <img src={item.media.file} />
-                        ) : (
-                          <video autoPlay={false} src={item.media.file} controls={true} />
-                        )}
+              {steps === 2 && (
+                <Slider {...settings} arrows>
+                  {firstTwitterMedia?.length &&
+                    firstTwitterMedia.map((item, i) => (
+                      <div key={i}>
+                        <div className={`image${channelName}`}>
+                          {item.media.format.includes('image') ? (
+                            <img src={item.media.file} />
+                          ) : (
+                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-              </Slider>
-
+                    ))}
+                </Slider>
+              )}
+              {steps === 3 && (
+                <Slider {...settings} arrows>
+                  {firstInstagramMedia?.length &&
+                    firstInstagramMedia.map((item, i) => (
+                      <div key={i}>
+                        <div className={`image${channelName}`}>
+                          {item.media.format.includes('image') ? (
+                            <img src={item.media.file} />
+                          ) : (
+                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                </Slider>
+              )}
+              {steps === 4 && (
+                <Slider {...settings} arrows>
+                  {firstFacebookMedia?.length &&
+                    firstFacebookMedia.map((item, i) => (
+                      <div key={i}>
+                        <div className={`image${channelName}`}>
+                          {item.media.format.includes('image') ? (
+                            <img src={item.media.file} />
+                          ) : (
+                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                </Slider>
+              )}
+              {steps === 5 && (
+                <Slider {...settings} arrows>
+                  {tiktokMedia?.length &&
+                    tiktokMedia.map((item, i) => (
+                      <div key={i}>
+                        <div className={`image${channelName}`}>
+                          {item.media.format.includes('image') ? (
+                            <img src={item.media.file} />
+                          ) : (
+                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                </Slider>
+              )}
               <div className="mobileImage">
                 <img src={socialPlatFormImage} alt="campaign media phone" />
               </div>
@@ -104,7 +154,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
               label="1&#215;1 Photo/Video"
               updateLabel="Update Campaign Image"
               mediaType="sharedMedia"
-              onFileSuccess={handleChannelMedia}
+              onFileSuccess={handleTwitterMedia}
               onFileError={onError}
             />
           </div>
@@ -115,18 +165,48 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <div>
               <div className="imageContent">
                 <div className="imageWrapper">
-                  <Slider {...settings}>
-                    {secondChannelMedia.length &&
-                      secondChannelMedia.map((item, i) => (
-                        <div className={`image3x4${channelName}`} key={i}>
-                          {item.media.format.includes('image') ? (
-                            <img src={item.media.file} />
-                          ) : (
-                            <video autoPlay={false} src={item.media.file} controls={true} />
-                          )}
-                        </div>
-                      ))}
-                  </Slider>
+                  {steps === 2 && (
+                    <Slider {...settings}>
+                      {secondTwitterMedia?.length &&
+                        secondTwitterMedia.map((item, i) => (
+                          <div className={`image3x4${channelName}`} key={i}>
+                            {item.media.format.includes('image') ? (
+                              <img src={item.media.file} />
+                            ) : (
+                              <video autoPlay={false} src={item.media.file} controls={true} />
+                            )}
+                          </div>
+                        ))}
+                    </Slider>
+                  )}
+                  {steps === 3 && (
+                    <Slider {...settings}>
+                      {secondInstagramMedia?.length &&
+                        secondInstagramMedia.map((item, i) => (
+                          <div className={`image3x4${channelName}`} key={i}>
+                            {item.media.format.includes('image') ? (
+                              <img src={item.media.file} />
+                            ) : (
+                              <video autoPlay={false} src={item.media.file} controls={true} />
+                            )}
+                          </div>
+                        ))}
+                    </Slider>
+                  )}
+                  {steps === 4 && (
+                    <Slider {...settings}>
+                      {secondFacebookMedia?.length &&
+                        secondFacebookMedia.map((item, i) => (
+                          <div className={`image3x4${channelName}`} key={i}>
+                            {item.media.format.includes('image') ? (
+                              <img src={item.media.file} />
+                            ) : (
+                              <video autoPlay={false} src={item.media.file} controls={true} />
+                            )}
+                          </div>
+                        ))}
+                    </Slider>
+                  )}
                   <div className="mobileImage">
                     <img src={secondMobileImage} alt="campaign media phone" />
                   </div>
@@ -137,7 +217,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   label="3&#215;4 Photo/Video"
                   updateLabel="Update Campaign Image"
                   mediaType="sharedMedia"
-                  onFileSuccess={handleSecondChannelMedia}
+                  onFileSuccess={handle3by4Media}
                   onFileError={onError}
                 />
               </div>
@@ -146,12 +226,37 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <div>
               <div className="imageContent">
                 <div className="imageWrapper">
-                  {thirdChannelMedia.length &&
-                    thirdChannelMedia.map((item, i) => (
-                      <div className={`video${channelName}`} key={i}>
-                        <video autoPlay={false} src={item.media.file} controls={true} />
-                      </div>
-                    ))}
+                  {steps === 2 && (
+                    <Slider {...settings} arrows>
+                      {thirdTwitterMedia?.length &&
+                        thirdTwitterMedia.map((item, i) => (
+                          <div className={`video${channelName}`} key={i}>
+                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          </div>
+                        ))}
+                    </Slider>
+                  )}
+                  {steps === 3 && (
+                    <Slider {...settings} arrows>
+                      {thirdInstagramMedia?.length &&
+                        thirdInstagramMedia.map((item, i) => (
+                          <div className={`video${channelName}`} key={i}>
+                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          </div>
+                        ))}
+                    </Slider>
+                  )}
+                  {steps === 4 && (
+                    <Slider {...settings} arrows>
+                      {thirdFacebookMedia?.length &&
+                        thirdFacebookMedia.map((item, i) => (
+                          <div className={`video${channelName}`} key={i}>
+                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          </div>
+                        ))}
+                    </Slider>
+                  )}
+
                   <div className="mobileImage">
                     <img src={horizontalVideo} alt="campaign media phone" />
                   </div>
@@ -162,7 +267,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   label="Horizontal Video"
                   updateLabel="Update Campaign Image"
                   mediaType="sharedMedia"
-                  onFileSuccess={handleThirdChannelMedia}
+                  onFileSuccess={handleHzMedia}
                   onFileError={onError}
                 />
               </div>
