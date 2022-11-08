@@ -80,9 +80,29 @@
   @apply text-center;
   .imageContent {
     @apply flex justify-center mt-8;
-    .imageWrapper {
+    .imageWrapperTwitter {
       @apply w-56 relative;
       height: 30rem;
+      .slick-slider {
+        .slick-prev {
+          left: 45px;
+          top: 270px;
+          z-index: 1;
+          opacity: 1;
+          &::before {
+            @apply text-bluetiful;
+          }
+        }
+        .slick-next {
+          right: 18px;
+          top: 270px;
+          z-index: 1;
+          opacity: 1;
+          &::before {
+            @apply text-bluetiful;
+          }
+        }
+      }
       .imageTwitter {
         margin-top: 195px;
         height: 157px;
@@ -93,6 +113,70 @@
         }
         video {
           @apply w-full h-full object-cover;
+        }
+      }
+      //   .imageInstagram {
+      //     margin-top: 105px;
+      //     height: 201px;
+      //     width: 203px;
+      //     margin-left: 10px;
+      //     img {
+      //       @apply w-full h-full object-cover;
+      //     }
+      //     video {
+      //       @apply w-full h-full object-cover;
+      //     }
+      //   }
+      //   .imageFacebook {
+      //     margin-top: 70px;
+      //     height: 200px;
+      //     width: 202px;
+      //     margin-left: 11px;
+      //     img {
+      //       @apply w-full h-full object-cover;
+      //     }
+      //     video {
+      //       @apply w-full h-full object-cover;
+      //     }
+      //   }
+      //   .imageTiktok {
+      //     margin-top: 33px;
+      //     height: 355px;
+      //     width: 201px;
+      //     margin-left: 11px;
+      //     img {
+      //       @apply w-full h-full object-cover;
+      //     }
+      //     video {
+      //       @apply w-full h-full object-cover;
+      //     }
+      //   }
+      .mobileImage {
+        @apply absolute top-0;
+      }
+    }
+    //!------------------------
+    .imageWrapperInstagram {
+      @apply w-56 relative;
+      height: 30rem;
+      .slick-slider {
+        .slick-prev {
+          left: 12px;
+          top: 215px;
+          z-index: 1;
+          opacity: 1;
+          &::before {
+            @apply text-bluetiful;
+          }
+        }
+        .slick-next {
+          right: 12px;
+          top: 215px;
+          z-index: 1;
+          opacity: 1;
+          &::before {
+            @apply text-bluetiful;
+          }
         }
       }
       .imageInstagram {
@@ -107,6 +191,36 @@
           @apply w-full h-full object-cover;
         }
       }
+
+      .mobileImage {
+        @apply absolute top-0;
+      }
+    }
+
+    //!------------------------
+    .imageWrapperFacebook {
+      @apply w-56 relative;
+      height: 30rem;
+      .slick-slider {
+        .slick-prev {
+          left: 12px;
+          top: 190px;
+          z-index: 1;
+          opacity: 1;
+          &::before {
+            @apply text-bluetiful;
+          }
+        }
+        .slick-next {
+          right: 12px;
+          top: 190px;
+          z-index: 1;
+          opacity: 1;
+          &::before {
+            @apply text-bluetiful;
+          }
+        }
+      }
       .imageFacebook {
         margin-top: 70px;
         height: 200px;
@@ -117,6 +231,37 @@
         }
         video {
           @apply w-full h-full object-cover;
+        }
+      }
+
+      .mobileImage {
+        @apply absolute top-0;
+      }
+    }
+
+    //?------------------------
+
+    .imageWrapperTiktok {
+      @apply w-56 relative;
+      height: 30rem;
+      .slick-slider {
+        .slick-prev {
+          left: 12px;
+          top: 215px;
+          z-index: 1;
+          opacity: 1;
+          &::before {
+            @apply text-bluetiful;
+          }
+        }
+        .slick-next {
+          right: 12px;
+          top: 215px;
+          z-index: 1;
+          opacity: 1;
+          &::before {
+            @apply text-bluetiful;
+          }
         }
       }
       .imageTiktok {
@@ -131,8 +276,10 @@
           @apply w-full h-full object-cover;
         }
       }
+
       .mobileImage {
         @apply absolute top-0;
+        // z-index: -1;
       }
     }
   }

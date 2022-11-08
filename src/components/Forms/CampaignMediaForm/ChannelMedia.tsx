@@ -1,6 +1,9 @@
-import React, { FC, Fragment, useEffect, useReducer, useState } from 'react';
+import React, { FC, Fragment, useState } from 'react';
 import FileUpload from '../../../componentsv2/FileUpload';
 import { ChannelMediaObject, FileObject } from '../../../types';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Slider from 'react-slick';
 
 interface MediaStepsIProps {
   steps: number;
@@ -13,6 +16,14 @@ interface MediaStepsIProps {
   secondMobileImage?: string;
   horizontalVideo?: string;
 }
+
+const settings = {
+  dots: false,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
 
 const ChannelMedia: FC<MediaStepsIProps> = ({
   onSuccess,
@@ -67,17 +78,22 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
         {/* // ----------1x1 media----------- */}
         <div>
           <div className="imageContent">
-            <div className="imageWrapper">
-              {firstChannelMedia.length &&
-                firstChannelMedia.map((item, i) => (
-                  <div className={`image${channelName}`} key={i}>
-                    {item.media.format.includes('image') ? (
-                      <img src={item.media.file} />
-                    ) : (
-                      <video autoPlay={false} src={item.media.file} controls={true} />
-                    )}
-                  </div>
-                ))}
+            <div className={`imageWrapper${channelName}`}>
+              <Slider {...settings}>
+                {firstChannelMedia.length &&
+                  firstChannelMedia.map((item, i) => (
+                    <div key={i}>
+                      <div className={`image${channelName}`}>
+                        {item.media.format.includes('image') ? (
+                          <img src={item.media.file} />
+                        ) : (
+                          <video autoPlay={false} src={item.media.file} controls={true} />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+              </Slider>
+
               <div className="mobileImage">
                 <img src={socialPlatFormImage} alt="campaign media phone" />
               </div>
@@ -99,16 +115,18 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <div>
               <div className="imageContent">
                 <div className="imageWrapper">
-                  {secondChannelMedia.length &&
-                    secondChannelMedia.map((item, i) => (
-                      <div className={`image3x4${channelName}`} key={i}>
-                        {item.media.format.includes('image') ? (
-                          <img src={item.media.file} />
-                        ) : (
-                          <video autoPlay={false} src={item.media.file} controls={true} />
-                        )}
-                      </div>
-                    ))}
+                  <Slider {...settings}>
+                    {secondChannelMedia.length &&
+                      secondChannelMedia.map((item, i) => (
+                        <div className={`image3x4${channelName}`} key={i}>
+                          {item.media.format.includes('image') ? (
+                            <img src={item.media.file} />
+                          ) : (
+                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          )}
+                        </div>
+                      ))}
+                  </Slider>
                   <div className="mobileImage">
                     <img src={secondMobileImage} alt="campaign media phone" />
                   </div>
