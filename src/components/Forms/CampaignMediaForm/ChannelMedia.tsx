@@ -57,17 +57,14 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
   tiktokMedia,
 }) => {
   const handleTwitterMedia = (data: FileObject) => {
-    debugger;
     if (handleFirstMedia) handleFirstMedia(channelName, '1x1', data);
   };
 
   const handle3by4Media = (data: FileObject) => {
-    debugger;
     if (handleFirstMedia) handleFirstMedia(channelName, '3x4', data);
   };
 
   const handleHzMedia = (data: FileObject) => {
-    debugger;
     if (!data.format.includes('video')) return onError('Invalid Format');
     if (handleFirstMedia) handleFirstMedia(channelName, 'hz', data);
   };
@@ -163,18 +160,20 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
           <Fragment>
             {/* // ----------- 3x4--------- */}
             <div>
-              <div className="imageContent">
-                <div className="imageWrapper">
+              <div className="image3x4Content">
+                <div className={`imageWrapper${channelName}`}>
                   {steps === 2 && (
                     <Slider {...settings}>
                       {secondTwitterMedia?.length &&
                         secondTwitterMedia.map((item, i) => (
-                          <div className={`image3x4${channelName}`} key={i}>
-                            {item.media.format.includes('image') ? (
-                              <img src={item.media.file} />
-                            ) : (
-                              <video autoPlay={false} src={item.media.file} controls={true} />
-                            )}
+                          <div key={i}>
+                            <div className={`image3x4${channelName}`} key={i}>
+                              {item.media.format.includes('image') ? (
+                                <img src={item.media.file} />
+                              ) : (
+                                <video autoPlay={false} src={item.media.file} controls={true} />
+                              )}
+                            </div>
                           </div>
                         ))}
                     </Slider>
@@ -183,26 +182,30 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings}>
                       {secondInstagramMedia?.length &&
                         secondInstagramMedia.map((item, i) => (
-                          <div className={`image3x4${channelName}`} key={i}>
-                            {item.media.format.includes('image') ? (
-                              <img src={item.media.file} />
-                            ) : (
-                              <video autoPlay={false} src={item.media.file} controls={true} />
-                            )}
+                          <div key={i}>
+                            <div className={`image3x4${channelName}`} key={i}>
+                              {item.media.format.includes('image') ? (
+                                <img src={item.media.file} />
+                              ) : (
+                                <video autoPlay={false} src={item.media.file} controls={true} />
+                              )}
+                            </div>
                           </div>
                         ))}
                     </Slider>
                   )}
                   {steps === 4 && (
-                    <Slider {...settings}>
+                    <Slider {...settings} arrows>
                       {secondFacebookMedia?.length &&
                         secondFacebookMedia.map((item, i) => (
-                          <div className={`image3x4${channelName}`} key={i}>
-                            {item.media.format.includes('image') ? (
-                              <img src={item.media.file} />
-                            ) : (
-                              <video autoPlay={false} src={item.media.file} controls={true} />
-                            )}
+                          <div key={i}>
+                            <div className={`image3x4${channelName}`} key={i}>
+                              {item.media.format.includes('image') ? (
+                                <img src={item.media.file} />
+                              ) : (
+                                <video autoPlay={false} src={item.media.file} controls={true} />
+                              )}
+                            </div>
                           </div>
                         ))}
                     </Slider>
@@ -224,14 +227,16 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             </div>
             {/* // -----------horizontal--------- */}
             <div>
-              <div className="imageContent">
-                <div className="imageWrapper">
+              <div className="imageHzContent">
+                <div className={`imageWrapper${channelName}`}>
                   {steps === 2 && (
                     <Slider {...settings} arrows>
                       {thirdTwitterMedia?.length &&
                         thirdTwitterMedia.map((item, i) => (
-                          <div className={`video${channelName}`} key={i}>
-                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          <div key={i}>
+                            <div className={`video${channelName}`}>
+                              <video autoPlay={false} src={item.media.file} controls={true} />
+                            </div>
                           </div>
                         ))}
                     </Slider>
@@ -240,8 +245,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings} arrows>
                       {thirdInstagramMedia?.length &&
                         thirdInstagramMedia.map((item, i) => (
-                          <div className={`video${channelName}`} key={i}>
-                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          <div key={i}>
+                            <div className={`video${channelName}`}>
+                              <video autoPlay={false} src={item.media.file} controls={true} />
+                            </div>
                           </div>
                         ))}
                     </Slider>
@@ -250,8 +257,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings} arrows>
                       {thirdFacebookMedia?.length &&
                         thirdFacebookMedia.map((item, i) => (
-                          <div className={`video${channelName}`} key={i}>
-                            <video autoPlay={false} src={item.media.file} controls={true} />
+                          <div key={i}>
+                            <div className={`video${channelName}`}>
+                              <video autoPlay={false} src={item.media.file} controls={true} />
+                            </div>
                           </div>
                         ))}
                     </Slider>
