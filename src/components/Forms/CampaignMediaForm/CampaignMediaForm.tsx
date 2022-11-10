@@ -138,6 +138,8 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     onSuccess(channel, updatedChannelMedia);
   };
 
+  //   const removeChannelMedia = () => {};
+
   const onError = (msg: string) => {
     dispatch(showErrorAlert(msg));
   };

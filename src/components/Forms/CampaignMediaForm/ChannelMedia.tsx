@@ -4,6 +4,7 @@ import { ChannelMediaObject, FileObject } from '../../../types';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
+import { TiDelete } from 'react-icons/ti';
 
 interface MediaStepsIProps {
   steps: number;
@@ -81,7 +82,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                 <Slider {...settings} arrows>
                   {firstTwitterMedia?.length &&
                     firstTwitterMedia.map((item, i) => (
-                      <div key={i}>
+                      <div key={i} className="carousel-slide">
+                        <div className="removeMedia">
+                          <TiDelete />
+                        </div>
                         <div className={`image${channelName}`}>
                           {item.media.format.includes('image') ? (
                             <img src={item.media.file} />
@@ -97,7 +101,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                 <Slider {...settings} arrows>
                   {firstInstagramMedia?.length &&
                     firstInstagramMedia.map((item, i) => (
-                      <div key={i}>
+                      <div key={i} className="carousel-slide">
+                        <div className="removeMedia">
+                          <TiDelete />
+                        </div>
                         <div className={`image${channelName}`}>
                           {item.media.format.includes('image') ? (
                             <img src={item.media.file} />
@@ -113,7 +120,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                 <Slider {...settings} arrows>
                   {firstFacebookMedia?.length &&
                     firstFacebookMedia.map((item, i) => (
-                      <div key={i}>
+                      <div key={i} className="carousel-slide">
+                        <div className="removeMedia">
+                          <TiDelete />
+                        </div>
                         <div className={`image${channelName}`}>
                           {item.media.format.includes('image') ? (
                             <img src={item.media.file} />
@@ -129,7 +139,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                 <Slider {...settings} arrows>
                   {tiktokMedia?.length &&
                     tiktokMedia.map((item, i) => (
-                      <div key={i}>
+                      <div key={i} className="carousel-slide">
+                        <div className="removeMedia">
+                          <TiDelete />
+                        </div>
                         <div className={`image${channelName}`}>
                           {item.media.format.includes('image') ? (
                             <img src={item.media.file} />
@@ -156,9 +169,9 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             />
           </div>
         </div>
+        {/* // ----------- 3x4--------- */}
         {secondMobileImage && horizontalVideo && (
           <Fragment>
-            {/* // ----------- 3x4--------- */}
             <div>
               <div className="image3x4Content">
                 <div className={`imageWrapper${channelName}`}>
@@ -166,7 +179,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings}>
                       {secondTwitterMedia?.length &&
                         secondTwitterMedia.map((item, i) => (
-                          <div key={i}>
+                          <div key={i} className="carousel-slide">
+                            <div className="removeMedia">
+                              <TiDelete />
+                            </div>
                             <div className={`image3x4${channelName}`} key={i}>
                               {item.media.format.includes('image') ? (
                                 <img src={item.media.file} />
@@ -182,7 +198,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings}>
                       {secondInstagramMedia?.length &&
                         secondInstagramMedia.map((item, i) => (
-                          <div key={i}>
+                          <div key={i} className="carousel-slide">
+                            <div className="removeMedia">
+                              <TiDelete />
+                            </div>
                             <div className={`image3x4${channelName}`} key={i}>
                               {item.media.format.includes('image') ? (
                                 <img src={item.media.file} />
@@ -198,7 +217,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings} arrows>
                       {secondFacebookMedia?.length &&
                         secondFacebookMedia.map((item, i) => (
-                          <div key={i}>
+                          <div key={i} className="carousel-slide">
+                            <div className="removeMedia">
+                              <TiDelete />
+                            </div>
                             <div className={`image3x4${channelName}`} key={i}>
                               {item.media.format.includes('image') ? (
                                 <img src={item.media.file} />
@@ -233,7 +255,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings} arrows>
                       {thirdTwitterMedia?.length &&
                         thirdTwitterMedia.map((item, i) => (
-                          <div key={i}>
+                          <div key={i} className="carousel-slide">
+                            <div className="removeMedia">
+                              <TiDelete />
+                            </div>
                             <div className={`video${channelName}`}>
                               <video autoPlay={false} src={item.media.file} controls={true} />
                             </div>
@@ -245,7 +270,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings} arrows>
                       {thirdInstagramMedia?.length &&
                         thirdInstagramMedia.map((item, i) => (
-                          <div key={i}>
+                          <div key={i} className="carousel-slide">
+                            <div className="removeMedia">
+                              <TiDelete />
+                            </div>
                             <div className={`video${channelName}`}>
                               <video autoPlay={false} src={item.media.file} controls={true} />
                             </div>
@@ -257,7 +285,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     <Slider {...settings} arrows>
                       {thirdFacebookMedia?.length &&
                         thirdFacebookMedia.map((item, i) => (
-                          <div key={i}>
+                          <div key={i} className="carousel-slide">
+                            <div className="removeMedia">
+                              <TiDelete />
+                            </div>
                             <div className={`video${channelName}`}>
                               <video autoPlay={false} src={item.media.file} controls={true} />
                             </div>
@@ -265,7 +296,6 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                         ))}
                     </Slider>
                   )}
-
                   <div className="mobileImage">
                     <img src={horizontalVideo} alt="campaign media phone" />
                   </div>
