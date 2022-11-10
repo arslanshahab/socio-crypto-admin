@@ -16,7 +16,7 @@ interface MediaStepsIProps {
   socialPlatFormImage: string;
   secondMobileImage?: string;
   horizontalVideo?: string;
-  handleFirstMedia: (channel: string, size: string, data: FileObject) => void;
+  handleFirstMedia: (channel: string, size: string, data: FileObject, mediaSlug: string) => void;
   firstTwitterMedia?: ChannelMediaObject[];
   secondTwitterMedia?: ChannelMediaObject[];
   thirdTwitterMedia?: ChannelMediaObject[];
@@ -27,6 +27,7 @@ interface MediaStepsIProps {
   secondFacebookMedia?: ChannelMediaObject[];
   thirdFacebookMedia?: ChannelMediaObject[];
   tiktokMedia?: ChannelMediaObject[];
+  removeChannelMedia: (index: number, data: ChannelMediaObject, size: string) => void;
 }
 
 const settings = {
@@ -56,18 +57,27 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
   secondFacebookMedia,
   thirdFacebookMedia,
   tiktokMedia,
+  removeChannelMedia,
 }) => {
   const handleTwitterMedia = (data: FileObject) => {
-    if (handleFirstMedia) handleFirstMedia(channelName, '1x1', data);
+    const imageSlug = `${channelName}${'1x1'}${data.filename}`;
+    if (handleFirstMedia) handleFirstMedia(channelName, '1x1', data, imageSlug);
   };
 
   const handle3by4Media = (data: FileObject) => {
-    if (handleFirstMedia) handleFirstMedia(channelName, '3x4', data);
+    const imageSlug = `${channelName}${'3x4'}${data.filename}`;
+    if (handleFirstMedia) handleFirstMedia(channelName, '3x4', data, imageSlug);
   };
 
   const handleHzMedia = (data: FileObject) => {
     if (!data.format.includes('video')) return onError('Invalid Format');
-    if (handleFirstMedia) handleFirstMedia(channelName, 'hz', data);
+    const imageSlug = `${channelName}${'hz'}${data.filename}`;
+    if (handleFirstMedia) handleFirstMedia(channelName, 'hz', data, imageSlug);
+  };
+
+  const handleRemoveMedia = (index: number, data: ChannelMediaObject, size: string) => {
+    debugger;
+    removeChannelMedia(index, data, size);
   };
 
   return (
@@ -83,7 +93,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   {firstTwitterMedia?.length &&
                     firstTwitterMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
-                        <div className="removeMedia">
+                        <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
                           <TiDelete />
                         </div>
                         <div className={`image${channelName}`}>
@@ -102,7 +112,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   {firstInstagramMedia?.length &&
                     firstInstagramMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
-                        <div className="removeMedia">
+                        <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
                           <TiDelete />
                         </div>
                         <div className={`image${channelName}`}>
@@ -121,7 +131,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   {firstFacebookMedia?.length &&
                     firstFacebookMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
-                        <div className="removeMedia">
+                        <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
                           <TiDelete />
                         </div>
                         <div className={`image${channelName}`}>
@@ -140,7 +150,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   {tiktokMedia?.length &&
                     tiktokMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
-                        <div className="removeMedia">
+                        <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
                           <TiDelete />
                         </div>
                         <div className={`image${channelName}`}>

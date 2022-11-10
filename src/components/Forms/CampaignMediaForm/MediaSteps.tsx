@@ -21,7 +21,7 @@ interface MediaStepsIProps {
   onError: (msg: string) => void;
   onSuccess: (channel: string, list: ChannelMediaObject[]) => void;
   channelMedia: ChannelMediaStructure;
-  handleFirstMedia: (channel: string, size: string, data: FileObject) => void;
+  handleFirstMedia: (channel: string, size: string, data: FileObject, mediaSlug: string) => void;
   firstTwitterMedia: ChannelMediaObject[];
   secondTwitterMedia: ChannelMediaObject[];
   thirdTwitterMedia: ChannelMediaObject[];
@@ -32,6 +32,7 @@ interface MediaStepsIProps {
   secondFacebookMedia: ChannelMediaObject[];
   thirdFacebookMedia: ChannelMediaObject[];
   tiktokMedia: ChannelMediaObject[];
+  removeChannelMedia: (index: number, data: ChannelMediaObject, size: string) => void;
 }
 
 const MediaSteps: FC<MediaStepsIProps> = ({
@@ -53,6 +54,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
   secondFacebookMedia,
   thirdFacebookMedia,
   tiktokMedia,
+  removeChannelMedia,
 }) => {
   switch (steps) {
     case 1:
@@ -80,6 +82,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           firstTwitterMedia={firstTwitterMedia}
           secondTwitterMedia={secondTwitterMedia}
           thirdTwitterMedia={thirdTwitterMedia}
+          removeChannelMedia={removeChannelMedia}
         />
       );
     case 3:
@@ -98,6 +101,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           firstInstagramMedia={firstInstagramMedia}
           secondInstagramMedia={secondInstagramMedia}
           thirdInstagramMedia={thirdInstagramMedia}
+          removeChannelMedia={removeChannelMedia}
         />
       );
     case 4:
@@ -116,6 +120,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           firstFacebookMedia={firstFacebookMedia}
           secondFacebookMedia={secondFacebookMedia}
           thirdFacebookMedia={thirdFacebookMedia}
+          removeChannelMedia={removeChannelMedia}
         />
       );
     case 5:
@@ -130,6 +135,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialPlatFormImage={tiktokPhone}
           handleFirstMedia={handleFirstMedia}
           tiktokMedia={tiktokMedia}
+          removeChannelMedia={removeChannelMedia}
         />
       );
     default:

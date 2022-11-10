@@ -347,6 +347,7 @@ export interface ChannelMediaObject {
   channel: string;
   media: FileObject;
   isDefault: boolean;
+  mediaSlug?: string;
 }
 
 export interface ChannelMediaStructure {
