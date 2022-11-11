@@ -23,7 +23,6 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const dispatch = useDispatch();
   const [channelTemplates, setChannelTemplates] = useState(campaign.config.channelTemplates);
   const [steps, setSteps] = useState<number>(1);
-  const [activeChannel, setActiveChannel] = useState<string>(socialMedias[0]);
 
   const next = () => {
     if (validateInputs()) {
@@ -74,7 +73,6 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   };
 
   const handlePostChange = (channel: string, index: number, data: string) => {
-    setActiveChannel(channel);
     const templates = { ...channelTemplates };
     const channelPosts = [...templates[channel]];
     channelPosts[index] = { channel: channel, id: channelPosts[index].id || '', post: data };
