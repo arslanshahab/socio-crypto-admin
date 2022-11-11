@@ -23,7 +23,7 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const dispatch = useDispatch();
   const [channelTemplates, setChannelTemplates] = useState(campaign.config.channelTemplates);
   const [steps, setSteps] = useState<number>(1);
-  const [activeChannel, setActiveChannel] = useState<string>('');
+  const [activeChannel, setActiveChannel] = useState<string>(socialMedias[0]);
 
   const next = () => {
     if (validateInputs()) {
@@ -90,8 +90,20 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       const channel = socialMediaType[index];
       for (let index2 = 0; index2 < channelTemplates[channel].length; index2++) {
         const template = channelTemplates[channel][index2];
-        if (!template.post && activeChannel === channel) {
-          dispatch(showErrorAlert(`Template posts are required`));
+        if (!template.post && channel === 'Twitter' && steps === 1) {
+          dispatch(showErrorAlert(`Template posts are required Twitter`));
+          return (validated = false);
+        }
+        if (!template.post && channel === 'Instagram' && steps === 2) {
+          dispatch(showErrorAlert(`Template posts are required Instagram`));
+          return (validated = false);
+        }
+        if (!template.post && channel === 'Facebook' && steps === 3) {
+          dispatch(showErrorAlert(`Template posts are required Facebook`));
+          return (validated = false);
+        }
+        if (!template.post && channel === 'Tiktok' && steps === 4) {
+          dispatch(showErrorAlert(`Template posts are required Tiktok`));
           return (validated = false);
         }
         if (template.post.length > MAX_POST_LENGTH) {

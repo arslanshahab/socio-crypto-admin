@@ -32,7 +32,7 @@ export const getSocialIcon: IconsObject = {
   Facebook: FacebookPhone,
 };
 
-export const socialMediaTypeMenu: string[] = ['Twitter', 'Instagram', 'Tiktok', 'Facebook'];
+export const socialMediaTypeMenu: string[] = ['Twitter', 'Instagram', 'Facebook', 'Tiktok'];
 
 const SocialMediaTypeInput: React.FC<Props> = ({ socialMediaType, handleChange, selectAllByDefault }) => {
   const [all, setAll] = useState(selectAllByDefault);

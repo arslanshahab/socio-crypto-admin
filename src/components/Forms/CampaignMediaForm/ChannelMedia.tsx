@@ -16,7 +16,7 @@ interface MediaStepsIProps {
   socialPlatFormImage: string;
   secondMobileImage?: string;
   horizontalVideo?: string;
-  handleFirstMedia: (channel: string, size: string, data: FileObject, mediaSlug: string) => void;
+  handleChannelMedia: (channel: string, size: string, data: FileObject, mediaSlug: string) => void;
   firstTwitterMedia?: ChannelMediaObject[];
   secondTwitterMedia?: ChannelMediaObject[];
   thirdTwitterMedia?: ChannelMediaObject[];
@@ -47,7 +47,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
   secondMobileImage,
   horizontalVideo,
   firstTwitterMedia,
-  handleFirstMedia,
+  handleChannelMedia,
   firstInstagramMedia,
   secondTwitterMedia,
   secondInstagramMedia,
@@ -61,22 +61,21 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
 }) => {
   const handleTwitterMedia = (data: FileObject) => {
     const imageSlug = `${channelName}${'1x1'}${data.filename}`;
-    if (handleFirstMedia) handleFirstMedia(channelName, '1x1', data, imageSlug);
+    if (handleChannelMedia) handleChannelMedia(channelName, '1x1', data, imageSlug);
   };
 
   const handle3by4Media = (data: FileObject) => {
     const imageSlug = `${channelName}${'3x4'}${data.filename}`;
-    if (handleFirstMedia) handleFirstMedia(channelName, '3x4', data, imageSlug);
+    if (handleChannelMedia) handleChannelMedia(channelName, '3x4', data, imageSlug);
   };
 
   const handleHzMedia = (data: FileObject) => {
     if (!data.format.includes('video')) return onError('Invalid Format');
     const imageSlug = `${channelName}${'hz'}${data.filename}`;
-    if (handleFirstMedia) handleFirstMedia(channelName, 'hz', data, imageSlug);
+    if (handleChannelMedia) handleChannelMedia(channelName, 'hz', data, imageSlug);
   };
 
   const handleRemoveMedia = (index: number, data: ChannelMediaObject, size: string) => {
-    debugger;
     removeChannelMedia(index, data, size);
   };
 
@@ -190,7 +189,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {secondTwitterMedia?.length &&
                         secondTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia">
+                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
                               <TiDelete />
                             </div>
                             <div className={`image3x4${channelName}`} key={i}>
@@ -209,7 +208,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {secondInstagramMedia?.length &&
                         secondInstagramMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia">
+                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
                               <TiDelete />
                             </div>
                             <div className={`image3x4${channelName}`} key={i}>
@@ -228,7 +227,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {secondFacebookMedia?.length &&
                         secondFacebookMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia">
+                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
                               <TiDelete />
                             </div>
                             <div className={`image3x4${channelName}`} key={i}>
@@ -266,7 +265,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {thirdTwitterMedia?.length &&
                         thirdTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia">
+                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
                               <TiDelete />
                             </div>
                             <div className={`video${channelName}`}>
@@ -281,7 +280,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {thirdInstagramMedia?.length &&
                         thirdInstagramMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia">
+                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
                               <TiDelete />
                             </div>
                             <div className={`video${channelName}`}>
@@ -296,7 +295,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {thirdFacebookMedia?.length &&
                         thirdFacebookMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia">
+                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
                               <TiDelete />
                             </div>
                             <div className={`video${channelName}`}>

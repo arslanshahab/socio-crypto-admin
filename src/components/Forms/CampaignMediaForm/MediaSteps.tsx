@@ -21,7 +21,7 @@ interface MediaStepsIProps {
   onError: (msg: string) => void;
   onSuccess: (channel: string, list: ChannelMediaObject[]) => void;
   channelMedia: ChannelMediaStructure;
-  handleFirstMedia: (channel: string, size: string, data: FileObject, mediaSlug: string) => void;
+  handleChannelMedia: (channel: string, size: string, data: FileObject, mediaSlug: string) => void;
   firstTwitterMedia: ChannelMediaObject[];
   secondTwitterMedia: ChannelMediaObject[];
   thirdTwitterMedia: ChannelMediaObject[];
@@ -43,7 +43,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
   channelMedia,
   onSuccess,
   socialMediaType,
-  handleFirstMedia,
+  handleChannelMedia,
   firstTwitterMedia,
   secondTwitterMedia,
   thirdTwitterMedia,
@@ -78,7 +78,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialPlatFormImage={twitterPhone}
           secondMobileImage={twitterPhone2}
           horizontalVideo={twitterHz}
-          handleFirstMedia={handleFirstMedia}
+          handleChannelMedia={handleChannelMedia}
           firstTwitterMedia={firstTwitterMedia}
           secondTwitterMedia={secondTwitterMedia}
           thirdTwitterMedia={thirdTwitterMedia}
@@ -97,7 +97,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialPlatFormImage={instagramPhone}
           secondMobileImage={instagramPhone2}
           horizontalVideo={instagramHz}
-          handleFirstMedia={handleFirstMedia}
+          handleChannelMedia={handleChannelMedia}
           firstInstagramMedia={firstInstagramMedia}
           secondInstagramMedia={secondInstagramMedia}
           thirdInstagramMedia={thirdInstagramMedia}
@@ -116,7 +116,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialPlatFormImage={facebookPhone}
           secondMobileImage={facebookPhone2}
           horizontalVideo={facebookHz}
-          handleFirstMedia={handleFirstMedia}
+          handleChannelMedia={handleChannelMedia}
           firstFacebookMedia={firstFacebookMedia}
           secondFacebookMedia={secondFacebookMedia}
           thirdFacebookMedia={thirdFacebookMedia}
@@ -133,7 +133,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           socialMediaType={socialMediaType}
           channelName={'Tiktok'}
           socialPlatFormImage={tiktokPhone}
-          handleFirstMedia={handleFirstMedia}
+          handleChannelMedia={handleChannelMedia}
           tiktokMedia={tiktokMedia}
           removeChannelMedia={removeChannelMedia}
         />
