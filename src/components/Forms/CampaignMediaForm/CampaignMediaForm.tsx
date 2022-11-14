@@ -264,18 +264,19 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           setThirdFacebookMedia(updatedMedia);
         }
       }
-    }
-    const activeChannel = channel?.channel;
-    const updatedChannelMedia1 = { ...channelMedia };
-    if (updatedChannelMedia1[activeChannel].length > 1) {
-      const filterMedia = updatedChannelMedia1[activeChannel].filter((x) => x.mediaSlug !== channel.mediaSlug);
-      if (filterMedia.length === 1) {
-        if (filterMedia[0].isDefault !== true) filterMedia[0].isDefault = true;
+
+      // remove media from channel media list
+      const updatedChannelMedias = { ...channelMedia };
+      const filterMedia = updatedChannelMedias[channel.channel].filter((x) => x.mediaSlug !== channel.mediaSlug);
+      const findDefaultMedia = filterMedia.filter((x) => x.isDefault !== true);
+      const updatedFilterMedia = [...filterMedia];
+      if (findDefaultMedia.length === updatedFilterMedia.length) {
+        updatedFilterMedia[0].isDefault = true;
       }
-      updatedChannelMedia1[activeChannel] = filterMedia;
-      setChannelMedia(updatedChannelMedia1);
+      updatedChannelMedias[channel.channel] = updatedFilterMedia;
+      setChannelMedia(updatedChannelMedias);
     } else {
-      dispatch(showErrorAlert('Default media is required'));
+      return dispatch(showErrorAlert('Default media is required'));
     }
   };
 
@@ -320,7 +321,6 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       dispatch(showErrorAlert(`Default Media is required for Twitter`));
       return (validated = false);
     }
-    debugger;
     if (!channelMedia.Instagram.length && steps === 3) {
       dispatch(showErrorAlert(`Default Media is required for Instagram`));
       return (validated = false);
