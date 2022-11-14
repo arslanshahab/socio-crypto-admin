@@ -109,141 +109,173 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
   };
 
   return (
-    <Fade>
-      <Box className="campaignAlgorithmFormWrapper">
-        <GenericModal open={modalOpen} onClose={() => toggleModal(false)} size="medium">
-          <TermsAndConditions />
-        </GenericModal>
-        <Box className="grid grid-cols-2 gap-x-16">
-          <Box className={styles.algorithmBox}>
-            <Box className={styles.title}>
-              <h3 className="text-2xl text-center text-gray-700">Values</h3>
+    <div className="campaignAlgorithmFormWrapper">
+      <div>
+        <h1>Reward Distribution Model (Example)</h1>
+        <div className="tableWrapper2">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Number of Actions</th>
+                <th>Price Per Actions</th>
+                <th>Crypto Per Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Clicks</td>
+                <td>1m</td>
+                <td>$0.001</td>
+                <td>$0.01</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <Actions
+        activeStep={activeStep}
+        firstStep={firstStep}
+        finalStep={finalStep}
+        handleBack={handleBack}
+        handleNext={submit}
+      />
+    </div>
+    // <Fade>
+    //   <Box className="campaignAlgorithmFormWrapper">
+    //     <GenericModal open={modalOpen} onClose={() => toggleModal(false)} size="medium">
+    //       <TermsAndConditions />
+    //     </GenericModal>
+    //     <Box className="grid grid-cols-2 gap-x-16">
+    //       <Box className={styles.algorithmBox}>
+    //         <Box className={styles.title}>
+    //           <h3 className="text-2xl text-center text-gray-700">Values</h3>
 
-              <Tooltip
-                placement="top"
-                title="Define the rate campaign participants will be rewarded for the following actions."
-              >
-                <InfoIcon className="text-xl text-gray-700" />
-              </Tooltip>
-            </Box>
+    //           <Tooltip
+    //             placement="top"
+    //             title="Define the rate campaign participants will be rewarded for the following actions."
+    //           >
+    //             <InfoIcon className="text-xl text-gray-700" />
+    //           </Tooltip>
+    //         </Box>
 
-            <Box className="w-full flex flex-col">
-              <Box className="w-full mb-5">
-                <CustomInput
-                  type="number"
-                  label="Click Value"
-                  value={clickCount}
-                  placeholder="Click Value"
-                  onChange={(e) => setClickCount(e.target.value)}
-                />
-              </Box>
-              <Box className="w-full mb-5">
-                <CustomInput
-                  label="View Value"
-                  placeholder="View Value"
-                  value={viewCount}
-                  onChange={(e) => setViewCount(e.target.value)}
-                />
-              </Box>
-              <Box className="w-full mb-5">
-                <CustomInput
-                  label="Submission Value"
-                  value={submissionCount}
-                  placeholder="Submission Value"
-                  onChange={(e) => setSubmissionCount(e.target.value)}
-                />
-              </Box>
-              <Box className="w-full mb-5">
-                <CustomInput
-                  label="Share Value"
-                  value={shareCount}
-                  placeholder="Share Value"
-                  onChange={(e) => setShareCount(e.target.value)}
-                />
-              </Box>
-              <Box className="w-full mb-5">
-                <CustomInput
-                  label="Like Value"
-                  value={likeCount}
-                  placeholder="Like Value"
-                  onChange={(e) => setLikeCount(e.target.value)}
-                />
-              </Box>
-            </Box>
-          </Box>
-          <Box className={styles.algorithmBox}>
-            <Box className={styles.title}>
-              <h3 className="text-2xl text-center text-gray-700">Rewards</h3>
-              <Tooltip
-                placement="top"
-                title="Use multiple reward tiers to incentivize participation on your campaign. When the global influence reaches
-              the defined thresholds the campaign reward payout will updated."
-              >
-                <InfoIcon className="text-xl text-gray-700" />
-              </Tooltip>
-            </Box>
-            <Box className="w-full flex flex-col">
-              {Object.values(tiers).map((item, index) => (
-                <Box key={index} className="w-full mb-5">
-                  <h3 className="text-lg mb-3">{`Tier ${index + 1}`}</h3>
-                  <Box className="w-full flex flex-row justify-between items-center space-x-5">
-                    <Box className="w-3/6">
-                      <CustomInput
-                        label="Threshold"
-                        id={(index + 1).toString()}
-                        name="threshold"
-                        placeholder="Threshold"
-                        value={item.threshold}
-                        onChange={handleTierChange}
-                      />
-                    </Box>
-                    <Box className="w-3/6">
-                      <CustomInput
-                        label={'Total Coiins'}
-                        id={(index + 1).toString()}
-                        name="totalCoiins"
-                        placeholder="Total Coiins"
-                        value={item.totalCoiins}
-                        disabled={index + 1 === numOfTiers}
-                        onChange={handleTierChange}
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        </Box>
-        <Box className="w-full flex flex-row justify-center items-center">
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={agreementChecked as boolean}
-                onChange={(e, checked) => {
-                  handleAgreementChecked(checked);
-                }}
-                style={{ color: '#3f51b5' }}
-                name="Brand Agreement"
-              />
-            }
-            label={
-              <p className="inline">
-                I have read and accepted the <strong>Brand Agreement</strong>
-              </p>
-            }
-          />
-        </Box>
-        <Box className="w-full">
-          <Actions
-            activeStep={activeStep}
-            firstStep={firstStep}
-            finalStep={finalStep}
-            handleBack={handleBack}
-            handleNext={submit}
-          />
-        </Box>
-      </Box>
-    </Fade>
+    //         <Box className="w-full flex flex-col">
+    //           <Box className="w-full mb-5">
+    //             <CustomInput
+    //               type="number"
+    //               label="Click Value"
+    //               value={clickCount}
+    //               placeholder="Click Value"
+    //               onChange={(e) => setClickCount(e.target.value)}
+    //             />
+    //           </Box>
+    //           <Box className="w-full mb-5">
+    //             <CustomInput
+    //               label="View Value"
+    //               placeholder="View Value"
+    //               value={viewCount}
+    //               onChange={(e) => setViewCount(e.target.value)}
+    //             />
+    //           </Box>
+    //           <Box className="w-full mb-5">
+    //             <CustomInput
+    //               label="Submission Value"
+    //               value={submissionCount}
+    //               placeholder="Submission Value"
+    //               onChange={(e) => setSubmissionCount(e.target.value)}
+    //             />
+    //           </Box>
+    //           <Box className="w-full mb-5">
+    //             <CustomInput
+    //               label="Share Value"
+    //               value={shareCount}
+    //               placeholder="Share Value"
+    //               onChange={(e) => setShareCount(e.target.value)}
+    //             />
+    //           </Box>
+    //           <Box className="w-full mb-5">
+    //             <CustomInput
+    //               label="Like Value"
+    //               value={likeCount}
+    //               placeholder="Like Value"
+    //               onChange={(e) => setLikeCount(e.target.value)}
+    //             />
+    //           </Box>
+    //         </Box>
+    //       </Box>
+    //       <Box className={styles.algorithmBox}>
+    //         <Box className={styles.title}>
+    //           <h3 className="text-2xl text-center text-gray-700">Rewards</h3>
+    //           <Tooltip
+    //             placement="top"
+    //             title="Use multiple reward tiers to incentivize participation on your campaign. When the global influence reaches
+    //           the defined thresholds the campaign reward payout will updated."
+    //           >
+    //             <InfoIcon className="text-xl text-gray-700" />
+    //           </Tooltip>
+    //         </Box>
+    //         <Box className="w-full flex flex-col">
+    //           {Object.values(tiers).map((item, index) => (
+    //             <Box key={index} className="w-full mb-5">
+    //               <h3 className="text-lg mb-3">{`Tier ${index + 1}`}</h3>
+    //               <Box className="w-full flex flex-row justify-between items-center space-x-5">
+    //                 <Box className="w-3/6">
+    //                   <CustomInput
+    //                     label="Threshold"
+    //                     id={(index + 1).toString()}
+    //                     name="threshold"
+    //                     placeholder="Threshold"
+    //                     value={item.threshold}
+    //                     onChange={handleTierChange}
+    //                   />
+    //                 </Box>
+    //                 <Box className="w-3/6">
+    //                   <CustomInput
+    //                     label={'Total Coiins'}
+    //                     id={(index + 1).toString()}
+    //                     name="totalCoiins"
+    //                     placeholder="Total Coiins"
+    //                     value={item.totalCoiins}
+    //                     disabled={index + 1 === numOfTiers}
+    //                     onChange={handleTierChange}
+    //                   />
+    //                 </Box>
+    //               </Box>
+    //             </Box>
+    //           ))}
+    //         </Box>
+    //       </Box>
+    //     </Box>
+    //     <Box className="w-full flex flex-row justify-center items-center">
+    //       <FormControlLabel
+    //         control={
+    //           <Checkbox
+    //             checked={agreementChecked as boolean}
+    //             onChange={(e, checked) => {
+    //               handleAgreementChecked(checked);
+    //             }}
+    //             style={{ color: '#3f51b5' }}
+    //             name="Brand Agreement"
+    //           />
+    //         }
+    //         label={
+    //           <p className="inline">
+    //             I have read and accepted the <strong>Brand Agreement</strong>
+    //           </p>
+    //         }
+    //       />
+    //     </Box>
+    //     <Box className="w-full">
+    //       <Actions
+    //         activeStep={activeStep}
+    //         firstStep={firstStep}
+    //         finalStep={finalStep}
+    //         handleBack={handleBack}
+    //         handleNext={submit}
+    //       />
+    //     </Box>
+    //   </Box>
+    // </Fade>
   );
 };
 

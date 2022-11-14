@@ -1,3 +1,28 @@
 .campaignAlgorithmFormWrapper {
   @apply w-full mt-10 px-0 lg:px-8 xl:px-28;
+  .tableWrapper2 {
+    @apply border border-bluetiful rounded-md;
+    table {
+      thead {
+        tr {
+          th {
+            @apply px-8 h-14 align-middle font-normal;
+            &:first-child {
+              @apply border-r  border-bluetiful;
+            }
+          }
+        }
+      }
+      tbody {
+        tr {
+          td {
+            @apply px-8 h-14 align-middle text-center;
+            &:first-child {
+              @apply border-r  border-bluetiful;
+            }
+          }
+        }
+      }
+    }
+  }
 }
