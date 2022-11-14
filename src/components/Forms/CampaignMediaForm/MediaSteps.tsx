@@ -21,7 +21,7 @@ interface MediaStepsIProps {
   onError: (msg: string) => void;
   onSuccess: (channel: string, list: ChannelMediaObject[]) => void;
   channelMedia: ChannelMediaStructure;
-  handleChannelMedia: (channel: string, size: string, data: FileObject, mediaSlug: string) => void;
+  handleChannelMedia: (channel: string, ratio: string, data: FileObject, mediaSlug: string) => void;
   firstTwitterMedia: ChannelMediaObject[];
   secondTwitterMedia: ChannelMediaObject[];
   thirdTwitterMedia: ChannelMediaObject[];
@@ -32,7 +32,7 @@ interface MediaStepsIProps {
   secondFacebookMedia: ChannelMediaObject[];
   thirdFacebookMedia: ChannelMediaObject[];
   tiktokMedia: ChannelMediaObject[];
-  removeChannelMedia: (index: number, data: ChannelMediaObject, size: string) => void;
+  removeChannelMedia: (index: number, data: ChannelMediaObject, ratio: string) => void;
 }
 
 const MediaSteps: FC<MediaStepsIProps> = ({

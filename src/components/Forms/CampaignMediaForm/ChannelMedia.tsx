@@ -16,7 +16,7 @@ interface MediaStepsIProps {
   socialPlatFormImage: string;
   secondMobileImage?: string;
   horizontalVideo?: string;
-  handleChannelMedia: (channel: string, size: string, data: FileObject, mediaSlug: string) => void;
+  handleChannelMedia: (channel: string, ratio: string, data: FileObject, mediaSlug: string) => void;
   firstTwitterMedia?: ChannelMediaObject[];
   secondTwitterMedia?: ChannelMediaObject[];
   thirdTwitterMedia?: ChannelMediaObject[];
@@ -27,7 +27,7 @@ interface MediaStepsIProps {
   secondFacebookMedia?: ChannelMediaObject[];
   thirdFacebookMedia?: ChannelMediaObject[];
   tiktokMedia?: ChannelMediaObject[];
-  removeChannelMedia: (index: number, data: ChannelMediaObject, size: string) => void;
+  removeChannelMedia: (index: number, data: ChannelMediaObject, ratio: string) => void;
 }
 
 const settings = {
@@ -75,8 +75,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
     if (handleChannelMedia) handleChannelMedia(channelName, 'hz', data, imageSlug);
   };
 
-  const handleRemoveMedia = (index: number, data: ChannelMediaObject, size: string) => {
-    removeChannelMedia(index, data, size);
+  const handleRemoveMedia = (index: number, data: ChannelMediaObject, ratio: string) => {
+    removeChannelMedia(index, data, ratio);
   };
 
   return (
