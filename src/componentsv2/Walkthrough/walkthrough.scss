@@ -5,7 +5,7 @@
     @apply text-center font-medium text-3xl;
   }
   .walkthroughContent {
-    @apply flex flex-col justify-center;
+    @apply flex flex-col justify-around;
     min-height: 65vh;
     .socialIconsWrapper {
       @apply flex justify-center my-8;
