@@ -1,0 +1,73 @@
+.walkthorughWrapper {
+  @apply mt-12;
+  //   min-height: 82vh;
+  h1 {
+    @apply text-center font-medium text-3xl;
+  }
+  .walkthroughContent {
+    @apply flex flex-col justify-center;
+    min-height: 65vh;
+    .socialIconsWrapper {
+      @apply flex justify-center my-8;
+      .socialMediaScreen {
+        @apply grid grid-cols-2 gap-20;
+        width: 70%;
+        .imagesGrid {
+          @apply grid grid-cols-2 gap-1 place-items-center;
+          .imageWrapper {
+            @apply mb-8;
+            width: 100px;
+            height: 100px;
+            img {
+              @apply w-full h-full object-scale-down;
+            }
+          }
+        }
+      }
+    }
+
+    .mediaGrid {
+      @apply flex justify-center gap-32 my-8;
+      //   width: 70%;
+      .imageWrapper {
+        width: 200px;
+        height: 200px;
+        img {
+          @apply h-full w-full object-contain;
+        }
+      }
+    }
+
+    .primaryImageWrapper {
+      @apply flex justify-center items-center;
+      .imageWrapperMobile {
+        @apply flex justify-center my-8;
+        // width: 400px;
+        // height: 400px;
+        img {
+          @apply w-full h-full object-contain;
+        }
+      }
+      .imageWrapper {
+        @apply flex justify-center my-8;
+        width: 300px;
+        height: 300px;
+        img {
+          @apply w-full h-full object-contain;
+        }
+      }
+    }
+    .text {
+      @apply flex justify-center font-medium text-lg text-center;
+      p {
+        width: 50%;
+      }
+    }
+  }
+  .buttonWrapper {
+    @apply flex justify-end;
+    .nextButton {
+      @apply w-36 h-10 mr-12 rounded-md text-black  border border-cyberYellow bg-cyberYellow;
+    }
+  }
+}
