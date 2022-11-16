@@ -269,9 +269,9 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       // remove media from channel media list
       const updatedChannelMedias = { ...channelMedia };
       const filterMedia = updatedChannelMedias[channel.channel].filter((x) => x.mediaSlug !== channel.mediaSlug);
-      const findDefaultMedia = filterMedia.filter((x) => x.isDefault !== true);
-      const updatedFilterMedia = [...filterMedia];
-      if (findDefaultMedia.length === updatedFilterMedia.length) {
+      const findDefaultMedia = filterMedia.find((x) => x.isDefault === true);
+      const updatedFilterMedia: ChannelMediaObject[] = [...filterMedia];
+      if (!findDefaultMedia) {
         updatedFilterMedia[0].isDefault = true;
       }
       updatedChannelMedias[channel.channel] = updatedFilterMedia;

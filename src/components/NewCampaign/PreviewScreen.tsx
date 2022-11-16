@@ -7,10 +7,10 @@ import { campaignTypeMenu } from '../Forms/CampaignSetupForm/CampaignTypeInput';
 import { format } from 'date-fns';
 // import CustomButton from '../CustomButton';
 import { getSocialIcon } from '../Forms/CampaignSetupForm/SocialMediaTypeInput';
-import InstagramIcon from '../../assets/svg/socialIcons/InstagramLogo.svg';
-import TwitterIcon from '../../assets/svg/socialIcons/TwitterLogo.svg';
-import FacebookIcon from '../../assets/svg/socialIcons/FBLogo.svg';
-import TiktokIcon from '../../assets/svg/socialIcons/TikTokLogo.svg';
+import InstagramIcon from '../../assets/png/socialPlatForms/Instagram-Icon 2.png';
+import TwitterIcon from '../../assets/png/socialPlatForms/Twitter-logo 2.png';
+import FacebookIcon from '../../assets/png/socialPlatForms/FBLogo.png';
+import TiktokIcon from '../../assets/png/socialPlatForms/TikTok-icon-glyph 2.png';
 import './newCampaign.scss';
 
 // type CampaignPreviewTypes = {
@@ -109,23 +109,20 @@ const PreviewScreen: React.FC<ActionsProps> = ({
                   {x.key === 'Social Media Channels' || x.key === 'Tags' ? (
                     <Fragment>
                       {x.key === 'Social Media Channels' && (
-                        <div className="flex gap-4">
+                        <div className="socialIconsWrapper">
                           {x.value.map((y: string, i: number) => (
-                            <div key={i}>
+                            <div key={i} className="imageWrapper">
                               <img src={getIcon(y)} />
                             </div>
                           ))}
                         </div>
                       )}
-                      <div className="overflow-x-scroll">
+                      <div className="tagValueWrapper">
                         {x.key === 'Tags' && (
-                          <div className="flex">
+                          <div className="tagBar flex">
                             {x.value.map((tag: string, i: number) => (
-                              <span
-                                key={i}
-                                className="px-3 py-2 mt-1 mr-2 rounded-full bg-coolGray flex flex-row justify-between items-center"
-                              >
-                                <p className="text-xs">{tag}</p>
+                              <span key={i}>
+                                <p>{tag}</p>
                               </span>
                             ))}
                           </div>

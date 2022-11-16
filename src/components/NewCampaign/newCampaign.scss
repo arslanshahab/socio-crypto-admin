@@ -5,15 +5,36 @@
     h1 {
       @apply text-4xl;
     }
-    .campaignInfoOutline{
-        @apply border border-bluetiful  rounded-xl py-4 px-6 mt-6;
-        width: 60%;
-        .gridRow{
-            @apply grid grid-cols-3 gap-4 mb-4;
-            .secondCol{
-                @apply col-span-2;
+    .campaignInfoOutline {
+      @apply border border-bluetiful  rounded-xl py-4 px-6 mt-6;
+      width: 60%;
+      .gridRow {
+        @apply grid grid-cols-3 gap-4 mb-4;
+        .secondCol {
+          @apply col-span-2;
+          .socialIconsWrapper {
+            @apply flex gap-4;
+            .imageWrapper {
+              @apply w-5 h-5;
+              img {
+                @apply h-full w-full object-contain;
+              }
             }
+          }
+          .tagValueWrapper {
+            @apply overflow-x-scroll;
+            .tagBar {
+              @apply flex;
+              span{
+                @apply px-3 py-2 mt-1 mr-2 rounded-full bg-coolGray flex flex-row justify-between items-center;
+              }
+              p{
+                @apply text-xs;
+              }
+            }
+          }
         }
+      }
     }
   }
 }
