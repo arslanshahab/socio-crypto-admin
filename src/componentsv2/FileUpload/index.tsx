@@ -14,7 +14,7 @@ interface FileFormatSizeMap {
 
 interface Props {
   onFileSuccess: (data: FileObject, type: string) => void;
-  onFileError: (msg: string) => void;
+  onFileError?: (msg: string) => void;
   label: string;
   mediaType: string;
   updateLabel?: string;

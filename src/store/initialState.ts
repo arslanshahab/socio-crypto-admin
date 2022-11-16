@@ -1,4 +1,13 @@
-import { Alert, AlgorithmSpecs, CampaignState, ProfileTypes, StoreAlerts, StoreSettings, UserData } from '../types.d';
+import {
+  Alert,
+  AlgorithmSpecs,
+  CampaignState,
+  ChannelMediaTypes,
+  ProfileTypes,
+  StoreAlerts,
+  StoreSettings,
+  UserData,
+} from '../types.d';
 
 const initialAlgorithmState: AlgorithmSpecs = {
   pointValues: {
@@ -142,6 +151,27 @@ const coiin = {
   error: {},
 };
 
+const channelMedia: ChannelMediaTypes = {
+  twitter: {
+    first: [],
+    second: [],
+    third: [],
+  },
+  instagram: {
+    first: [],
+    second: [],
+    third: [],
+  },
+  facebook: {
+    first: [],
+    second: [],
+    third: [],
+  },
+  tiktok: {
+    first: [],
+  },
+};
+
 const initialState = {
   alerts: alerts,
   newCampaign: campaignInitState,
@@ -149,6 +179,7 @@ const initialState = {
   user: user,
   profile: profile,
   coiin,
+  channelMedia,
 };
 
 export default initialState;

@@ -60,10 +60,12 @@ const MediaSteps: FC<MediaStepsIProps> = ({
     case 1:
       return (
         <CampaignMedia
+          title="Upload your campaign image cover for the raiinmaker app"
           steps={steps}
           campaignImage={campaignImage}
           onCampaignImageSuccess={onCampaignImageSuccess}
           onError={onError}
+          isFileUpload={true}
         />
       );
     case 2:
@@ -141,10 +143,12 @@ const MediaSteps: FC<MediaStepsIProps> = ({
     default:
       return (
         <CampaignMedia
+          title="Upload your campaign image cover for the raiinmaker app"
           steps={steps}
           campaignImage={campaignImage}
           onCampaignImageSuccess={onCampaignImageSuccess}
           onError={onError}
+          isFileUpload={true}
         />
       );
   }

@@ -22,7 +22,7 @@ const ChannelMediaForm: React.FC<Props> = ({ channel, channelMedias, onChange })
 
   const onSuccess = (data: FileObject) => {
     const medias = [...channelMedia];
-    medias.push({ channel: channel, media: data, isDefault: medias.length < 1 ? true : false });
+    medias.push({ channel: channel, media: data, ratio: '', isDefault: medias.length < 1 ? true : false });
     setChannelMedia(medias);
     onChange(channel, medias);
   };

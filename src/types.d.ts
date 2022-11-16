@@ -1036,3 +1036,15 @@ export type CoiinReducerTypes = {
   coiinValue: string;
   loading: boolean;
 };
+
+export type ChannelMediaTypes = {
+  twitter: ChannelMediaRatio;
+  instagram: ChannelMediaRatio;
+  facebook: ChannelMediaRatio;
+  tiktok: { first: string[] };
+};
+export type ChannelMediaRatio = {
+  first: string[];
+  second: string[];
+  third: string[];
+};

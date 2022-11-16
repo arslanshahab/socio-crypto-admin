@@ -5,6 +5,7 @@ import settings from './settings';
 import user from './user';
 import profile from './profile';
 import { coiin } from './coiin';
+import { channelMedia } from './campaign';
 
 const rootReducer = combineReducers({
   alerts,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   user,
   profile,
   coiin,
+  channelMedia,
 });
 
 export default rootReducer;

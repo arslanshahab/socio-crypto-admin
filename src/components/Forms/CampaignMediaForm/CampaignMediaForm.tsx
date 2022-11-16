@@ -1,13 +1,18 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { ChannelMediaObject, FileObject } from '../../../types';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
 import Actions from '../../NewCampaign/Actions';
-import { updateCampaign } from '../../../store/actions/campaign';
+import {
+  channelMediaAction,
+  CHANNEL_MEDIA,
+  removeChannelMediaAction,
+  updateCampaign,
+} from '../../../store/actions/campaign';
 import './campaignMediaForm.scss';
 import MediaSteps from './MediaSteps';
 
@@ -74,6 +79,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Twitter.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'first', 'twitter'));
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setFirstTwitterMedia(updatedMedia);
@@ -88,6 +94,8 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Instagram.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'first', 'instagram'));
+
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setFirstInsagramMedia(updatedMedia);
@@ -102,6 +110,8 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Facebook.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'first', 'facebook'));
+
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setFirstFacebookMedia(updatedMedia);
@@ -116,6 +126,8 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Tiktok.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'first', 'tiktok'));
+
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setTiktokMedia(updatedMedia);
@@ -132,6 +144,8 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Twitter.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'second', 'twitter'));
+
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
 
@@ -147,6 +161,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Instagram.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'second', 'instagram'));
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setSecondInstagramMedia(updatedMedia);
@@ -161,6 +176,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Facebook.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'second', 'facebook'));
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setSecondFacebookMedia(updatedMedia);
@@ -177,6 +193,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Twitter.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'third', 'twitter'));
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setThirdTwitterMedia(updatedMedia);
@@ -191,6 +208,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Instagram.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'third', 'instagram'));
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setThirdInstagramMedia(updatedMedia);
@@ -205,6 +223,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           ratio,
           isDefault: channelMedia.Facebook.length < 1 ? true : false,
         };
+        dispatch(channelMediaAction(media, 'third', 'facebook'));
         updatedMedia.push(media);
         updatedChannelMedia.push(media);
         setThirdFacebookMedia(updatedMedia);
@@ -216,6 +235,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const removeChannelMedia = (index: number, channel: ChannelMediaObject, ratio: string) => {
     let updatedMedia: ChannelMediaObject[] = [];
     if (channelMedia[channel.channel].length > 1) {
+      dispatch(removeChannelMediaAction(ratio, channel.channel, index));
       if (ratio === '1x1') {
         if (channel.channel === 'Twitter') {
           updatedMedia = [...firstTwitterMedia];
@@ -267,10 +287,11 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       }
 
       // remove media from channel media list
-      const updatedChannelMedias = { ...channelMedia };
+      const updatedChannelMedias = channelMedia;
       const filterMedia = updatedChannelMedias[channel.channel].filter((x) => x.mediaSlug !== channel.mediaSlug);
       const findDefaultMedia = filterMedia.find((x) => x.isDefault === true);
-      const updatedFilterMedia: ChannelMediaObject[] = [...filterMedia];
+      const updatedFilterMedia: ChannelMediaObject[] = filterMedia;
+      debugger;
       if (!findDefaultMedia) {
         updatedFilterMedia[0].isDefault = true;
       }

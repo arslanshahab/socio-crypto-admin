@@ -54,6 +54,9 @@
 // Campaign media styles
 .campaignMediaWrapper {
   @apply text-center;
+  p{
+    @apply text-xl;
+  }
   .imageContent {
     @apply flex justify-center mt-8;
     .imageWrapper {

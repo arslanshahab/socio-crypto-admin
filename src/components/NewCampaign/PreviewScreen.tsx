@@ -1,17 +1,18 @@
-import { Box } from '@material-ui/core';
 import React, { Fragment } from 'react';
 import { ActionsProps } from './StepsContent';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
 import Actions from './Actions';
-import { campaignTypeMenu } from '../Forms/CampaignSetupForm/CampaignTypeInput';
+// import { campaignTypeMenu } from '../Forms/CampaignSetupForm/CampaignTypeInput';
 import { format } from 'date-fns';
 // import CustomButton from '../CustomButton';
-import { getSocialIcon } from '../Forms/CampaignSetupForm/SocialMediaTypeInput';
+// import { getSocialIcon } from '../Forms/CampaignSetupForm/SocialMediaTypeInput';
 import InstagramIcon from '../../assets/png/socialPlatForms/Instagram-Icon 2.png';
 import TwitterIcon from '../../assets/png/socialPlatForms/Twitter-logo 2.png';
 import FacebookIcon from '../../assets/png/socialPlatForms/FBLogo.png';
 import TiktokIcon from '../../assets/png/socialPlatForms/TikTok-icon-glyph 2.png';
 import './newCampaign.scss';
+import CampaignMedia from '../Forms/CampaignMediaForm/CampaignMedia';
+import { useDispatch, useSelector } from 'react-redux';
 
 // type CampaignPreviewTypes = {
 //   key: string;
@@ -27,6 +28,8 @@ const PreviewScreen: React.FC<ActionsProps> = ({
   finalStep,
 }) => {
   const campaign = useStoreCampaignSelector();
+  const channelMediaList = useSelector((state: { channelMedia: any }) => state.channelMedia);
+  console.log('channelMediaReducer-----------------', channelMediaList);
   const submit = () => {
     if (handleSubmit) {
       handleSubmit({ ...campaign });
@@ -80,10 +83,10 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       key: 'Description',
       value: campaign.description,
     },
-    {
-      key: 'Tagline',
-      value: campaign.tagline,
-    },
+    // {
+    //   key: 'Tagline',
+    //   value: campaign.tagline,
+    // },
     {
       key: 'Landing Page URL',
       value: campaign.target,
@@ -136,6 +139,13 @@ const PreviewScreen: React.FC<ActionsProps> = ({
               </div>
             );
           })}
+        </div>
+        <div className="campaignMediaWrapper">
+          <CampaignMedia
+            title="Your campaign image cover for the raiinmaker app"
+            campaignImage={campaign.campaignImage}
+            isFileUpload={false}
+          />
         </div>
       </div>
       <Actions

@@ -11,7 +11,7 @@ const persistConfig = {
   storage,
   stateReconciler: autoMergeLevel2,
   version: 2,
-  blacklist: ['newCampaign'],
+  blacklist: ['newCampaign', 'channelMedia'],
 };
 
 // eslint-disable-next-line
