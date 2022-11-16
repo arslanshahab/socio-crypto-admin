@@ -36,7 +36,6 @@ export const removeChannelMediaAction = (
   channel: string,
   index: number,
 ): PayloadAction<{ ratio: string; channel: string; index: number }> => {
-  debugger;
   return {
     type: REMOVE_CHANNEL_MEDIA,
     payload: { ratio, channel, index },

@@ -12,7 +12,11 @@ import FacebookIcon from '../../assets/png/socialPlatForms/FBLogo.png';
 import TiktokIcon from '../../assets/png/socialPlatForms/TikTok-icon-glyph 2.png';
 import './newCampaign.scss';
 import CampaignMedia from '../Forms/CampaignMediaForm/CampaignMedia';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import ChannelMedia from '../Forms/CampaignMediaForm/ChannelMedia';
+import { ChannelMediaTypes } from '../../types';
+// import twitterPhone from '../../assets';
+import twitterPhone from '../../assets/png/medias/twitter.png';
 
 // type CampaignPreviewTypes = {
 //   key: string;
@@ -28,8 +32,8 @@ const PreviewScreen: React.FC<ActionsProps> = ({
   finalStep,
 }) => {
   const campaign = useStoreCampaignSelector();
-  const channelMediaList = useSelector((state: { channelMedia: any }) => state.channelMedia);
-  console.log('channelMediaReducer-----------------', channelMediaList);
+  const channelMediaList = useSelector((state: { channelMedia: ChannelMediaTypes }) => state.channelMedia);
+  //   console.log('channelMediaReducer-----------------', channelMediaList);
   const submit = () => {
     if (handleSubmit) {
       handleSubmit({ ...campaign });
@@ -97,6 +101,14 @@ const PreviewScreen: React.FC<ActionsProps> = ({
     },
   ];
 
+  const channelMedias = [
+    {
+      firstTwitterMedia: channelMediaList.twitter.first,
+      socialPlatFormImage: twitterPhone,
+      channelName: 'Twitter',
+    },
+  ];
+
   return (
     <div className="previewScreenWrapper">
       <div className="campaignInfoWrapper">
@@ -146,6 +158,15 @@ const PreviewScreen: React.FC<ActionsProps> = ({
             campaignImage={campaign.campaignImage}
             isFileUpload={false}
           />
+          {channelMedias.map((x, i) => (
+            <ChannelMedia
+              key={i}
+              steps={2}
+              firstTwitterMedia={x.firstTwitterMedia}
+              socialPlatFormImage={x.socialPlatFormImage}
+              channelName={x.channelName}
+            />
+          ))}
         </div>
       </div>
       <Actions

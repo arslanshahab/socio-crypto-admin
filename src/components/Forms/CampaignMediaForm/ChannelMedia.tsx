@@ -7,16 +7,16 @@ import Slider from 'react-slick';
 import { TiDelete } from 'react-icons/ti';
 
 interface MediaStepsIProps {
-  steps: number;
-  socialMediaType: string[];
-  channelMedia: ChannelMediaObject[];
-  onError: (msg: string) => void;
-  onSuccess: (channel: string, list: ChannelMediaObject[]) => void;
-  channelName: string;
+  steps?: number;
+  socialMediaType?: string[];
+  channelMedia?: ChannelMediaObject[];
+  onError?: (msg: string) => void;
+  onSuccess?: (channel: string, list: ChannelMediaObject[]) => void;
+  channelName?: string;
   socialPlatFormImage: string;
   secondMobileImage?: string;
   horizontalVideo?: string;
-  handleChannelMedia: (channel: string, ratio: string, data: FileObject, mediaSlug: string) => void;
+  handleChannelMedia?: (channel: string, ratio: string, data: FileObject, mediaSlug: string) => void;
   firstTwitterMedia?: ChannelMediaObject[];
   secondTwitterMedia?: ChannelMediaObject[];
   thirdTwitterMedia?: ChannelMediaObject[];
@@ -27,7 +27,7 @@ interface MediaStepsIProps {
   secondFacebookMedia?: ChannelMediaObject[];
   thirdFacebookMedia?: ChannelMediaObject[];
   tiktokMedia?: ChannelMediaObject[];
-  removeChannelMedia: (index: number, data: ChannelMediaObject, ratio: string) => void;
+  removeChannelMedia?: (index: number, data: ChannelMediaObject, ratio: string) => void;
 }
 
 const settings = {
@@ -61,23 +61,24 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
 }) => {
   const handleTwitterMedia = (data: FileObject) => {
     const imageSlug = `${channelName}${'1x1'}${data.filename}`;
-    if (handleChannelMedia) handleChannelMedia(channelName, '1x1', data, imageSlug);
+    if (handleChannelMedia && channelName) handleChannelMedia(channelName, '1x1', data, imageSlug);
   };
 
   const handle3by4Media = (data: FileObject) => {
     const imageSlug = `${channelName}${'3x4'}${data.filename}`;
-    if (handleChannelMedia) handleChannelMedia(channelName, '3x4', data, imageSlug);
+    if (handleChannelMedia && channelName) handleChannelMedia(channelName, '3x4', data, imageSlug);
   };
 
   const handleHzMedia = (data: FileObject) => {
-    if (!data.format.includes('video')) return onError('Invalid Format');
+    if (!data.format.includes('video') && onError) return onError('Invalid Format');
     const imageSlug = `${channelName}${'hz'}${data.filename}`;
-    if (handleChannelMedia) handleChannelMedia(channelName, 'hz', data, imageSlug);
+    if (handleChannelMedia && channelName) handleChannelMedia(channelName, 'hz', data, imageSlug);
   };
 
   const handleRemoveMedia = (index: number, data: ChannelMediaObject, ratio: string) => {
-    removeChannelMedia(index, data, ratio);
+    if (removeChannelMedia) removeChannelMedia(index, data, ratio);
   };
+  console.log('first channel media---------', firstTwitterMedia);
 
   return (
     <div className="channelMediaWrapper">

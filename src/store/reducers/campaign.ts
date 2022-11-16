@@ -18,7 +18,6 @@ export const channelMedia = createReducer(initialState.channelMedia, {
     state[action.payload.channel][action.payload.ratio].push(action.payload.data);
   },
   [REMOVE_CHANNEL_MEDIA]: (state, action: { payload: { ratio: string; channel: string; index: number } }) => {
-    debugger;
     state[action.payload.channel.toLocaleLowerCase()][screenSize[action.payload.ratio]].splice(action.payload.index, 1);
   },
 });

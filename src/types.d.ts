@@ -1044,7 +1044,7 @@ export type ChannelMediaTypes = {
   tiktok: { first: string[] };
 };
 export type ChannelMediaRatio = {
-  first: string[];
-  second: string[];
-  third: string[];
+  first: ChannelMediaObject[];
+  second: ChannelMediaObject[];
+  third: ChannelMediaObject[];
 };
