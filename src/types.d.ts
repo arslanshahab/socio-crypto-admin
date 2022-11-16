@@ -1041,7 +1041,7 @@ export type ChannelMediaTypes = {
   twitter: ChannelMediaRatio;
   instagram: ChannelMediaRatio;
   facebook: ChannelMediaRatio;
-  tiktok: { first: string[] };
+  tiktok: { first: ChannelMediaObject[] };
 };
 export type ChannelMediaRatio = {
   first: ChannelMediaObject[];

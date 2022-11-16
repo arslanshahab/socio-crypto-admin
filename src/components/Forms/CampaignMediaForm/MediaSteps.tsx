@@ -85,6 +85,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           secondTwitterMedia={secondTwitterMedia}
           thirdTwitterMedia={thirdTwitterMedia}
           removeChannelMedia={removeChannelMedia}
+          title="Upload media you want users to view & share on Twitter"
         />
       );
     case 3:
@@ -104,6 +105,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           secondInstagramMedia={secondInstagramMedia}
           thirdInstagramMedia={thirdInstagramMedia}
           removeChannelMedia={removeChannelMedia}
+          title="Upload media you want users to view & share on Instagram"
         />
       );
     case 4:
@@ -123,6 +125,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           secondFacebookMedia={secondFacebookMedia}
           thirdFacebookMedia={thirdFacebookMedia}
           removeChannelMedia={removeChannelMedia}
+          title="Upload media you want users to view & share on Facebook"
         />
       );
     case 5:
@@ -138,6 +141,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           handleChannelMedia={handleChannelMedia}
           tiktokMedia={tiktokMedia}
           removeChannelMedia={removeChannelMedia}
+          title="Upload media you want users to view & share on Facebook"
         />
       );
     default:

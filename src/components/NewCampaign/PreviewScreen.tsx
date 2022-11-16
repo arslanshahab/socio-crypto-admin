@@ -17,6 +17,15 @@ import ChannelMedia from '../Forms/CampaignMediaForm/ChannelMedia';
 import { ChannelMediaTypes } from '../../types';
 // import twitterPhone from '../../assets';
 import twitterPhone from '../../assets/png/medias/twitter.png';
+import instagramPhone from '../../assets/png/medias/instagram.png';
+import facebookPhone from '../../assets/png/medias/facebook.png';
+import tiktokPhone from '../../assets/png/medias/tiktok.png';
+import twitterPhone2 from '../../assets/png/medias/twitter3x4.png';
+import twitterHz from '../../assets/png/medias/twitterHz.png';
+import instagramPhone2 from '../../assets/png/medias/instagram3x4.png';
+import instagramHz from '../../assets/png/medias/instagramHz.png';
+import facebookPhone2 from '../../assets/png/medias/facebook3x4.png';
+import facebookHz from '../../assets/png/medias/facebookHz.png';
 
 // type CampaignPreviewTypes = {
 //   key: string;
@@ -103,9 +112,44 @@ const PreviewScreen: React.FC<ActionsProps> = ({
 
   const channelMedias = [
     {
-      firstTwitterMedia: channelMediaList.twitter.first,
-      socialPlatFormImage: twitterPhone,
+      step: 2,
       channelName: 'Twitter',
+      firstTwitterMedia: channelMediaList.twitter.first,
+      secondTwitterMedia: channelMediaList.twitter.second,
+      thirdTwitterMedia: channelMediaList.twitter.third,
+      socialPlatFormImage: twitterPhone,
+      secondMobileImage: twitterPhone2,
+      horizontalVideo: twitterHz,
+      title: 'Your Twitter Media',
+    },
+    {
+      step: 3,
+      channelName: 'Instagram',
+      firstTwitterMedia: channelMediaList.instagram.first,
+      secondTwitterMedia: channelMediaList.instagram.second,
+      thirdTwitterMedia: channelMediaList.instagram.third,
+      socialPlatFormImage: instagramPhone,
+      secondMobileImage: instagramPhone2,
+      horizontalVideo: instagramHz,
+      title: 'Your Instagram Media',
+    },
+    {
+      step: 4,
+      channelName: 'Facebook',
+      firstTwitterMedia: channelMediaList.facebook.first,
+      secondTwitterMedia: channelMediaList.facebook.second,
+      thirdTwitterMedia: channelMediaList.facebook.third,
+      socialPlatFormImage: facebookPhone,
+      secondMobileImage: facebookPhone2,
+      horizontalVideo: facebookHz,
+      title: 'Your Facebook Media',
+    },
+    {
+      step: 5,
+      channelName: 'Tiktok',
+      firstTwitterMedia: channelMediaList.tiktok.first,
+      socialPlatFormImage: tiktokPhone,
+      title: 'Your Tiktok Media',
     },
   ];
 
@@ -161,10 +205,16 @@ const PreviewScreen: React.FC<ActionsProps> = ({
           {channelMedias.map((x, i) => (
             <ChannelMedia
               key={i}
-              steps={2}
-              firstTwitterMedia={x.firstTwitterMedia}
-              socialPlatFormImage={x.socialPlatFormImage}
+              steps={x.step}
               channelName={x.channelName}
+              firstTwitterMedia={x.firstTwitterMedia}
+              secondTwitterMedia={x.secondTwitterMedia}
+              thirdTwitterMedia={x.thirdTwitterMedia}
+              socialPlatFormImage={x.socialPlatFormImage}
+              secondMobileImage={x.secondMobileImage}
+              horizontalVideo={x.horizontalVideo}
+              isPreview={true}
+              title={x.title}
             />
           ))}
         </div>

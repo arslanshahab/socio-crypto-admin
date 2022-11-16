@@ -28,6 +28,8 @@ interface MediaStepsIProps {
   thirdFacebookMedia?: ChannelMediaObject[];
   tiktokMedia?: ChannelMediaObject[];
   removeChannelMedia?: (index: number, data: ChannelMediaObject, ratio: string) => void;
+  isPreview?: boolean;
+  title: string;
 }
 
 const settings = {
@@ -58,6 +60,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
   thirdFacebookMedia,
   tiktokMedia,
   removeChannelMedia,
+  isPreview,
+  title,
 }) => {
   const handleTwitterMedia = (data: FileObject) => {
     const imageSlug = `${channelName}${'1x1'}${data.filename}`;
@@ -78,11 +82,10 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
   const handleRemoveMedia = (index: number, data: ChannelMediaObject, ratio: string) => {
     if (removeChannelMedia) removeChannelMedia(index, data, ratio);
   };
-  console.log('first channel media---------', firstTwitterMedia);
 
   return (
     <div className="channelMediaWrapper">
-      <p>Upload media you want users to view & share on {channelName}</p>
+      <p>{title}</p>
       <div className="flex justify-evenly">
         {/* // ----------1x1 media----------- */}
         <div>
@@ -109,8 +112,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
               )}
               {steps === 3 && (
                 <Slider {...settings} arrows>
-                  {firstInstagramMedia?.length &&
-                    firstInstagramMedia.map((item, i) => (
+                  {firstTwitterMedia?.length &&
+                    firstTwitterMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
                         <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
                           <TiDelete />
@@ -128,8 +131,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
               )}
               {steps === 4 && (
                 <Slider {...settings} arrows>
-                  {firstFacebookMedia?.length &&
-                    firstFacebookMedia.map((item, i) => (
+                  {firstTwitterMedia?.length &&
+                    firstTwitterMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
                         <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
                           <TiDelete />
@@ -147,8 +150,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
               )}
               {steps === 5 && (
                 <Slider {...settings} arrows>
-                  {tiktokMedia?.length &&
-                    tiktokMedia.map((item, i) => (
+                  {firstTwitterMedia?.length &&
+                    firstTwitterMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
                         <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
                           <TiDelete />
@@ -169,15 +172,17 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
               </div>
             </div>
           </div>
-          <div className="flex justify-center">
-            <FileUpload
-              label="1&#215;1 Photo/Video"
-              updateLabel="Update Campaign Image"
-              mediaType="sharedMedia"
-              onFileSuccess={handleTwitterMedia}
-              onFileError={onError}
-            />
-          </div>
+          {!isPreview && (
+            <div className="flex justify-center">
+              <FileUpload
+                label="1&#215;1 Photo/Video"
+                updateLabel="Update Campaign Image"
+                mediaType="sharedMedia"
+                onFileSuccess={handleTwitterMedia}
+                onFileError={onError}
+              />
+            </div>
+          )}
         </div>
         {/* // ----------- 3x4--------- */}
         {secondMobileImage && horizontalVideo && (
@@ -206,8 +211,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   )}
                   {steps === 3 && (
                     <Slider {...settings}>
-                      {secondInstagramMedia?.length &&
-                        secondInstagramMedia.map((item, i) => (
+                      {secondTwitterMedia?.length &&
+                        secondTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
                               <TiDelete />
@@ -225,8 +230,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   )}
                   {steps === 4 && (
                     <Slider {...settings} arrows>
-                      {secondFacebookMedia?.length &&
-                        secondFacebookMedia.map((item, i) => (
+                      {secondTwitterMedia?.length &&
+                        secondTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
                               <TiDelete />
@@ -247,15 +252,17 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center">
-                <FileUpload
-                  label="3&#215;4 Photo/Video"
-                  updateLabel="Update Campaign Image"
-                  mediaType="sharedMedia"
-                  onFileSuccess={handle3by4Media}
-                  onFileError={onError}
-                />
-              </div>
+              {!isPreview && (
+                <div className="flex justify-center">
+                  <FileUpload
+                    label="3&#215;4 Photo/Video"
+                    updateLabel="Update Campaign Image"
+                    mediaType="sharedMedia"
+                    onFileSuccess={handle3by4Media}
+                    onFileError={onError}
+                  />
+                </div>
+              )}
             </div>
             {/* // -----------horizontal--------- */}
             <div>
@@ -278,8 +285,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   )}
                   {steps === 3 && (
                     <Slider {...settings} arrows>
-                      {thirdInstagramMedia?.length &&
-                        thirdInstagramMedia.map((item, i) => (
+                      {thirdTwitterMedia?.length &&
+                        thirdTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
                               <TiDelete />
@@ -293,8 +300,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   )}
                   {steps === 4 && (
                     <Slider {...settings} arrows>
-                      {thirdFacebookMedia?.length &&
-                        thirdFacebookMedia.map((item, i) => (
+                      {thirdTwitterMedia?.length &&
+                        thirdTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
                               <TiDelete />
@@ -311,15 +318,17 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center">
-                <FileUpload
-                  label="Horizontal Video"
-                  updateLabel="Update Campaign Image"
-                  mediaType="sharedMedia"
-                  onFileSuccess={handleHzMedia}
-                  onFileError={onError}
-                />
-              </div>
+              {!isPreview && (
+                <div className="flex justify-center">
+                  <FileUpload
+                    label="Horizontal Video"
+                    updateLabel="Update Campaign Image"
+                    mediaType="sharedMedia"
+                    onFileSuccess={handleHzMedia}
+                    onFileError={onError}
+                  />
+                </div>
+              )}
             </div>
           </Fragment>
         )}
