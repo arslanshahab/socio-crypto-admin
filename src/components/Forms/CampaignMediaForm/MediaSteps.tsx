@@ -65,7 +65,6 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           campaignImage={campaignImage}
           onCampaignImageSuccess={onCampaignImageSuccess}
           onError={onError}
-          isFileUpload={true}
         />
       );
     case 2:
@@ -101,9 +100,10 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           secondMobileImage={instagramPhone2}
           horizontalVideo={instagramHz}
           handleChannelMedia={handleChannelMedia}
-          firstInstagramMedia={firstInstagramMedia}
-          secondInstagramMedia={secondInstagramMedia}
-          thirdInstagramMedia={thirdInstagramMedia}
+          firstTwitterMedia={firstInstagramMedia}
+          //   firstInstagramMedia={firstInstagramMedia}
+          secondTwitterMedia={secondInstagramMedia}
+          thirdTwitterMedia={thirdInstagramMedia}
           removeChannelMedia={removeChannelMedia}
           title="Upload media you want users to view & share on Instagram"
         />
@@ -121,9 +121,9 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           secondMobileImage={facebookPhone2}
           horizontalVideo={facebookHz}
           handleChannelMedia={handleChannelMedia}
-          firstFacebookMedia={firstFacebookMedia}
-          secondFacebookMedia={secondFacebookMedia}
-          thirdFacebookMedia={thirdFacebookMedia}
+          firstTwitterMedia={firstFacebookMedia}
+          secondTwitterMedia={secondFacebookMedia}
+          thirdTwitterMedia={thirdFacebookMedia}
           removeChannelMedia={removeChannelMedia}
           title="Upload media you want users to view & share on Facebook"
         />
@@ -139,7 +139,7 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           channelName={'Tiktok'}
           socialPlatFormImage={tiktokPhone}
           handleChannelMedia={handleChannelMedia}
-          tiktokMedia={tiktokMedia}
+          firstTwitterMedia={tiktokMedia}
           removeChannelMedia={removeChannelMedia}
           title="Upload media you want users to view & share on Facebook"
         />
@@ -152,7 +152,6 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           campaignImage={campaignImage}
           onCampaignImageSuccess={onCampaignImageSuccess}
           onError={onError}
-          isFileUpload={true}
         />
       );
   }

@@ -9,16 +9,10 @@ interface MediaStepsIProps {
   campaignImage: FileObject;
   onCampaignImageSuccess?: (data: FileObject) => void;
   onError?: (msg: string) => void;
-  isFileUpload: boolean;
+  isPreview?: boolean;
 }
 
-const CampaignMedia: FC<MediaStepsIProps> = ({
-  title,
-  onCampaignImageSuccess,
-  campaignImage,
-  onError,
-  isFileUpload,
-}) => {
+const CampaignMedia: FC<MediaStepsIProps> = ({ title, onCampaignImageSuccess, campaignImage, onError, isPreview }) => {
   const handleCampaignImageSuccess = (data: FileObject) => {
     if (onCampaignImageSuccess) onCampaignImageSuccess(data);
   };
@@ -34,7 +28,7 @@ const CampaignMedia: FC<MediaStepsIProps> = ({
           </div>
         </div>
       </div>
-      {isFileUpload && (
+      {!isPreview && (
         <div className="flex justify-center">
           <FileUpload
             label="Photo"

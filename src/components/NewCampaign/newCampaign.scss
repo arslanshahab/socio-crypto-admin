@@ -25,10 +25,10 @@
             @apply overflow-x-scroll;
             .tagBar {
               @apply flex;
-              span{
+              span {
                 @apply px-3 py-2 mt-1 mr-2 rounded-full bg-coolGray flex flex-row justify-between items-center;
               }
-              p{
+              p {
                 @apply text-xs;
               }
             }
@@ -38,11 +38,26 @@
     }
   }
   //!-----------campaign media----------
-  .campaignMediaWrapper{
+  .campaignMediaPreview {
     @apply mt-8;
-    // h1{
-    //     @apply text-2xl;
-    // }
+  }
+  .channelDetailsPreview {
+    @apply w-full mt-6;
+    .socialIcons {
+      @apply flex justify-center;
+      .imageWrapper {
+        @apply w-14 h-14;
+        img {
+            @apply w-full h-full object-scale-down;
+        }
+      }
+    }
+    .channelTemplates {
+      @apply grid grid-cols-2 gap-4 mb-10;
+      .templateOutline {
+        @apply border border-bluetiful rounded-3xl h-44 py-2 px-4 text-grayWeb overflow-y-auto;
+      }
+    }
   }
 }
 //-------

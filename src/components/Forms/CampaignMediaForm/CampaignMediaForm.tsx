@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { ChannelMediaObject, FileObject } from '../../../types';
+import { ChannelMediaObject, ChannelMediaTypes, FileObject } from '../../../types';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
@@ -22,6 +22,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const socialMediaType = campaign.config.socialMediaType;
   const [campaignImage, setCampaignImage] = useState(campaign.campaignImage);
   const [channelMedia, setChannelMedia] = useState(campaign.config.channelMedia);
+  const channelMediaList = useSelector((state: { channelMedia: ChannelMediaTypes }) => state.channelMedia);
 
   const [steps, setSteps] = useState<number>(1);
   const [firstTwitterMedia, setFirstTwitterMedia] = useState<ChannelMediaObject[]>(
@@ -84,6 +85,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         updatedChannelMedia.push(media);
         setFirstTwitterMedia(updatedMedia);
       }
+      debugger;
       if (channel === 'Instagram') {
         updatedChannelMedia = [...firstInstagramMedia, ...secondInstagramMedia, ...thirdInstagramMedia];
         updatedMedia = [...firstInstagramMedia];
@@ -136,7 +138,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     if (ratio === '3x4') {
       if (channel === 'Twitter') {
         updatedMedia = [...secondTwitterMedia];
-        updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
+        // updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
         const media = {
           channel,
           media: data,
@@ -185,7 +187,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     if (ratio === 'hz') {
       if (channel === 'Twitter') {
         updatedMedia = [...thirdTwitterMedia];
-        updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
+        // updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
         const media = {
           channel,
           media: data,
@@ -233,58 +235,58 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   };
 
   const removeChannelMedia = (index: number, channel: ChannelMediaObject, ratio: string) => {
-    let updatedMedia: ChannelMediaObject[] = [];
+    // let updatedMedia: ChannelMediaObject[] = [];
     if (channelMedia[channel.channel].length > 1) {
       dispatch(removeChannelMediaAction(ratio, channel.channel, index));
-      if (ratio === '1x1') {
-        if (channel.channel === 'Twitter') {
-          updatedMedia = [...firstTwitterMedia];
-          updatedMedia.splice(index, 1);
-          setFirstTwitterMedia(updatedMedia);
-        } else if (channel.channel === 'Instagram') {
-          updatedMedia = [...firstInstagramMedia];
-          updatedMedia.splice(index, 1);
-          setFirstInsagramMedia(updatedMedia);
-        } else if (channel.channel === 'Facebook') {
-          updatedMedia = [...firstFacebookMedia];
-          updatedMedia.splice(index, 1);
-          setFirstFacebookMedia(updatedMedia);
-        } else if (channel.channel === 'Tiktok') {
-          updatedMedia = [...tiktokMedia];
-          updatedMedia.splice(index, 1);
-          setTiktokMedia(updatedMedia);
-        }
-      }
-      if (ratio === '3x4') {
-        if (channel.channel === 'Twitter') {
-          updatedMedia = [...secondTwitterMedia];
-          updatedMedia.splice(index, 1);
-          setSecondTwitterMedia(updatedMedia);
-        } else if (channel.channel === 'Instagram') {
-          updatedMedia = [...secondInstagramMedia];
-          updatedMedia.splice(index, 1);
-          setSecondInstagramMedia(updatedMedia);
-        } else if (channel.channel === 'Facebook') {
-          updatedMedia = [...secondFacebookMedia];
-          updatedMedia.splice(index, 1);
-          setSecondFacebookMedia(updatedMedia);
-        }
-      }
-      if (ratio === 'hz') {
-        if (channel.channel === 'Twitter') {
-          updatedMedia = [...thirdTwitterMedia];
-          updatedMedia.splice(index, 1);
-          setThirdTwitterMedia(updatedMedia);
-        } else if (channel.channel === 'Instagram') {
-          updatedMedia = [...thirdInstagramMedia];
-          updatedMedia.splice(index, 1);
-          setThirdInstagramMedia(updatedMedia);
-        } else if (channel.channel === 'Facebook') {
-          updatedMedia = [...thirdFacebookMedia];
-          updatedMedia.splice(index, 1);
-          setThirdFacebookMedia(updatedMedia);
-        }
-      }
+      //   if (ratio === '1x1') {
+      //     if (channel.channel === 'Twitter') {
+      //       //   updatedMedia = [...firstTwitterMedia];
+      //       //   updatedMedia.splice(index, 1);
+      //       //   setFirstTwitterMedia(updatedMedia);
+      //     } else if (channel.channel === 'Instagram') {
+      //       updatedMedia = [...firstInstagramMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setFirstInsagramMedia(updatedMedia);
+      //     } else if (channel.channel === 'Facebook') {
+      //       updatedMedia = [...firstFacebookMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setFirstFacebookMedia(updatedMedia);
+      //     } else if (channel.channel === 'Tiktok') {
+      //       updatedMedia = [...tiktokMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setTiktokMedia(updatedMedia);
+      //     }
+      //   }
+      //   if (ratio === '3x4') {
+      //     if (channel.channel === 'Twitter') {
+      //       updatedMedia = [...secondTwitterMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setSecondTwitterMedia(updatedMedia);
+      //     } else if (channel.channel === 'Instagram') {
+      //       updatedMedia = [...secondInstagramMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setSecondInstagramMedia(updatedMedia);
+      //     } else if (channel.channel === 'Facebook') {
+      //       updatedMedia = [...secondFacebookMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setSecondFacebookMedia(updatedMedia);
+      //     }
+      //   }
+      //   if (ratio === 'hz') {
+      //     if (channel.channel === 'Twitter') {
+      //       updatedMedia = [...thirdTwitterMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setThirdTwitterMedia(updatedMedia);
+      //     } else if (channel.channel === 'Instagram') {
+      //       updatedMedia = [...thirdInstagramMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setThirdInstagramMedia(updatedMedia);
+      //     } else if (channel.channel === 'Facebook') {
+      //       updatedMedia = [...thirdFacebookMedia];
+      //       updatedMedia.splice(index, 1);
+      //       setThirdFacebookMedia(updatedMedia);
+      //     }
+      //   }
 
       // remove media from channel media list
       const updatedChannelMedias = channelMedia;
@@ -375,18 +377,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         socialMediaType={socialMediaType}
         onSuccess={onSuccess}
         onError={onError}
-        firstTwitterMedia={firstTwitterMedia}
+        firstTwitterMedia={channelMediaList.twitter.first}
+        secondTwitterMedia={channelMediaList.twitter.second}
+        thirdTwitterMedia={channelMediaList.twitter.third}
+        firstInstagramMedia={channelMediaList.instagram.first}
+        secondInstagramMedia={channelMediaList.instagram.second}
+        thirdInstagramMedia={channelMediaList.instagram.third}
+        firstFacebookMedia={channelMediaList.facebook.first}
+        secondFacebookMedia={channelMediaList.facebook.second}
+        thirdFacebookMedia={channelMediaList.facebook.third}
+        tiktokMedia={channelMediaList.tiktok.first}
         handleChannelMedia={handleChannelMedias}
-        firstInstagramMedia={firstInstagramMedia}
-        // handleSecondMedia={handleChannelMedias}
-        secondTwitterMedia={secondTwitterMedia}
-        secondInstagramMedia={secondInstagramMedia}
-        thirdTwitterMedia={thirdTwitterMedia}
-        thirdInstagramMedia={thirdInstagramMedia}
-        firstFacebookMedia={firstFacebookMedia}
-        secondFacebookMedia={secondFacebookMedia}
-        thirdFacebookMedia={thirdFacebookMedia}
-        tiktokMedia={tiktokMedia}
         removeChannelMedia={removeChannelMedia}
       />
       {/* <Box className="campaignMediaFormOutline">

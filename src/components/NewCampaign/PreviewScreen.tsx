@@ -42,7 +42,6 @@ const PreviewScreen: React.FC<ActionsProps> = ({
 }) => {
   const campaign = useStoreCampaignSelector();
   const channelMediaList = useSelector((state: { channelMedia: ChannelMediaTypes }) => state.channelMedia);
-  //   console.log('channelMediaReducer-----------------', channelMediaList);
   const submit = () => {
     if (handleSubmit) {
       handleSubmit({ ...campaign });
@@ -96,10 +95,6 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       key: 'Description',
       value: campaign.description,
     },
-    // {
-    //   key: 'Tagline',
-    //   value: campaign.tagline,
-    // },
     {
       key: 'Landing Page URL',
       value: campaign.target,
@@ -121,6 +116,8 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       secondMobileImage: twitterPhone2,
       horizontalVideo: twitterHz,
       title: 'Your Twitter Media',
+      isActive: Boolean(channelMediaList.twitter.first.length),
+      twitterTempates: campaign.config.channelTemplates.Twitter,
     },
     {
       step: 3,
@@ -132,6 +129,8 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       secondMobileImage: instagramPhone2,
       horizontalVideo: instagramHz,
       title: 'Your Instagram Media',
+      isActive: Boolean(channelMediaList.instagram.first.length),
+      twitterTempates: campaign.config.channelTemplates.Instagram,
     },
     {
       step: 4,
@@ -143,6 +142,8 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       secondMobileImage: facebookPhone2,
       horizontalVideo: facebookHz,
       title: 'Your Facebook Media',
+      isActive: Boolean(channelMediaList.facebook.first.length),
+      twitterTempates: campaign.config.channelTemplates.Facebook,
     },
     {
       step: 5,
@@ -150,6 +151,8 @@ const PreviewScreen: React.FC<ActionsProps> = ({
       firstTwitterMedia: channelMediaList.tiktok.first,
       socialPlatFormImage: tiktokPhone,
       title: 'Your Tiktok Media',
+      isActive: Boolean(channelMediaList.tiktok.first.length),
+      twitterTempates: campaign.config.channelTemplates.Tiktok,
     },
   ];
 
@@ -196,28 +199,44 @@ const PreviewScreen: React.FC<ActionsProps> = ({
             );
           })}
         </div>
-        <div className="campaignMediaWrapper">
+        <div className="campaignMediaPreview">
           <CampaignMedia
             title="Your campaign image cover for the raiinmaker app"
             campaignImage={campaign.campaignImage}
-            isFileUpload={false}
+            isPreview={true}
           />
-          {channelMedias.map((x, i) => (
-            <ChannelMedia
-              key={i}
-              steps={x.step}
-              channelName={x.channelName}
-              firstTwitterMedia={x.firstTwitterMedia}
-              secondTwitterMedia={x.secondTwitterMedia}
-              thirdTwitterMedia={x.thirdTwitterMedia}
-              socialPlatFormImage={x.socialPlatFormImage}
-              secondMobileImage={x.secondMobileImage}
-              horizontalVideo={x.horizontalVideo}
-              isPreview={true}
-              title={x.title}
-            />
-          ))}
         </div>
+        {channelMedias.map((x, i) => {
+          if (campaign.config.socialMediaType.includes(x.channelName))
+            return (
+              <div key={i} className="channelDetailsPreview">
+                <div className="socialIcons">
+                  <div className="socialIcons">
+                    <img src={getIcon(x.channelName)} />
+                  </div>
+                </div>
+                <ChannelMedia
+                  steps={x.step}
+                  channelName={x.channelName}
+                  firstTwitterMedia={x.firstTwitterMedia}
+                  secondTwitterMedia={x.secondTwitterMedia}
+                  thirdTwitterMedia={x.thirdTwitterMedia}
+                  socialPlatFormImage={x.socialPlatFormImage}
+                  secondMobileImage={x.secondMobileImage}
+                  horizontalVideo={x.horizontalVideo}
+                  isPreview={true}
+                  title={x.title}
+                />
+                <div className="channelTemplates">
+                  {x.twitterTempates?.map((x, i) => (
+                    <div key={i} className="templateOutline">
+                      <p>{x.post}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+        })}
       </div>
       <Actions
         activeStep={activeStep}

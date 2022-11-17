@@ -62,6 +62,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
   removeChannelMedia,
   isPreview,
   title,
+  socialMediaType,
 }) => {
   const handleTwitterMedia = (data: FileObject) => {
     const imageSlug = `${channelName}${'1x1'}${data.filename}`;
@@ -96,9 +97,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   {firstTwitterMedia?.length &&
                     firstTwitterMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
-                        <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
-                          <TiDelete />
-                        </div>
+                        {!isPreview && (
+                          <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
+                            <TiDelete />
+                          </div>
+                        )}
                         <div className={`image${channelName}`}>
                           {item.media.format.includes('image') ? (
                             <img src={item.media.file} />
@@ -115,9 +118,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   {firstTwitterMedia?.length &&
                     firstTwitterMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
-                        <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
-                          <TiDelete />
-                        </div>
+                        {!isPreview && (
+                          <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
+                            <TiDelete />
+                          </div>
+                        )}
                         <div className={`image${channelName}`}>
                           {item.media.format.includes('image') ? (
                             <img src={item.media.file} />
@@ -134,9 +139,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   {firstTwitterMedia?.length &&
                     firstTwitterMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
-                        <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
-                          <TiDelete />
-                        </div>
+                        {!isPreview && (
+                          <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
+                            <TiDelete />
+                          </div>
+                        )}
                         <div className={`image${channelName}`}>
                           {item.media.format.includes('image') ? (
                             <img src={item.media.file} />
@@ -153,9 +160,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   {firstTwitterMedia?.length &&
                     firstTwitterMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
-                        <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
-                          <TiDelete />
-                        </div>
+                        {!isPreview && (
+                          <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
+                            <TiDelete />
+                          </div>
+                        )}
                         <div className={`image${channelName}`}>
                           {item.media.format.includes('image') ? (
                             <img src={item.media.file} />
@@ -195,9 +204,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {secondTwitterMedia?.length &&
                         secondTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
-                              <TiDelete />
-                            </div>
+                            {!isPreview && (
+                              <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
+                                <TiDelete />
+                              </div>
+                            )}
                             <div className={`image3x4${channelName}`} key={i}>
                               {item.media.format.includes('image') ? (
                                 <img src={item.media.file} />
@@ -214,9 +225,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {secondTwitterMedia?.length &&
                         secondTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
-                              <TiDelete />
-                            </div>
+                            {!isPreview && (
+                              <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
+                                <TiDelete />
+                              </div>
+                            )}
                             <div className={`image3x4${channelName}`} key={i}>
                               {item.media.format.includes('image') ? (
                                 <img src={item.media.file} />
@@ -233,9 +246,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {secondTwitterMedia?.length &&
                         secondTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
-                              <TiDelete />
-                            </div>
+                            {!isPreview && (
+                              <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
+                                <TiDelete />
+                              </div>
+                            )}
                             <div className={`image3x4${channelName}`} key={i}>
                               {item.media.format.includes('image') ? (
                                 <img src={item.media.file} />
@@ -273,9 +288,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {thirdTwitterMedia?.length &&
                         thirdTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
-                              <TiDelete />
-                            </div>
+                            {!isPreview && (
+                              <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
+                                <TiDelete />
+                              </div>
+                            )}
                             <div className={`video${channelName}`}>
                               <video autoPlay={false} src={item.media.file} controls={true} />
                             </div>
@@ -288,9 +305,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {thirdTwitterMedia?.length &&
                         thirdTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
-                              <TiDelete />
-                            </div>
+                            {!isPreview && (
+                              <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
+                                <TiDelete />
+                              </div>
+                            )}
                             <div className={`video${channelName}`}>
                               <video autoPlay={false} src={item.media.file} controls={true} />
                             </div>
@@ -303,9 +322,11 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                       {thirdTwitterMedia?.length &&
                         thirdTwitterMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
-                            <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
-                              <TiDelete />
-                            </div>
+                            {!isPreview && (
+                              <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
+                                <TiDelete />
+                              </div>
+                            )}
                             <div className={`video${channelName}`}>
                               <video autoPlay={false} src={item.media.file} controls={true} />
                             </div>
