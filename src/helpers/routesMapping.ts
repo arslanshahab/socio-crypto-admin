@@ -40,6 +40,12 @@ export const getRoutesMapping = (data: any): Array<MenuObject> => {
       icon: 'user',
       enabled: (data && data.company === 'raiinmaker') || false,
     },
+    {
+      name: 'Walkthrough',
+      to: '/dashboard/admin/walkthrough',
+      icon: 'user',
+      enabled: (data && data.company === 'raiinmaker') || false,
+    },
   ];
 };
 

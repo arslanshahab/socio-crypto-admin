@@ -25,6 +25,7 @@ import Topbar from '../../componentsv2/Topbar';
 import CampaignEngagement from '../../componentsv2/CampaignEngagement';
 import CampaignChannelEngagement from '../../componentsv2/CampaignChannelEngagement';
 import CampaignDemographics from '../../componentsv2/CampaignDemographics';
+import WalkthroughSteps from '../../componentsv2/Walkthrough/WalkthroughSteps';
 
 const Dashboard: React.FC = (props) => {
   const dispatch = useDispatch();
@@ -110,6 +111,9 @@ const Dashboard: React.FC = (props) => {
             </ProtectedRoute>
             <ProtectedRoute exact path={'/dashboard/campaign/demographics'}>
               <CampaignDemographics />
+            </ProtectedRoute>
+            <ProtectedRoute exact path={'/dashboard/admin/walkthrough'}>
+              <WalkthroughSteps />
             </ProtectedRoute>
           </Switch>
         </div>
