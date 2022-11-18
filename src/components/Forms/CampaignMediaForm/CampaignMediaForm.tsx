@@ -25,36 +25,36 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const channelMediaList = useSelector((state: { channelMedia: ChannelMediaTypes }) => state.channelMedia);
 
   const [steps, setSteps] = useState<number>(1);
-  const [firstTwitterMedia, setFirstTwitterMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Twitter.filter((x) => x.ratio === '1x1'),
-  );
-  const [firstInstagramMedia, setFirstInsagramMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Instagram.filter((x) => x.ratio === '1x1'),
-  );
-  const [firstFacebookMedia, setFirstFacebookMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Facebook.filter((x) => x.ratio === '1x1'),
-  );
-  const [secondTwitterMedia, setSecondTwitterMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Twitter.filter((x) => x.ratio === '3x4'),
-  );
-  const [secondInstagramMedia, setSecondInstagramMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Instagram.filter((x) => x.ratio === '3x4'),
-  );
-  const [secondFacebookMedia, setSecondFacebookMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Facebook.filter((x) => x.ratio === '3x4'),
-  );
-  const [thirdTwitterMedia, setThirdTwitterMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Twitter.filter((x) => x.ratio === 'hz'),
-  );
-  const [thirdInstagramMedia, setThirdInstagramMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Instagram.filter((x) => x.ratio === 'hz'),
-  );
-  const [thirdFacebookMedia, setThirdFacebookMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Facebook.filter((x) => x.ratio === 'hz'),
-  );
-  const [tiktokMedia, setTiktokMedia] = useState<ChannelMediaObject[]>(
-    campaign.config.channelMedia.Tiktok.filter((x) => x.ratio === '1x1'),
-  );
+  //   const [firstTwitterMedia, setFirstTwitterMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Twitter.filter((x) => x.ratio === '1x1'),
+  //   );
+  //   const [firstInstagramMedia, setFirstInsagramMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Instagram.filter((x) => x.ratio === '1x1'),
+  //   );
+  //   const [firstFacebookMedia, setFirstFacebookMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Facebook.filter((x) => x.ratio === '1x1'),
+  //   );
+  //   const [secondTwitterMedia, setSecondTwitterMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Twitter.filter((x) => x.ratio === '3x4'),
+  //   );
+  //   const [secondInstagramMedia, setSecondInstagramMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Instagram.filter((x) => x.ratio === '3x4'),
+  //   );
+  //   const [secondFacebookMedia, setSecondFacebookMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Facebook.filter((x) => x.ratio === '3x4'),
+  //   );
+  //   const [thirdTwitterMedia, setThirdTwitterMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Twitter.filter((x) => x.ratio === 'hz'),
+  //   );
+  //   const [thirdInstagramMedia, setThirdInstagramMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Instagram.filter((x) => x.ratio === 'hz'),
+  //   );
+  //   const [thirdFacebookMedia, setThirdFacebookMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Facebook.filter((x) => x.ratio === 'hz'),
+  //   );
+  //   const [tiktokMedia, setTiktokMedia] = useState<ChannelMediaObject[]>(
+  //     campaign.config.channelMedia.Tiktok.filter((x) => x.ratio === '1x1'),
+  //   );
 
   const onCampaignImageSuccess = (data: FileObject) => {
     setCampaignImage(data);
@@ -67,12 +67,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   };
 
   const handleChannelMedias = (channel: string, ratio: string, data: FileObject, mediaSlug: string) => {
-    let updatedMedia: ChannelMediaObject[] = [];
+    // let updatedMedia: ChannelMediaObject[] = [];
     let updatedChannelMedia: ChannelMediaObject[] = [];
+
     if (ratio === '1x1') {
       if (channel === 'Twitter') {
-        updatedMedia = [...firstTwitterMedia];
-        updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
+        // updatedMedia = [...firstTwitterMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.twitter.first,
+          ...channelMediaList.twitter.second,
+          ...channelMediaList.twitter.third,
+        ];
         const media = {
           channel: channel,
           media: data,
@@ -81,14 +86,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           isDefault: channelMedia.Twitter.length < 1 ? true : false,
         };
         dispatch(channelMediaAction(media, 'first', 'twitter'));
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setFirstTwitterMedia(updatedMedia);
+        // setFirstTwitterMedia(updatedMedia);
       }
-      debugger;
       if (channel === 'Instagram') {
-        updatedChannelMedia = [...firstInstagramMedia, ...secondInstagramMedia, ...thirdInstagramMedia];
-        updatedMedia = [...firstInstagramMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.instagram.first,
+          ...channelMediaList.instagram.second,
+          ...channelMediaList.instagram.third,
+        ];
+        // updatedMedia = [...firstInstagramMedia];
         const media = {
           channel,
           media: data,
@@ -98,13 +106,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         };
         dispatch(channelMediaAction(media, 'first', 'instagram'));
 
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setFirstInsagramMedia(updatedMedia);
+        // setFirstInsagramMedia(updatedMedia);
       }
       if (channel === 'Facebook') {
-        updatedMedia = [...firstFacebookMedia];
-        updatedChannelMedia = [...firstFacebookMedia, ...secondFacebookMedia, ...thirdFacebookMedia];
+        // updatedMedia = [...firstFacebookMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.facebook.first,
+          ...channelMediaList.facebook.second,
+          ...channelMediaList.facebook.third,
+        ];
         const media = {
           channel,
           media: data,
@@ -114,13 +126,13 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         };
         dispatch(channelMediaAction(media, 'first', 'facebook'));
 
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setFirstFacebookMedia(updatedMedia);
+        // setFirstFacebookMedia(updatedMedia);
       }
       if (channel === 'Tiktok') {
-        updatedMedia = [...tiktokMedia];
-        updatedChannelMedia = [...tiktokMedia];
+        // updatedMedia = [...tiktokMedia];
+        updatedChannelMedia = [...channelMediaList.tiktok.first];
         const media = {
           channel,
           media: data,
@@ -130,15 +142,19 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         };
         dispatch(channelMediaAction(media, 'first', 'tiktok'));
 
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setTiktokMedia(updatedMedia);
+        // setTiktokMedia(updatedMedia);
       }
     }
     if (ratio === '3x4') {
       if (channel === 'Twitter') {
-        updatedMedia = [...secondTwitterMedia];
-        // updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
+        // updatedMedia = [...secondTwitterMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.twitter.first,
+          ...channelMediaList.twitter.second,
+          ...channelMediaList.twitter.third,
+        ];
         const media = {
           channel,
           media: data,
@@ -148,14 +164,18 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         };
         dispatch(channelMediaAction(media, 'second', 'twitter'));
 
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
 
-        setSecondTwitterMedia(updatedMedia);
+        // setSecondTwitterMedia(updatedMedia);
       }
       if (channel === 'Instagram') {
-        updatedMedia = [...secondInstagramMedia];
-        updatedChannelMedia = [...firstInstagramMedia, ...secondInstagramMedia, ...thirdInstagramMedia];
+        // updatedMedia = [...secondInstagramMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.instagram.first,
+          ...channelMediaList.instagram.second,
+          ...channelMediaList.instagram.third,
+        ];
         const media = {
           channel,
           media: data,
@@ -164,13 +184,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           isDefault: channelMedia.Instagram.length < 1 ? true : false,
         };
         dispatch(channelMediaAction(media, 'second', 'instagram'));
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setSecondInstagramMedia(updatedMedia);
+        // setSecondInstagramMedia(updatedMedia);
       }
       if (channel === 'Facebook') {
-        updatedMedia = [...secondFacebookMedia];
-        updatedChannelMedia = [...firstFacebookMedia, ...secondFacebookMedia, ...thirdFacebookMedia];
+        // updatedMedia = [...secondFacebookMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.facebook.first,
+          ...channelMediaList.facebook.second,
+          ...channelMediaList.facebook.third,
+        ];
         const media = {
           channel,
           media: data,
@@ -179,15 +203,19 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           isDefault: channelMedia.Facebook.length < 1 ? true : false,
         };
         dispatch(channelMediaAction(media, 'second', 'facebook'));
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setSecondFacebookMedia(updatedMedia);
+        // setSecondFacebookMedia(updatedMedia);
       }
     }
     if (ratio === 'hz') {
       if (channel === 'Twitter') {
-        updatedMedia = [...thirdTwitterMedia];
-        // updatedChannelMedia = [...firstTwitterMedia, ...secondTwitterMedia, ...thirdTwitterMedia];
+        // updatedMedia = [...thirdTwitterMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.twitter.first,
+          ...channelMediaList.twitter.second,
+          ...channelMediaList.twitter.third,
+        ];
         const media = {
           channel,
           media: data,
@@ -196,13 +224,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           isDefault: channelMedia.Twitter.length < 1 ? true : false,
         };
         dispatch(channelMediaAction(media, 'third', 'twitter'));
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setThirdTwitterMedia(updatedMedia);
+        // setThirdTwitterMedia(updatedMedia);
       }
       if (channel === 'Instagram') {
-        updatedMedia = [...thirdInstagramMedia];
-        updatedChannelMedia = [...firstInstagramMedia, ...secondInstagramMedia, ...thirdInstagramMedia];
+        // updatedMedia = [...thirdInstagramMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.instagram.first,
+          ...channelMediaList.instagram.second,
+          ...channelMediaList.instagram.third,
+        ];
         const media = {
           channel,
           media: data,
@@ -211,13 +243,17 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           isDefault: channelMedia.Instagram.length < 1 ? true : false,
         };
         dispatch(channelMediaAction(media, 'third', 'instagram'));
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setThirdInstagramMedia(updatedMedia);
+        // setThirdInstagramMedia(updatedMedia);
       }
       if (channel === 'Facebook') {
-        updatedMedia = [...thirdFacebookMedia];
-        updatedChannelMedia = [...firstFacebookMedia, ...secondFacebookMedia, ...thirdFacebookMedia];
+        // updatedMedia = [...thirdFacebookMedia];
+        updatedChannelMedia = [
+          ...channelMediaList.facebook.first,
+          ...channelMediaList.facebook.second,
+          ...channelMediaList.facebook.third,
+        ];
         const media = {
           channel,
           media: data,
@@ -226,9 +262,9 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
           isDefault: channelMedia.Facebook.length < 1 ? true : false,
         };
         dispatch(channelMediaAction(media, 'third', 'facebook'));
-        updatedMedia.push(media);
+        // updatedMedia.push(media);
         updatedChannelMedia.push(media);
-        setThirdFacebookMedia(updatedMedia);
+        // setThirdFacebookMedia(updatedMedia);
       }
     }
     onSuccess(channel, updatedChannelMedia);
@@ -238,56 +274,6 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     // let updatedMedia: ChannelMediaObject[] = [];
     if (channelMedia[channel.channel].length > 1) {
       dispatch(removeChannelMediaAction(ratio, channel.channel, index));
-      //   if (ratio === '1x1') {
-      //     if (channel.channel === 'Twitter') {
-      //       //   updatedMedia = [...firstTwitterMedia];
-      //       //   updatedMedia.splice(index, 1);
-      //       //   setFirstTwitterMedia(updatedMedia);
-      //     } else if (channel.channel === 'Instagram') {
-      //       updatedMedia = [...firstInstagramMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setFirstInsagramMedia(updatedMedia);
-      //     } else if (channel.channel === 'Facebook') {
-      //       updatedMedia = [...firstFacebookMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setFirstFacebookMedia(updatedMedia);
-      //     } else if (channel.channel === 'Tiktok') {
-      //       updatedMedia = [...tiktokMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setTiktokMedia(updatedMedia);
-      //     }
-      //   }
-      //   if (ratio === '3x4') {
-      //     if (channel.channel === 'Twitter') {
-      //       updatedMedia = [...secondTwitterMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setSecondTwitterMedia(updatedMedia);
-      //     } else if (channel.channel === 'Instagram') {
-      //       updatedMedia = [...secondInstagramMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setSecondInstagramMedia(updatedMedia);
-      //     } else if (channel.channel === 'Facebook') {
-      //       updatedMedia = [...secondFacebookMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setSecondFacebookMedia(updatedMedia);
-      //     }
-      //   }
-      //   if (ratio === 'hz') {
-      //     if (channel.channel === 'Twitter') {
-      //       updatedMedia = [...thirdTwitterMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setThirdTwitterMedia(updatedMedia);
-      //     } else if (channel.channel === 'Instagram') {
-      //       updatedMedia = [...thirdInstagramMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setThirdInstagramMedia(updatedMedia);
-      //     } else if (channel.channel === 'Facebook') {
-      //       updatedMedia = [...thirdFacebookMedia];
-      //       updatedMedia.splice(index, 1);
-      //       setThirdFacebookMedia(updatedMedia);
-      //     }
-      //   }
-
       // remove media from channel media list
       const updatedChannelMedias = channelMedia;
       const filterMedia = updatedChannelMedias[channel.channel].filter((x) => x.mediaSlug !== channel.mediaSlug);

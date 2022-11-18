@@ -81,6 +81,9 @@
 // ------------Channel media 1x1 styles-----------//
 .channelMediaWrapper {
   @apply text-center w-full;
+  p{
+    @apply text-xl;
+  }
   .imageContent {
     @apply flex justify-center mt-8;
     .imageWrapperTwitter {
