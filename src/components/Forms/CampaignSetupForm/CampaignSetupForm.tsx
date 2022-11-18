@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Box, CircularProgress } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ErrorObject, FileObject, ProfileTypes } from '../../../types';
@@ -19,6 +19,7 @@ import { apiURI } from '../../../clients/raiinmaker-api';
 import { APPROVED, RAIINMAKER } from '../../../helpers/constants';
 import './campaignSetupForm.scss';
 import ContentSteps from './ContentSteps';
+import WalkthroughSteps from '../../../componentsv2/Walkthrough/WalkthroughSteps';
 
 interface Props {
   company: string;
@@ -51,6 +52,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const [fundingWallet, setFundingWallet] = useState<FundingWalletTypes[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [steps, setSteps] = useState<number>(1);
+  const [walkthroughStep, setWalkthroughStep] = useState<number>(0);
   //   const totalSteps = stepsList.length - 1;
 
   useEffect(() => {
@@ -192,6 +194,10 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
     setIsGlobal(true);
   };
 
+  const handleWalkthroughStep = (step: number) => {
+    setWalkthroughStep(step);
+  };
+
   if (isLoading) {
     return (
       <Box className="setupFormMessage">
@@ -237,27 +243,31 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   }
 
   return (
-    <Box className="campaignSetupFormWrapper">
-      <ContentSteps
-        isGlobal={isGlobal}
-        campaignType={campaignType}
-        handleCampaignType={handleCampaignType}
-        handleSocialMediaType={handleSocialMediaType}
-        socialMediaType={socialMediaType}
-        steps={steps}
-        budgetType={budgetType}
-        campaign={campaign}
-        coiinBudget={coiinBudget}
-        coiinOptions={coiinOptions}
-        company={company}
-        cryptoSymbol={cryptoSymbol}
-        errors={errors}
-        handleBudgetType={handleBudgetType}
-        handleCoiinBudgetChange={handleCoiinBudgetChange}
-        handleSelectToken={handleSelectToken}
-        handleIsGlobal={handleIsGlobal}
-      />
-      {/* <Fade triggerOnce>
+    <Fragment>
+      {profile.email && walkthroughStep < 5 ? (
+        <WalkthroughSteps callback={handleWalkthroughStep} />
+      ) : (
+        <Box className="campaignSetupFormWrapper">
+          <ContentSteps
+            isGlobal={isGlobal}
+            campaignType={campaignType}
+            handleCampaignType={handleCampaignType}
+            handleSocialMediaType={handleSocialMediaType}
+            socialMediaType={socialMediaType}
+            steps={steps}
+            budgetType={budgetType}
+            campaign={campaign}
+            coiinBudget={coiinBudget}
+            coiinOptions={coiinOptions}
+            company={company}
+            cryptoSymbol={cryptoSymbol}
+            errors={errors}
+            handleBudgetType={handleBudgetType}
+            handleCoiinBudgetChange={handleCoiinBudgetChange}
+            handleSelectToken={handleSelectToken}
+            handleIsGlobal={handleIsGlobal}
+          />
+          {/* <Fade triggerOnce>
         <SocialMediaTypeInput
           selectAllByDefault={isGlobal}
           socialMediaType={socialMediaType}
@@ -387,15 +397,17 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
           </Box>
         </Fade>
       )} */}
-      <Actions
-        activeStep={activeStep}
-        firstStep={firstStep}
-        finalStep={finalStep}
-        handleBack={back}
-        handleNext={next}
-        subStep={steps}
-      />
-    </Box>
+          <Actions
+            activeStep={activeStep}
+            firstStep={firstStep}
+            finalStep={finalStep}
+            handleBack={back}
+            handleNext={next}
+            subStep={steps}
+          />
+        </Box>
+      )}
+    </Fragment>
   );
 };
 

@@ -59,7 +59,7 @@ export const prepareMediaRequest = (data: ChannelMediaStructure): CampaignMediaR
         mediaFormat: item.media.format,
         isDefault: item.isDefault,
         ratio: item.ratio,
-        mediaSlug: item.mediaSlug,
+        slug: item.slug,
       };
       list.push(obj);
     }
@@ -94,7 +94,7 @@ export const prepareChannelMediaFromResponse = (
           isDefault: item.isDefault,
           channel: item.channel,
           ratio: item.ratio,
-          mediaSlug: item.mediaSlug,
+          slug: item.slug,
           media: { file: generateCampaignMediaUrl(id, item.media), filename: item.media, format: item.mediaFormat },
         };
         const mediaList = [...initData[item.channel]];

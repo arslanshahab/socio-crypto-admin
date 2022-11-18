@@ -66,7 +66,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
     setChannelMedia(allChannels);
   };
 
-  const handleChannelMedias = (channel: string, ratio: string, data: FileObject, mediaSlug: string) => {
+  const handleChannelMedias = (channel: string, ratio: string, data: FileObject, slug: string) => {
     // let updatedMedia: ChannelMediaObject[] = [];
     let updatedChannelMedia: ChannelMediaObject[] = [];
 
@@ -81,7 +81,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel: channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Twitter.length < 1 ? true : false,
         };
@@ -100,7 +100,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Instagram.length < 1 ? true : false,
         };
@@ -120,7 +120,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Facebook.length < 1 ? true : false,
         };
@@ -136,7 +136,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Tiktok.length < 1 ? true : false,
         };
@@ -158,7 +158,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Twitter.length < 1 ? true : false,
         };
@@ -179,7 +179,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Instagram.length < 1 ? true : false,
         };
@@ -198,7 +198,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Facebook.length < 1 ? true : false,
         };
@@ -219,7 +219,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Twitter.length < 1 ? true : false,
         };
@@ -238,7 +238,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Instagram.length < 1 ? true : false,
         };
@@ -257,7 +257,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         const media = {
           channel,
           media: data,
-          mediaSlug,
+          slug,
           ratio,
           isDefault: channelMedia.Facebook.length < 1 ? true : false,
         };
@@ -276,7 +276,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       dispatch(removeChannelMediaAction(ratio, channel.channel, index));
       // remove media from channel media list
       const updatedChannelMedias = channelMedia;
-      const filterMedia = updatedChannelMedias[channel.channel].filter((x) => x.mediaSlug !== channel.mediaSlug);
+      const filterMedia = updatedChannelMedias[channel.channel].filter((x) => x.slug !== channel.slug);
       const findDefaultMedia = filterMedia.find((x) => x.isDefault === true);
       const updatedFilterMedia: ChannelMediaObject[] = filterMedia;
       if (!findDefaultMedia) {

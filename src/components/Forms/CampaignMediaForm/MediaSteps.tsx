@@ -21,7 +21,7 @@ interface MediaStepsIProps {
   onError: (msg: string) => void;
   onSuccess: (channel: string, list: ChannelMediaObject[]) => void;
   channelMedia: ChannelMediaStructure;
-  handleChannelMedia: (channel: string, ratio: string, data: FileObject, mediaSlug: string) => void;
+  handleChannelMedia: (channel: string, ratio: string, data: FileObject, slug: string) => void;
   firstTwitterMedia: ChannelMediaObject[];
   secondTwitterMedia: ChannelMediaObject[];
   thirdTwitterMedia: ChannelMediaObject[];

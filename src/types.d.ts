@@ -347,7 +347,7 @@ export interface ChannelMediaObject {
   channel: string;
   media: FileObject;
   isDefault: boolean;
-  mediaSlug?: string;
+  slug?: string;
   ratio: string;
 }
 
@@ -402,7 +402,7 @@ export interface CampaignMediaResponse {
   mediaFormat: string;
   isDefault: boolean;
   ratio: string;
-  mediaSlug?: string;
+  slug?: slug;
 }
 
 export interface CampaignTemplateResponse {

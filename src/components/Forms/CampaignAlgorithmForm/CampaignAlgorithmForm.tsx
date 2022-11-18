@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 // import { Box, Checkbox, FormControlLabel, Tooltip } from '@material-ui/core';
 // import { useDispatch } from 'react-redux';
 // import { Fade } from 'react-awesome-reveal';
 // import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import Actions from '../../NewCampaign/Actions';
-// import GenericModal from '../../GenericModal';
-// import TermsAndConditions from './TermsAndConditions';
-// import CustomInput from '../../CustomInput';
-// import InfoIcon from '@material-ui/icons/Info';
-// import { AlgoTier, Tier } from '../../../types';
-// import { formatFloat } from '../../../helpers/formatter';
-// import { updateCampaign } from '../../../store/actions/campaign';
+import GenericModal from '../../GenericModal';
+import TermsAndConditions from './TermsAndConditions';
+import CustomInput from '../../CustomInput';
+import InfoIcon from '@material-ui/icons/Info';
+import { AlgoTier, Tier } from '../../../types';
+import { formatFloat } from '../../../helpers/formatter';
+import { updateCampaign } from '../../../store/actions/campaign';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
-// import { showErrorAlert } from '../../../store/actions/alerts';
-// import styles from './algorithm.module.css';
+import { showErrorAlert } from '../../../store/actions/alerts';
+import styles from './algorithm.module.css';
 import './campaignAlgorithmForm.scss';
 
 const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
@@ -23,91 +25,90 @@ const CampaignAlgorithmForm: React.FC<ActionsProps> = ({
   firstStep,
   finalStep,
 }) => {
-  //   const campaign = useStoreCampaignSelector();
-  //   const numOfTiers = parseInt(campaign.config.numOfTiers);
-  //   const [agreementChecked, handleAgreementChecked] = useState(campaign.config.agreementChecked);
-  //   const [clickCount, setClickCount] = useState(campaign.algorithm.pointValues.clicks);
-  //   const [viewCount, setViewCount] = useState(campaign.algorithm.pointValues.views);
-  //   const [submissionCount, setSubmissionCount] = useState(campaign.algorithm.pointValues.submissions);
-  //   const [shareCount, setShareCount] = useState(campaign.algorithm.pointValues.shares);
-  //   const [likeCount, setLikeCount] = useState(campaign.algorithm.pointValues.likes);
-  //   const [modalOpen, toggleModal] = useState(false);
-  //   const [tiers, setTiers] = useState(campaign.algorithm.tiers);
-  //   const dispatch = useDispatch();
-  //   const coiinBudget = parseFloat(campaign.config.coiinBudget);
-  //   const initMaxThresh = 100;
+  const campaign = useStoreCampaignSelector();
+  const numOfTiers = parseInt(campaign.config.numOfTiers);
+  const [agreementChecked, handleAgreementChecked] = useState(campaign.config.agreementChecked);
+  const [clickCount, setClickCount] = useState(campaign.algorithm.pointValues.clicks);
+  const [viewCount, setViewCount] = useState(campaign.algorithm.pointValues.views);
+  const [submissionCount, setSubmissionCount] = useState(campaign.algorithm.pointValues.submissions);
+  const [shareCount, setShareCount] = useState(campaign.algorithm.pointValues.shares);
+  const [likeCount, setLikeCount] = useState(campaign.algorithm.pointValues.likes);
+  const [modalOpen, toggleModal] = useState(false);
+  const [tiers, setTiers] = useState(campaign.algorithm.tiers);
+  const dispatch = useDispatch();
+  const coiinBudget = parseFloat(campaign.config.coiinBudget);
+  const initMaxThresh = 100;
 
-  //   const handleTierChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //     const key = event.target.id;
-  //     const name = event.target.name as 'totalCoiins' | 'threshold';
-  //     const newTiers = { ...tiers };
-  //     const tier = { ...tiers[key] };
-  //     if (name === 'threshold') {
-  //       tier.threshold = event.target.value;
-  //     } else {
-  //       tier.totalCoiins = event.target.value;
-  //     }
-  //     newTiers[key] = tier;
-  //     setTiers(newTiers);
-  //   };
+  const handleTierChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const key = event.target.id;
+    const name = event.target.name as 'totalCoiins' | 'threshold';
+    const newTiers = { ...tiers };
+    const tier = { ...tiers[key] };
+    if (name === 'threshold') {
+      tier.threshold = event.target.value;
+    } else {
+      tier.totalCoiins = event.target.value;
+    }
+    newTiers[key] = tier;
+    setTiers(newTiers);
+  };
 
-  //   const initThresh = () => {
-  //     if (!Object.values(campaign.algorithm.tiers).length) {
-  //       const initialTiers: AlgoTier = {};
-  //       for (let i = 1; i <= numOfTiers; i++) {
-  //         const dataObject: Tier = { threshold: '', totalCoiins: '' };
-  //         dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh);
-  //         dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget);
-  //         initialTiers[i] = dataObject;
-  //       }
-  //       setTiers(initialTiers);
-  //     }
-  //   };
+  const initThresh = () => {
+    if (!Object.values(campaign.algorithm.tiers).length) {
+      const initialTiers: AlgoTier = {};
+      for (let i = 1; i <= numOfTiers; i++) {
+        const dataObject: Tier = { threshold: '', totalCoiins: '' };
+        dataObject.threshold = formatFloat((i / numOfTiers) * initMaxThresh);
+        dataObject.totalCoiins = formatFloat((i / numOfTiers) * coiinBudget);
+        initialTiers[i] = dataObject;
+      }
+      setTiers(initialTiers);
+    }
+  };
 
-  //   useEffect(initThresh, []);
+  useEffect(initThresh, []);
 
   const submit = () => {
-    handleNext();
     // if (!agreementChecked) {
     //   dispatch(showErrorAlert('Please Accept Terms and Conditions!'));
     //   return;
     // }
-    // if (validateTiers()) {
-    //   const augmentedCampaign = {
-    //     ...campaign,
-    //     algorithm: {
-    //       ...campaign.algorithm,
-    //       tiers,
-    //       pointValues: {
-    //         ...campaign.algorithm.pointValues,
-    //         clicks: clickCount,
-    //         views: viewCount,
-    //         submissions: submissionCount,
-    //         likes: likeCount,
-    //         shares: shareCount,
-    //       },
-    //     },
-    //     config: {
-    //       ...campaign.config,
-    //       agreementChecked: agreementChecked,
-    //     },
-    //   };
-    //   dispatch(updateCampaign(augmentedCampaign));
-    //   handleNext();
-    // }
+    if (validateTiers()) {
+      const augmentedCampaign = {
+        ...campaign,
+        algorithm: {
+          ...campaign.algorithm,
+          tiers,
+          pointValues: {
+            ...campaign.algorithm.pointValues,
+            clicks: clickCount,
+            views: viewCount,
+            submissions: submissionCount,
+            likes: likeCount,
+            shares: shareCount,
+          },
+        },
+        config: {
+          ...campaign.config,
+          agreementChecked: agreementChecked,
+        },
+      };
+      dispatch(updateCampaign(augmentedCampaign));
+      handleNext();
+    }
   };
 
-  //   const validateTiers = () => {
-  //     let validated = true;
-  //     for (let i = 1; i < numOfTiers; i++) {
-  //       const tier = tiers[i];
-  //       if (!tier.threshold || !tier.totalCoiins) {
-  //         dispatch(showErrorAlert('Please add all Reward values'));
-  //         return (validated = false);
-  //       }
-  //     }
-  //     return validated;
-  //   };
+  const validateTiers = () => {
+    let validated = true;
+    for (let i = 1; i < numOfTiers; i++) {
+      const tier = tiers[i];
+      if (!tier.threshold || !tier.totalCoiins) {
+        dispatch(showErrorAlert('Please add all Reward values'));
+        return (validated = false);
+      }
+    }
+    return validated;
+  };
 
   const tiersData = [
     {

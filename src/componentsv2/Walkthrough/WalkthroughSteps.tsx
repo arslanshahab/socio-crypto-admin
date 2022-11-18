@@ -3,12 +3,19 @@ import Walkthrough from './index';
 import raiinmakerImg from '../../assets/png/rainmaker_img.png';
 import cryptoImg from '../../assets/png/cryptoImage.png';
 import cartImg from '../../assets/png/cart.png';
+import { useHistory } from 'react-router';
 
-const WalkthroughSteps: FC = () => {
+interface WalkthroughIProps {
+  callback: (step: number) => void;
+}
+
+const WalkthroughSteps: FC<WalkthroughIProps> = ({ callback }) => {
+  const { push } = useHistory();
   const [steps, setSteps] = useState(1);
 
   const handleNext = () => {
     setSteps((pre) => pre + 1);
+    callback(steps);
   };
 
   switch (steps) {
