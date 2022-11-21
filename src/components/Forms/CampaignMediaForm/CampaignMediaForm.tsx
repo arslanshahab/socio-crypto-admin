@@ -58,11 +58,8 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       const updatedChannelMedias = { ...channelMedia };
       const filterMedia = updatedChannelMedias[channel.channel].filter((x) => x.slug !== channel.slug);
       const findDefaultMedia = filterMedia.find((x) => x.isDefault === true);
-      const updatedFilterMedia = [...filterMedia];
-      if (!findDefaultMedia) {
-        updatedFilterMedia[0].isDefault = true;
-      }
-      updatedChannelMedias[channel.channel] = updatedFilterMedia;
+      if (!findDefaultMedia) filterMedia[0] = { ...filterMedia[0], isDefault: true };
+      updatedChannelMedias[channel.channel] = filterMedia;
       setChannelMedia(updatedChannelMedias);
     } else {
       return dispatch(showErrorAlert('Default media is required'));

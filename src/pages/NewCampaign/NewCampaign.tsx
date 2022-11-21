@@ -37,7 +37,7 @@ const NewCampaignPage: React.FC = () => {
   ];
   const firstStep = 0;
   const finalStep = steps.length - 1;
-  const [activeStep, setActiveStep] = useState(firstStep);
+  const [activeStep, setActiveStep] = useState(2);
   const campaign = useStoreCampaignSelector();
 
   const handleNext = () => {
