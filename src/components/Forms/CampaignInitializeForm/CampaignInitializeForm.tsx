@@ -40,7 +40,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
   const [numOfTiers, setTiers] = useState(!campaign.config.isGlobal ? campaign.config.numOfTiers : '1');
   //   const [tagline, setTagline] = useState(campaign.tagline);
   const [keywords, setKeywords] = useState(campaign.keywords);
-  const [description, setDescription] = useState(campaign.description);
+  //   const [description, setDescription] = useState(campaign.description);
   const [instructions, setInstructions] = useState(campaign.instructions);
   const [showUrl, setShowUrl] = useState(campaign.config.showUrl);
   const [beginDate, setBeginDate] = useState(
@@ -109,7 +109,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       const augmentedCampaign = {
         ...campaign,
         name,
-        description,
+        // description,
         instructions,
         // tagline,
         target,
@@ -167,10 +167,10 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
       setErrors((prev) => ({ ...prev, tags: true }));
       return (validated = false);
     }
-    if (!description) {
-      setErrors((prev) => ({ ...prev, description: true }));
-      return (validated = false);
-    }
+    // if (!description) {
+    //   setErrors((prev) => ({ ...prev, description: true }));
+    //   return (validated = false);
+    // }
     if (!instructions) {
       setErrors((prev) => ({ ...prev, instructions: true }));
       return (validated = false);
@@ -323,7 +323,7 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
               Characters added {`${tags.length}/${MAX_TAGS_LENGTH}`}
             </span>
           </Box>
-          <Box className="inputFieldLg">
+          {/* <Box className="inputFieldLg">
             <CustomInput
               required={true}
               label="Description"
@@ -336,15 +336,15 @@ const CampaignInitializeForm: React.FC<Props & ActionsProps> = ({
                 updateErrors('description', e.target.value);
               }}
             />
-          </Box>
+          </Box> */}
           <Box className="inputFieldLg">
             <CustomInput
               required={true}
-              label="Campaign instructions"
+              label="Campaign Instructions"
               multiline
               value={instructions}
               rows={3}
-              error={errors['instructions']}
+              error={errors['Instructions']}
               onChange={(e) => {
                 setInstructions(e.target.value);
                 updateErrors('instructions', e.target.value);

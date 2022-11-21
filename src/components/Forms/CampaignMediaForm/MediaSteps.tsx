@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ChannelMediaObject, ChannelMediaStructure, FileObject } from '../../../types';
+import { ChannelMediaObject, ChannelMediaStructure, ChannelMediaTypes, FileObject } from '../../../types';
 import CampaignMedia from './CampaignMedia';
 import ChannelMedia from './ChannelMedia';
 import instagramPhone from '../../../assets/png/medias/instagram.png';
@@ -12,6 +12,7 @@ import instagramPhone2 from '../../../assets/png/medias/instagram3x4.png';
 import instagramHz from '../../../assets/png/medias/instagramHz.png';
 import facebookHz from '../../../assets/png/medias/facebookHz.png';
 import twitterHz from '../../../assets/png/medias/twitterHz.png';
+import { useSelector } from 'react-redux';
 
 interface MediaStepsIProps {
   steps: number;
@@ -22,16 +23,6 @@ interface MediaStepsIProps {
   onSuccess: (channel: string, list: ChannelMediaObject[]) => void;
   channelMedia: ChannelMediaStructure;
   handleChannelMedia: (channel: string, ratio: string, data: FileObject, slug: string) => void;
-  firstTwitterMedia: ChannelMediaObject[];
-  secondTwitterMedia: ChannelMediaObject[];
-  thirdTwitterMedia: ChannelMediaObject[];
-  firstInstagramMedia?: ChannelMediaObject[];
-  secondInstagramMedia: ChannelMediaObject[];
-  thirdInstagramMedia: ChannelMediaObject[];
-  firstFacebookMedia: ChannelMediaObject[];
-  secondFacebookMedia: ChannelMediaObject[];
-  thirdFacebookMedia: ChannelMediaObject[];
-  tiktokMedia: ChannelMediaObject[];
   removeChannelMedia: (index: number, data: ChannelMediaObject, ratio: string) => void;
 }
 
@@ -42,20 +33,11 @@ const MediaSteps: FC<MediaStepsIProps> = ({
   onError,
   channelMedia,
   onSuccess,
-  socialMediaType,
   handleChannelMedia,
-  firstTwitterMedia,
-  secondTwitterMedia,
-  thirdTwitterMedia,
-  firstInstagramMedia,
-  secondInstagramMedia,
-  thirdInstagramMedia,
-  firstFacebookMedia,
-  secondFacebookMedia,
-  thirdFacebookMedia,
-  tiktokMedia,
   removeChannelMedia,
 }) => {
+  const channelMediaList = useSelector((state: { channelMedia: ChannelMediaTypes }) => state.channelMedia);
+
   switch (steps) {
     case 1:
       return (
@@ -74,15 +56,14 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           channelMedia={channelMedia.Twitter}
           onSuccess={onSuccess}
           onError={onError}
-          socialMediaType={socialMediaType}
           channelName={'Twitter'}
           socialPlatFormImage={twitterPhone}
           secondMobileImage={twitterPhone2}
           horizontalVideo={twitterHz}
           handleChannelMedia={handleChannelMedia}
-          firstTwitterMedia={firstTwitterMedia}
-          secondTwitterMedia={secondTwitterMedia}
-          thirdTwitterMedia={thirdTwitterMedia}
+          firstMedia={channelMediaList.twitter.first}
+          secondMedia={channelMediaList.twitter.second}
+          thirdMedia={channelMediaList.twitter.third}
           removeChannelMedia={removeChannelMedia}
           title="Upload media you want users to view & share on Twitter"
         />
@@ -94,16 +75,14 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           channelMedia={channelMedia.Instagram}
           onSuccess={onSuccess}
           onError={onError}
-          socialMediaType={socialMediaType}
           channelName={'Instagram'}
           socialPlatFormImage={instagramPhone}
           secondMobileImage={instagramPhone2}
           horizontalVideo={instagramHz}
           handleChannelMedia={handleChannelMedia}
-          firstTwitterMedia={firstInstagramMedia}
-          //   firstInstagramMedia={firstInstagramMedia}
-          secondTwitterMedia={secondInstagramMedia}
-          thirdTwitterMedia={thirdInstagramMedia}
+          firstMedia={channelMediaList.instagram.first}
+          secondMedia={channelMediaList.instagram.second}
+          thirdMedia={channelMediaList.instagram.third}
           removeChannelMedia={removeChannelMedia}
           title="Upload media you want users to view & share on Instagram"
         />
@@ -115,15 +94,14 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           channelMedia={channelMedia.Facebook}
           onSuccess={onSuccess}
           onError={onError}
-          socialMediaType={socialMediaType}
           channelName={'Facebook'}
           socialPlatFormImage={facebookPhone}
           secondMobileImage={facebookPhone2}
           horizontalVideo={facebookHz}
           handleChannelMedia={handleChannelMedia}
-          firstTwitterMedia={firstFacebookMedia}
-          secondTwitterMedia={secondFacebookMedia}
-          thirdTwitterMedia={thirdFacebookMedia}
+          firstMedia={channelMediaList.facebook.first}
+          secondMedia={channelMediaList.facebook.second}
+          thirdMedia={channelMediaList.facebook.third}
           removeChannelMedia={removeChannelMedia}
           title="Upload media you want users to view & share on Facebook"
         />
@@ -135,11 +113,10 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           channelMedia={channelMedia.Tiktok}
           onSuccess={onSuccess}
           onError={onError}
-          socialMediaType={socialMediaType}
           channelName={'Tiktok'}
           socialPlatFormImage={tiktokPhone}
           handleChannelMedia={handleChannelMedia}
-          firstTwitterMedia={tiktokMedia}
+          firstMedia={channelMediaList.tiktok.first}
           removeChannelMedia={removeChannelMedia}
           title="Upload media you want users to view & share on Facebook"
         />

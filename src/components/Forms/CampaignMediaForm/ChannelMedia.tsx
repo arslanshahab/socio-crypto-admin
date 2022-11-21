@@ -8,7 +8,6 @@ import { TiDelete } from 'react-icons/ti';
 
 interface MediaStepsIProps {
   steps?: number;
-  socialMediaType?: string[];
   channelMedia?: ChannelMediaObject[];
   onError?: (msg: string) => void;
   onSuccess?: (channel: string, list: ChannelMediaObject[]) => void;
@@ -17,16 +16,9 @@ interface MediaStepsIProps {
   secondMobileImage?: string;
   horizontalVideo?: string;
   handleChannelMedia?: (channel: string, ratio: string, data: FileObject, slug: string) => void;
-  firstTwitterMedia?: ChannelMediaObject[];
-  secondTwitterMedia?: ChannelMediaObject[];
-  thirdTwitterMedia?: ChannelMediaObject[];
-  firstInstagramMedia?: ChannelMediaObject[];
-  secondInstagramMedia?: ChannelMediaObject[];
-  thirdInstagramMedia?: ChannelMediaObject[];
-  firstFacebookMedia?: ChannelMediaObject[];
-  secondFacebookMedia?: ChannelMediaObject[];
-  thirdFacebookMedia?: ChannelMediaObject[];
-  tiktokMedia?: ChannelMediaObject[];
+  firstMedia?: ChannelMediaObject[];
+  secondMedia?: ChannelMediaObject[];
+  thirdMedia?: ChannelMediaObject[];
   removeChannelMedia?: (index: number, data: ChannelMediaObject, ratio: string) => void;
   isPreview?: boolean;
   title: string;
@@ -41,28 +33,19 @@ const settings = {
 };
 
 const ChannelMedia: FC<MediaStepsIProps> = ({
-  //   onSuccess,
   onError,
   channelName,
   socialPlatFormImage,
   steps,
   secondMobileImage,
   horizontalVideo,
-  firstTwitterMedia,
+  firstMedia,
   handleChannelMedia,
-  firstInstagramMedia,
-  secondTwitterMedia,
-  secondInstagramMedia,
-  thirdTwitterMedia,
-  thirdInstagramMedia,
-  firstFacebookMedia,
-  secondFacebookMedia,
-  thirdFacebookMedia,
-  tiktokMedia,
+  secondMedia,
+  thirdMedia,
   removeChannelMedia,
   isPreview,
   title,
-  socialMediaType,
 }) => {
   const handleTwitterMedia = (data: FileObject) => {
     const imageSlug = `${channelName}${'1x1'}${data.filename}`;
@@ -94,8 +77,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <div className={`imageWrapper${channelName}`}>
               {steps === 2 && (
                 <Slider {...settings} arrows>
-                  {firstTwitterMedia?.length &&
-                    firstTwitterMedia.map((item, i) => (
+                  {firstMedia?.length &&
+                    firstMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
                         {!isPreview && (
                           <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
@@ -115,8 +98,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
               )}
               {steps === 3 && (
                 <Slider {...settings} arrows>
-                  {firstTwitterMedia?.length &&
-                    firstTwitterMedia.map((item, i) => (
+                  {firstMedia?.length &&
+                    firstMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
                         {!isPreview && (
                           <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
@@ -136,8 +119,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
               )}
               {steps === 4 && (
                 <Slider {...settings} arrows>
-                  {firstTwitterMedia?.length &&
-                    firstTwitterMedia.map((item, i) => (
+                  {firstMedia?.length &&
+                    firstMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
                         {!isPreview && (
                           <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
@@ -157,8 +140,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
               )}
               {steps === 5 && (
                 <Slider {...settings} arrows>
-                  {firstTwitterMedia?.length &&
-                    firstTwitterMedia.map((item, i) => (
+                  {firstMedia?.length &&
+                    firstMedia.map((item, i) => (
                       <div key={i} className="carousel-slide">
                         {!isPreview && (
                           <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '1x1')}>
@@ -201,8 +184,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                 <div className={`imageWrapper${channelName}`}>
                   {steps === 2 && (
                     <Slider {...settings}>
-                      {secondTwitterMedia?.length &&
-                        secondTwitterMedia.map((item, i) => (
+                      {secondMedia?.length &&
+                        secondMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             {!isPreview && (
                               <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
@@ -222,8 +205,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   )}
                   {steps === 3 && (
                     <Slider {...settings}>
-                      {secondTwitterMedia?.length &&
-                        secondTwitterMedia.map((item, i) => (
+                      {secondMedia?.length &&
+                        secondMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             {!isPreview && (
                               <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
@@ -243,8 +226,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   )}
                   {steps === 4 && (
                     <Slider {...settings} arrows>
-                      {secondTwitterMedia?.length &&
-                        secondTwitterMedia.map((item, i) => (
+                      {secondMedia?.length &&
+                        secondMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             {!isPreview && (
                               <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, '3x4')}>
@@ -285,8 +268,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                 <div className={`imageWrapper${channelName}`}>
                   {steps === 2 && (
                     <Slider {...settings} arrows>
-                      {thirdTwitterMedia?.length &&
-                        thirdTwitterMedia.map((item, i) => (
+                      {thirdMedia?.length &&
+                        thirdMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             {!isPreview && (
                               <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
@@ -302,8 +285,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   )}
                   {steps === 3 && (
                     <Slider {...settings} arrows>
-                      {thirdTwitterMedia?.length &&
-                        thirdTwitterMedia.map((item, i) => (
+                      {thirdMedia?.length &&
+                        thirdMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             {!isPreview && (
                               <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>
@@ -319,8 +302,8 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                   )}
                   {steps === 4 && (
                     <Slider {...settings} arrows>
-                      {thirdTwitterMedia?.length &&
-                        thirdTwitterMedia.map((item, i) => (
+                      {thirdMedia?.length &&
+                        thirdMedia.map((item, i) => (
                           <div key={i} className="carousel-slide">
                             {!isPreview && (
                               <div className="removeMedia" onClick={() => handleRemoveMedia(i, item, 'hz')}>

@@ -130,16 +130,6 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         socialMediaType={socialMediaType}
         onSuccess={onSuccess}
         onError={onError}
-        firstTwitterMedia={channelMediaList.twitter.first}
-        secondTwitterMedia={channelMediaList.twitter.second}
-        thirdTwitterMedia={channelMediaList.twitter.third}
-        firstInstagramMedia={channelMediaList.instagram.first}
-        secondInstagramMedia={channelMediaList.instagram.second}
-        thirdInstagramMedia={channelMediaList.instagram.third}
-        firstFacebookMedia={channelMediaList.facebook.first}
-        secondFacebookMedia={channelMediaList.facebook.second}
-        thirdFacebookMedia={channelMediaList.facebook.third}
-        tiktokMedia={channelMediaList.tiktok.first}
         handleChannelMedia={handleChannelMedias}
         removeChannelMedia={removeChannelMedia}
       />
