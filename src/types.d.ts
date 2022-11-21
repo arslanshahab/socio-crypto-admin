@@ -1038,6 +1038,7 @@ export type CoiinReducerTypes = {
 };
 
 export type ChannelMediaTypes = {
+  [key: string]: ChannelMediaRatio[];
   twitter: ChannelMediaRatio;
   instagram: ChannelMediaRatio;
   facebook: ChannelMediaRatio;

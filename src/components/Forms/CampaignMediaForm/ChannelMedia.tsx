@@ -16,7 +16,7 @@ interface MediaStepsIProps {
   socialPlatFormImage: string;
   secondMobileImage?: string;
   horizontalVideo?: string;
-  handleChannelMedia?: (channel: string, ratio: string, data: FileObject, mediaSlug: string) => void;
+  handleChannelMedia?: (channel: string, ratio: string, data: FileObject, slug: string) => void;
   firstTwitterMedia?: ChannelMediaObject[];
   secondTwitterMedia?: ChannelMediaObject[];
   thirdTwitterMedia?: ChannelMediaObject[];
