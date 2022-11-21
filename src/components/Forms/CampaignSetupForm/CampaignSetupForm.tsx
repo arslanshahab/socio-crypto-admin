@@ -1,18 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Box, CircularProgress } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { ErrorObject, FileObject, ProfileTypes } from '../../../types';
-// import CampaignTypeInput from './CampaignTypeInput';
-// import CampaignBudgetTypeInput from './CampaignBudgetTypeInput';
+import { ErrorObject, ProfileTypes } from '../../../types';
 import Actions from '../../NewCampaign/Actions';
 import { resetCampaign, updateCampaign } from '../../../store/actions/campaign';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
-// import CustomSelect from '../../CustomSelect/CustomSelect';
-// import CustomInput from '../../CustomInput';
 import { showErrorAlert } from '../../../store/actions/alerts';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
-// import SocialMediaTypeInput from './SocialMediaTypeInput';
-// import FileUpload from '../../FileUpload';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { apiURI } from '../../../clients/raiinmaker-api';
@@ -20,6 +14,7 @@ import { APPROVED, RAIINMAKER } from '../../../helpers/constants';
 import './campaignSetupForm.scss';
 import ContentSteps from './ContentSteps';
 import WalkthroughSteps from '../../../componentsv2/Walkthrough/WalkthroughSteps';
+import { walkthroughAction } from '../../../store/actions/profile';
 
 interface Props {
   company: string;
@@ -38,6 +33,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
   const dispatch = useDispatch();
   const history = useHistory();
   const { profile } = useSelector((state: { profile: ProfileTypes }) => state);
+  const { walkthrough } = useSelector((state: { walkthrough: { status: boolean } }) => state);
   const campaign = useStoreCampaignSelector();
   const [campaignType, setCampaignType] = useState(campaign.config.campaignType);
   const [socialMediaType, setSocialMediaType] = useState(campaign.config.socialMediaType);
@@ -196,6 +192,9 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   const handleWalkthroughStep = (step: number) => {
     setWalkthroughStep(step);
+    if (profile.email && walkthroughStep > 3) {
+      dispatch(walkthroughAction(true));
+    }
   };
 
   if (isLoading) {
@@ -244,7 +243,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
 
   return (
     <Fragment>
-      {profile.email && walkthroughStep < 5 ? (
+      {!walkthrough.status ? (
         <WalkthroughSteps callback={handleWalkthroughStep} />
       ) : (
         <Box className="campaignSetupFormWrapper">
@@ -267,136 +266,7 @@ const CampaignSetupForm: React.FC<Props & ActionsProps> = ({
             handleSelectToken={handleSelectToken}
             handleIsGlobal={handleIsGlobal}
           />
-          {/* <Fade triggerOnce>
-        <SocialMediaTypeInput
-          selectAllByDefault={isGlobal}
-          socialMediaType={socialMediaType}
-          handleChange={handleSocialMediaType}
-        />
-      </Fade>
-      <Fade triggerOnce>
-        <CampaignTypeInput campaignType={campaignType} handleChange={handleCampaignType} />
-      </Fade>
 
-      {campaignType && (
-        <Fade triggerOnce>
-          <Box className="campaignBudgets">
-            <CampaignBudgetTypeInput budgetType={budgetType} company={company} handleChange={handleBudgetType} />
-            {budgetType && (
-              <Box className="selectFieldsWrapper">
-                {budgetType == 'crypto' && (
-                  <Fade triggerOnce>
-                    <Box className="selectField">
-                      <Box className="selectFieldOutline">
-                        <CustomSelect
-                          required={true}
-                          value={cryptoSymbol}
-                          onChange={(event: React.ChangeEvent<any>) => {
-                            setCryptoSymbol(event.target.value);
-                            setCoiinBudget('');
-                            updateErrors('cryptoSymbol', event.target.value);
-                          }}
-                          label="Select Token"
-                          options={coiinOptions}
-                          upperCaseOptions={true}
-                          error={errors['cryptoSymbol']}
-                          disabled={Boolean(campaign.id)}
-                        />
-                      </Box>
-                      <Box className="selectFieldOutline">
-                        <CustomInput
-                          required={true}
-                          value={coiinBudget}
-                          onChange={handleCoiinBudgetChange}
-                          placeholder="100"
-                          label="Campaign Budget"
-                          type="number"
-                          error={errors['coiinBudget']}
-                          disabled={Boolean(campaign.id)}
-                        />
-                      </Box>
-                      <Box className="checkboxWrapper">
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={isGlobal}
-                              className="checkbox"
-                              name="Brand Agreement"
-                              onChange={(e, checked) => {
-                                setIsGlobal(checked);
-                              }}
-                            />
-                          }
-                          label="Is Global Campaign"
-                        />
-                      </Box>
-                    </Box>
-                  </Fade>
-                )}
-
-                {budgetType === 'raffle' && (
-                  <Box className="raffleInputFieldWrapper">
-                    <Box className="raffleInputPosition">
-                      <Box className="inputFieldWrapper">
-                        <CustomInput
-                          required={true}
-                          value={rafflePrizeName}
-                          placeholder="Raffle Campaign Prize"
-                          label="Raffle Prize Name"
-                          type="text"
-                          onChange={(event: React.ChangeEvent<any>) => {
-                            setRafflePrizeName(event.target.value);
-                            updateErrors('rafflePrizeName', event.target.value);
-                          }}
-                          error={errors['rafflePrizeName']}
-                        />
-                      </Box>
-                      <Box className="inputFieldWrapper">
-                        <CustomInput
-                          required={true}
-                          value={rafflePrizeLink}
-                          placeholder="Raffle Affiliate Link"
-                          label="Raffle Affiliate Link (optional)"
-                          type="text"
-                          onChange={(event: React.ChangeEvent<any>) => {
-                            setRafflePrizeLink(event.target.value);
-                            updateErrors('rafflePrizeLink', event.target.value);
-                          }}
-                          error={errors['rafflePrizeLink']}
-                        />
-                      </Box>
-                      <Box className="checkboxWrapper">
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={isGlobal}
-                              className="checkbox"
-                              name="Brand Agreement"
-                              onChange={(e, checked) => {
-                                setIsGlobal(checked);
-                              }}
-                            />
-                          }
-                          label="Is Global Campaign"
-                        />
-                      </Box>
-                    </Box>
-                    <Box className="uploadloadFileWrapper">
-                      <FileUpload
-                        value={raffleImage}
-                        label="Upload Raffle Image"
-                        onFileSuccess={onFileSuccess}
-                        onFileError={onFileError}
-                        mediaType="raffle"
-                      />
-                    </Box>
-                  </Box>
-                )}
-              </Box>
-            )}
-          </Box>
-        </Fade>
-      )} */}
           <Actions
             activeStep={activeStep}
             firstStep={firstStep}

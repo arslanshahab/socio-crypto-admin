@@ -1,7 +1,7 @@
 import initialState from '../initialState';
 
 import { createReducer } from '@reduxjs/toolkit';
-import { GET_PROFILE } from '../actions/profile';
+import { GET_PROFILE, WALKTHROUGH_STATUS } from '../actions/profile';
 
 const profile = createReducer(initialState.profile, {
   [GET_PROFILE]: (state, action) => {
@@ -16,3 +16,9 @@ const profile = createReducer(initialState.profile, {
 });
 
 export default profile;
+
+export const walkthrough = createReducer(initialState.walkthroughState, {
+  [WALKTHROUGH_STATUS]: (state, action) => {
+    state.status = action.payload;
+  },
+});

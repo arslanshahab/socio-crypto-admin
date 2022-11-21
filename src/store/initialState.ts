@@ -172,6 +172,10 @@ const channelMedia: ChannelMediaTypes = {
   },
 };
 
+const walkthroughState = {
+  status: false,
+};
+
 const initialState = {
   alerts: alerts,
   newCampaign: campaignInitState,
@@ -180,6 +184,7 @@ const initialState = {
   profile: profile,
   coiin,
   channelMedia,
+  walkthroughState,
 };
 
 export default initialState;
