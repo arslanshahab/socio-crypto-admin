@@ -6,14 +6,13 @@ import { MdAdd } from 'react-icons/md';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 
 interface TemplateStepsIProps {
-  steps: number;
   channelTemplates: ChannelTemplateObject[];
   addPost: (channel: string) => void;
   handlePostChange: (channel: string, index: number, data: string) => void;
   removePost: (channel: string, index: number) => void;
   socialIcon: string;
   phoneImage: string;
-  socialType: string;
+  platform: string;
 }
 
 const CampaignTemplate: FC<TemplateStepsIProps> = ({
@@ -23,7 +22,7 @@ const CampaignTemplate: FC<TemplateStepsIProps> = ({
   removePost,
   socialIcon,
   phoneImage,
-  socialType,
+  platform,
 }) => {
   return (
     <div className="campaignTemplateWrapper">
@@ -37,7 +36,7 @@ const CampaignTemplate: FC<TemplateStepsIProps> = ({
         </div>
         <div className="contentSection">
           <div className="addButtonWrapper">
-            <CustomButton className="addTempButton" onClick={() => addPost(socialType)}>
+            <CustomButton className="addTempButton" onClick={() => addPost(platform)}>
               <MdAdd className="mr-2" />
               <span>Add Template</span>
             </CustomButton>

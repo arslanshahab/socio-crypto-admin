@@ -13,9 +13,9 @@ import instagramHz from '../../../assets/png/medias/instagramHz.png';
 import facebookHz from '../../../assets/png/medias/facebookHz.png';
 import twitterHz from '../../../assets/png/medias/twitterHz.png';
 import { useSelector } from 'react-redux';
+import { FACEBOOK, INSTAGRAM, TIKTOK, TWITTER } from '../../../helpers/constants';
 
 interface MediaStepsIProps {
-  steps: number;
   campaignImage: FileObject;
   socialMediaType: string[];
   onCampaignImageSuccess: (data: FileObject) => void;
@@ -24,10 +24,10 @@ interface MediaStepsIProps {
   channelMedia: ChannelMediaStructure;
   handleChannelMedia: (channel: string, ratio: string, data: FileObject, slug: string) => void;
   removeChannelMedia: (index: number, data: ChannelMediaObject, ratio: string) => void;
+  platform: string;
 }
 
 const MediaSteps: FC<MediaStepsIProps> = ({
-  steps,
   campaignImage,
   onCampaignImageSuccess,
   onError,
@@ -35,28 +35,28 @@ const MediaSteps: FC<MediaStepsIProps> = ({
   onSuccess,
   handleChannelMedia,
   removeChannelMedia,
+  platform,
 }) => {
   const channelMediaList = useSelector((state: { channelMedia: ChannelMediaTypes }) => state.channelMedia);
+  console.log('platform--------------------', platform);
 
-  switch (steps) {
-    case 1:
+  switch (platform) {
+    case 'Campaign':
       return (
         <CampaignMedia
           title="Upload your campaign image cover for the raiinmaker app"
-          steps={steps}
           campaignImage={campaignImage}
           onCampaignImageSuccess={onCampaignImageSuccess}
           onError={onError}
         />
       );
-    case 2:
+    case TWITTER:
       return (
         <ChannelMedia
-          steps={steps}
           channelMedia={channelMedia.Twitter}
           onSuccess={onSuccess}
           onError={onError}
-          channelName={'Twitter'}
+          channelName={TWITTER}
           socialPlatFormImage={twitterPhone}
           secondMobileImage={twitterPhone2}
           horizontalVideo={twitterHz}
@@ -68,14 +68,13 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           title="Upload media you want users to view & share on Twitter"
         />
       );
-    case 3:
+    case INSTAGRAM:
       return (
         <ChannelMedia
-          steps={steps}
           channelMedia={channelMedia.Instagram}
           onSuccess={onSuccess}
           onError={onError}
-          channelName={'Instagram'}
+          channelName={INSTAGRAM}
           socialPlatFormImage={instagramPhone}
           secondMobileImage={instagramPhone2}
           horizontalVideo={instagramHz}
@@ -87,14 +86,13 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           title="Upload media you want users to view & share on Instagram"
         />
       );
-    case 4:
+    case FACEBOOK:
       return (
         <ChannelMedia
-          steps={steps}
           channelMedia={channelMedia.Facebook}
           onSuccess={onSuccess}
           onError={onError}
-          channelName={'Facebook'}
+          channelName={FACEBOOK}
           socialPlatFormImage={facebookPhone}
           secondMobileImage={facebookPhone2}
           horizontalVideo={facebookHz}
@@ -106,26 +104,24 @@ const MediaSteps: FC<MediaStepsIProps> = ({
           title="Upload media you want users to view & share on Facebook"
         />
       );
-    case 5:
+    case TIKTOK:
       return (
         <ChannelMedia
-          steps={steps}
           channelMedia={channelMedia.Tiktok}
           onSuccess={onSuccess}
           onError={onError}
-          channelName={'Tiktok'}
+          channelName={TIKTOK}
           socialPlatFormImage={tiktokPhone}
           handleChannelMedia={handleChannelMedia}
           firstMedia={channelMediaList.tiktok.first}
           removeChannelMedia={removeChannelMedia}
-          title="Upload media you want users to view & share on Facebook"
+          title="Upload media you want users to view & share on Tiktok"
         />
       );
     default:
       return (
         <CampaignMedia
           title="Upload your campaign image cover for the raiinmaker app"
-          steps={steps}
           campaignImage={campaignImage}
           onCampaignImageSuccess={onCampaignImageSuccess}
           onError={onError}

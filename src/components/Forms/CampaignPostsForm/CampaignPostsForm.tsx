@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { Fade } from 'react-awesome-reveal';
 import useStoreCampaignSelector from '../../../hooks/useStoreCampaignSelector';
 import { Box } from '@material-ui/core';
 import Actions from '../../NewCampaign/Actions';
 import { updateCampaign } from '../../../store/actions/campaign';
 import { ActionsProps } from '../../NewCampaign/StepsContent';
-// import CustomButton from '../../CustomButton/CustomButton';
-// import AddIcon from '@material-ui/icons/Add';
 import { showErrorAlert } from '../../../store/actions/alerts';
-// import CustomInput from '../../CustomInput/CustomInput';
-// import CloseIcon from '@material-ui/icons/Close';
-// import styles from '../../CustomInput/customInput.module.css';
 import './campaignPostForm.scss';
 import TemplateSteps from './TemplateSteps';
+import { FACEBOOK, INSTAGRAM, TIKTOK, TWITTER } from '../../../helpers/constants';
 
 const MAX_POST_LENGTH = 120;
 
@@ -22,7 +17,8 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   const socialMedias = campaign.config.socialMediaType;
   const dispatch = useDispatch();
   const [channelTemplates, setChannelTemplates] = useState(campaign.config.channelTemplates);
-  const [steps, setSteps] = useState<number>(1);
+  const [step, setStep] = useState<number>(0);
+  const [platform, setPlatform] = useState<string>(socialMedias[0]);
 
   const next = () => {
     if (validateInputs()) {
@@ -34,17 +30,20 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      if (steps >= socialMedias.length) handleNext();
+      const lastPlatform = socialMedias[socialMedias.length - 1];
+      if (lastPlatform === platform) handleNext();
       else {
-        setSteps((prev) => prev + 1);
+        setPlatform(socialMedias[step + 1]);
+        setStep((prev) => prev + 1);
       }
     }
   };
 
   const back = () => {
-    if (steps === 1) handleBack();
+    if (platform === socialMedias[0]) handleBack();
     else {
-      setSteps((prev) => prev - 1);
+      setPlatform(socialMedias[step - 1]);
+      setStep((prev) => prev - 1);
     }
   };
 
@@ -82,25 +81,25 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
 
   const validateInputs = (): boolean => {
     let validated = true;
-    if (steps < socialMedias.length) validated;
+    // if (step < socialMedias.length) validated;
     const { socialMediaType } = campaign.config;
     for (let index = 0; index < socialMediaType.length; index++) {
       const channel = socialMediaType[index];
       for (let index2 = 0; index2 < channelTemplates[channel].length; index2++) {
         const template = channelTemplates[channel][index2];
-        if (!template.post && channel === 'Twitter' && steps === 1) {
+        if (!template.post && channel === 'Twitter' && platform === TWITTER) {
           dispatch(showErrorAlert(`Template posts are required Twitter`));
           return (validated = false);
         }
-        if (!template.post && channel === 'Instagram' && steps === 2) {
+        if (!template.post && channel === 'Instagram' && platform === INSTAGRAM) {
           dispatch(showErrorAlert(`Template posts are required Instagram`));
           return (validated = false);
         }
-        if (!template.post && channel === 'Facebook' && steps === 3) {
+        if (!template.post && channel === 'Facebook' && platform === FACEBOOK) {
           dispatch(showErrorAlert(`Template posts are required Facebook`));
           return (validated = false);
         }
-        if (!template.post && channel === 'Tiktok' && steps === 4) {
+        if (!template.post && channel === 'Tiktok' && platform === TIKTOK) {
           dispatch(showErrorAlert(`Template posts are required Tiktok`));
           return (validated = false);
         }
@@ -116,50 +115,12 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   return (
     <Box className="campaignPostFormWrapper">
       <TemplateSteps
-        steps={steps}
         channelTemplates={channelTemplates}
         addPost={addPost}
         handlePostChange={handlePostChange}
         removePost={removePost}
+        platfrom={platform}
       />
-      {/* <Box className="campaignPostForm">
-          {socialMediaType.map((channel, index) => (
-            <Box key={index} className="outline">
-              <Box className="headWrapper">
-                <p>{`${channel} Templates`}</p>
-                <CustomButton className="addTempButton" onClick={() => addPost(channel)}>
-                  <AddIcon className="mr-2" />
-                  <span>Add Template</span>
-                </CustomButton>
-              </Box>
-              {channelTemplates[channel].map((item, index) => (
-                <Box className="inputWrapper" key={index.toString()}>
-                  <CustomInput
-                    required={true}
-                    label={`Template ${index + 1}`}
-                    multiline
-                    value={item.post}
-                    rows={3}
-                    className={styles.templateField}
-                    onChange={(e) => {
-                      handlePostChange(channel, index, e.target.value);
-                    }}
-                  />
-                  <div className="templateInfo">
-                    {index < 2 && <p>Default Template</p>}
-                    {index >= 2 && (
-                      <CustomButton className="removeContent" onClick={() => removePost(channel, index)}>
-                        <CloseIcon className="closeIcon" />
-                        <span>Remove Post</span>
-                      </CustomButton>
-                    )}
-                    <span className="textLimit ">Characters added {`${item.post.length}/${MAX_POST_LENGTH}`}</span>
-                  </div>
-                </Box>
-              ))}
-            </Box>
-          ))}
-        </Box> */}
       <Box className="postFormActions">
         <Actions
           activeStep={activeStep}

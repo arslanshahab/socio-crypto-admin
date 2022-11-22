@@ -34,3 +34,8 @@ export const mediaInstructions: MediaInstructionTypes = {
 
 export const brandManual = 'https://docs.google.com/document/d/1y7K89yUtLZgUr-ig79UP6YlOCnKjapEr6ngezMhBjC0/edit';
 export const generalFaqs = 'https://raiinmaker.zendesk.com/hc/en-us/sections/5704814468628-FAQ';
+
+export const TWITTER = 'Twitter';
+export const INSTAGRAM = 'Instagram';
+export const FACEBOOK = 'Facebook';
+export const TIKTOK = 'Tiktok';

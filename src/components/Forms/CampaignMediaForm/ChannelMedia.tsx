@@ -5,9 +5,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { TiDelete } from 'react-icons/ti';
+import { FACEBOOK, INSTAGRAM, TIKTOK, TWITTER } from '../../../helpers/constants';
 
 interface MediaStepsIProps {
-  steps?: number;
   channelMedia?: ChannelMediaObject[];
   onError?: (msg: string) => void;
   onSuccess?: (channel: string, list: ChannelMediaObject[]) => void;
@@ -36,7 +36,6 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
   onError,
   channelName,
   socialPlatFormImage,
-  steps,
   secondMobileImage,
   horizontalVideo,
   firstMedia,
@@ -75,7 +74,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
         <div>
           <div className="imageContent">
             <div className={`imageWrapper${channelName}`}>
-              {steps === 2 && (
+              {channelName === TWITTER && (
                 <Slider {...settings} arrows>
                   {firstMedia?.length &&
                     firstMedia.map((item, i) => (
@@ -96,7 +95,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     ))}
                 </Slider>
               )}
-              {steps === 3 && (
+              {channelName === INSTAGRAM && (
                 <Slider {...settings} arrows>
                   {firstMedia?.length &&
                     firstMedia.map((item, i) => (
@@ -117,7 +116,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     ))}
                 </Slider>
               )}
-              {steps === 4 && (
+              {channelName === FACEBOOK && (
                 <Slider {...settings} arrows>
                   {firstMedia?.length &&
                     firstMedia.map((item, i) => (
@@ -138,7 +137,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                     ))}
                 </Slider>
               )}
-              {steps === 5 && (
+              {channelName === TIKTOK && (
                 <Slider {...settings} arrows>
                   {firstMedia?.length &&
                     firstMedia.map((item, i) => (
@@ -182,7 +181,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <div>
               <div className="image3x4Content">
                 <div className={`imageWrapper${channelName}`}>
-                  {steps === 2 && (
+                  {channelName === TWITTER && (
                     <Slider {...settings}>
                       {secondMedia?.length &&
                         secondMedia.map((item, i) => (
@@ -203,7 +202,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                         ))}
                     </Slider>
                   )}
-                  {steps === 3 && (
+                  {channelName === INSTAGRAM && (
                     <Slider {...settings}>
                       {secondMedia?.length &&
                         secondMedia.map((item, i) => (
@@ -224,7 +223,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                         ))}
                     </Slider>
                   )}
-                  {steps === 4 && (
+                  {channelName === FACEBOOK && (
                     <Slider {...settings} arrows>
                       {secondMedia?.length &&
                         secondMedia.map((item, i) => (
@@ -266,7 +265,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
             <div>
               <div className="imageHzContent">
                 <div className={`imageWrapper${channelName}`}>
-                  {steps === 2 && (
+                  {channelName === TWITTER && (
                     <Slider {...settings} arrows>
                       {thirdMedia?.length &&
                         thirdMedia.map((item, i) => (
@@ -283,7 +282,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                         ))}
                     </Slider>
                   )}
-                  {steps === 3 && (
+                  {channelName === TIKTOK && (
                     <Slider {...settings} arrows>
                       {thirdMedia?.length &&
                         thirdMedia.map((item, i) => (
@@ -300,7 +299,7 @@ const ChannelMedia: FC<MediaStepsIProps> = ({
                         ))}
                     </Slider>
                   )}
-                  {steps === 4 && (
+                  {channelName === FACEBOOK && (
                     <Slider {...settings} arrows>
                       {thirdMedia?.length &&
                         thirdMedia.map((item, i) => (

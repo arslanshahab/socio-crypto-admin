@@ -14,11 +14,12 @@ import MediaSteps from './MediaSteps';
 const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, handleNext, firstStep, finalStep }) => {
   const dispatch = useDispatch();
   const campaign = useStoreCampaignSelector();
-  const socialMediaType = campaign.config.socialMediaType;
+  const socialMediaType = ['Campaign', ...campaign.config.socialMediaType];
   const [campaignImage, setCampaignImage] = useState(campaign.campaignImage);
   const [channelMedia, setChannelMedia] = useState(campaign.config.channelMedia);
   const channelMediaList = useSelector((state: { channelMedia: ChannelMediaTypes }) => state.channelMedia);
-  const [steps, setSteps] = useState<number>(1);
+  const [platform, setPlatform] = useState<string>('Campaign');
+  const [step, setStep] = useState<number>(0);
 
   const onCampaignImageSuccess = (data: FileObject) => {
     setCampaignImage(data);
@@ -81,17 +82,20 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         },
       };
       dispatch(updateCampaign(augmentedCampaign));
-      if (steps > socialMediaType.length) handleNext();
+      const lastChannel = socialMediaType[socialMediaType.length - 1];
+      if (lastChannel === platform) handleNext();
       else {
-        setSteps((pre) => pre + 1);
+        setPlatform(socialMediaType[step + 1]);
+        setStep((pre) => pre + 1);
       }
     }
   };
 
   const back = () => {
-    if (steps === 1) handleBack();
+    if (platform === socialMediaType[0]) handleBack();
     else {
-      setSteps((pre) => pre - 1);
+      setStep((pre) => pre - 1);
+      setPlatform(socialMediaType[step - 1]);
     }
   };
 
@@ -101,19 +105,19 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
       dispatch(showErrorAlert('Campaign image is required'));
       return (validated = false);
     }
-    if (!channelMedia.Twitter.length && steps === 2) {
+    if (!channelMedia.Twitter.length && platform === 'Twitter') {
       dispatch(showErrorAlert(`Default Media is required for Twitter`));
       return (validated = false);
     }
-    if (!channelMedia.Instagram.length && steps === 3) {
+    if (!channelMedia.Instagram.length && platform === 'Instagram') {
       dispatch(showErrorAlert(`Default Media is required for Instagram`));
       return (validated = false);
     }
-    if (!channelMedia.Facebook.length && steps === 4) {
+    if (!channelMedia.Facebook.length && platform === 'Facebook') {
       dispatch(showErrorAlert(`Default Media is required for Facebook`));
       return (validated = false);
     }
-    if (!channelMedia.Tiktok.length && steps === 5) {
+    if (!channelMedia.Tiktok.length && platform === 'Tiktok') {
       dispatch(showErrorAlert(`Default Media is required for Tiktok`));
       return (validated = false);
     }
@@ -123,7 +127,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
   return (
     <Box className="campaignMediaFormWrapper">
       <MediaSteps
-        steps={steps}
+        // steps={steps}
         campaignImage={campaignImage}
         channelMedia={channelMedia}
         onCampaignImageSuccess={onCampaignImageSuccess}
@@ -132,6 +136,7 @@ const CampaignMediaForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
         onError={onError}
         handleChannelMedia={handleChannelMedias}
         removeChannelMedia={removeChannelMedia}
+        platform={platform}
       />
 
       <Actions

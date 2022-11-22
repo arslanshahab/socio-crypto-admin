@@ -5,7 +5,6 @@ import { FileObject } from '../../../types';
 
 interface MediaStepsIProps {
   title: string;
-  steps?: number;
   campaignImage: FileObject;
   onCampaignImageSuccess?: (data: FileObject) => void;
   onError?: (msg: string) => void;
