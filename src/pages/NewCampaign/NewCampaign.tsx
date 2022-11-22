@@ -8,7 +8,7 @@ import StepContent from '../../components/NewCampaign/StepsContent';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
 import GenericModal from '../../components/GenericModal';
 import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
-import { resetCampaign } from '../../store/actions/campaign';
+import { resetCampaign, resetChannelMedia } from '../../store/actions/campaign';
 import { flatten } from 'lodash';
 import { prepareMediaRequest, prepareTemplateRequest, uploadMedia } from '../../helpers/utils';
 import useStoreUserSelector from '../../hooks/useStoreUserSelector';
@@ -119,6 +119,8 @@ const NewCampaignPage: React.FC = () => {
         showProgressModal(false);
         dispatch(showSuccessAlert('Campaign created successfully and pending for approval'));
         dispatch(resetCampaign());
+        dispatch(resetChannelMedia());
+
         history.push('/dashboard/campaigns', 2);
       }, 1000);
     } catch (e) {

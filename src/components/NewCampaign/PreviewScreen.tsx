@@ -169,11 +169,14 @@ const PreviewScreen: React.FC<ActionsProps> = ({
                       <div className="tagValueWrapper">
                         {x.key === 'Tags' && (
                           <div className="tagBar flex">
-                            {x.value.map((tag: string, i: number) => (
-                              <span key={i}>
-                                <p>{tag}</p>
-                              </span>
-                            ))}
+                            {x.value.map((tag: string, i: number) => {
+                              if (!tag) return;
+                              return (
+                                <span key={i}>
+                                  <p>{tag}</p>
+                                </span>
+                              );
+                            })}
                           </div>
                         )}
                       </div>

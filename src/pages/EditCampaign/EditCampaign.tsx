@@ -8,7 +8,7 @@ import StepContent from '../../components/NewCampaign/StepsContent';
 import useStoreCampaignSelector from '../../hooks/useStoreCampaignSelector';
 import GenericModal from '../../components/GenericModal';
 import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
-import { resetCampaign, updateCampaign } from '../../store/actions/campaign';
+import { channelMediaAction, resetCampaign, resetChannelMedia, updateCampaign } from '../../store/actions/campaign';
 import { flatten } from 'lodash';
 import initialState from '../../store/initialState';
 import {
@@ -113,10 +113,16 @@ const EditCampaignPage: React.FC = () => {
           ),
         },
       };
+      for (const [key, value] of Object.entries(augmentedCampaign.config.channelMedia)) {
+        value.map((media) => {
+          dispatch(channelMediaAction(media, media.ratio, key));
+        });
+      }
       dispatch(updateCampaign(augmentedCampaign));
     }
     return () => {
       dispatch(resetCampaign());
+      dispatch(resetChannelMedia());
     };
   }, [fetchedCampaign, campaignId]);
   const handleNext = () => {

@@ -5,6 +5,7 @@ export const UPDATE_CAMPAIGN = 'UPDATE_CAMPAIGN';
 export const RESET_CAMPAIGN = 'RESET_CAMPAIGN';
 export const CHANNEL_MEDIA = 'CHANNEL_MEDIA';
 export const REMOVE_CHANNEL_MEDIA = 'REMOVE_CHANNEL_MEDIA';
+export const RESET_CHANNEL_MEDIA = 'RESET_CHANNEL_MEDIA';
 
 export const updateCampaign = (data: CampaignState): PayloadAction<CampaignState> => {
   return {
@@ -39,5 +40,12 @@ export const removeChannelMediaAction = (
   return {
     type: REMOVE_CHANNEL_MEDIA,
     payload: { ratio, channel, index },
+  };
+};
+
+export const resetChannelMedia = (): PayloadAction<string | null> => {
+  return {
+    type: RESET_CHANNEL_MEDIA,
+    payload: null,
   };
 };

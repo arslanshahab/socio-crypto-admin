@@ -1,6 +1,12 @@
 import initialState from '../initialState';
 import { createReducer, PayloadAction } from '@reduxjs/toolkit';
-import { UPDATE_CAMPAIGN, RESET_CAMPAIGN, CHANNEL_MEDIA, REMOVE_CHANNEL_MEDIA } from '../actions/campaign';
+import {
+  UPDATE_CAMPAIGN,
+  RESET_CAMPAIGN,
+  CHANNEL_MEDIA,
+  REMOVE_CHANNEL_MEDIA,
+  RESET_CHANNEL_MEDIA,
+} from '../actions/campaign';
 import { CampaignState, ChannelPayloadTypes, RemoveChannelMediaPayloadTypes } from '../../types.d';
 
 const campaign = createReducer(initialState.newCampaign, {
@@ -17,6 +23,7 @@ export const channelMedia = createReducer(initialState.channelMedia, {
   [REMOVE_CHANNEL_MEDIA]: (state, action: PayloadAction<RemoveChannelMediaPayloadTypes>) => {
     state[action.payload.channel.toLocaleLowerCase()][screenSize[action.payload.ratio]].splice(action.payload.index, 1);
   },
+  [RESET_CHANNEL_MEDIA]: () => initialState.channelMedia,
 });
 
 const screenSize = {
