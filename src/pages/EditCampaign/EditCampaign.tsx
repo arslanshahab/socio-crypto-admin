@@ -114,9 +114,11 @@ const EditCampaignPage: React.FC = () => {
         },
       };
       for (const [key, value] of Object.entries(augmentedCampaign.config.channelMedia)) {
-        value.map((media) => {
-          dispatch(channelMediaAction(media, media.ratio, key));
-        });
+        if (value.length) {
+          value?.map((media) => {
+            if (media && media.ratio) dispatch(channelMediaAction(media, media.ratio, key));
+          });
+        }
       }
       dispatch(updateCampaign(augmentedCampaign));
     }

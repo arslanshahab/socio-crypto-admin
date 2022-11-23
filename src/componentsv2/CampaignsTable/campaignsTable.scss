@@ -7,7 +7,7 @@
     thead {
       tr {
         th {
-          @apply px-4 p-0.5 font-normal text-bluetiful bg-lavender;
+          @apply px-4 p-0.5 font-normal text-bluetiful bg-lavender h-12;
           &:first-child {
             @apply text-justify rounded-l-md;
           }
@@ -15,7 +15,7 @@
             @apply text-justify rounded-r-md;
           }
           &:not(:first-child, :last-child) {
-            @apply text-center w-2/12;
+            @apply text-center;
           }
         }
       }

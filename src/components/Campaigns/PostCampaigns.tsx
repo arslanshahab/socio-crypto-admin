@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Campaign, PaginatedCampaignResultsV2 } from '../../types';
 import Pagination from '../Pagination/Pagination';
 import RenderRow from './RenderRow';
+import '../../componentsv2/CampaignsTable/campaignsTable.scss';
 
 import axios from 'axios';
 import { apiURI } from '../../clients/raiinmaker-api';
@@ -50,18 +51,18 @@ const PostCampaigns: React.FC = () => {
       {!loading && !campaigns?.items?.length ? (
         <EmptyCampaigns />
       ) : (
-        <div className="w-full pb-10 overflow-scroll">
-          <table className="w-full table-auto bg-gray-50">
+        <div className="tableWrapper">
+          <table>
             <thead>
-              <tr className="font-semibold bg-gray-100">
-                <th className="px-7 py-5 text-left">Campaign Name</th>
-                <th className="px-7 py-5 text-left">Budget</th>
-                <th className="px-7 py-5 text-left">Tier</th>
-                <th className="px-7 py-5 text-left">Discovery Actions</th>
-                <th className="px-7 py-5 text-left">TiConversion Actionser</th>
-                <th className="px-7 py-5 text-left">Cost</th>
-                <th className="px-7 py-5 text-left">Status</th>
-                <th className="px-7 py-5 text-left"></th>
+              <tr className="tableRow">
+                <th>Campaign Name</th>
+                <th>Budget</th>
+                <th>Tier</th>
+                <th>Discovery Actions</th>
+                <th>TiConversion Actionser</th>
+                <th>Cost</th>
+                <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
