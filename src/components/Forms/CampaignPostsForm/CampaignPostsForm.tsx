@@ -81,25 +81,24 @@ const CampaignPostsForm: React.FC<ActionsProps> = ({ activeStep, handleBack, han
 
   const validateInputs = (): boolean => {
     let validated = true;
-    // if (step < socialMedias.length) validated;
     const { socialMediaType } = campaign.config;
     for (let index = 0; index < socialMediaType.length; index++) {
       const channel = socialMediaType[index];
       for (let index2 = 0; index2 < channelTemplates[channel].length; index2++) {
         const template = channelTemplates[channel][index2];
-        if (!template.post && channel === 'Twitter' && platform === TWITTER) {
+        if (!template.post && channel === TWITTER && platform === TWITTER) {
           dispatch(showErrorAlert(`Template posts are required Twitter`));
           return (validated = false);
         }
-        if (!template.post && channel === 'Instagram' && platform === INSTAGRAM) {
+        if (!template.post && channel === INSTAGRAM && platform === INSTAGRAM) {
           dispatch(showErrorAlert(`Template posts are required Instagram`));
           return (validated = false);
         }
-        if (!template.post && channel === 'Facebook' && platform === FACEBOOK) {
+        if (!template.post && channel === FACEBOOK && platform === FACEBOOK) {
           dispatch(showErrorAlert(`Template posts are required Facebook`));
           return (validated = false);
         }
-        if (!template.post && channel === 'Tiktok' && platform === TIKTOK) {
+        if (!template.post && channel === TIKTOK && platform === TIKTOK) {
           dispatch(showErrorAlert(`Template posts are required Tiktok`));
           return (validated = false);
         }
